@@ -122,7 +122,7 @@ WHERE
 
 This query retrieves 50% more rows (conflicts) and takes 3.5 times longer to compute. This it not too terrible actually. Not sure whether the quadratic number of where clauses will eventually kill the query completely? Let's try
 
-## K=16, distance 100 meters, - seconds
+## K=16, distance 100 meters, <1200 seconds
 
 Double K from 8 to 16?
 

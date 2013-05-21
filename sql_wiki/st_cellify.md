@@ -30,7 +30,7 @@ SELECT * FROM (SELECT
 FROM
     generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
     generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j) PT
-WHERE ST_DWithin(PT.pt, $1, sqrt(2*$2*$2)/2)
+WHERE ST_Intersects($1, ST_Buffer(PT.pt, $2/2))
 ;
 $$ LANGUAGE sql IMMUTABLE STRICT;
 ```
@@ -39,7 +39,7 @@ Try out the function on a single street from OSM (Fyrvej in denmark):
 
 ```sql
 SELECT 
-  ST_Cellify(R.wkb_geometry, 100, 0, 0)) as pt,
+  ST_Cellify(R.wkb_geometry, 100, 0, 0) as pt,
   R.name,
   ST_Length(R.wkb_geometry) AS length
 FROM 

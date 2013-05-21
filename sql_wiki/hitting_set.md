@@ -74,7 +74,8 @@ Result:
 +-------------------+
 ```
 
-Hmm, 26 times seems quite bad... but I don't know what the optimum is. The solution selects 500 records out of 10000 possible. The average set size is ~500. So maybe 26 out of 500 is not too bad (it's ~5% of the elements in a set). This is likely a property of all the ranks being unique... This might be an argument for randomizing the ranks a little, to make them unique!
+Hmm, 26 times seems quite bad... but I don't know what the optimum is. The solution selects 500 records out of 10000 possible. The average set size is ~500. So maybe 26 out of 500 is not too bad (it's ~5% of the elements in a set). This is likely a property of all the ranks being unique... This might be an argument for randomizing the ranks a little (if they are very likely to be the same), to make them unique!
+
 
 ## Algorithm 2: Approximation algorithm for Set Cover (Vazirani)
 

@@ -48,18 +48,7 @@ FROM
   ) R;
 ```
 
-How does it look? Create a test table with grid points and original geometry
-
-```sql
-CREATE TABLE cellify_test AS 
-SELECT ST_Cellify(r.wkb_geometry, 100, 0, 0) AS wkb_geometry, 'grid_point' AS name 
-FROM (select * from denmark_highway where name <> '' limit 1) r
-UNION ALL
-SELECT S.* 
-FROM (SELECT wkb_geometry, name FROM denmark_highway WHERE name <> '' LIMIT 1) S
-```
-
-Import into CartoDB and visualize:
+How does it look? Import into CartoDB and visualize:
 
 ![fyrvej dots](https://raw.github.com/skipperkongen/phd_cvl/master/sql_wiki/images/st_cellify.png?login=skipperkongen&token=3bb2f71055a3f2fd213478fdccb05c4f)
 

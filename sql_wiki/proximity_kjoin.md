@@ -1,5 +1,12 @@
 # Finding conflicts between sets of K records using K-way joins
 
+**Spoiles**:
+
+* Method does not compute the same as geometries that overlap a circle
+* Method does not scale well
+* Suggestion: Use only for K=2, i.e. normal proximity. For K-records overlapping a circle use [KBufferOverlap]() or [KGridCellOverlap]().
+ 
+
 Using OpenStreetMap streets in the Copenhagen region (57,812 records) as example. There is a GIST index on wkb_geometry.
 
 Let's try computing conflicts for a K=4 constraint and a constraint condition being ST_Dwithin(a.wkb_geometry, b.wkb_geometry, 100)
@@ -122,7 +129,7 @@ WHERE
 
 This query retrieves 50% more rows (conflicts) and takes 3.5 times longer to compute. This it not too terrible actually. Not sure whether the quadratic number of where clauses will eventually kill the query completely? Let's try
 
-## K=16, distance 100 meters, <20 minutes
+## K=16, distance 100 meters, <30 minutes
 
 Double K from 8 to 16?
 
@@ -326,7 +333,8 @@ WHERE
 	AND st_dwithin(r14.wkb_geometry, r16.wkb_geometry, 100)					
 	
 	AND st_dwithin(r15.wkb_geometry, r16.wkb_geometry, 100)
--- 
+-- Total query runtime: ? ms.
+-- ? rows retrieved.
 ```
 
 ## Conclusion

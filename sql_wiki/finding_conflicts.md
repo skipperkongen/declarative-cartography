@@ -40,7 +40,7 @@ WHERE
 	AND st_dwithin(r3.wkb_geometry, r4.wkb_geometry, 100)
 -- Total query runtime: 41512 ms.
 -- 61,818 rows retrieved.
-```sql
+```
 
 ## K=8, distance 100 meters, 143 seconds
 
@@ -118,7 +118,7 @@ WHERE
 	AND st_dwithin(r7.wkb_geometry, r8.wkb_geometry, 100)
 -- Total query runtime: 143002 ms.
 -- 99,608 rows retrieved.	
-```sql
+```
 
 This query retrieves 50% more rows (conflicts) retrieved and it takes 3.5 times longer to compute. This it not too terrible actually. Not sure whether the quadratic number of where clauses will eventually kill the query completely? Let's try
 
@@ -327,6 +327,5 @@ WHERE
 	
 	AND st_dwithin(r15.wkb_geometry, r16.wkb_geometry, 100)
 -- 
-
-```sql
+```
 

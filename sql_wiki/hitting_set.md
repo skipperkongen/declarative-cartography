@@ -47,31 +47,34 @@ WHERE h.r = 1
 Let's see how many times each set is covered on average:
 
 ```sql
-SELECT avg(x.count) as avg_times_covered FROM 
-(SELECT r.set_id, count(*) as count
-FROM
+WITH solution AS 
 (SELECT h.set_id, h.elem_id, h.elem_rank 
 FROM (SELECT ROW_NUMBER() OVER (PARTITION BY set_id ORDER BY elem_rank) AS r,
     t.*
     FROM hitting_set t) h
-WHERE h.r = 1) s JOIN hitting_set r
+WHERE h.r = 1)
+
+SELECT avg(x.count) as avg_times_covered FROM 
+(SELECT r.set_id, count(*) as count
+FROM
+solution s JOIN hitting_set r
 ON s.elem_id = r.elem_id
 GROUP BY r.set_id
 ORDER BY r.set_id) x
+-- Total query runtime: 749 ms.
 ```
 
 Result:
 
 ```
-+------------------+
-| avg_time_covered |
-+------------------+
-|            26.41 |
-+------------------+
++-------------------+
+| avg_times_covered |
++-------------------+
+|             26.41 |
++-------------------+
 ```
 
-Hmm, 26 times is quite bad... but I don't know what the optimum is.
-
+Hmm, 26 times seems quite bad... but I don't know what the optimum is. The solution selects 500 records out of 10000 possible. The average set size is ~500. So maybe 26 out of 500 is not too bad (it's ~5% of the elements in a set). This is likely a property of all the ranks being unique... This might be an argument for randomizing the ranks a little, to make them unique!
 
 ## Algorithm 2: Approximation algorithm for Set Cover (Vazirani)
 

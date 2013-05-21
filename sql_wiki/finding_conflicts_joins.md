@@ -1,4 +1,4 @@
-# Finding conflicting K-sets of records
+# Finding conflicts between sets of K records using K-way joins
 
 Using OpenStreetMap streets in the Copenhagen region (57,812 records) as example. There is a GIST index on wkb_geometry.
 
@@ -329,3 +329,6 @@ WHERE
 -- 
 ```
 
+## Conclusion
+
+This approach does not scale very well. It is feasible only for small record sets and small K.

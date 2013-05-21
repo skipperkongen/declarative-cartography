@@ -44,41 +44,33 @@ WHERE h.r = 1
 
 ### Evaluation
 
-Let's see how many times each set is covered:
+Let's see how many times each set is covered on average:
 
 ```sql
-select r.set_id, count(*)
-from
+SELECT avg(x.count) as avg_covered FROM 
+(SELECT r.set_id, count(*) as count
+FROM
 (SELECT h.set_id, h.elem_id, h.elem_rank 
 FROM (SELECT ROW_NUMBER() OVER (PARTITION BY set_id ORDER BY elem_rank) AS r,
     t.*
     FROM hitting_set t) h
 WHERE h.r = 1) s JOIN hitting_set r
 ON s.elem_id = r.elem_id
-group by r.set_id
-order by r.set_id
+GROUP BY r.set_id
+ORDER BY r.set_id) x
 ```
 
 Result:
 
 ```
-+--------+---------------+
-| set_id | times_covered |
-+--------+---------------+
-|      1 |            38 |
-|      2 |            17 |
-|      3 |            17 |
-|      4 |            16 |
-|      5 |            15 |
-|      6 |            50 |
-|      7 |            35 |
-|      8 |            10 |
-|      9 |            37 |
-|    ... |           ... |
-+--------+---------------+
++-------------+
+| avg_covered |
++-------------+
+|       26.41 |
++-------------+
 ```
 
-Hmm, quite bad...
+Hmm, 26 times is quite bad... but I don't know what the optimum is.
 
 
 ## Algorithm 2: Approximation algorithm for Set Cover (Vazirani)

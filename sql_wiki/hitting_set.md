@@ -47,7 +47,7 @@ WHERE h.r = 1
 Let's see how many times each set is covered on average:
 
 ```sql
-SELECT avg(x.count) as avg_covered FROM 
+SELECT avg(x.count) as avg_times_covered FROM 
 (SELECT r.set_id, count(*) as count
 FROM
 (SELECT h.set_id, h.elem_id, h.elem_rank 
@@ -63,11 +63,11 @@ ORDER BY r.set_id) x
 Result:
 
 ```
-+-------------+
-| avg_covered |
-+-------------+
-|       26.41 |
-+-------------+
++------------------+
+| avg_time_covered |
++------------------+
+|            26.41 |
++------------------+
 ```
 
 Hmm, 26 times is quite bad... but I don't know what the optimum is.

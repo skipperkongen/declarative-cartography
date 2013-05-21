@@ -120,7 +120,7 @@ WHERE
 -- 99,608 rows retrieved.	
 ```
 
-This query retrieves 50% more rows (conflicts) retrieved and it takes 3.5 times longer to compute. This it not too terrible actually. Not sure whether the quadratic number of where clauses will eventually kill the query completely? Let's try
+This query retrieves 50% more rows (conflicts) and takes 3.5 times longer to compute. This it not too terrible actually. Not sure whether the quadratic number of where clauses will eventually kill the query completely? Let's try
 
 ## K=16, distance 100 meters, - seconds
 

@@ -35,7 +35,7 @@ WHERE ST_DWithin(PT.pt, $1, sqrt(2*$2*$2)/2)
 $$ LANGUAGE sql IMMUTABLE STRICT;
 ```
 
-Try out the function on a street from OSM:
+Try out the function on a single street from OSM (Fyrvej in denmark):
 
 ```sql
 SELECT 
@@ -60,4 +60,6 @@ FROM (SELECT wkb_geometry, name FROM denmark_highway WHERE name <> '' LIMIT 1) S
 ```
 
 Import into CartoDB and visualize:
+
+![fyrvej dots](https://raw.github.com/skipperkongen/phd_cvl/master/sql_wiki/images/st_cellify.png?login=skipperkongen&token=3bb2f71055a3f2fd213478fdccb05c4f)
 

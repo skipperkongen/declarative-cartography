@@ -47,3 +47,17 @@ FROM
 	SELECT * FROM denmark_highway WHERE name <> '' LIMIT 1
   ) R;
 ```
+
+How does it look? Create a test table with grid points and original geometry
+
+```sql
+CREATE TABLE cellify_test AS 
+SELECT ST_Cellify(r.wkb_geometry, 100, 0, 0) AS wkb_geometry, 'grid_point' AS name 
+FROM (select * from denmark_highway where name <> '' limit 1) r
+UNION ALL
+SELECT S.* 
+FROM (SELECT wkb_geometry, name FROM denmark_highway WHERE name <> '' LIMIT 1) S
+```
+
+Import into CartoDB and visualize:
+

@@ -95,11 +95,34 @@ $$ LANGUAGE sql IMMUTABLE STRICT;
 
 Using OpenStreetMap streets in the Copenhagen region (57,812 records). There is a GIST index on wkb_geometry.
 
-What is the time to compute the *cell,record_id* pairs?
+### Computing the cells
+
+What is the time to compute the *cell,record_id* pairs for cells of size *cell_size*?
 
 ```sql
 SELECT 
-	ST_PointHash(ST_Cellify(wkb_geometry, 100, 0, 0)) AS cell_id, 
+	ST_PointHash(ST_Cellify(wkb_geometry, {cell_size}, 0, 0)) AS cell_id, 
+	ogc_fid AS record_id
+FROM cph_highway;
+-- For cell_size = 100 meter
+-- Total query runtime: 453740 ms. 7-8 minutes for 57,812 records
+-- 382611 rows retrieved.
+-- 1.2 ms per row
+-- 7.8 ms per record
+```
+
+<table>
+	<tr><th>cell size</th><th>rows retrieved</th><th>total running time</th><th>time per record (58K records total)</th></tr>
+	<tr><td>100 meter</td><td>382611</td>        <td>7-8  minutes</td>          <td>7.8 ms</td></tr>
+</table>
+
+
+
+What is the time to compute *cell,record_id* pairs for 200m cells?
+
+```sql
+SELECT 
+	ST_PointHash(ST_Cellify(wkb_geometry, 200, 0, 0)) AS cell_id, 
 	ogc_fid AS record_id
 FROM cph_highway;
 -- Total query runtime: 453740 ms. 7-8 minutes for 57,812 records
@@ -107,6 +130,8 @@ FROM cph_highway;
 -- 1.2 ms per row
 -- 7.8 ms per record
 ```
+
+### Computing cells with more than K records
 
 What is the time to compute cells that intersect more than K=16 records, cell-size 100?
 
@@ -132,6 +157,7 @@ SELECT
 FROM cph_highway;
 -- Total query runtime: 451507 ms.
 -- 382611 rows retrieved.
+-- 
 ```
 
 Conclusion: The running time is dominated by ST_Cellify for small cell sizes (100m).
@@ -193,3 +219,13 @@ HAVING count(*) > 16;
 ### Conclusion
 
 While the running time is greatly reduced by using larger cell-sizes and quadrupling K, the query does not provide at all the same answer (7441 rows versus 378, which can not be explained by dividing 7441 by four).
+
+## Back-of-the-envelope: Scalability
+
+How long would it take to compute 100m cells with more than K records for 40 million records? Assuming an equal distribution as OpenStreetMap streets. The cost is dominated by the ST_Cellify() function call.
+
+At 7.8 ms per record, it would take 86 hours. Not so good...
+
+
+
+

@@ -10,7 +10,7 @@ FROM
 	table_name l,
 	table_name r
 WHERE 
-	l.{id} < = r.{id}
+	l.id < = r.id
 AND ST_DWithin(l.wkb_geometry, r.wkb_geometry, distance)
 ```
 

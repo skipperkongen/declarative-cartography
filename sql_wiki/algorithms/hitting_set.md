@@ -1,4 +1,4 @@
-# Hitting set in SQL
+# Hitting Set Problem in SQL
 
 Hitting Set Problem is analogous with [Set Cover problem](http://en.wikipedia.org/wiki/Set_cover_problem).
 

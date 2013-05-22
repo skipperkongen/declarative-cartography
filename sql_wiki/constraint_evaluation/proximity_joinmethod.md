@@ -4,14 +4,14 @@ The general structure of proximity query (spatial join):
 
 ```sql
 SELECT 
-	l.{id},
-	r.{id}
+	l.id,
+	r.id
 FROM 
-	{table} l,
-	{table} r
+	table_name l,
+	table_name r
 WHERE 
 	l.{id} < = r.{id}
-AND ST_DWithin(l.{wkb_geometry}, r.{wkb_geometry}, {d})
+AND ST_DWithin(l.wkb_geometry, r.wkb_geometry, distance)
 ```
 
 ## Running time on different datasets

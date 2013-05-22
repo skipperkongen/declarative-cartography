@@ -1,4 +1,4 @@
-# Finding pairs of records that are close
+# Finding pairs of records that are close together
 
 ## Experiments with running time
 

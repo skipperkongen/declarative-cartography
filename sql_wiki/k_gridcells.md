@@ -37,6 +37,57 @@ Conlusion:
 
 * I think the best approach is to use ST_GeoHash (with transform). It is faster, semantically meaningful and guaranteed to avoid collisions of cell hashes. I have created a function [ST_PointHash()](https://github.com/skipperkongen/phd_cvl/blob/master/sql_wiki/st_pointhash.md) that takes care of the transformation before the GeoHash is computed.
 
+## Custom methods used
+
+ST_PointHash():
+
+```sql
+DROP FUNCTION IF EXISTS ST_Hash(geometry);
+CREATE OR REPLACE FUNCTION ST_PointHash(
+	pt geometry,
+	OUT geohash text)
+RETURNS text AS
+$$
+SELECT ST_GeoHash(
+	ST_Transform(
+		$1, 
+		4326)) AS geohash;
+$$ LANGUAGE sql IMMUTABLE STRICT;
+```
+
+ST_Cellify():
+
+```sql
+DROP FUNCTION IF EXISTS ST_Cellify(geometry, float8, float8, float8, float8);
+CREATE OR REPLACE FUNCTION ST_Cellify(
+    geom geometry,
+    cell_size float8,
+    x0 float8 DEFAULT 0, y0 float8 DEFAULT 0,
+    OUT pt geometry)
+RETURNS SETOF geometry AS
+$$
+SELECT * FROM (SELECT 
+  ST_SnapToGrid(
+    ST_SetSrid(
+      ST_Point( 
+        ST_XMin($1) + i*$2, 
+        ST_YMin($1) + j*$2
+      ),
+      ST_Srid($1)
+    ),
+  $2, 
+  $3, 
+  $2, 
+  $2
+) AS pt
+FROM
+    generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
+    generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j) PT
+WHERE ST_Intersects($1, ST_Buffer(PT.pt, $2/2))
+;
+$$ LANGUAGE sql IMMUTABLE STRICT;
+```
+
 ## Experiments with running time
 
 Using OpenStreetMap streets in the Copenhagen region (57,812 records). There is a GIST index on wkb_geometry.

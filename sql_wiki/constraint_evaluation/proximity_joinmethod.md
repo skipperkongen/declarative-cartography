@@ -43,6 +43,12 @@ Performance on different datasets:
 
 Performance is closely related to number of matched records. So, it depends on whether 1000m is a lot or a little for the given dataset.
 
+## Transformation to general conflict set form
+
+The table schema for an instance of hitting set is (*set_id* INTEGER, *record_id* INTEGER).
+
+
+
 ## Conclusion
 
 Performs well. Scales ok (could be better, joins on some datasets are going to be expensive).

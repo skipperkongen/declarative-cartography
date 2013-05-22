@@ -8,7 +8,7 @@ Table schema for instances:
 
 * *set_id* INTEGER
 * *record_id* INTEGER|TEXT
-* *record_rank* FLOAT).
+* *record_rank* FLOAT
 
 ## Creating a test instance
 

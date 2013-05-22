@@ -1,10 +1,6 @@
 # Finding (pairs of) records that are close together
 
-## Experiments with running time
-
-Using US Airports (13K records) with GIST index on wkb_geometry.
-
-The general structure of query
+The general structure of proximity query (spatial join):
 
 ```sql
 SELECT 

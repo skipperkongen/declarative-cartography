@@ -1,6 +1,10 @@
 # About the SQL wiki
 
-The SQL wiki is a repository of semi-advanced SQL queries that I've developed for use in the CVL project. Examples include:
+The SQL wiki is a repository of SQL queries I've developed for CVL.
 
-* ST_Cellify
-* Heuristic solver for Hitting Set Problem
+SQL includes:
+
+* [Stored procedures](stored_procedures)
+* [Algorithms for general problems](algorithms)
+* [Methods for evaluating cartographic constraints](constraint_evaluation)
+

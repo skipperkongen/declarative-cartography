@@ -58,11 +58,12 @@ $$ LANGUAGE sql IMMUTABLE STRICT;
 ST_Cellify():
 
 ```sql
-DROP FUNCTION IF EXISTS ST_Cellify(geometry, float8, float8, float8, float8);
+DROP FUNCTION IF EXISTS ST_Cellify(geometry, float8, float8, float8);
 CREATE OR REPLACE FUNCTION ST_Cellify(
     geom geometry,
     cell_size float8,
-    x0 float8 DEFAULT 0, y0 float8 DEFAULT 0,
+    x0 float8 DEFAULT 0, 
+	y0 float8 DEFAULT 0,
     OUT pt geometry)
 RETURNS SETOF geometry AS
 $$
@@ -83,7 +84,9 @@ SELECT * FROM (SELECT
 FROM
     generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
     generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j) PT
-WHERE ST_Intersects($1, ST_Buffer(PT.pt, $2/2))
+WHERE 
+	$1 && ST_Envelope(ST_Buffer(PT.pt, $2/2)) 
+	AND ST_Intersects($1, ST_Envelope(ST_Buffer(PT.pt, $2/2)))
 ;
 $$ LANGUAGE sql IMMUTABLE STRICT;
 ```
@@ -91,5 +94,32 @@ $$ LANGUAGE sql IMMUTABLE STRICT;
 ## Experiments with running time
 
 Using OpenStreetMap streets in the Copenhagen region (57,812 records). There is a GIST index on wkb_geometry.
+
+What is the time to compute the *cell,record_id* pairs?
+
+```sql
+SELECT 
+	ST_PointHash(ST_Cellify(wkb_geometry, 100, 0, 0)) AS cell_id, 
+	ogc_fid AS record_id
+FROM cph_highway;
+-- Total query runtime: 453740 ms. 7-8 minutes for 57,812 records
+-- 382611 rows retrieved.
+-- 1.2 ms per row
+-- 7.8 ms per record
+```
+
+What is the time to compute cells that intersect more than K=16 records?
+
+```sql
+SELECT 
+	c.cell_id, 
+	count(c.*) as num_recs 
+FROM
+(SELECT 
+	ST_PointHash(ST_Cellify(wkb_geometry, 100, 0, 0)) AS cell_id
+FROM cph_highway) c
+GROUP BY c.cell_id
+HAVING count(*) > 16;
+``` 
 
 

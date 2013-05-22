@@ -5,11 +5,12 @@
 Function ST_Cellify:
 
 ```sql
-DROP FUNCTION IF EXISTS ST_Cellify(geometry, float8, float8, float8, float8);
+DROP FUNCTION IF EXISTS ST_Cellify(geometry, float8, float8, float8);
 CREATE OR REPLACE FUNCTION ST_Cellify(
     geom geometry,
     cell_size float8,
-    x0 float8 DEFAULT 0, y0 float8 DEFAULT 0,
+    x0 float8 DEFAULT 0, 
+	y0 float8 DEFAULT 0,
     OUT pt geometry)
 RETURNS SETOF geometry AS
 $$
@@ -30,7 +31,9 @@ SELECT * FROM (SELECT
 FROM
     generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
     generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j) PT
-WHERE ST_Intersects($1, ST_Buffer(PT.pt, $2/2))
+WHERE 
+	$1 && ST_Envelope(ST_Buffer(PT.pt, $2/2)) 
+	AND ST_Intersects($1, ST_Envelope(ST_Buffer(PT.pt, $2/2)))
 ;
 $$ LANGUAGE sql IMMUTABLE STRICT;
 ```

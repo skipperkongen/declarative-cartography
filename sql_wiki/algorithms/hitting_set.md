@@ -1,4 +1,6 @@
-# SQL algorithms for hitting set
+# Hitting set in SQL
+
+Hitting Set Problem is analogous with [Set Cover problem](http://en.wikipedia.org/wiki/Set_cover_problem).
 
 ## Table schema for instance
 

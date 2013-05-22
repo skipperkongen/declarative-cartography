@@ -1,11 +1,16 @@
 # Finding conflicts between sets of K records using K-way joins
 
-**Spoiles**:
+**Spoilers**:
 
 * Method does not compute the same as geometries that overlap a circle
 * Method does not scale well
 * Suggestion: Use only for K=2, i.e. normal proximity. For K-records overlapping a circle use [KBufferOverlap]() or [KGridCellOverlap]().
- 
+
+The actual problem solved is illustrated here
+
+![Problem solved](https://docs.google.com/drawings/d/1jw7GAa8zbToV2PSHLkuSrtlq5WBpqr9nq0SiyyQq4po/pub?w=462&amp;h=273)
+
+## Experiments with running time
 
 Using OpenStreetMap streets in the Copenhagen region (57,812 records) as example. There is a GIST index on wkb_geometry.
 

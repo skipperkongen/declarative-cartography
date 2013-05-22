@@ -16,7 +16,7 @@ SUBJECT TO
 AND CELLBOUND 		{K} 
 AND ALLORNOTHING 	{true/false}
 
-ALLOW OPERATION
+TRANSFORM BY
 	SIMPLIFY 		{true/false}
 ```
 
@@ -36,5 +36,5 @@ About clauses
     * {d} is a positive float
     * {K} is a positive integer
     * {true/false} are boolean options
-* ALLOW OPERATION:
+* TRANSFORM BY:
     * Only tow subclauses possible: SIMPLIFY true or SIMPLIFY false

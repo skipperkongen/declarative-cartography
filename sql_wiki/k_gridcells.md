@@ -1,4 +1,4 @@
-# Using Grid
+# Computing K-density using grids
 
 Problem: Given a uniform grid of cells, find all cells intersecting more than *K* features.
 

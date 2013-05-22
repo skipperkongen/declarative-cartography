@@ -4,12 +4,13 @@ Problem: Given a uniform grid of cells, find all cells intersecting more than *K
 
 ![Cells with number of features shown](https://docs.google.com/drawings/d/1blMf8QWoIA8jDU8VrjZ1Hslgx7Erly1AdYrcEc1GqsM/pub?w=339&amp;h=346)
 
-
 ## Approach
 
 1. Use [ST_Cellify]() to compute grid cells for a geometry
 2. Convert points to a unique hash (see below), selecting *hash, feature_id*
-3. Finally, find all hash codes that occur more than K times. Create K sized conflict sets for these.
+3. Find hash codes with > K occurences. 
+4. Select all K+1-sized sets of records for each cell hash.
+5. Solve hitting set
 
 ### Hashing functions
 

@@ -32,12 +32,13 @@ AND ST_DWithin(l.wkb_geometry, r.wkb_geometry, 1000)
 -- 63 rows retrieved.
 ```
 
-Performance on different datasets for distance 1000 m:
+Performance on different datasets:
 
 <table>
-	<tr><th>Record set</th><th>Record set size</th><th>Geometry type</th><th>#Matched</th><th>Milliseconds</th></tr>
-	<tr><td>us_geocommons_airports</td><td>13,617</td><td>Points</td><td>63</td><td>541 ms</td></tr>
-	<tr><td>cph_highway</td><td>57,812</td><td>Linestrings</td><td>2,886,377</td><td>28,023 ms</td></tr>
+	<tr><th>Distance</th><th>Record set</th><th>Record set size</th><th>Geometry type</th><th>#Matched</th><th>Milliseconds</th></tr>
+	<tr><td>1000 m</td><td>us_geocommons_airports</td><td>13,617</td><td>Points</td><td>63</td><td>541 ms</td></tr>
+	<tr><td>1000 m</td><td>cph_highway</td><td>57,812</td><td>Linestrings</td><td>2,886,377</td><td>28,023 ms</td></tr>
+	<tr><td>50 m</td><td>cph_highway</td><td>57,812</td><td>Linestrings</td><td>144,326</td><td>9,025 ms</td></tr>
 </table>
 
 Performance is closely related to number of matched records. So, it depends on whether 1000m is a lot or a little for the given dataset.

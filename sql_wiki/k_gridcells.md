@@ -113,23 +113,18 @@ FROM cph_highway;
 
 <table>
 	<tr><th>cell size</th><th>rows retrieved</th><th>total running time</th><th>time per record (58K records total)</th></tr>
-	<tr><td>100 meter</td><td>382611</td>        <td>7-8  minutes</td>          <td>7.8 ms</td></tr>
+	<tr><td>100 meter</td><td>382611</td>        <td>7-8  minutes</td>      <td>7.8 ms/record</td></tr>
+	<tr><td>200 meter</td><td>208562</td>        <td>2-3 minutes</td>       <td>2.3 ms/record</td></tr>
+	<tr><td>400 meter</td><td>122803</td>        <td>1 minute</td>          <td>0.9 ms/record</td></tr>
+    <tr><td>600 meter</td><td>95669</td>         <td>30 seconds</td>        <td>0.6 ms/record</td></tr>
+    <tr><td>800 meter</td><td>82923</td>         <td>26 seconds</td>        <td>0.5 ms/record</td></tr>
+    <tr><td>1000 meter</td><td>75666</td>         <td>22 seconds</td>       <td>0.4 ms/record</td></tr>
+    <tr><td>1200 meter</td><td>71119</td>         <td>21 seconds</td>       <td>0.4 ms/record</td></tr>
 </table>
 
+Diagram of running time:
 
-
-What is the time to compute *cell,record_id* pairs for 200m cells?
-
-```sql
-SELECT 
-	ST_PointHash(ST_Cellify(wkb_geometry, 200, 0, 0)) AS cell_id, 
-	ogc_fid AS record_id
-FROM cph_highway;
--- Total query runtime: 453740 ms. 7-8 minutes for 57,812 records
--- 382611 rows retrieved.
--- 1.2 ms per row
--- 7.8 ms per record
-```
+![Running time](https://raw.github.com/skipperkongen/phd_cvl/master/sql_wiki/images/runningtime_cellify.png?login=skipperkongen&token=aaa44d9bf680b94583f714709bb0ad3b)
 
 ### Computing cells with more than K records
 

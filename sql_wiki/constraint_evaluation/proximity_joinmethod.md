@@ -1,4 +1,4 @@
-# Finding conflicts pairs of records too close to each other (within distance *d*)
+# Finding pairs of records that are close
 
 ## Experiments with running time
 

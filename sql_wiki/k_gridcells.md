@@ -108,7 +108,7 @@ FROM cph_highway;
 -- 7.8 ms per record
 ```
 
-What is the time to compute cells that intersect more than K=16 records?
+What is the time to compute cells that intersect more than K=16 records, cell-size 100?
 
 ```sql
 SELECT 
@@ -120,6 +120,76 @@ FROM
 FROM cph_highway) c
 GROUP BY c.cell_id
 HAVING count(*) > 16;
+-- Total query runtime: 455842 ms.
+-- 1 row retrieved.
 ``` 
 
+The running time was the same as the query without *GROUP BY*. This tells me that the running time is dominated by computing *ST_Cellify()* and *ST_PointHash()*. How fast is it to compute just the cells without hashing (omitting the *GROUP BY*)?
 
+```sql
+SELECT 
+	ST_Cellify(wkb_geometry, 100, 0, 0) AS cell_pt
+FROM cph_highway;
+-- Total query runtime: 451507 ms.
+-- 382611 rows retrieved.
+```
+
+Conclusion: The running time is dominated by ST_Cellify for small cell sizes (100m).
+
+What is the running time for larger cells (1km)?
+
+```sql
+SELECT 
+	c.cell_id, 
+	count(c.*) as num_recs 
+FROM
+(SELECT 
+	ST_PointHash(ST_Cellify(wkb_geometry, 1000, 0, 0)) AS cell_id
+FROM cph_highway) c
+GROUP BY c.cell_id
+HAVING count(*) > 16;
+-- Total query runtime: 21528 ms.
+-- 1515 rows retrieved.
+```
+
+For 10 times larger cell-size (1km) the query runs 21 times faster than with small cell-size (100m).
+
+## Trick: Double cell-size, quadruple K
+
+What is the benefit of counting average density for larger cells? Let's try doubling the cell-size and quadrupling the K. This is almost the same density measure (of course very local density is not captured by the bigger cells).
+
+Time for cellsize=200m, K=4:
+
+```sql
+SELECT 
+	c.cell_id, 
+	count(c.*) as num_recs 
+FROM
+(SELECT 
+	ST_PointHash(ST_Cellify(wkb_geometry, 200, 0, 0)) AS cell_id
+FROM cph_highway) c
+GROUP BY c.cell_id
+HAVING count(*) > 4;
+-- Total query runtime: 135977 ms.
+-- 7441 rows retrieved.
+```
+
+Time for cellsize * 2 = 400m, K*4=16:
+
+```sql
+SELECT 
+	c.cell_id, 
+	count(c.*) as num_recs 
+FROM
+(SELECT 
+	ST_PointHash(ST_Cellify(wkb_geometry, 400, 0, 0)) AS cell_id
+FROM cph_highway) c
+GROUP BY c.cell_id
+HAVING count(*) > 16;
+-- Total query runtime: 49926 ms.
+-- 378 rows retrieved.
+```
+
+### Conclusion
+
+While the running time is greatly reduced by using larger cell-sizes and quadrupling K, the query does not provide at all the same answer (7441 rows versus 378, which can not be explained by dividing 7441 by four).

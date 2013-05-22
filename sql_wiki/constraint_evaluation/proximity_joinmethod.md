@@ -7,9 +7,9 @@ SELECT
 	l.id,
 	r.id
 FROM 
-	table_name l,
+	table_name l JOIN
 	table_name r
-WHERE 
+ON 
 	l.id < = r.id
 AND ST_DWithin(l.wkb_geometry, r.wkb_geometry, distance)
 ```

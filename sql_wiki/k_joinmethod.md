@@ -4,7 +4,7 @@
 
 * Method does not compute the same as geometries that overlap a circle
 * Method does not scale well
-* Suggestion: Use only for K=2, i.e. normal proximity. For K-records overlapping a circle use [KBufferOverlap]() or [KGridCellOverlap]().
+* Suggestion: Use only for K=2, i.e. normal proximity. For K-records overlapping a circle use ~~KBufferOverlap~~ or [KGridCellOverlap](https://github.com/skipperkongen/phd_cvl/blob/master/sql_wiki/k_gridcells.md).
 
 The actual problem solved is illustrated here
 

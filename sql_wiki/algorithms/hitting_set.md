@@ -4,7 +4,11 @@ Hitting Set Problem is analogous with [Set Cover problem](http://en.wikipedia.or
 
 ## Table schema for instance
 
-The table schema for an instance of hitting set is (*set_id* INTEGER, *record_id* INTEGER|TEXT, *record_rank* FLOAT).
+Table schema for instances:
+
+* *set_id* INTEGER
+* *record_id* INTEGER|TEXT
+* *record_rank* FLOAT).
 
 ## Creating a test instance
 

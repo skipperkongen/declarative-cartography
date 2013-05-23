@@ -90,6 +90,7 @@ At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The po
 ## Full example
 
 ```sql
+-- compute cell-id for all records
 CREATE TEMPORARY TABLE tmp_cells AS 
 SELECT 
 	ST_PointHash(ST_Cellify(wkb_geometry, 1000, 0, 0)) AS cell_id,
@@ -98,16 +99,28 @@ SELECT
 FROM cph_highway
 WHERE type = 'residential'
 
+-- Find records to delete
 WITH conflicts AS
-(SELECT cell_id
-FROM tmp_cells
-GROUP BY cell_id
-HAVING count(*) > 16)
-SELECT * FROM (SELECT row_number() OVER (PARTITION BY cell_id ORDER BY record_rank DESC) r, * FROM tmp_cells
-WHERE cell_id IN (select * from conflicts)) t
+(
+	SELECT cell_id
+	FROM tmp_cells
+	GROUP BY cell_id
+	HAVING count(*) > 16
+)
+SELECT * 
+FROM
+(
+	SELECT 
+		row_number() OVER (PARTITION BY cell_id ORDER BY record_rank DESC) r, 
+		* 
+	FROM tmp_cells
+	WHERE 
+		cell_id IN (select * from conflicts)
+) t
 WHERE t.r > 16
 ```
 
+This skips the hitting set step entirely.
 
 ## An experiment: Double *cell-size* and quadruple *K*
 

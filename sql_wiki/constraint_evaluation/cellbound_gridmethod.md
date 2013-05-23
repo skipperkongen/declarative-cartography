@@ -87,18 +87,25 @@ What is the estimated running time for ST_Cellify given 100 m cells, in a scenar
 
 At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The positive side is that ST_Cellify is highly parallelizable (MapReduce).
 
-## Complete solution for hitting set
-
-The following is performed for each 
-Here is the complete query that produces an instance of hitting set. CELLSIZE is computed from *z*:
+## Full example
 
 ```sql
-CREATE TEMPORARY TABLE tmp_cells_partition_z AS 
+CREATE TEMPORARY TABLE tmp_cells AS 
 SELECT 
-	ST_PointHash(ST_Cellify(wkb_geometry, CELLSIZE, 0, 0)) AS cell_id,
-	ogc_fid as record_id
+	ST_PointHash(ST_Cellify(wkb_geometry, 1000, 0, 0)) AS cell_id,
+	ogc_fid AS record_id,
+	random() AS record_rank
 FROM cph_highway
-WHERE partition = PARTITION
+WHERE type = 'residential'
+
+WITH conflicts AS
+(SELECT cell_id
+FROM tmp_cells
+GROUP BY cell_id
+HAVING count(*) > 16)
+SELECT * FROM (SELECT row_number() OVER (PARTITION BY cell_id ORDER BY record_rank DESC) r, * FROM tmp_cells
+WHERE cell_id IN (select * from conflicts)) t
+WHERE t.r > 16
 ```
 
 

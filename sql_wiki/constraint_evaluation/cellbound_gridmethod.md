@@ -98,6 +98,7 @@ Find *id* of records to delete. The example uses the cph_highway dataset, and co
 ```sql
 -- drop temp table if exists...
 DROP TABLE IF EXISTS tmp_cells_residential_z15;
+
 -- create temp table with cell-id for all records at zoom-level 15
 CREATE TEMPORARY TABLE tmp_cells_residential_z15 AS 
 SELECT 
@@ -111,11 +112,11 @@ WHERE type = 'residential';
 WITH conflicts AS
 (
 	SELECT cell_id
-	FROM tmp_cells
+	FROM tmp_cells_residential_z15
 	GROUP BY cell_id
 	HAVING count(*) > 16
 )
-SELECT DISTINCT t.record_id 
+SELECT DISTINCT t.record_id -- DELETE THESE RECORDS
 FROM
 (
 	SELECT 

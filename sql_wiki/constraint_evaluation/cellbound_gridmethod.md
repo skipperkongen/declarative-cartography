@@ -7,79 +7,32 @@ Problem: Given a uniform grid of cells, find all cells intersecting more than *K
 ## Approach
 
 1. For all records: Use [ST_Cellify](../stored_procedures/st_cellify.md) to compute the set of intersected tile cells, using a point to represent each cell (see image below)
-2. Convert points to a unique string using [ST_PointHash()](../stored_procedures/st_pointhash.md), and output a set of *record_id, cell_id* tuples
-3. Collect all tuples where count(cell_id) > K
+2. Convert points to a unique string using [ST_PointHash()](../stored_procedures/st_pointhash.md), and output a *record_id, cell_id* tuple for each cell that the record intersects
+3. Group the tuples by cell_id and find all groups where count(*) > K
 
 ![Cell points](../images/st_cellify.png)
 
-At this stage do one of the following:
+At this stage do one of the following. For each cell_id where count(*) > K:
 
-* Create all K+1-sized sets of records for each cell-id where count(cell_id) > K, and delete one record from each set (solve hitting set)
-* Create larger than K (say K') sets of records for each cell-id where count(cell_id) > K, and delete K' - K records from each set.
+* Create all possible K+1-sized sets of tuples where cell-id=cell-id, and delete one record from each set (solve hitting set)
+* Create one set of records for each cell_id (say a set of K' records, where K' > K), and delete K' - K records from each set.
 
 Using the first approach is more consistent with the general approach, while the second one might perform better.
 
-## Custom methods used
+## Connection to MapReduce
 
-ST_PointHash():
+This way of formulating the problem is very suitable for solving with map-reduce. Computing cell-ids can be done independently for each record. Finding cells with more than K records (and outputting K-sets or records) can be done independently for each cell-id.
 
-```sql
-DROP FUNCTION IF EXISTS ST_Hash(geometry);
-CREATE OR REPLACE FUNCTION ST_PointHash(
-	pt geometry,
-	OUT geohash text)
-RETURNS text AS
-$$
-SELECT ST_GeoHash(
-	ST_Transform(
-		$1, 
-		4326)) AS geohash;
-$$ LANGUAGE sql IMMUTABLE STRICT;
-```
+* **Map**: Map over records and emit a pair *(cell-id, record-id)* for each cell intersected by a given record
+* **Reduce**: Loop over *(cell-id, record-id)* pairs and collect all tuples where the cell-id occurs more than K times in the stream. Output K-sets or records from the collected tuples grouped by *cell-id*.
 
-ST_Cellify():
-
-```sql
-DROP FUNCTION IF EXISTS ST_Cellify(geometry, float8, float8, float8);
-CREATE OR REPLACE FUNCTION ST_Cellify(
-    geom geometry,
-    cell_size float8,
-    x0 float8 DEFAULT 0, 
-	y0 float8 DEFAULT 0,
-    OUT pt geometry)
-RETURNS SETOF geometry AS
-$$
-SELECT * FROM (SELECT 
-  ST_SnapToGrid(
-    ST_SetSrid(
-      ST_Point( 
-        ST_XMin($1) + i*$2, 
-        ST_YMin($1) + j*$2
-      ),
-      ST_Srid($1)
-    ),
-  $2, 
-  $3, 
-  $2, 
-  $2
-) AS pt
-FROM
-    generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
-    generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j) PT
-WHERE 
-	$1 && ST_Envelope(ST_Buffer(PT.pt, $2/2)) 
-	AND ST_Intersects($1, ST_Envelope(ST_Buffer(PT.pt, $2/2)))
-;
-$$ LANGUAGE sql IMMUTABLE STRICT;
-```
-
-## Experiments with running time
+## Experiments with running time (non-parallel version)
 
 Using OpenStreetMap streets in the Copenhagen region (57,812 records). There is a GIST index on wkb_geometry.
 
 ### Computing the cells
 
-What is the time to compute the *cell,record_id* pairs for cells of size *cell_size*?
+The SELECT template for computing *cell-id,record-id* pairs for a given *cell_size*:
 
 ```sql
 SELECT 
@@ -93,6 +46,8 @@ FROM cph_highway;
 -- 7.8 ms per record
 ```
 
+The running times for different cell-sizes are given below:
+
 <table>
 	<tr><th>cell size</th><th>rows retrieved</th><th>total running time</th><th>time per record (58K records total)</th></tr>
 	<tr><td>100 meter</td><td>382611</td>        <td>7-8  minutes</td>      <td>7.8 ms/record</td></tr>
@@ -104,13 +59,13 @@ FROM cph_highway;
     <tr><td>1200 meter</td><td>71119</td>         <td>21 seconds</td>       <td>0.4 ms/record</td></tr>
 </table>
 
-Diagram of running time:
+As can be seen, the running time drops (predictably) as the cell-size increases:
 
 ![Running time](https://raw.github.com/skipperkongen/phd_cvl/master/sql_wiki/images/runningtime_cellify.png?login=skipperkongen&token=aaa44d9bf680b94583f714709bb0ad3b)
 
-### Computing cells with more than K records
+### Finding cells that intersect more than K records
 
-What is the time to compute cells that intersect more than K=16 records, cell-size 100?
+The SELECT template for finding all cells that intersect more than *K* records (substitute placeholders CELLSIZE and K in the statement below):
 
 ```sql
 SELECT 
@@ -118,50 +73,19 @@ SELECT
 	count(c.*) as num_recs 
 FROM
 (SELECT 
-	ST_PointHash(ST_Cellify(wkb_geometry, 100, 0, 0)) AS cell_id
+	ST_PointHash(ST_Cellify(wkb_geometry, CELLSIZE, 0, 0)) AS cell_id
 FROM cph_highway) c
 GROUP BY c.cell_id
-HAVING count(*) > 16;
--- Total query runtime: 455842 ms.
--- 1 row retrieved.
+HAVING count(*) > K;
 ``` 
 
-The running time was the same as the query without *GROUP BY*. This tells me that the running time is dominated by computing *ST_Cellify()* and *ST_PointHash()*. How fast is it to compute just the cells without hashing (omitting the *GROUP BY*)?
+Especially for small cell-sizes, the total running time is dominated by computing *ST_Cellify()*.
 
-```sql
-SELECT 
-	ST_Cellify(wkb_geometry, 100, 0, 0) AS cell_pt
-FROM cph_highway;
--- Total query runtime: 451507 ms.
--- 382611 rows retrieved.
--- 
-```
+## Double cell-size, quadruple K
 
-Conclusion: The running time is dominated by ST_Cellify for small cell sizes (100m).
+I tried doubling the cell-size and quadrupling the K, to see if this was a good approxmation. It isn't:
 
-What is the running time for larger cells (1km)?
-
-```sql
-SELECT 
-	c.cell_id, 
-	count(c.*) as num_recs 
-FROM
-(SELECT 
-	ST_PointHash(ST_Cellify(wkb_geometry, 1000, 0, 0)) AS cell_id
-FROM cph_highway) c
-GROUP BY c.cell_id
-HAVING count(*) > 16;
--- Total query runtime: 21528 ms.
--- 1515 rows retrieved.
-```
-
-For 10 times larger cell-size (1km) the query runs 21 times faster than with small cell-size (100m).
-
-## Trick: Double cell-size, quadruple K
-
-What is the benefit of counting average density for larger cells? Let's try doubling the cell-size and quadrupling the K. This is almost the same density measure (of course very local density is not captured by the bigger cells).
-
-Time for cellsize=200m, K=4:
+Using *cell-size* = *200* *m* and *K* = *4*:
 
 ```sql
 SELECT 
@@ -177,7 +101,7 @@ HAVING count(*) > 4;
 -- 7441 rows retrieved.
 ```
 
-Time for cellsize * 2 = 400m, K*4=16:
+Using *cell-size* = *400* *m* and *K* = *16*:
 
 ```sql
 SELECT 
@@ -195,18 +119,13 @@ HAVING count(*) > 16;
 
 ### Conclusion
 
-While the running time is greatly reduced by using larger cell-sizes and quadrupling K, the query does not provide at all the same answer (7441 rows versus 378, which can not be explained by dividing 7441 by four).
-
-## Connection to MapReduce
-
-* Map: for each record emit all: (key=cell-id, value=record-id) 
-* Reduce: Find cell-id, where count cell-id > K. Create K-sets of records that have given cell-id.
+It does not work for record set = OSM streets, i.e. LineStrings. The first query selects 7441 rows, while the second selects 378 rows. It might work for points though.
 
 ## Back-of-the-envelope: Scalability
 
-How long would it take to compute 100m cells with more than K records for 40 million records? Assuming an equal distribution as OpenStreetMap streets. The cost is dominated by the ST_Cellify() function call.
+What is the estimated running time for ST_Cellify given 100 m cells, in a scenario with 40 million street records?
 
-At 7.8 ms per record, it would take 86 hours. Not so good...
+At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The positive side is that ST_Cellify is highly parallelizable (MapReduce).
 
 
 

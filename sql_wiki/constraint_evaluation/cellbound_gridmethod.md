@@ -26,7 +26,7 @@ This way of formulating the problem is very suitable for solving with map-reduce
 * **Map**: Map over records and emit a pair *(cell-id, record-id)* for each cell intersected by a given record
 * **Reduce**: Loop over *(cell-id, record-id)* pairs and collect all tuples where the cell-id occurs more than K times in the stream. Output K-sets or records from the collected tuples grouped by *cell-id*.
 
-## Experiments with running time (non-parallel version)
+## Experiments with running time (not mapreduce)
 
 Using OpenStreetMap streets in the Copenhagen region (57,812 records). There is a GIST index on wkb_geometry.
 
@@ -81,9 +81,30 @@ HAVING count(*) > K;
 
 Especially for small cell-sizes, the total running time is dominated by computing *ST_Cellify()*.
 
-## Double cell-size, quadruple K
+### Back-of-the-envelope: Scalability
 
-I tried doubling the cell-size and quadrupling the K, to see if this was a good approxmation. It isn't:
+What is the estimated running time for ST_Cellify given 100 m cells, in a scenario with 40 million street records?
+
+At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The positive side is that ST_Cellify is highly parallelizable (MapReduce).
+
+## Complete solution for hitting set
+
+The following is performed for each 
+Here is the complete query that produces an instance of hitting set. CELLSIZE is computed from *z*:
+
+```sql
+CREATE TEMPORARY TABLE tmp_cells_partition_z AS 
+SELECT 
+	ST_PointHash(ST_Cellify(wkb_geometry, CELLSIZE, 0, 0)) AS cell_id,
+	ogc_fid as record_id
+FROM cph_highway
+WHERE partition = PARTITION
+```
+
+
+## An experiment: Double *cell-size* and quadruple *K*
+
+As an experiment, I tried doubling the cell-size and quadrupling the K, to see if this was a good approxmation for result achieved using half the cell-size. It isn't (might work for points):
 
 Using *cell-size* = *200* *m* and *K* = *4*:
 
@@ -119,13 +140,7 @@ HAVING count(*) > 16;
 
 ### Conclusion
 
-It does not work for record set = OSM streets, i.e. LineStrings. The first query selects 7441 rows, while the second selects 378 rows. It might work for points though.
-
-## Back-of-the-envelope: Scalability
-
-What is the estimated running time for ST_Cellify given 100 m cells, in a scenario with 40 million street records?
-
-At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The positive side is that ST_Cellify is highly parallelizable (MapReduce).
+It does not work for record set = OSM streets, i.e. LineStrings. The first query selects 7441 rows, while the second selects 378 rows. 7441/4 = 1,860.25. I hoped it would be near to 378. It might work for points though.
 
 
 

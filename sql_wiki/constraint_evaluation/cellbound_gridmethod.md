@@ -89,13 +89,17 @@ At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The po
 
 ## Full example
 
+
+
 Find *id* of records to delete. The example uses the cph_highway dataset, and computes the result for the *type='residential'* partition at *zoom-level=15* (where cell-size is 1222.9924523925781 meters, computed using [meter_per_pixel_3857](../../python_wiki/meter_per_pixel.md)) and for cell-bound *K=16*.
+
+### Computing records directly without hitting set step
 
 ```sql
 -- drop temp table if exists...
-DROP TABLE IF EXISTS tmp_cells;
+DROP TABLE IF EXISTS tmp_cells_residential_z15;
 -- create temp table with cell-id for all records at zoom-level 15
-CREATE TEMPORARY TABLE tmp_cells AS 
+CREATE TEMPORARY TABLE tmp_cells_residential_z15 AS 
 SELECT 
 	ST_PointHash(ST_Cellify(wkb_geometry, 1222.9924523925781, 0, 0)) AS cell_id,
 	ogc_fid AS record_id,
@@ -117,7 +121,7 @@ FROM
 	SELECT 
 		row_number() OVER (PARTITION BY cell_id ORDER BY record_rank DESC) r, 
 		* 
-	FROM tmp_cells
+	FROM tmp_cells_residential_z15
 	WHERE 
 		cell_id IN (select * from conflicts)
 ) t
@@ -126,7 +130,13 @@ WHERE t.r > 16;
 -- 6737 rows retrieved.
 ```
 
-That takes 8 seconds. It skips the hitting set step, and computes the records to delete in another way. Note that the DISTINCT is not really necessary and omitting it may save valuable time.
+That takes 8 seconds. It skips the hitting set step, and computes the records to delete directly. Note that the DISTINCT is not really necessary and omitting it may save a little bit of time (probably very little).
+
+Of course a generated query could not know that there is a partition called residential, but somehow that information should be entered.
+
+### Computing via hitting sets
+
+TODO
 
 ## An experiment: Double *cell-size* and quadruple *K*
 

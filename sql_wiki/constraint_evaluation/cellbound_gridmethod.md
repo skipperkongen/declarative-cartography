@@ -216,11 +216,18 @@ HAVING count(*) > 16;
 
 While the running time is greatly reduced by using larger cell-sizes and quadrupling K, the query does not provide at all the same answer (7441 rows versus 378, which can not be explained by dividing 7441 by four).
 
+## Connection to MapReduce
+
+* Map: for each record emit all: (key=cell-id, value=record-id) 
+* Reduce: Find cell-id, where count cell-id > K. Create K-sets of records that have given cell-id.
+
 ## Back-of-the-envelope: Scalability
 
 How long would it take to compute 100m cells with more than K records for 40 million records? Assuming an equal distribution as OpenStreetMap streets. The cost is dominated by the ST_Cellify() function call.
 
 At 7.8 ms per record, it would take 86 hours. Not so good...
+
+
 
 
 

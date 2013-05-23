@@ -6,37 +6,18 @@ Problem: Given a uniform grid of cells, find all cells intersecting more than *K
 
 ## Approach
 
-1. Use [ST_Cellify]() to compute grid cells for a geometry
-2. Convert points to a unique hash (see below), selecting *hash, feature_id*
-3. Find hash codes with > K occurences. 
-4. Select all K+1-sized sets of records for each cell hash.
-5. Solve hitting set
+1. For all records: Use [ST_Cellify](../stored_procedures/st_cellify.md) to compute the set of intersected tile cells, using a point to represent each cell (see image below)
+2. Convert points to a unique string using [ST_PointHash()](../stored_procedures/st_pointhash.md), and output a set of *record_id, cell_id* tuples
+3. Collect all tuples where count(cell_id) > K
 
-### Hashing functions
+![Cell points](../images/st_cellify.png)
 
-[ST_GeoHash](http://postgis.refractions.net/documentation/manual-svn/ST_GeoHash.html) computes the GeoHash of point, but only works for lat/long according to the GeoHash specification. What will happen when hashing coordinates in epsg:3857? A solution (if the GeoHashes collide when using 3857) is to use [ST_Transform](http://www.postgis.org/docs/ST_Transform.html) to convert to lat/long first and then geohash the point.
+At this stage do one of the following:
 
-```sql
-SELECT ST_GeoHash(ST_SetSRID(ST_MakePoint(-126,48),4326));
--- OR
-SELECT ST_GeoHash(ST_Transform(ST_SetSRID(ST_MakePoint(-126,48),3857), 4326));
--- Total query runtime: 20 ms.
-```
+* Create all K+1-sized sets of records for each cell-id where count(cell_id) > K, and delete one record from each set (solve hitting set)
+* Create larger than K (say K') sets of records for each cell-id where count(cell_id) > K, and delete K' - K records from each set.
 
-A simpler idea is to use [ST_AsText()](http://www.postgis.org/docs/ST_AsText.html) as the hash, but this takes up more space, which can be compressed to 64 bits using md5:
-
-
-```sql
-SELECT ST_AsText(ST_SetSRID(ST_MakePoint(-17654959.5761613, 8241354.5309193),3857));
--- Total query runtime: 21 ms.
--- OR
-SELECT md5(ST_AsText(ST_SetSRID(ST_MakePoint(-17654959.5761613, 8241354.5309193),3857)));
--- Total query runtime: 22 ms.
-```
-
-Conlusion:
-
-* I think the best approach is to use ST_GeoHash (with transform). It is faster, semantically meaningful and guaranteed to avoid collisions of cell hashes. I have created a function [ST_PointHash()](https://github.com/skipperkongen/phd_cvl/blob/master/sql_wiki/st_pointhash.md) that takes care of the transformation before the GeoHash is computed.
+Using the first approach is more consistent with the general approach, while the second one might perform better.
 
 ## Custom methods used
 

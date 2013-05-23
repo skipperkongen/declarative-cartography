@@ -89,15 +89,19 @@ At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The po
 
 ## Full example
 
+Find *id* of records to delete. The example uses the cph_highway dataset, and computes the result for the *type='residential'* partition at *zoom-level=15* (where cell-size is 1222.9924523925781 meters) and for cell-bound *K=16*.
+
 ```sql
--- compute cell-id for all records
+-- drop temp table if exists...
+DROP TABLE IF EXISTS tmp_cells;
+-- create temp table with cell-id for all records at zoom-level 15
 CREATE TEMPORARY TABLE tmp_cells AS 
 SELECT 
-	ST_PointHash(ST_Cellify(wkb_geometry, 1000, 0, 0)) AS cell_id,
+	ST_PointHash(ST_Cellify(wkb_geometry, 1222.9924523925781, 0, 0)) AS cell_id,
 	ogc_fid AS record_id,
 	random() AS record_rank
 FROM cph_highway
-WHERE type = 'residential'
+WHERE type = 'residential';
 
 -- Find records to delete
 WITH conflicts AS
@@ -107,7 +111,7 @@ WITH conflicts AS
 	GROUP BY cell_id
 	HAVING count(*) > 16
 )
-SELECT * 
+SELECT DISTINCT t.record_id 
 FROM
 (
 	SELECT 
@@ -117,10 +121,12 @@ FROM
 	WHERE 
 		cell_id IN (select * from conflicts)
 ) t
-WHERE t.r > 16
+WHERE t.r > 16;
+-- Total query runtime: 8162 ms.
+-- 6737 rows retrieved.
 ```
 
-This skips the hitting set step entirely.
+That takes 8 seconds. It skips the hitting set step, and computes the records to delete in another way. Note that the DISTINCT is not really necessary and omitting it may save valuable time.
 
 ## An experiment: Double *cell-size* and quadruple *K*
 

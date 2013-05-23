@@ -14,10 +14,10 @@ PARTITION BY 		{expression}
 SUBJECT TO 
 	PROXIMITY 		{d} 
 AND CELLBOUND 		{K} 
-AND ALLORNOTHING 	{true/false}
+AND ALLORNOTHING 
 
 TRANSFORM BY
-	SIMPLIFY 		{true/false}
+	SIMPLIFY 
 ```
 
 About clauses
@@ -38,3 +38,13 @@ About clauses
     * {true/false} are boolean options
 * TRANSFORM BY:
     * Only tow subclauses possible: SIMPLIFY true or SIMPLIFY false
+
+# About constraints
+
+In this project we consider three constraints: Proximity, Cell-Bound and AllOrNothing. The constraint set is extensible. All it takes to implement a new constraint is a select statements that creates sets of K records (for some K = 1, 2, 3, 4...) that represent a "conflict" in the map. A conflict can be resolved by deleting one record from each conflict set.
+
+The three constraints considered:
+
+* AllOrNothing: K=1
+* Proximity: K=2
+* CellBound: K=x, x>1

@@ -89,7 +89,7 @@ At an estimated 7.8 ms per record, it would take 86 hours. Not so good... The po
 
 ## Full example
 
-Find *id* of records to delete. The example uses the cph_highway dataset, and computes the result for the *type='residential'* partition at *zoom-level=15* (where cell-size is 1222.9924523925781 meters) and for cell-bound *K=16*.
+Find *id* of records to delete. The example uses the cph_highway dataset, and computes the result for the *type='residential'* partition at *zoom-level=15* (where cell-size is 1222.9924523925781 meters, computed using [meter_per_pixel_3857](../../python_wiki/meter_per_pixel.md)) and for cell-bound *K=16*.
 
 ```sql
 -- drop temp table if exists...

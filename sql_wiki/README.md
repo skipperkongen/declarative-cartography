@@ -37,7 +37,7 @@ TRANSFORM BY
 And a *concrete* CVL query using the *cph_highway* dataset ([shapefile](http://skipperkongen.dk/geodata/cph_highway.zip)):
 
 ```cvl
-GENERALIZE 			cph_highway -> cph_highway_cvlized 
+GENERALIZE 			cph_highway -> cph_highway_output 
 
 WITH ID 			ogc_fid
 WITH GEOMETRY		wkb_geometry
@@ -47,7 +47,7 @@ AT  				15 ZOOM LEVELS
 
 RANK BY 			st_length(wkb_geometry)
 
-PARTITION BY 		type -- column in cph_highway
+PARTITION BY 		type -- this is a column in cph_highway
 
 SUBJECT TO 
 	 CELLBOUND 		16
@@ -60,16 +60,18 @@ TRANSFORM BY
 Start by creating the output table:
 
 ```sql
-CREATE TABLE cph_highway_cvlized AS
-SELECT *, st_length(wkb_geometry) AS _rank, type AS _partition, 15 as tile_level;
+CREATE TABLE cph_highway_output AS
+SELECT *, st_length(wkb_geometry) AS _rank, type AS _partition, 15 as tile_level
+FROM cph_highway;
+-- 396 ms execution time.
 ```
 
-Next, copy level 15 to 14:
+Next, copy level 15 to 14 (level 15 will contain all records and not be thinned):
 
 ```sql
-INSERT INTO cph_highway_cvlized AS
+INSERT INTO cph_highway_output AS
 SELECT ogc_fid, wkb_geometry, type, name, oneway, lanes, _rank, _partition, 14 as tile_level
-FROM cph_highway_cvlized
+FROM cph_highway_output
 WHERE tile_level = 15;
 ```
 
@@ -81,17 +83,18 @@ Make level 14 feasible and optimal:
 
 Repeat all the way up to level 0. 
 
-At this point simplify all the records in *cph_highway_cvlized*:
+At this point simplify all the records in *cph_highway_output*:
 
 ```sql
-UPDATE cph_highway_cvlized SET wkb_geometry = ST_Simplify(wkb_geometry, ST_ResZ(tile_level)/2)
+UPDATE cph_highway_output SET wkb_geometry = ST_Simplify(wkb_geometry, ST_ResZ(tile_level, 256)/2)
 -- Should really use another method of simplifying. This is just an example.
+-- 5090 ms execution time
 ```
 
 Finally drop the *_rank* and *_partition* columns;
 
 ```sql
-ALTER TABLE cph_highway_cvlized DROP COLUMN IF EXISTS _rank, DROP COLUMN IF EXISTS _partition;
+ALTER TABLE cph_highway_output DROP COLUMN IF EXISTS _rank, DROP COLUMN IF EXISTS _partition;
 ```
 
 

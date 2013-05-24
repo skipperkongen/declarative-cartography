@@ -83,7 +83,7 @@ Make level 14 feasible and optimal:
 
 Repeat all the way up to level 0. 
 
-At this point simplify all the records in *cph_highway_output*:
+At this point simplify all the records in *cph_highway_output* (could do this earlier, trading code-simplicity for I/O efficiency):
 
 ```sql
 UPDATE cph_highway_output SET wkb_geometry = ST_Simplify(wkb_geometry, ST_ResZ(tile_level, 256)/2)

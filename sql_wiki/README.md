@@ -17,6 +17,7 @@ GENERALIZE 			{input} -> {output}
 
 WITH ID 			{column name}
 WITH GEOMETRY		{column name}
+WITH OTHER			{x, y, z, ...}
 
 AT  				{Z} ZOOM LEVELS
 

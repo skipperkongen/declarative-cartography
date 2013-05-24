@@ -5,6 +5,10 @@ The structure of a CVL query, utilizing all possible clauses
 ```cvl
 GENERALIZE 			{input} -> {output} 
 
+WITH ID 			{column name}
+WITH GEOMETRY		{column name}
+WITH OTHER			{column name, column name, column name, ...}
+
 AT  				{Z} ZOOM LEVELS
 
 RANK BY 			{float-valued expression}
@@ -17,7 +21,7 @@ THEN CELLBOUND 		{K}
 THEN ALLORNOTHING 
 
 TRANSFORM BY
-	SIMPLIFY 
+	SIMPLIFY
 ```
 
 About clauses

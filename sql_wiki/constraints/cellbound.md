@@ -25,33 +25,21 @@ CREATE TEMPORARY TABLE _cellbound_cellids AS
 		_tile_level = CURRENT_Z;
 );
 
--- Find overfull cells
+-- Find overfull cells by partition
 CREATE TEMPORARY TABLE _cellbound_overfull AS
 (
-    SELECT cell_id || _partition AS conflict
+    SELECT cell_id || _partition AS overfull_cell
     FROM _cellbound_cellids
     GROUP BY cell_id, _partition
     HAVING count(*) > K
 );
 
-
-
-
-INSERT INTO _records_to_delete
-SELECT DISTINCT t.ogc_fid -- DELETE THESE RECORDS
-FROM
-(
-    SELECT 
-        row_number() OVER (PARTITION BY cell_id,_partition ORDER BY _rank DESC) r, 
-        ogc_fid 
-    FROM _cellbound_tmp
-    WHERE 
-        cell_id || _partition IN (select conflict from conflicts)
-) t
-WHERE t.r > K;
+-- Now the hard part: For each overfull cell, create all conflicts...
+-- TODO!
 
 -- Drop table
-DROP TABLE _cellbound_tmp;
+DROP TABLE _cellbound_cellids;
+DROP TABLE _cellbound_overfull;
 ```
 
 

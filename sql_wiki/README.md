@@ -95,35 +95,41 @@ WHERE tile_level = 15;
 Create temporary *_conflicts* table for collecting conflicts
 
 ```sql
-CREATE TEMPORARY TABLE _conflicts(conflict_id integer, ogc_fid integer);
+CREATE TEMPORARY TABLE _conflicts(conflict_id integer, record_id integer, _rank float);
 ```
 
-Execute constraint code and populate *_conflicts* table:
+Execute constraint code which add rows to *_conflicts* table:
 
 ```sql
--- See various queries in constraints
+-- See various queries in constraints directory
 ```
 
+Use [hitting set heuristic](algorithms/hitting_set.md) to find records for deletion:
 
-Drop *_conflicts* table (will be created again for next level):
+```sql
+DELETE FROM cph_highway_output 
+WHERE 
+	tile_level = CURRENT_Z
+AND ogc_fid IN (
+	SELECT h.record_id AS ogc_fid 
+	FROM (
+		SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY _rank) AS r, c.record_id
+    	FROM _conflicts c
+	) h
+WHERE h.r = 1)
+```
+
+Drop *_conflicts* table (will be created again for next constraint):
 
 ```sql
 DROP TABLE _conflicts;
 ```
 
-
-INSERT INTO _records_to_delete
-SELECT * FROM EvalConstraint(constraint, params) -- just for illustration
--- DO:
-DELETE FROM cph_high_output 
-WHERE ogc_fid in (SELECT * FROM _records_to_delete) AND tile_level = 14
--- END: for each
-DROP TABLE _records_to_delete;
-```
-
 Repeat all the way up to level 0. 
 
-At this point simplify all the records in *cph_highway_output* (could do this earlier, trading code-simplicity for I/O efficiency):
+### Finalize output table
+
+At this point simplify all the records in *cph_highway_output* (could do this at each level but with some complication):
 
 ```sql
 UPDATE cph_highway_output SET wkb_geometry = ST_Simplify(wkb_geometry, ST_ResZ(tile_level, 256)/2)

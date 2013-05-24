@@ -66,29 +66,50 @@ TRANSFORM BY
 	SIMPLIFY 
 ```
 
-Start by creating the output table:
+### Setting up output table
+
+Start by creating the output table. Copy records to Z+1 and do not enforce constraints for this level:
 
 ```sql
+-- Create main table
 CREATE TABLE cph_highway_output AS
 SELECT *, st_length(wkb_geometry) AS _rank, type AS _partition, 15 as tile_level
 FROM cph_highway;
 -- 396 ms execution time.
 ```
 
+### Copy records between levels
+
 Next, copy level 15 to 14 (level 15 will contain all records and not be thinned):
 
 ```sql
+-- Example of level-copy operation 15 -> 14
 INSERT INTO cph_highway_output
 SELECT ogc_fid, wkb_geometry, type, name, oneway, lanes, _rank, _partition, 14 as tile_level
 FROM cph_highway_output
 WHERE tile_level = 15;
 ```
 
-Make level 14 feasible and optimal (treat each _partition separately) :
+### For each constraint
+
+Create temporary *_conflicts* table for collecting conflicts
 
 ```sql
--- BEGIN: For each (constraint)
--- DO:
+CREATE TEMPORARY TABLE _conflicts(conflict_id integer, ogc_fid integer);
+```
+
+Execute constraint code and populate *_conflicts* table:
+
+```sql
+-- See various queries in constraints
+```
+
+
+Drop *_conflicts* table (will be created again for next level):
+
+```sql
+DROP TABLE _conflicts;
+```
 
 
 INSERT INTO _records_to_delete

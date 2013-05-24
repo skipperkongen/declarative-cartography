@@ -97,6 +97,11 @@ Finally drop the *_rank* and *_partition* columns;
 ALTER TABLE cph_highway_output DROP COLUMN IF EXISTS _rank, DROP COLUMN IF EXISTS _partition;
 ```
 
+Create a vector tile:
+
+```sql
+TODO
+```
 
 
 

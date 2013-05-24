@@ -69,7 +69,7 @@ FROM cph_highway;
 Next, copy level 15 to 14 (level 15 will contain all records and not be thinned):
 
 ```sql
-INSERT INTO cph_highway_output AS
+INSERT INTO cph_highway_output
 SELECT ogc_fid, wkb_geometry, type, name, oneway, lanes, _rank, _partition, 14 as tile_level
 FROM cph_highway_output
 WHERE tile_level = 15;
@@ -78,9 +78,10 @@ WHERE tile_level = 15;
 Make level 14 feasible and optimal (treat each _partition separately) :
 
 ```sql
-CREATE TEMPORARY TABLE _records_to_delete (ogc_fid INTEGER);
 -- BEGIN: For each (constraint)
 -- DO:
+
+
 INSERT INTO _records_to_delete
 SELECT * FROM EvalConstraint(constraint, params) -- just for illustration
 -- DO:

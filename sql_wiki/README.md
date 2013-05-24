@@ -75,10 +75,19 @@ FROM cph_highway_output
 WHERE tile_level = 15;
 ```
 
-Make level 14 feasible and optimal:
+Make level 14 feasible and optimal (treat each _partition separately) :
 
 ```sql
--- MAGIC
+CREATE TEMPORARY TABLE _records_to_delete (ogc_fid INTEGER);
+-- BEGIN: For each (constraint)
+-- DO:
+INSERT INTO _records_to_delete
+SELECT * FROM EvalConstraint(constraint, params) -- just for illustration
+-- DO:
+DELETE FROM cph_high_output 
+WHERE ogc_fid in (SELECT * FROM _records_to_delete) AND tile_level = 14
+-- END: for each
+DROP TABLE _records_to_delete;
 ```
 
 Repeat all the way up to level 0. 

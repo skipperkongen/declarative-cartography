@@ -95,26 +95,42 @@ Find *id* of records to delete. The example uses the cph_highway dataset, and co
 
 ### Computing records directly without hitting set step
 
+In this example In statement below, do the following replacements (to make it work with 'cph_highway'):
+
+* *TABLE_OUT* with *cph_highway_cvlized*
+* *Z* with *15*
+* *ID* with *ogc_fid*
+* *THE_GEOMETRY* with *wkb_geometry*
+* *PARTITION* with *residential*
+* *TEMP_SERIAL* with *1*
+* *CELLSIZE* with *1222.9924523925781* (zoomlevel 15)
+* *X0* with *-20037508.34*
+* *Y0* with *-20037508.34*
+* *K* with *16*.
+
+temp tables name should perhaps just be 'cvl_tmp_' postfixed with *1, 2, 3, ...*
+
 ```sql
 -- drop temp table if exists...
-DROP TABLE IF EXISTS tmp_cells_residential_z15;
+DROP TABLE IF EXISTS cvl_tmp_{TEMP_SERIAL};
 
 -- create temp table with cell-id for all records at zoom-level 15
-CREATE TEMPORARY TABLE tmp_cells_residential_z15 AS 
+CREATE TEMPORARY TABLE cvl_tmp_{TEMP_SERIAL} AS 
 SELECT 
-	ST_PointHash(ST_Cellify(wkb_geometry, 1222.9924523925781, 0, 0)) AS cell_id,
-	ogc_fid AS record_id,
-	random() AS record_rank
+	ST_PointHash(ST_Cellify({THE_GEOMETRY}, ST_CellSizeZ( {Z} ), {X0}, {Y0)})) AS cell_id,
+	{ID} AS record_id,
+	rank AS record_rank
 FROM cph_highway
-WHERE type = 'residential';
+WHERE partition={PARTITION}
+AND tile_level={Z};
 
 -- Find records to delete
 WITH conflicts AS
 (
 	SELECT cell_id
-	FROM tmp_cells_residential_z15
+	FROM cvl_tmp_{TEMP_SERIAL}
 	GROUP BY cell_id
-	HAVING count(*) > 16
+	HAVING count(*) > {K}
 )
 SELECT DISTINCT t.record_id -- DELETE THESE RECORDS
 FROM
@@ -122,11 +138,11 @@ FROM
 	SELECT 
 		row_number() OVER (PARTITION BY cell_id ORDER BY record_rank DESC) r, 
 		* 
-	FROM tmp_cells_residential_z15
+	FROM cvl_tmp_{TEMP_SERIAL}
 	WHERE 
 		cell_id IN (select * from conflicts)
 ) t
-WHERE t.r > 16;
+WHERE t.r > {K};
 -- Total query runtime: 8162 ms.
 -- 6737 rows retrieved.
 ```

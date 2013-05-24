@@ -2,53 +2,41 @@
 
 Problem: Given a uniform grid of cells, find all cells intersecting more than *K* records and delete records to make each cell feasible
 
+As for all constraints, the aim is to populate the temporary *_conflicts* table.
+
 ## SQL
 
-Continuing with the [example from README](../README.md) (modified to use only cellbound constraint):
-
-```cvl
-GENERALIZE 			cph_highway -> cph_highway_output 
-
-WITH ID 			ogc_fid
-WITH GEOMETRY		wkb_geometry
-WITH OTHER			type, name, lanes, oneway
-
-AT  				15 ZOOM LEVELS
-
-RANK BY 			st_length(wkb_geometry)
-
-PARTITION BY 		type -- this is a column in cph_highway
-
-SUBJECT TO 
-	 CELLBOUND 		16 -- max records per cell
-```
+Continuing with the [cph_highway](../README.md) example.
 
 With input parameters CURRENT_Z and K: Update temporary table *_records_to_delete*:
 
 ```sql
--- Make sure _records_to_delete exists
-CREATE TEMPORARY TABLE IF NOT EXISTS _records_to_delete(ogc_fid int);
-
 -- create temp table with cell-id for all records at zoom-level Z
-CREATE TEMPORARY TABLE _cellbound_tmp AS 
-SELECT
-	ogc_fid,
-    ST_PointHash(ST_Cellify(wkb_geometry, ST_CellSizeZ( :CURRENT_Z ), 0, 0 )) AS cell_id,
-	_partition,
-	_rank
-FROM 
-	cph_highway_output
-WHERE 
-	tile_level = :CURRENT_Z;
+CREATE TEMPORARY TABLE _cellbound_cellids AS 
+(
+	SELECT
+		ogc_fid AS record_id,
+    	ST_PointHash(ST_Cellify(wkb_geometry, ST_CellSizeZ( CURRENT_Z ), 0, 0 )) AS cell_id,
+		_partition,
+		_rank
+	FROM 
+		cph_highway_output
+	WHERE 
+		tile_level = CURRENT_Z;
+)
 
--- Find records to delete
-WITH conflicts AS
+-- Find overfull cells
+CREATE TEMPORARY TABLE _cellbound_overfull AS
 (
     SELECT cell_id || _partition AS conflict
-    FROM _cellbound_tmp
+    FROM _cellids
     GROUP BY cell_id, _partition
-    HAVING count(*) > :K
+    HAVING count(*) > K
 )
+
+
+
+
 INSERT INTO _records_to_delete
 SELECT DISTINCT t.ogc_fid -- DELETE THESE RECORDS
 FROM
@@ -60,7 +48,7 @@ FROM
     WHERE 
         cell_id || _partition IN (select conflict from conflicts)
 ) t
-WHERE t.r > :K;
+WHERE t.r > K;
 
 -- Drop table
 DROP TABLE _cellbound_tmp;

@@ -22,17 +22,17 @@ CREATE TEMPORARY TABLE _cellbound_cellids AS
 	FROM 
 		cph_highway_output
 	WHERE 
-		tile_level = CURRENT_Z;
-)
+		_tile_level = CURRENT_Z;
+);
 
 -- Find overfull cells
 CREATE TEMPORARY TABLE _cellbound_overfull AS
 (
     SELECT cell_id || _partition AS conflict
-    FROM _cellids
+    FROM _cellbound_cellids
     GROUP BY cell_id, _partition
     HAVING count(*) > K
-)
+);
 
 
 

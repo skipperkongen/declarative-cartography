@@ -8,6 +8,15 @@ SQL includes:
 * [Algorithms for general problems](algorithms) and specification of input/output
 * [SQL statements for evaluating cartographic constraints](constraint_evaluation). Output is an instance of [hitting set](algorithms/hitting_set.md).
 
+
+## IMPORTANT!!
+
+This is for creating hitting_set instances!!
+
+```sql
+SELECT 1, unnest(array['a', 'b', 'c'])
+```
+
 ## Full example
 
 Given at CVL query:

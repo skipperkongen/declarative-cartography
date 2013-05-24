@@ -27,7 +27,7 @@ TRANSFORM BY
 	SIMPLIFY
 ```
 
-The constraint is evaluated over a table cph_highway_output
+Update _records_to_delete (temporary table):
 
 ```sql
 -- Make sure _records_to_delete exists

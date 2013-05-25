@@ -4,6 +4,10 @@ Problem: Given a uniform grid of cells, find all cells intersecting more than *K
 
 As for all constraints, the aim is to populate the temporary *_conflicts* table.
 
+## Important
+
+The way this constraint is formulated, a special edition of hitting set must be solved. For each subset (conflict_id) a given number of elements must be hit, i.e. not just one as in hitting set.
+
 ## SQL
 
 Continuing with the [cph_highway](../README.md) example.

@@ -10,36 +10,40 @@ Continuing with the [cph_highway](../README.md) example.
 
 With input parameters CURRENT_Z and K: Update temporary table *_records_to_delete*:
 
+Create a temporary table mapping records to cells (postfixed by partition) that they intersect:
+
 ```sql
 -- create temp table with cell-id for all records at zoom-level Z
-CREATE TEMPORARY TABLE _cellbound_cellids AS 
+CREATE TEMPORARY TABLE _cellbound_1 AS 
 (
 	SELECT
+		ST_PointHash(ST_Cellify(wkb_geometry, ST_CellSizeZ( 15 ), 0, 0 )) || _partition AS cell_id,
 		ogc_fid AS record_id,
-    	ST_PointHash(ST_Cellify(wkb_geometry, ST_CellSizeZ( CURRENT_Z ), 0, 0 )) AS cell_id,
-		_partition,
 		_rank
 	FROM 
 		cph_highway_output
 	WHERE 
-		_tile_level = CURRENT_Z;
+		_tile_level = CURRENT_Z -- e.g. 15
 );
+```
 
--- Find overfull cells by partition
-CREATE TEMPORARY TABLE _cellbound_overfull AS
+Find all conflict sets (but with more than K elements) and compute how many records must be deleted (column *min_hits*):
+
+```sql
+SELECT c.cell_id as conflict_id, c.record_id, c._rank, f.min_hits
+FROM _cellbound_1 c JOIN
 (
-    SELECT cell_id || _partition AS overfull_cell
-    FROM _cellbound_cellids
-    GROUP BY cell_id, _partition
-    HAVING count(*) > K
-);
-
--- Now the hard part: For each overfull cell, create all conflicts...
--- TODO!
+	-- Find all cells with more than K records
+	SELECT cell_id, count(*) - K AS min_hits
+	FROM _cellbound_1
+	GROUP BY cell_id
+	HAVING count(*) > K
+) f 
+ON c.cell_id = f.cell_id;
+```
 
 -- Drop table
-DROP TABLE _cellbound_cellids;
-DROP TABLE _cellbound_overfull;
+DROP TABLE _cellbound_1;
 ```
 
 

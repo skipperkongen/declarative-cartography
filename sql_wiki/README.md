@@ -6,7 +6,7 @@ SQL includes:
 
 * [Stored procedures](stored_procedures) for repeated tasks in CVL
 * [Algorithms for general problems](algorithms) and specification of input/output
-* [SQL statements for evaluating cartographic constraints](constraint_evaluation). Output is an instance of [hitting set](algorithms/hitting_set.md).
+* [SQL statements for evaluating cartographic constraints](constraints). Output is an instance of [hitting set](algorithms/hitting_set.md).
 
 
 ## IMPORTANT!!
@@ -107,7 +107,8 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id integer, record_id integer, _rank 
 Execute constraint code which add rows to *_conflicts* table:
 
 ```sql
--- See various queries in constraints directory
+INSERT INTO _conflicts
+SELECT -- ... see various queries in constraints directory
 ```
 
 Use [hitting set heuristic](algorithms/hitting_set.md) to find records for deletion:

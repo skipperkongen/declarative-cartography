@@ -68,25 +68,32 @@ TRANSFORM BY
 
 ### Setting up output table
 
-Start by creating the output table. Copy records to Z+1 and do not enforce constraints for this level:
+Start by creating the output table. Copy records to Z+1 and do not enforce constraints for this level.
+
+Example output table:
 
 ```sql
 -- Create main table
 CREATE TABLE cph_highway_output AS
-SELECT *, st_length(wkb_geometry) AS _rank, type AS _partition, 15 as _tile_level
-FROM cph_highway;
+SELECT 
+	*, 
+	st_length(wkb_geometry) AS _rank, 
+	type AS _partition, 
+	15 as _tile_level
+FROM 
+	cph_highway;
 -- 396 ms execution time.
 ```
 
-Create spatial index on table:
+Remember to create spatial index on table:
 
 ```sql
 CREATE INDEX ON cph_highway_output USING GIST(wkb_geometry);
 ```
 
-### Copy records between levels
+### Copy-down
 
-Next, copy level 15 to 14 (level 15 will contain all records and not be thinned):
+This is how to copy an entire level of records to the next lower scale level, e.g. from level 15 to 14:
 
 ```sql
 -- Example of level-copy operation 15 -> 14
@@ -96,22 +103,27 @@ FROM cph_highway_output
 WHERE _tile_level = 15;
 ```
 
-### For each constraint
+### Evaluate constraints
 
-Create temporary *_conflicts* table for collecting conflicts
+Result of evaluating constraints go into a temporary *_conflicts* table. The table acts as an instance of the N Hitting Set Problem.
+
+Before evaluating each constraint, create this table
 
 ```sql
-CREATE TEMPORARY TABLE _conflicts(conflict_id integer, record_id integer, _rank float);
+CREATE TEMPORARY TABLE _conflicts(conflict_id integer, record_id integer, _rank float, min_hits integer);
 ```
 
-Execute constraint code which add rows to *_conflicts* table:
+Executing constraint code should add rows to *_conflicts* table representing the conflicts for the constraint:
 
 ```sql
 INSERT INTO _conflicts
-SELECT -- ... see various queries in constraints directory
+SELECT c.* FROM ('CONSTRAINT-SELECT') c
+-- See constraints folder for select statements for each constraint
 ```
 
-Use [hitting set heuristic](algorithms/hitting_set.md) to find records for deletion:
+Use some algorithm for [N Hitting Set](algorithms/hitting_set.md) to find all records that should be deleted:
+
+TODO: The following algorithms should be modified to delete *min_hits* records from each conflict.
 
 ```sql
 DELETE FROM cph_highway_output 
@@ -126,13 +138,13 @@ AND ogc_fid IN (
 WHERE h.r = 1)
 ```
 
-Drop *_conflicts* table (will be created again for next constraint):
+After having deleted records for a given constraint, drop the *_conflicts* table. It will be created again before evaluating the next constraint:
 
 ```sql
 DROP TABLE _conflicts;
 ```
 
-Repeat all the way up to level 0. 
+Repeat these two steps (copy-down and evaluate constraints) all the way to level 0. 
 
 ### Finalize output table
 
@@ -150,11 +162,9 @@ Finally drop the *_rank* and *_partition* columns;
 ALTER TABLE cph_highway_output DROP COLUMN IF EXISTS _rank, DROP COLUMN IF EXISTS _partition;
 ```
 
-Create a vector tile:
+## Creating vector tiles from the Multi-scale database
 
-```sql
 TODO
-```
 
 
 

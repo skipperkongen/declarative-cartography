@@ -12,7 +12,7 @@ The way this constraint is formulated, a special edition of hitting set must be 
 
 Continuing with the [cph_highway](../README.md) example.
 
-Create a temporary table mapping records to cells (postfixed by partition) that they intersect:
+Set up:
 
 ```sql
 -- create temp table with cell-id for all records at zoom-level Z
@@ -29,7 +29,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 );
 ```
 
-Find all conflict sets:
+Find conflict sets:
 
 ```sql
 SELECT c.cell_id as conflict_id, c.record_id, c._rank, f.min_hits

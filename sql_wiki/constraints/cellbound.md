@@ -21,7 +21,7 @@ Parameters used:
 
 ### Set up
 
-Using *CURRENT_Z*, *ID* and *GEOMETRY*
+Using *CURRENT_Z*, *ID* and *GEOMETRY*:
 
 ```sql
 -- create temp table with cell-id for all records at zoom-level :CURRENT_Z

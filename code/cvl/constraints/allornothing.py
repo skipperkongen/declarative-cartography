@@ -4,32 +4,53 @@ SET_UP = \
 FIND_CONFLICTS = \
 """
 SELECT 
-	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id, 
-	unnest(array[l.{id}, r.{id}]) AS record_id, 
-	unnest(array[l._rank, r._rank]) as record_rank,
-	1 as min_hits
+  _partition AS conflict_id, 
+  {id} AS record_id, 
+  1 AS record_rank, 
+  1 AS min_hits 
 FROM 
-	{table} l 
-JOIN
-	{table} r
-ON 
-	l.{id} < r.{id}
-AND	l._partition = r._partition
-AND	l._tile_level = {current_z}
-AND	r._tile_level = {current_z}
-AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {_pixels});
+  {table}
+WHERE
+  _tile_level = 2 
+AND
+  type IN
+(
+  SELECT l._partition FROM 
+  (
+    SELECT 
+      _partition, 
+      count(*) AS count
+    FROM 
+      {table}
+    WHERE 
+      _tile_level=2
+    GROUP BY _partition
+  ) l 
+  JOIN
+  (
+    SELECT 
+      _partition, 
+      count(*) AS count
+    FROM 
+      {table} 
+    WHERE
+      _tile_level=3
+    GROUP BY 
+      _partition
+  ) r
+  ON 
+    l._partition = r._partition
+  WHERE r.count - l.count > 0);
 """
 
 CLEAN_UP = \
 """"""
 
-class ProximityConstraint(object):
+class AllOrNothingConstraint(object):
 	"""Implementation of constraint 'proximity'"""
 	def __init__(self, **query):
-		super(ProximityConstraint, self).__init__()
+		super(AllOrNothingConstraint, self).__init__()
 		self.query = query
-		# cast _pixels to integer and set default if missing
-		self.query['_pixels'] = int(self.query.get('_pixels', 5))
 
 	
 	def set_up(self, current_z):
@@ -45,8 +66,8 @@ class ProximityConstraint(object):
 		return [CLEAN_UP.format(**params)]
 
 if __name__ == '__main__':
-	query = {'table': 'us_airports_output','geometry': 'wkb_geometr', 'id': 'ogc_fid', 'pixels': 5}
-	cb = ProximityConstraint(**query)
+	query = {'table': 'us_airports_output','geometry': 'wkb_geometr', 'id': 'ogc_fid'}
+	cb = AllOrNothingConstraint(**query)
 	
 	code = []
 	code.extend(cb.set_up(current_z = 15))

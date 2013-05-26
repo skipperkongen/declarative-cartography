@@ -44,7 +44,9 @@ FROM _cellbound_1 c JOIN
 ON c.cell_id = f.cell_id;
 ```
 
--- Drop table
+Clean up:
+
+```sql
 DROP TABLE _cellbound_1;
 ```
 

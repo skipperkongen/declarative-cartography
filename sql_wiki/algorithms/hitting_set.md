@@ -45,11 +45,13 @@ Snippet of data:
 Heuristic for Hitting Set
 
 ```sql
-SELECT h.set_id, h.record_id, h.record_rank 
-FROM (SELECT ROW_NUMBER() OVER (PARTITION BY set_id ORDER BY record_rank) AS r,
-    t.*
-    FROM hitting_set t) h
-WHERE h.r = 1
+SELECT h.record_id AS ogc_fid 
+FROM 
+(
+	SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY _rank) AS r, record_id, min_hits
+	FROM _conflicts
+) h
+WHERE h.r <= h.min_hits
 -- Total query runtime: 568 ms.
 -- 500 rows retrieved.
 ```

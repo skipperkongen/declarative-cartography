@@ -24,7 +24,7 @@ Compute conflicts with input parameter CURRENT_Z=10 and PIXELS=5:
 
 ```sql
 SELECT 
-	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id, 
+	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id::text, 
 	unnest(array[l.ogc_fid, r.ogc_fid]) AS record_id, 
 	unnest(array[l._rank, r._rank]) as record_rank,
 	1 as min_hits

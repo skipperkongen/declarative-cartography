@@ -110,7 +110,7 @@ Result of evaluating constraints go into a temporary *_conflicts* table. The tab
 Before evaluating each constraint, create this table
 
 ```sql
-CREATE TEMPORARY TABLE _conflicts(conflict_id integer, record_id integer, _rank float, min_hits integer);
+CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank float, min_hits integer);
 ```
 
 Executing constraint code should add rows to *_conflicts* table representing the conflicts for the constraint:
@@ -123,19 +123,20 @@ SELECT c.* FROM ('CONSTRAINT-SELECT') c
 
 Use some algorithm for [N Hitting Set](algorithms/hitting_set.md) to find all records that should be deleted:
 
-TODO: The following algorithms should be modified to delete *min_hits* records from each conflict.
-
 ```sql
 DELETE FROM cph_highway_output 
 WHERE 
 	_tile_level = CURRENT_Z
-AND ogc_fid IN (
+AND ogc_fid IN 
+(
+	-- N Hitting Set heuristic
 	SELECT h.record_id AS ogc_fid 
 	FROM (
-		SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY _rank) AS r, c.record_id
+		SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY _rank) AS r, c.record_id, c.min_hits
     	FROM _conflicts c
 	) h
-WHERE h.r = 1)
+	WHERE h.r <= h.min_hits
+)
 ```
 
 After having deleted records for a given constraint, drop the *_conflicts* table. It will be created again before evaluating the next constraint:

@@ -12,8 +12,6 @@ The way this constraint is formulated, a special edition of hitting set must be 
 
 Continuing with the [cph_highway](../README.md) example.
 
-With input parameters CURRENT_Z and K: Update temporary table *_records_to_delete*:
-
 Create a temporary table mapping records to cells (postfixed by partition) that they intersect:
 
 ```sql
@@ -31,7 +29,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 );
 ```
 
-Find all conflict sets (but with more than K elements) and compute how many records must be deleted (column *min_hits*):
+Find all conflict sets:
 
 ```sql
 SELECT c.cell_id as conflict_id, c.record_id, c._rank, f.min_hits

@@ -19,7 +19,7 @@ Parameters used:
 * ID
 * K (constraint parameter)
 
-Set up:
+### Set up
 
 ```sql
 -- create temp table with cell-id for all records at zoom-level :CURRENT_Z
@@ -36,7 +36,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 );
 ```
 
-Find conflict sets:
+### Find conflict sets
 
 ```sql
 SELECT c.cell_id as conflict_id, c.record_id, c._rank, f.min_hits
@@ -51,7 +51,7 @@ FROM _cellbound_1 c JOIN
 ON c.cell_id = f.cell_id;
 ```
 
-Clean up:
+### Clean up
 
 ```sql
 DROP TABLE _cellbound_1;

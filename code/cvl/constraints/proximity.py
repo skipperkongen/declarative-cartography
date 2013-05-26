@@ -45,7 +45,7 @@ class ProximityConstraint(object):
 		return [CLEAN_UP.format(**params)]
 
 if __name__ == '__main__':
-	query = {'table': 'us_airports_output','geometry': 'wkb_geometr', 'id': 'ogc_fid', 'pixels': 5}
+	query = {'table': 'us_airports_output','geometry': 'wkb_geometr', 'id': 'ogc_fid', '_pixels': 3}
 	cb = ProximityConstraint(**query)
 	
 	code = []

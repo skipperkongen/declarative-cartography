@@ -3,12 +3,14 @@ class Proximity(object):
 	def __init__(self, **query):
 		super(Proximity, self).__init__()
 		self.query = query
+		# cast _pixels to integer and set default if missing
+		self.query['_pixels'] = int(self.query.get('_pixels', 5))
+
 	
 	def setup(self, current_z):
 		params = dict(self.query.items() + [('current_z', current_z)])
 		return """-- proximity constraint at Z={current_z}
--- proximity constraint: setup	(noop)
-""".format(**params)
+-- proximity constraint: setup	(noop)""".format(**params)
 
 	def find_conflicts(self, current_z):
 		params = dict(self.query.items() + [('current_z', current_z)])
@@ -26,7 +28,7 @@ ON
 AND	l._partition = r._partition
 AND	l._tile_level = {current_z}
 AND	r._tile_level = {current_z}
-AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {pixels});
+AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {_pixels});
 """.format(**params)
 	
 	def clean_up(self, current_z):

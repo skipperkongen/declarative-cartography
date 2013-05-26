@@ -3,6 +3,8 @@ class CellBoundK(object):
 	def __init__(self, **query):
 		super(CellBoundK, self).__init__()
 		self.query = query
+		# cast _k to integer and set default if missing
+		self.query['_k'] = int(self.query.get('_k', 8))
 	
 	def setup(self, current_z):
 		params = dict(self.query.items() + [('current_z', current_z)])

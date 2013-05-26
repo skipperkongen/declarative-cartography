@@ -139,6 +139,8 @@ if __name__ == '__main__':
 		'zoomlevels': 15,
 		'rank_by': 'ST_Length(wkb_geometry)',
 	 	'partition_by' : 'type'
+		'_k': 16.0,
+		'_pixels': 5.0
 	}
 	cm = CvlMain(None, None, **query)
 	print "\n".join(cm.generate_sql())

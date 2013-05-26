@@ -12,14 +12,21 @@ The way this constraint is formulated, a special edition of hitting set must be 
 
 Continuing with the [cph_highway](../README.md) example.
 
+Parameters used:
+
+* CURRENT_Z
+* GEOMETRY
+* ID
+* K (constraint parameter)
+
 Set up:
 
 ```sql
--- create temp table with cell-id for all records at zoom-level Z
+-- create temp table with cell-id for all records at zoom-level :CURRENT_Z
 CREATE TEMPORARY TABLE _cellbound_1 AS 
 (
 	SELECT
-		ST_PointHash(ST_Cellify(wkb_geometry, ST_CellSizeZ( :CURRENT_Z ), 0, 0 )) || _partition AS cell_id,
+		ST_PointHash(ST_Cellify(:GEOMETRY, ST_CellSizeZ( :CURRENT_Z ), 0, 0 )) || _partition AS cell_id,
 		:ID AS record_id,
 		_rank
 	FROM 

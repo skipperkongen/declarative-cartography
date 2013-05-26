@@ -1,10 +1,11 @@
 class CellBoundK(object):
 	"""Implementation of constraint 'cell bound K'"""
-	def __init__(self, **kwargs):
+	def __init__(self, **query):
 		super(CellBoundK, self).__init__()
-		self.k = kwargs.get('k', 8)
+		self.query = query
 	
-	def setup(self, **kwargs):
+	def setup(self, current_z):
+		params = dict(self.query.items() + [('current_z', current_z)])
 		return """-- CELLBOUND at Z={current_z}
 -- Cellbound constraint: setup
 CREATE TEMPORARY TABLE _cellbound_1 AS 
@@ -18,9 +19,10 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 	WHERE 
 		_tile_level = {current_z}
 );		
-""".format(**kwargs)
+""".format(**params)
 
-	def find_conflicts(self, **kwargs):
+	def find_conflicts(self, current_z):
+		params = dict(self.query.items() + [('current_z', current_z)])
 		return """-- Cellbound constraint: find conflicts
 SELECT 
 	c.cell_id as conflict_id, 
@@ -34,26 +36,27 @@ JOIN
 	-- Find all cells with more than K records
 	SELECT 
 		cell_id, 
-		count(*) - {k} AS min_hits
+		count(*) - {_k} AS min_hits
 	FROM 
 		_cellbound_1
 	GROUP BY 
 		cell_id
 	HAVING 
-		count(*) > {k}
+		count(*) > {_k}
 ) f 
 ON c.cell_id = f.cell_id;
-""".format(**kwargs)
+""".format(**params)
 	
-	def clean_up(self, **kwargs):
+	def clean_up(self, current_z):
+		params = dict(self.query.items() + [('current_z', current_z)])
 		return """--Cellbound constraint: clean up
 DROP TABLE _cellbound_1;
-""".format(**kwargs)
+""".format(**params)
 
 if __name__ == '__main__':
-	params = {'current_z': 15, 'table': 'cph_highway_output', 'geometry': 'wkb_geometr', 'id': 'ogc_fid', 'k':16}
-	cb = CellBoundK(**params)
-	
-	print cb.setup(**params)
-	print cb.find_conflicts(**params)
-	print cb.clean_up(**params)
+	query = {'table': 'cph_highway_output', 'geometry': 'wkb_geometr', 'id': 'ogc_fid', '_k':16}
+	cb = CellBoundK(**query)
+	current_z = 15
+	print cb.setup(current_z)
+	print cb.find_conflicts(current_z)
+	print cb.clean_up(current_z)

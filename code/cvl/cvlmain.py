@@ -251,14 +251,13 @@ if __name__ == '__main__':
 		'id': 'ogc_fid',
 		'geometry': 'wkb_geometry',
 		'other': 'type, name, oneway, lanes',
-		'zoomlevels': 3,
+		'zoomlevels': 15,
 		'rank_by': 'ST_Length(wkb_geometry)',
 	 	'partition_by' : 'type',
 		'_k': 16.0,
-		'_pixels': 5.0,
 		'simplify': True
 	}
-	cm = CvlMain(HittingSetHeuristic(**query), [cellbound.CellboundConstraint(**query), proximity.ProximityConstraint(**query)], **query)
+	cm = CvlMain(HittingSetHeuristic(**query), [cellbound.CellboundConstraint(**query), allornothing.AllOrNothingConstraint(**query)], **query)
 	print cm.generate_sql()
 		
 		

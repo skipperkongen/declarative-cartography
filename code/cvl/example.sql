@@ -183,14 +183,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 14
 AND
   type IN
 (
@@ -202,7 +202,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 14
     GROUP BY _partition
   ) l 
   JOIN
@@ -213,7 +213,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 14 + 1
     GROUP BY 
       _partition
   ) r
@@ -315,14 +315,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 13
 AND
   type IN
 (
@@ -334,7 +334,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 13
     GROUP BY _partition
   ) l 
   JOIN
@@ -345,7 +345,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 13 + 1
     GROUP BY 
       _partition
   ) r
@@ -447,14 +447,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 12
 AND
   type IN
 (
@@ -466,7 +466,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 12
     GROUP BY _partition
   ) l 
   JOIN
@@ -477,7 +477,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 12 + 1
     GROUP BY 
       _partition
   ) r
@@ -579,14 +579,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 11
 AND
   type IN
 (
@@ -598,7 +598,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 11
     GROUP BY _partition
   ) l 
   JOIN
@@ -609,7 +609,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 11 + 1
     GROUP BY 
       _partition
   ) r
@@ -711,14 +711,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 10
 AND
   type IN
 (
@@ -730,7 +730,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 10
     GROUP BY _partition
   ) l 
   JOIN
@@ -741,7 +741,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 10 + 1
     GROUP BY 
       _partition
   ) r
@@ -843,14 +843,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 9
 AND
   type IN
 (
@@ -862,7 +862,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 9
     GROUP BY _partition
   ) l 
   JOIN
@@ -873,7 +873,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 9 + 1
     GROUP BY 
       _partition
   ) r
@@ -975,14 +975,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 8
 AND
   type IN
 (
@@ -994,7 +994,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 8
     GROUP BY _partition
   ) l 
   JOIN
@@ -1005,7 +1005,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 8 + 1
     GROUP BY 
       _partition
   ) r
@@ -1107,14 +1107,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 7
 AND
   type IN
 (
@@ -1126,7 +1126,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 7
     GROUP BY _partition
   ) l 
   JOIN
@@ -1137,7 +1137,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 7 + 1
     GROUP BY 
       _partition
   ) r
@@ -1239,14 +1239,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 6
 AND
   type IN
 (
@@ -1258,7 +1258,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 6
     GROUP BY _partition
   ) l 
   JOIN
@@ -1269,7 +1269,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 6 + 1
     GROUP BY 
       _partition
   ) r
@@ -1371,14 +1371,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 5
 AND
   type IN
 (
@@ -1390,7 +1390,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 5
     GROUP BY _partition
   ) l 
   JOIN
@@ -1401,7 +1401,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 5 + 1
     GROUP BY 
       _partition
   ) r
@@ -1503,14 +1503,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 4
 AND
   type IN
 (
@@ -1522,7 +1522,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 4
     GROUP BY _partition
   ) l 
   JOIN
@@ -1533,7 +1533,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 4 + 1
     GROUP BY 
       _partition
   ) r
@@ -1635,14 +1635,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 3
 AND
   type IN
 (
@@ -1654,7 +1654,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 3
     GROUP BY _partition
   ) l 
   JOIN
@@ -1665,7 +1665,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 3 + 1
     GROUP BY 
       _partition
   ) r
@@ -1767,14 +1767,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 2
 AND
   type IN
 (
@@ -1786,7 +1786,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 2
     GROUP BY _partition
   ) l 
   JOIN
@@ -1797,7 +1797,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 2 + 1
     GROUP BY 
       _partition
   ) r
@@ -1899,14 +1899,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 1
 AND
   type IN
 (
@@ -1918,7 +1918,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 1
     GROUP BY _partition
   ) l 
   JOIN
@@ -1929,7 +1929,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 1 + 1
     GROUP BY 
       _partition
   ) r
@@ -2031,14 +2031,14 @@ CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank flo
 
 INSERT INTO _conflicts 
 SELECT 
-  _partition AS conflict_id, 
+  ogc_fid AS conflict_id, 
   ogc_fid AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   cph_highway_output
 WHERE
-  _tile_level = 2 
+  _tile_level = 0
 AND
   type IN
 (
@@ -2050,7 +2050,7 @@ AND
     FROM 
       cph_highway_output
     WHERE 
-      _tile_level=2
+      _tile_level= 0
     GROUP BY _partition
   ) l 
   JOIN
@@ -2061,7 +2061,7 @@ AND
     FROM 
       cph_highway_output 
     WHERE
-      _tile_level=3
+      _tile_level = 0 + 1
     GROUP BY 
       _partition
   ) r

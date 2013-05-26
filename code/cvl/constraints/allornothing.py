@@ -4,14 +4,14 @@ SET_UP = \
 FIND_CONFLICTS = \
 """
 SELECT 
-  _partition AS conflict_id, 
+  {id} AS conflict_id, 
   {id} AS record_id, 
   1 AS record_rank, 
   1 AS min_hits 
 FROM 
   {table}
 WHERE
-  _tile_level = 2 
+  _tile_level = {current_z}
 AND
   type IN
 (
@@ -23,7 +23,7 @@ AND
     FROM 
       {table}
     WHERE 
-      _tile_level=2
+      _tile_level= {current_z}
     GROUP BY _partition
   ) l 
   JOIN
@@ -34,7 +34,7 @@ AND
     FROM 
       {table} 
     WHERE
-      _tile_level=3
+      _tile_level = {current_z} + 1
     GROUP BY 
       _partition
   ) r

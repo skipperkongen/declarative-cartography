@@ -9,13 +9,24 @@ SET_UP = \
 CREATE TEMPORARY TABLE _density_1 AS 
 (
 	SELECT
-		ST_PointHash(ST_Cellify({geometry}, ST_CellSizeZ( {current_z} ), 0, 0 )) || _partition AS cell_id,
+		ST_Cellify({geometry}, ST_CellSizeZ( {current_z} ), 0, 0 ) as cell_center,		
 		{id} AS record_id,
+		{geometry},
+		_partition,
 		_rank
 	FROM 
 		{table}
 	WHERE 
 		_tile_level = {current_z}
+);
+
+CREATE TEMPORARY TABLE _density_2 AS
+(
+	SELECT
+		ST_PointHash(cell_center) || _partition as cell_id,
+		ST_Intersection(ST_Buffer)........
+	FROM
+		_density_2
 );
 """
 

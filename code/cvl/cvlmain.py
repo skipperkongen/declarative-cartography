@@ -1,4 +1,16 @@
 from constraints import cellbound, proximity, allornothing 
+from algo.hittingset import HittingSetHeuristic
+
+DELETE_FROM = \
+"""
+DELETE FROM {table}
+WHERE 
+	_tile_level = {current_z}
+AND {id} IN
+(
+{n_hitting_set}
+)
+"""
 
 class CvlMain(object):
 	"""docstring for CvlMain"""
@@ -137,6 +149,8 @@ $$ LANGUAGE sql IMMUTABLE STRICT;
 			sql = "".join(constraint.find_conflicts(current_z))
 			code.append("\nINSERT INTO _conflicts " + sql)
 			code.extend(constraint.clean_up(current_z))
+			format_obj = dict(self.query.items() + [('current_z', current_z), ('n_hitting_set', "".join(self.hittingset.solver_sql()))])
+			code.append(DELETE_FROM.format(**format_obj))
 			code.append("\nDROP TABLE _conflicts;\n")
 			code.append("\n-- END CONSTRAINT " + constraint.__class__.__name__ + "\n\n")
 		return code
@@ -166,7 +180,7 @@ if __name__ == '__main__':
 		'_k': 16.0,
 		'_pixels': 5.0
 	}
-	cm = CvlMain(None, [cellbound.CellboundConstraint(**query), proximity.ProximityConstraint(**query)], **query)
+	cm = CvlMain(HittingSetHeuristic(), [cellbound.CellboundConstraint(**query), proximity.ProximityConstraint(**query)], **query)
 	print "".join(cm.generate_sql())
 		
 		

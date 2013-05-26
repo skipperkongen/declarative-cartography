@@ -258,7 +258,8 @@ if __name__ == '__main__':
 		'simplify': True
 	}
 	cm = CvlMain(HittingSetHeuristic(**query), [cellbound.CellboundConstraint(**query), allornothing.AllOrNothingConstraint(**query)], **query)
-	print cm.generate_sql()
+	print cm.generate_sql() # Query returned successfully with no result in 68070 ms on MacBook Pro
+	
 		
 		
 

@@ -167,7 +167,7 @@ class CvlMain(object):
 		code.extend(self.finalize())
 		code.extend(self.cleanup())
 		code.append("COMMIT;")
-		return code
+		return "".join(code)
 		
 	def setup(self):
 		"""TODO"""
@@ -233,7 +233,7 @@ if __name__ == '__main__':
 		'_pixels': 5.0
 	}
 	cm = CvlMain(HittingSetHeuristic(**query), [cellbound.CellboundConstraint(**query), proximity.ProximityConstraint(**query)], **query)
-	print "".join(cm.generate_sql())
+	print cm.generate_sql()
 		
 		
 

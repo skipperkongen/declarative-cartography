@@ -1,7 +1,5 @@
 SET_UP = \
-"""
--- NOOP
-"""
+""""""
 
 FIND_CONFLICTS = \
 """
@@ -23,9 +21,7 @@ AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {_pixels}
 """
 
 CLEAN_UP = \
-"""
--- NOOP
-"""
+""""""
 
 class ProximityConstraint(object):
 	"""Implementation of constraint 'proximity'"""

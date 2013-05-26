@@ -19,13 +19,13 @@ Set up:
 CREATE TEMPORARY TABLE _cellbound_1 AS 
 (
 	SELECT
-		ST_PointHash(ST_Cellify(wkb_geometry, ST_CellSizeZ( 15 ), 0, 0 )) || _partition AS cell_id,
-		ogc_fid AS record_id,
+		ST_PointHash(ST_Cellify(wkb_geometry, ST_CellSizeZ( :CURRENT_Z ), 0, 0 )) || _partition AS cell_id,
+		:ID AS record_id,
 		_rank
 	FROM 
 		cph_highway_output
 	WHERE 
-		_tile_level = CURRENT_Z -- e.g. 15
+		_tile_level = :CURRENT_Z -- e.g. 15
 );
 ```
 
@@ -39,7 +39,7 @@ FROM _cellbound_1 c JOIN
 	SELECT cell_id, count(*) - K AS min_hits
 	FROM _cellbound_1
 	GROUP BY cell_id
-	HAVING count(*) > K
+	HAVING count(*) > :K
 ) f 
 ON c.cell_id = f.cell_id;
 ```

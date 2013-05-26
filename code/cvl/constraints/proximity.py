@@ -6,7 +6,7 @@ SET_UP = \
 FIND_CONFLICTS = \
 """
 SELECT 
-	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id::text, 
+	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id, 
 	unnest(array[l.{id}, r.{id}]) AS record_id, 
 	unnest(array[l._rank, r._rank]) as record_rank,
 	1 as min_hits

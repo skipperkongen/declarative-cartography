@@ -1,12 +1,12 @@
 HITTING_SET_HEURISTIC = \
 """
--- N Hitting Set heuristic
-SELECT h.record_id AS {id} 
-FROM (
-	SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY _rank) AS r, record_id, min_hits
-	FROM _conflicts
-) h
-WHERE h.r <= h.min_hits
+  -- N Hitting Set heuristic
+  SELECT h.record_id AS {id} 
+  FROM (
+    SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY _rank) AS r, record_id, min_hits
+    FROM _conflicts
+  ) h
+  WHERE h.r <= h.min_hits
 """
 
 class HittingSetHeuristic(object):

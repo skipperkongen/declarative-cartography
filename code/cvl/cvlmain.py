@@ -1,6 +1,14 @@
 from constraints import cellbound, proximity, allornothing 
 from algo.hittingset import HittingSetHeuristic
 
+COPY_DOWN = \
+"""
+INSERT INTO {table}
+SELECT {id}, {geometry}, {other}, _rank, _partition, {current_z} as _tile_level
+FROM {table}
+WHERE _tile_level = {current_z} + 1;
+"""
+
 DELETE_FROM = \
 """
 DELETE FROM {table}
@@ -9,7 +17,7 @@ WHERE
 AND {id} IN
 (
 {n_hitting_set}
-)
+);
 """
 
 SET_UP = \
@@ -134,7 +142,7 @@ CREATE_LEVELS_HEADER = \
 CREATE_LEVEL_Z_HEADER = \
 """
 ---------------------------
-Create zoom-level {current_z}
+-- Create zoom-level {current_z}
 ---------------------------
 """
 
@@ -156,6 +164,7 @@ class CvlMain(object):
 		code.append("BEGIN;")
 		code.extend(self.setup())
 		code.extend(self.create_levels())
+		code.extend(self.finalize())
 		code.extend(self.cleanup())
 		code.append("COMMIT;")
 		return code
@@ -178,7 +187,10 @@ class CvlMain(object):
 	
 	def create_level_z(self, current_z ):
 		code = []
-		code.append( CREATE_LEVEL_Z_HEADER.format(current_z = current_z) )
+		format_obj = dict( self.query.items() + [('current_z', current_z), ('n_hitting_set', "".join(self.hittingset.solver_sql()))] )
+		code.append( CREATE_LEVEL_Z_HEADER.format( **format_obj ))
+		code.append(COPY_DOWN.format( **format_obj ))
+		
 		for constraint in self.constraints:
 			code.append("\n-- BEGIN CONSTRAINT " + constraint.__class__.__name__ + "\n")
 			code.append( CREATE_TEMP_TABLE_CONFLICTS )
@@ -188,7 +200,6 @@ class CvlMain(object):
 			find_conflicts_sql = "".join(constraint.find_conflicts(current_z))
 			code.append("\nINSERT INTO _conflicts " + find_conflicts_sql)
 			# delete records to resolve conflicts
-			format_obj = dict(self.query.items() + [('current_z', current_z), ('n_hitting_set', "".join(self.hittingset.solver_sql()))])
 			code.append(DELETE_FROM.format(**format_obj))
 			# clean up
 			code.extend(constraint.clean_up(current_z))
@@ -202,6 +213,11 @@ class CvlMain(object):
 		sql = CLEAN_UP.format(**self.query)
 		code.append( sql )
 		return code
+	
+	def finalize(self):
+		return ["UPDATE {table} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_tile_level, 256)/2);".format(
+			**self.query
+		)]
 
 if __name__ == '__main__':
 	query = {
@@ -209,6 +225,7 @@ if __name__ == '__main__':
 		'table': 'cph_highway_output',
 		'id': 'ogc_fid',
 		'geometry': 'wkb_geometry',
+		'other': 'type, name, oneway, lanes',
 		'zoomlevels': 3,
 		'rank_by': 'ST_Length(wkb_geometry)',
 	 	'partition_by' : 'type',

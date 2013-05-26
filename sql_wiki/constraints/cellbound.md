@@ -21,7 +21,7 @@ Parameters used:
 
 ### Set up
 
-Using *CURRENT_Z*, *ID* and *GEOMETRY*:
+Using *CURRENT_Z*, *TABLE*, *ID* and *GEOMETRY*:
 
 ```sql
 -- create temp table with cell-id for all records at zoom-level :CURRENT_Z
@@ -32,7 +32,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 		:ID AS record_id,
 		_rank
 	FROM 
-		cph_highway_output
+		:TABLE
 	WHERE 
 		_tile_level = :CURRENT_Z -- e.g. 15
 );

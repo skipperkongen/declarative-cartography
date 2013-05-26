@@ -1,5 +1,5 @@
 class CellBoundK(object):
-	"""docstring for CellBoundK"""
+	"""Implementation of constraint 'cell bound K'"""
 	def __init__(self, **kwargs):
 		super(CellBoundK, self).__init__()
 		self.k = kwargs.get('k', 8)
@@ -14,7 +14,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 		{id} AS record_id,
 		_rank
 	FROM 
-		cph_highway_output
+		{table}
 	WHERE 
 		_tile_level = {current_z}
 );		
@@ -51,7 +51,7 @@ DROP TABLE _cellbound_1;
 """.format(**kwargs)
 
 if __name__ == '__main__':
-	params = {'current_z': 15, 'k':16, 'geometry': 'wkb_geometr', 'id': 'ogc_fid'}
+	params = {'current_z': 15, 'table': 'cph_highway_output', 'geometry': 'wkb_geometr', 'id': 'ogc_fid', 'k':16}
 	cb = CellBoundK(**params)
 	
 	print cb.setup(**params)

@@ -14,7 +14,7 @@ if __name__ == '__main__':
 		'zoomlevels': 15,
 		'rank_by': 'ST_Length(wkb_geometry)',
 	 	'partition_by' : 'type',
-		'_maxdensity': 0.75,
+		'_maxdensity': 0.25,
 		'simplify': True
 	}
 	cm = CvlMain(HittingSetHeuristic(**query), [density.DensityConstraint(**query), allornothing.AllOrNothingConstraint(**query)], **query)

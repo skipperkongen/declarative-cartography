@@ -14,8 +14,8 @@ if __name__ == '__main__':
 		'zoomlevels': 15,
 		'rank_by': 'ST_Length(wkb_geometry)',
 	 	'partition_by' : '_cluster_id',
-		'_maxdensity': 0.15,
+		'_k': 50,
 		'simplify': True
 	}
-	cm = CvlMain(HittingSetHeuristic(**query), [density2.DensityConstraint(**query), allornothing.AllOrNothingConstraint(**query)], **query)
+	cm = CvlMain(HittingSetHeuristic(**query), [cellbound.CellboundConstraint(**query), allornothing.AllOrNothingConstraint(**query)], **query)
 	print cm.generate_sql() # Query returned successfully with no result in 68070 ms on MacBook Pro

@@ -40,7 +40,7 @@ GROUP BY
 	cell_id,
 	_partition
 HAVING
-	sum(relarea) > {_maxdensity}
+	sum(relarea) > {_maxdensity};
 """
 
 FIND_CONFLICTS = \
@@ -53,7 +53,7 @@ SELECT
 FROM
 	{table}
 WHERE 
-	_partition IN (SELECT * FROM _density_3)
+	_partition IN (SELECT * FROM _density_3);
 """
 
 CLEAN_UP = \

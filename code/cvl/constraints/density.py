@@ -2,8 +2,6 @@
 geometries that intersect the cell. If buffered geometries take up too much 
 space, that means that the density is too high."""
 
-Work in progress
-
 SET_UP = \
 """
 CREATE TEMPORARY TABLE _density_1 AS 
@@ -34,8 +32,6 @@ ON
 
 FIND_CONFLICTS = \
 """
--- For each record, compute ratio between itx_area and 
--- For each record select the maximum ratio
 SELECT 
 	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id, 
 	{id} AS record_id, 
@@ -47,7 +43,7 @@ WHERE {id} IN
 (SELECT {id}
 FROM _density_2
 GROUP BY {id}
-HAVING max(itx_area / pow(ST_CellSizeZ({current_z}),2)) > {max_density});
+HAVING max(itx_area / pow(ST_CellSizeZ({current_z}),2)) > {_maxdensity});
 """
 
 CLEAN_UP = \

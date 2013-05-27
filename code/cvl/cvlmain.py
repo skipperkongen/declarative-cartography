@@ -146,7 +146,8 @@ CLEAN_UP = \
 -- CVL Main: clean up --
 ------------------------
 
-ALTER TABLE {table} DROP COLUMN _rank, DROP COLUMN _partition;
+ALTER TABLE {table} DROP COLUMN _partition;
+-- ALTER TABLE {table} DROP COLUMN _rank, DROP COLUMN _partition;
 """
 
 CLEAN_UP_LEVEL = \

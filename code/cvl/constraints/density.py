@@ -7,27 +7,31 @@ Work in progress
 SET_UP = \
 """
 CREATE TEMPORARY TABLE _density_1 AS 
-(
-	SELECT
-		ST_Cellify({geometry}, ST_CellSizeZ( {current_z} ), 0, 0 ) as cell_center,		
-		{id} AS record_id,
-		{geometry},
-		_partition,
-		_rank
-	FROM 
-		{table}
-	WHERE 
-		_tile_level = {current_z}
-);
+SELECT 
+	ST_Cellify({geometry}, ST_CellSizeZ({current_z}), 0, 0) AS cell_pt, 
+	{id} AS record_id,
+	_partition
+FROM 
+	{table}
+WHERE
+	_tile_level = {current_z};
 
 CREATE TEMPORARY TABLE _density_2 AS
-(
-	SELECT
-		ST_PointHash(cell_center) || _partition as cell_id,
-		ST_Intersection(ST_Buffer)........
-	FROM
-		_density_2
-);
+SELECT 
+	pow(ST_CellSizeZ({current_z}),2) AS cell_area, 
+	ST_Area(ST_Intersection(
+		ST_Envelope(ST_Buffer(e.cell_pt, ST_CellSizeZ({current_z})/2)), 
+		ST_Buffer(s.{geometry}, ST_ResZ({current_z})))) AS itx_area,
+	s.{id},
+	s._partition
+FROM
+	_density_1 e
+JOIN
+	{table} s
+ON
+	s.{id} = e.record_id AND
+	s._partition = e._partition AND
+	s._tile_level = {current_z};
 """
 
 FIND_CONFLICTS = \

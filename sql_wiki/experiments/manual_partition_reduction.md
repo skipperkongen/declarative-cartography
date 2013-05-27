@@ -2,21 +2,31 @@
 
 The OSM highway dataset did not do too well. I think it is because there are too many partitions.
 
-## Manually create 5 groups from original partitions (used *type* column):
+## Automatically create 8 groups by grouping on ST_Length:
+
+
+### Copy table and add column
 
 Make a copy of original table and add a column for the cluster-id:
 
 ```sql
+DROP TABLE IF EXISTS cph_highway_copy;
+
 CREATE TABLE cph_highway_copy AS
 SELECT * FROM cph_highway;
 -- 357 ms execution time
 ALTER TABLE cph_highway_copy ADD COLUMN _cluster_id text;
 ```
 
-Order original partitions by AVG(ST_Length(wkb_geometry))
+### Order partitions
+
+Use and ordering of partitions by AVG(ST_Length(wkb_geometry)):
 
 ```sql
-SELECT ROW_NUMBER() OVER (ORDER BY AVG(ST_Length(wkb_geometry))) as r, type, AVG(ST_Length(wkb_geometry)) FROM cph_highway_copy GROUP BY type
+DROP TABLE IF EXISTS _make_clusters;
+
+CREATE TEMP TABLE _make_clusters AS
+SELECT ROW_NUMBER() OVER (ORDER BY AVG(ST_Length(wkb_geometry))) as r, type, AVG(ST_Length(wkb_geometry)) FROM cph_highway_copy GROUP BY type;
 ```
 
 Result:
@@ -55,3 +65,16 @@ Result:
 31      "motorway"          1965.85616116289
 32      ""                  26235.8451055314
 ```
+
+### Now set the cluster id using ordered partitions
+
+Now create 8 clusters:
+
+```sql
+UPDATE cph_highway_copy SET _cluster_id = c._cluster_id
+FROM (
+  SELECT r/(SELECT count(*)/8 FROM _make_clusters) as _cluster_id, type FROM _make_clusters
+) c
+WHERE cph_highway_copy.type = c.type
+```
+

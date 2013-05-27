@@ -4,52 +4,63 @@ space, that means that the density is too high."""
 
 SET_UP = \
 """
-CREATE TEMPORARY TABLE _density_1 AS 
+CREATE TEMP TABLE _density_1 AS 
 SELECT 
 	ST_Cellify({geometry}, ST_CellSizeZ({current_z}), 0, 0) AS cell_pt, 
-	{id} AS record_id,
-	_partition
+	{id} AS record_id
 FROM 
 	{table}
 WHERE
 	_tile_level = {current_z};
 
-CREATE TEMPORARY TABLE _density_2 AS
-SELECT 
+CREATE TEMP TABLE _density_2 AS
+SELECT
+	ST_PointHash(c.cell_pt) AS cell_id,
 	ST_Area(ST_Intersection(
-		ST_Envelope(ST_Buffer(e.cell_pt, ST_CellSizeZ({current_z})/2)), 
-		ST_Buffer(s.{geometry}, ST_ResZ({current_z}, 256)))) AS itx_area,
-	s.{id}
+		ST_Envelope(
+			ST_Buffer(e.cell_pt, ST_CellSizeZ({current_z})/2)), 
+		ST_Buffer(t.{geometry}, ST_ResZ({current_z}, 256)))) /
+	pow(ST_CellSizeZ({current_z}),2) as relarea,
+	t._partition
 FROM
-	_density_1 e
+	_density_1 d
 JOIN
-	{table} s
+	{table} t
 ON
-	s.{id} = e.record_id AND
-	s._partition = e._partition AND
-	s._tile_level = {current_z};
+	d.record_id = t.{id}
+WHERE
+	t._tile_level = {current_z};
+
+CREATE TEMPORARY TABLE _density_3 AS
+SELECT 
+	DISTINCT _partition
+FROM 
+	_density_2
+GROUP BY
+	cell_id,
+	_partition
+HAVING
+	sum(relarea) > {_maxdensity}
 """
 
 FIND_CONFLICTS = \
 """
 SELECT 
-	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id, 
+	{id} AS conflict_id, 
 	{id} AS record_id, 
 	_rank AS record_rank, 
 	1 as min_hits
 FROM
 	{table}
-WHERE {id} IN
-(SELECT {id}
-FROM _density_2
-GROUP BY {id}
-HAVING max(itx_area / pow(ST_CellSizeZ({current_z}),2)) > {_maxdensity});
+WHERE 
+	_partition IN (SELECT * FROM _density_3)
 """
 
 CLEAN_UP = \
 """
 DROP TABLE _density_1;
 DROP TABLE _density_2;
+DROP TABLE _density_3;
 """
 
 

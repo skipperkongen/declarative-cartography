@@ -18,16 +18,16 @@ SELECT
 	ST_PointHash(c.cell_pt) AS cell_id,
 	ST_Area(ST_Intersection(
 		ST_Envelope(
-			ST_Buffer(e.cell_pt, ST_CellSizeZ({current_z})/2)), 
+			ST_Buffer(c.cell_pt, ST_CellSizeZ({current_z})/2)), 
 		ST_Buffer(t.{geometry}, ST_ResZ({current_z}, 256)))) /
 	pow(ST_CellSizeZ({current_z}),2) as relarea,
 	t._partition
 FROM
-	_density_1 d
+	_density_1 c
 JOIN
 	{table} t
 ON
-	d.record_id = t.{id}
+	c.record_id = t.{id}
 WHERE
 	t._tile_level = {current_z};
 

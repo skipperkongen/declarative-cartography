@@ -152,7 +152,7 @@ CLEAN_UP = \
 -- CVL Main: clean up --
 ------------------------
 
-ALTER TABLE {table} DROP COLUMN _partition;
+ALTER TABLE {table} DROP COLUMN _rank;
 -- ALTER TABLE {table} DROP COLUMN _rank, DROP COLUMN _partition;
 """
 
@@ -180,38 +180,48 @@ CREATE_TEMP_TABLE_CONFLICTS = \
 CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank float, min_hits integer);
 """
 
+INSPECTION_HELPER = \
+"""
+-- SELECT count(*) FROM {table} GROUP BY _tile_level ORDER BY _tile_level
+
+-- SELECT DISTINCT _partition FROM {table} where _tile_level={zoomlevels}
+-- EXCEPT
+-- SELECT DISTINCT _partition FROM {table} where _tile_level=0
+"""
+
 class CvlMain(object):
 	"""docstring for CvlMain"""
-	def __init__(self, hittingset_impl, constraints_impl, **query):
-		super(CvlMain, self).__init__()
+	def __init__( self, hittingset_impl, constraints_impl, **query ):
+		super( CvlMain, self ).__init__()
 		self.hittingset = hittingset_impl
 		self.constraints = constraints_impl
 		self.query = query
 	
 	def generate_sql(self):
 		code = []
-		code.append(INFO_COMMENT.format(**self.query))
-		code.append(BEGIN_TX)
-		code.extend(self.setup())
-		code.extend(self.create_levels())
-		code.extend(self.finalize())
-		code.extend(self.cleanup())
-		code.append(COMMIT_TX)
-		return "".join(code)
+		code.append( INFO_COMMENT.format( **self.query ))
+		code.append( BEGIN_TX )
+		code.extend( self.setup() )
+		code.extend( self.create_levels() )
+		code.extend( self.finalize() )
+		code.extend( self.cleanup() )
+		code.append( COMMIT_TX )
+		code.append( INSPECTION_HELPER.format( **query ))
+		return "".join( code )
 		
 	def setup(self):
 		"""TODO"""
 		code = []
-		sql = SET_UP.format(**self.query)
-		code.append(sql)
+		sql = SET_UP.format( **self.query )
+		code.append( sql )
 		return code
 
 	def create_levels(self):
 		"""TODO"""
 		code = []
-		code.append(CREATE_LEVELS_HEADER)
-		for current_z in reversed(range(self.query['zoomlevels'])):
-			code.extend( self.create_level_z(current_z) )
+		code.append( CREATE_LEVELS_HEADER )
+		for current_z in reversed(range( self.query['zoomlevels'] )):
+			code.extend( self.create_level_z( current_z ))
 		
 		return code
 	
@@ -230,9 +240,9 @@ class CvlMain(object):
 			find_conflicts_sql = "".join(constraint.find_conflicts(current_z))
 			code.append("\nINSERT INTO _conflicts " + find_conflicts_sql)
 			# delete records to resolve conflicts
-			code.append(DELETE_FROM.format(**format_obj))
+			code.append(DELETE_FROM.format( **format_obj ))
 			# clean up
-			code.extend(constraint.clean_up(current_z))
+			code.extend(constraint.clean_up( current_z ))
 			code.append( CLEAN_UP_LEVEL )
 		return code
 		

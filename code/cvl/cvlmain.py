@@ -206,7 +206,7 @@ class CvlMain(object):
 		code.extend( self.finalize() )
 		code.extend( self.cleanup() )
 		code.append( COMMIT_TX )
-		code.append( INSPECTION_HELPER.format( **query ))
+		code.append( INSPECTION_HELPER.format( **self.query ))
 		return "".join( code )
 		
 	def setup(self):

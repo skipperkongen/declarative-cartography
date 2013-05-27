@@ -18,12 +18,10 @@ WHERE
 
 CREATE TEMPORARY TABLE _density_2 AS
 SELECT 
-	pow(ST_CellSizeZ({current_z}),2) AS cell_area, 
 	ST_Area(ST_Intersection(
 		ST_Envelope(ST_Buffer(e.cell_pt, ST_CellSizeZ({current_z})/2)), 
 		ST_Buffer(s.{geometry}, ST_ResZ({current_z})))) AS itx_area,
-	s.{id},
-	s._partition
+	s.{id}
 FROM
 	_density_1 e
 JOIN
@@ -36,32 +34,26 @@ ON
 
 FIND_CONFLICTS = \
 """
+-- For each record, compute ratio between itx_area and 
+-- For each record select the maximum ratio
 SELECT 
-	c.cell_id as conflict_id, 
-	c.record_id, 
-	c._rank, 
-	f.min_hits
-FROM 
-	_cellbound_1 c
-JOIN
-(
-	-- Find all cells with more than K records
-	SELECT 
-		cell_id, 
-		count(*) - {_k} AS min_hits
-	FROM 
-		_cellbound_1
-	GROUP BY 
-		cell_id
-	HAVING 
-		count(*) > {_k}
-) f 
-ON c.cell_id = f.cell_id;
+	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id, 
+	{id} AS record_id, 
+	_rank AS record_rank, 
+	1 as min_hits
+FROM
+	{table}
+WHERE {id} IN
+(SELECT {id}
+FROM _density_2
+GROUP BY {id}
+HAVING max(itx_area / pow(ST_CellSizeZ({current_z}),2)) > {max_density});
 """
 
 CLEAN_UP = \
 """
 DROP TABLE _density_1;
+DROP TABLE _density_2;
 """
 
 

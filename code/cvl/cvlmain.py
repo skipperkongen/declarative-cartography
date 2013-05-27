@@ -50,6 +50,8 @@ SET_UP = \
 ---------------------
 
 -- Create output table
+-- remove this when done testing
+DROP TABLE IF EXISTS {table};
 
 CREATE TABLE {table} AS
 SELECT 

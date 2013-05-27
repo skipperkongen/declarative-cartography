@@ -18,7 +18,7 @@ CREATE TEMPORARY TABLE _density_2 AS
 SELECT 
 	ST_Area(ST_Intersection(
 		ST_Envelope(ST_Buffer(e.cell_pt, ST_CellSizeZ({current_z})/2)), 
-		ST_Buffer(s.{geometry}, ST_ResZ({current_z})))) AS itx_area,
+		ST_Buffer(s.{geometry}, ST_ResZ({current_z}, 256)))) AS itx_area,
 	s.{id}
 FROM
 	_density_1 e

@@ -16,10 +16,11 @@ AT  				{Z} ZOOM LEVELS
 RANK BY 			{float-valued expression}
 
 PARTITION BY 		{expression}
-MERGE PARTITIONS	{(value, ...), (value, ...), (*)}
+MERGE PARTITIONS	{(value, ...) AS {text} AND (value, ...) AS {text} AND (*)}
+EXCLUDE PARTITIONS
 
 SUBJECT TO 
-	 PROXIMITY 		{d} 
+     PROXIMITY 		{d} 
 THEN CELLBOUND 		{K} 
 THEN ALLORNOTHING
 
@@ -33,3 +34,30 @@ TRANSFORM BY
 ```
 
 The idea is that constraints are not evaluated for partitions mentioned in the FORCE LEVELS clause.
+
+## Example
+
+```cvl
+GENERALIZE          cph_osm_highway -> cph_osm_highway_generalized
+
+WITH ID             ogc_fid
+WITH GEOMETRY       wkb_geometry
+WITH OTHER          name, type, lanes, oneway
+
+AT                  16 ZOOM LEVELS
+
+RANK BY             ST_LENGTH(wkb_geometry)
+
+PARTITION BY        type
+MERGE PARTITIONS    
+					(motorway, motorway_link, primary) AS big_ones
+AND 				(secondary) AS small_ones
+EXCLUDE PARTITIONS	* -- the rest
+
+FORCE LEVELS
+                    9 TO 15 FOR big_ones
+AND                 12 TO 15 FOR small_ones
+
+TRANSFORM BY
+    SIMPLIFY
+```

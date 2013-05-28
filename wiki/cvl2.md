@@ -12,7 +12,7 @@ A more automatic approach to partitioning could be to have a clustering algorith
 
 ```cvl
 PARTITION INTO 5 GROUPS BY METRIC
- 					{expression} <-- e.g. AVG(ST_length)
+                    {expression} <-- e.g. AVG(ST_length)
 ```
 
 I've chosen not to do this at this point of time for CVL 2
@@ -24,7 +24,7 @@ Another approach (the one I've chosen for CVL 2) is to have the user specify how
 Old *PARTITION BY*:
 
 ```cvl
-PARTITION BY 		{expression} -- e.g. a column name
+PARTITION BY        {expression} -- e.g. a column name
 ```
 
 New *PARTITION BY*:
@@ -32,9 +32,9 @@ New *PARTITION BY*:
 ```cvl
 PARTITION BY        {expression} -- e.g. a column name
 MERGE PARTITIONS    
-					({value_1}, ...) AS {partition_value}
-AND 				({value_2}) AS {partition_value}
-AND					* AS {partition_value}
+                    ({value_1}, ...) AS {partition_value}
+AND                 ({value_2}) AS {partition_value}
+AND                 * AS {partition_value}
 ```
 
 Optionally merge remaining partitions using a * (if omitted, remaiming partitions are kept as "singleton" partitions):
@@ -42,9 +42,9 @@ Optionally merge remaining partitions using a * (if omitted, remaiming partition
 ```cvl
 PARTITION BY        {expression} -- e.g. a column name
 MERGE PARTITIONS    
-					({partition_value}, ...) AS {partition_value}
-AND 				({partition_value}) AS {partition_value}
-AND					* AS {partition_value}
+                    ({partition_value}, ...) AS {partition_value}
+AND                 ({partition_value}) AS {partition_value}
+AND                 * AS {partition_value}
 ```
 
 ## New FORCE LEVELS
@@ -53,43 +53,68 @@ New *FORCE LEVELS*:
 
 ```cvl
 FORCE MIN LEVELS
-					{zoomlevel} FOR {partition_value}
-AND					{zoomlevel} FOR {partition_value}					
-AND 				...
+                    {zoomlevel} FOR {partition_value}
+AND                 {zoomlevel} FOR {partition_value}                   
+AND                 ...
 ```
 
 Partitions that are mentioned in a FORCE MIN LEVEL clause will not be evaluated using the constraints.
 
 ## Full syntax
 
+All clauses:
+
 ```cvl
-GENERALIZE 			{relation name} TO {relation name}
+GENERALIZE          {relation name} TO {relation name}
 
-WITH ID 			{column name}
-WITH GEOMETRY		{column name}
-WITH OTHER			{column name, column name, column name, ...}
+WITH ID             {column name}
+WITH GEOMETRY       {column name}
+WITH OTHER          {column name, column name, column name, ...}
 
-AT  				{positive integer} ZOOM LEVELS
+AT                  {positive integer} ZOOM LEVELS
 
-RANK BY 			{float expression}
+RANK BY             {float expression}
 
-PARTITION BY 		{expression} -- e.g. column name or function call
+PARTITION BY        {expression} -- e.g. column name or function call
 MERGE PARTITIONS    
-					{expression}, {expression} AS {expression} -- multiple
-AND 				{expression} AS {expression} -- singleton
-AND					* AS {expression} -- the rest
+                    {expression}, {expression} AS {expression} -- multiple
+AND                 {expression} AS {expression} -- singleton
+AND                 * AS {expression} -- the rest
 
 FORCE MIN LEVELS
                     {positive integer} FOR {expression}
 AND                 {positive integer} FOR {expression}
 
 SUBJECT TO 
-	 {constraint} 	{float expression} 
-THEN {constraint}	{float expression}
+     {constraint}   {float expression} 
+THEN {constraint}   {float expression}
 THEN {constraint}
 
 TRANSFORM BY
-	SIMPLIFY
+    {operation}
+```
+
+Only mandatory clauses:
+
+```cvl
+GENERALIZE          {relation name} TO {relation name}
+
+WITH ID             {column name}
+WITH GEOMETRY       {column name}
+
+AT                  {positive integer} ZOOM LEVELS
+```
+
+Defaults used for optional clauses (not all have defaults):
+
+```cvl
+WITH OTHER          None
+
+RANK BY             1
+
+PARTITION BY        1
+
+TRANSFORM BY        SIMPLIFY
 ```
 
 ## Examples
@@ -109,14 +134,14 @@ AT                  16 ZOOM LEVELS
 
 PARTITION BY        type
 MERGE PARTITIONS    
-					(motorway, motorway_link, primary) AS big_ones
-AND 				(secondary) AS small_ones
-AND					* AS the_rest
+                    (motorway, motorway_link, primary) AS big_ones
+AND                 (secondary) AS small_ones
+AND                 * AS the_rest
 
 FORCE MIN LEVELS
                     9 FOR big_ones
 AND                 12 FOR small_ones
-AND					16 FOR the_rest -- meaning don't show 
+AND                 16 FOR the_rest -- meaning don't show 
 
 TRANSFORM BY
     SIMPLIFY

@@ -47,12 +47,12 @@ AND                 ({partition_value}) AS {partition_value}
 AND                 * AS {partition_value}
 ```
 
-## New FORCE LEVELS
+## New FORCE MIN LEVEL
 
-New *FORCE LEVELS*:
+New *FORCE MIN LEVEL*:
 
 ```cvl
-FORCE MIN LEVELS
+FORCE MIN LEVEL
                     {zoomlevel} FOR {partition_value}
 AND                 {zoomlevel} FOR {partition_value}                   
 AND                 ...
@@ -81,7 +81,7 @@ MERGE PARTITIONS
 AND                 {expression} AS {expression} -- singleton
 AND                 * AS {expression} -- the rest
 
-FORCE MIN LEVELS
+FORCE MIN LEVEL
                     {positive integer} FOR {expression}
 AND                 {positive integer} FOR {expression}
 
@@ -94,7 +94,7 @@ TRANSFORM BY
     {operation}
 ```
 
-Only mandatory clauses:
+Mandatory clauses:
 
 ```cvl
 GENERALIZE          {relation name} TO {relation name}
@@ -114,7 +114,13 @@ RANK BY             1
 
 PARTITION BY        1
 
-TRANSFORM BY        SIMPLIFY
+MERGE PARTITIONS	None
+
+SUBJECT TO			None
+
+FORCE MIN LEVEL		None
+
+TRANSFORM BY        'SIMPLIFY'
 ```
 
 ## Examples

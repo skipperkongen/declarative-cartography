@@ -168,3 +168,4 @@ TRANSFORM BY
 	SIMPLIFY
 ```
 
+I prefer this specification.

@@ -194,9 +194,8 @@ INSPECTION_HELPER = \
 INSERT_INTO_CONFLICTS = \
 """
 INSERT INTO _conflicts 
-
-TODO: Extend columns returned by find_conflicts to include _partitions
-TODO: make a select with a WHERE clause that _partition not in FORCE LEVEL partitions
+SELECT fc.* FROM ({constraint_select}) fc
+WHERE fc._partition NOT IN ({forced_partitions});
 """
 
 class CvlMain(object):
@@ -247,9 +246,8 @@ class CvlMain(object):
 			# set up
 			code.extend(constraint.set_up(current_z))
 			# insert conflicts into _conflicts
-			code.append(INSERT_INTO_CONFLICTS.format(
-				constraint_select = "".join(constraint.find_conflicts(current_z))
-			))
+			format_obj['constraint_select'] = "".join(constraint.find_conflicts(current_z))
+			code.append(INSERT_INTO_CONFLICTS.format(**format_obj))
 			# delete records to resolve conflicts
 			code.append(DELETE_FROM.format( **format_obj ))
 			# clean up

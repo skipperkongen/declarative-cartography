@@ -60,12 +60,44 @@ AND 				...
 
 Partitions that are mentioned in a FORCE MIN LEVEL clause will not be evaluated using the constraints.
 
+## Full syntax
+
+```cvl
+GENERALIZE 			{relation name} TO {relation name}
+
+WITH ID 			{column name}
+WITH GEOMETRY		{column name}
+WITH OTHER			{column name, column name, column name, ...}
+
+AT  				{positive integer} ZOOM LEVELS
+
+RANK BY 			{float expression}
+
+PARTITION BY 		{expression} -- e.g. column name or function call
+MERGE PARTITIONS    
+					{expression}, {expression} AS {expression} -- multiple
+AND 				{expression} AS {expression} -- singleton
+AND					* AS {expression} -- the rest
+
+FORCE MIN LEVELS
+                    {positive integer} FOR {expression}
+AND                 {positive integer} FOR {expression}
+
+SUBJECT TO 
+	 {constraint} 	{float expression} 
+THEN {constraint}	{float expression}
+THEN {constraint}
+
+TRANSFORM BY
+	SIMPLIFY
+```
+
 ## Examples
 
 Using 
 
 ```cvl
-GENERALIZE          cph_osm_highway -> cph_osm_highway_generalized
+GENERALIZE          cph_osm_highway TO cph_osm_highway_generalized
 
 WITH ID             ogc_fid
 WITH GEOMETRY       wkb_geometry

@@ -125,10 +125,10 @@ TRANSFORM BY        'SIMPLIFY'
 
 ## Examples
 
-Using 
+Implementing Brian's use case:
 
 ```cvl
-GENERALIZE          cph_osm_highway TO cph_osm_highway_generalized
+GENERALIZE          denmark_highway TO denmark_highway_generalized
 
 WITH ID             ogc_fid
 WITH GEOMETRY       wkb_geometry
@@ -136,15 +136,14 @@ WITH OTHER          name, type, lanes, oneway
 
 AT                  16 ZOOM LEVELS
 
--- no RANK BY
-
 PARTITION BY        type
+
 MERGE PARTITIONS    
                     (motorway, motorway_link, primary) AS big_ones
 AND                 (secondary) AS small_ones
 AND                 * AS the_rest
 
-FORCE MIN LEVELS
+FORCE MIN LEVEL
                     9 FOR big_ones
 AND                 12 FOR small_ones
 AND                 16 FOR the_rest -- meaning don't show 

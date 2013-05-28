@@ -6,7 +6,8 @@ FIND_CONFLICTS = \
 SELECT 
   {id} AS conflict_id, 
   {id} AS record_id, 
-  1 AS record_rank, 
+  _rank, 
+  _partition,
   1 AS min_hits 
 FROM 
   {table}

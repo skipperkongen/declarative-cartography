@@ -5,7 +5,8 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 	SELECT
 		ST_PointHash(ST_Cellify({geometry}, ST_CellSizeZ( {current_z} ), 0, 0 )) || _partition AS cell_id,
 		{id} AS record_id,
-		_rank
+		_rank,
+		_partition
 	FROM 
 		{table}
 	WHERE 
@@ -18,7 +19,8 @@ FIND_CONFLICTS = \
 SELECT 
 	c.cell_id as conflict_id, 
 	c.record_id, 
-	c._rank, 
+	c._rank,
+	c._partition
 	f.min_hits
 FROM 
 	_cellbound_1 c

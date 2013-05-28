@@ -6,7 +6,8 @@ FIND_CONFLICTS = \
 SELECT 
 	ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id, 
 	unnest(array[l.{id}, r.{id}]) AS record_id, 
-	unnest(array[l._rank, r._rank]) as record_rank,
+	unnest(array[l._rank, r._rank]) as _rank, 
+	unnest(array[._partition, r._partition]) as _partition
 	1 as min_hits
 FROM 
 	{table} l 
@@ -31,6 +32,12 @@ class ProximityConstraint(object):
 		# cast _pixels to integer and set default if missing
 		self.query['_pixels'] = int(self.query.get('_pixels', 5))
 
+	def generate_sql(self, current_z):
+		code = []
+		code.append(self.set_up(current_z))
+		code.append(self.find_conflicts(current_z))
+		code.append(self.clean_up(current_z))
+		return code
 	
 	def set_up(self, current_z):
 		params = dict(self.query.items() + [('current_z', current_z)])

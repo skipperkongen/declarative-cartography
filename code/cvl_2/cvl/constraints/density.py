@@ -70,6 +70,13 @@ class DensityConstraint(object):
 		super(DensityConstraint, self).__init__()
 		self.query = query
 
+	def generate_sql(self, current_z):
+		code = []
+		code.append(self.set_up(current_z))
+		code.append(self.find_conflicts(current_z))
+		code.append(self.clean_up(current_z))
+		return code
+
 	def set_up(self, current_z):
 		params = dict(self.query.items() + [('current_z', current_z)])
 		return [SET_UP.format(**params)]

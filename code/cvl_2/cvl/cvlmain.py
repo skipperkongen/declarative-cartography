@@ -191,6 +191,14 @@ INSPECTION_HELPER = \
 -- SELECT DISTINCT _partition FROM {table} where _tile_level=0
 """
 
+INSERT_INTO_CONFLICTS = \
+"""
+INSERT INTO _conflicts 
+
+TODO: Extend columns returned by find_conflicts to include _partitions
+TODO: make a select with a WHERE clause that _partition not in FORCE LEVEL partitions
+"""
+
 class CvlMain(object):
 	"""docstring for CvlMain"""
 	def __init__( self, hittingset_impl, constraints_impl, **query ):
@@ -239,8 +247,9 @@ class CvlMain(object):
 			# set up
 			code.extend(constraint.set_up(current_z))
 			# insert conflicts into _conflicts
-			find_conflicts_sql = "".join(constraint.find_conflicts(current_z))
-			code.append("\nINSERT INTO _conflicts " + find_conflicts_sql)
+			code.append(INSERT_INTO_CONFLICTS.format(
+				constraint_select = "".join(constraint.find_conflicts(current_z))
+			))
 			# delete records to resolve conflicts
 			code.append(DELETE_FROM.format( **format_obj ))
 			# clean up

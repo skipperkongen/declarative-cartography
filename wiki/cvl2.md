@@ -52,15 +52,17 @@ AND					* AS {partition_value}
 New *FORCE LEVELS*:
 
 ```cvl
-FORCE LEVELS
-					{zoomlevel} TO {zoomlevel} FOR {partition_value}
-AND					{zoomlevel} TO {zoomlevel} FOR {partition_value}					
+FORCE MIN LEVELS
+					{zoomlevel} FOR {partition_value}
+AND					{zoomlevel} FOR {partition_value}					
 AND 				...
 ```
 
-Partitions that are mentioned in a FORCE LEVEL clause will not be evaluated using the constraints.
+Partitions that are mentioned in a FORCE MIN LEVEL clause will not be evaluated using the constraints.
 
-## Example
+## Examples
+
+Using 
 
 ```cvl
 GENERALIZE          cph_osm_highway -> cph_osm_highway_generalized
@@ -79,10 +81,10 @@ MERGE PARTITIONS
 AND 				(secondary) AS small_ones
 AND					* AS the_rest
 
-FORCE LEVELS
-                    9 TO 15 FOR big_ones
-AND                 12 TO 15 FOR small_ones
-AND					16 TO 16 FOR the_rest 
+FORCE MIN LEVELS
+                    9 FOR big_ones
+AND                 12 FOR small_ones
+AND					16 FOR the_rest -- meaning don't show 
 
 TRANSFORM BY
     SIMPLIFY

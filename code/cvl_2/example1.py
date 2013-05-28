@@ -6,14 +6,14 @@ from cvl.algo.hittingset import HittingSetHeuristic
 
 if __name__ == '__main__':
 	query = {
-		'datasource': 'cph_highway_copy',
+		'datasource': 'cph_highway',
 		'table': 'cph_highway_output',
 		'id': 'ogc_fid',
 		'geometry': 'wkb_geometry',
 		'other': 'type, name, oneway, lanes,_cluster_id',
 		'zoomlevels': 15,
 		'rank_by': 'ST_Length(wkb_geometry)',
-	 	'partition_by' : '_cluster_id',
+	 	'partition_by' : 'type',
 		'_k': 50,
 		'simplify': True
 	}

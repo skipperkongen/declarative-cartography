@@ -42,8 +42,8 @@ Optionally merge remaining partitions using a * (if omitted, remaiming partition
 ```cvl
 PARTITION BY        {expression} -- e.g. a column name
 MERGE PARTITIONS    
-					({value_1}, ...) AS {partition_value}
-AND 				({value_2}) AS {partition_value}
+					({partition_value}, ...) AS {partition_value}
+AND 				({partition_value}) AS {partition_value}
 AND					* AS {partition_value}
 ```
 

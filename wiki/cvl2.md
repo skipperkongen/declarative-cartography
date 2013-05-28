@@ -37,7 +37,7 @@ AND 				({value_2}) AS {partition_value}
 AND					* AS {partition_value}
 ```
 
-Optionally merge remaining partitions using a * (if omitted, remaiming partitions are not merged):
+Optionally merge remaining partitions using a * (if omitted, remaiming partitions are kept as "singleton" partitions):
 
 ```cvl
 PARTITION BY        {expression} -- e.g. a column name

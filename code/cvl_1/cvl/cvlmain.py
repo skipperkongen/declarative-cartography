@@ -158,11 +158,6 @@ ALTER TABLE {table} DROP COLUMN _rank;
 -- ALTER TABLE {table} DROP COLUMN _rank, DROP COLUMN _partition;
 """
 
-CLEAN_UP_LEVEL = \
-"""
-DROP TABLE _conflicts;
-"""
-
 CREATE_LEVELS_HEADER = \
 """
 -----------------------------
@@ -177,9 +172,29 @@ CREATE_LEVEL_Z_HEADER = \
 ---------------------------
 """
 
+HEADER_CONFLICTS_BEFORE = \
+"""
+-- Find conflicts "before"
+"""
+
+HEADER_CONFLICTS_AFTER = \
+"""
+-- Find conflicts "after"
+"""
+
+HEADER_RESOLVE_CONFLICTS = \
+"""
+-- Resolving conflicts by deleting records
+"""
+
 CREATE_TEMP_TABLE_CONFLICTS = \
 """
 CREATE TEMPORARY TABLE _conflicts(conflict_id text, record_id integer, _rank float, min_hits integer);
+"""
+
+DROP_TEMP_TABLE_CONFLICTS = \
+"""
+DROP TABLE _conflicts;
 """
 
 INSPECTION_HELPER = \
@@ -233,19 +248,43 @@ class CvlMain(object):
 		code.append( CREATE_LEVEL_Z_HEADER.format( **format_obj ))
 		code.append(COPY_DOWN.format( **format_obj ))
 		
+		conflicts_before = [  ]
+		conflicts_after = [  ]
+
 		for constraint in self.constraints:
-			code.append("\n-- " + constraint.__class__.__name__ + "\n")
-			code.append( CREATE_TEMP_TABLE_CONFLICTS )
-			# set up
-			code.extend(constraint.set_up(current_z))
-			# insert conflicts into _conflicts
-			find_conflicts_sql = "".join(constraint.find_conflicts(current_z))
-			code.append("\nINSERT INTO _conflicts " + find_conflicts_sql)
-			# delete records to resolve conflicts
-			code.append(DELETE_FROM.format( **format_obj ))
-			# clean up
-			code.extend(constraint.clean_up( current_z ))
-			code.append( CLEAN_UP_LEVEL )
+			if not constraint.__apply_after__:
+				conflicts_before.extend( self.generate_constraint_code(constraint, format_obj, current_z) )
+			else:
+				conflicts_after.extend( self.generate_constraint_code(constraint, format_obj, current_z) )
+			
+		# Find and resolve conflicts before
+		code.append( HEADER_CONFLICTS_BEFORE )
+		code.append( CREATE_TEMP_TABLE_CONFLICTS )
+		code.extend( conflicts_before )
+		code.append( HEADER_RESOLVE_CONFLICTS )
+		code.append(DELETE_FROM.format( **format_obj ))
+		code.append( DROP_TEMP_TABLE_CONFLICTS )
+		
+		code.append( HEADER_CONFLICTS_AFTER )
+		# Find and resolve conflicts before
+		code.append( CREATE_TEMP_TABLE_CONFLICTS )
+		code.extend( conflicts_after )
+		code.append( HEADER_RESOLVE_CONFLICTS )
+		code.append(DELETE_FROM.format( **format_obj ))
+		code.append( DROP_TEMP_TABLE_CONFLICTS )
+		
+		return code
+	
+	def generate_constraint_code( self, constraint, format_obj, current_z ):
+		code = []
+		code.append("\n-- " + constraint.__class__.__name__ + "\n")
+		# set up
+		code.extend(constraint.set_up(current_z))
+		# insert conflicts into _conflicts
+		find_conflicts_sql = "".join(constraint.find_conflicts(current_z))
+		code.append("\nINSERT INTO _conflicts " + find_conflicts_sql)
+		# clean up constraint
+		code.extend(constraint.clean_up( current_z ))
 		return code
 		
 	def cleanup(self):

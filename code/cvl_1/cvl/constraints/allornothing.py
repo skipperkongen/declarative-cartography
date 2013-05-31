@@ -48,10 +48,12 @@ CLEAN_UP = \
 
 class AllOrNothingConstraint(object):
 	"""Implementation of constraint 'proximity'"""
+	
+	__apply_after__ = True
+	
 	def __init__(self, **query):
 		super(AllOrNothingConstraint, self).__init__()
 		self.query = query
-
 	
 	def set_up(self, current_z):
 		params = dict(self.query.items() + [('current_z', current_z)])

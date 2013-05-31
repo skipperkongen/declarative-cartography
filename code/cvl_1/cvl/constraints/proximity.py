@@ -25,6 +25,9 @@ CLEAN_UP = \
 
 class ProximityConstraint(object):
 	"""Implementation of constraint 'proximity'"""
+	
+	__apply_after__ = False
+	
 	def __init__(self, **query):
 		super(ProximityConstraint, self).__init__()
 		self.query = query

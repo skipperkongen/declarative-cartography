@@ -66,6 +66,9 @@ DROP TABLE _density_3;
 
 class DensityConstraint(object):
 	"""docstring for DensityConstraint"""
+	
+	__apply_after__ = False
+	
 	def __init__(self, **query):
 		super(DensityConstraint, self).__init__()
 		self.query = query

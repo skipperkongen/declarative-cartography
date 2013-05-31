@@ -45,6 +45,9 @@ DROP TABLE _cellbound_1;
 
 class CellboundConstraint(object):
 	"""Implementation of constraint 'cell bound K'"""
+	
+	__apply_after__ = False
+	
 	def __init__(self, **query):
 		super(CellboundConstraint, self).__init__()
 		self.query = query

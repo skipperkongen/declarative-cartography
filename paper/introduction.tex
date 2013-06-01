@@ -1,5 +1,20 @@
 % !TEX root = ./cvl.tex
 \section{Introduction}
-Horizontal trends: Big data, Move code to data, reverse data management, data processing, crowd-sourcing.
+In recent year, two major cross-cutting trends in data management have been  big data and crowd-sourcing. These general trends have been changing a lot of fields, and the field of automated cartographic generalization is no exception. This field is concerned with the production of multi-scale maps from geographical datasets, where the main concern is the selection and presentation of data at different zoom-levels.
+
+A general consequences of big data is that our ability to produce data is increasing faster than our ability to move data around, due to diminishing relative bandwidth. This has lead to a trend of moving the code to data instead of moving data to the code, as exemplified by map reduce. Our approach to automated cartographic generalization continues this trend of moving code to data.
+
+Humans are increasingly collaborating and sharing online, a phenomenon known as crowd-sourcing. An effect of crowd-sourcing is that a multitude of general purpose background maps of the world can now be downloaded for free. As a consequence of this, we consider the problem of automated cartographic generalization in the context of general purpose background maps as solved. This does not mean that automated cartographic generalization is a closed chapter, but that the focus has perhaps shifted away from general purpose background maps to other kinds of maps such as overlays. 
+
+New datasets are appearing all the time, and they play an important role in data journalism, science and many other areas. There is a need to visualize some of these rapidly appearing datasets on multi-scale maps. The task of visualizing data is often associated with tight deadlines, and waiting for the crowd to solve the problem in this case is infeasible. We see a good fit for automated cartographic generalization techniques in this area. While the general task of generalization has proven hard, there are indications that generalizing overlays is easier, and recent success has been reported in this field~\cite{fusiontables,thatotherpaper}.
+
+In the context of cartographic generalization, there are two opposite extremes: Either a human controls the process completely, or an algorithm controls the process completely. We believe that neither extreme is optimal. At one end, it is prohibitively time consuming for humans to manage every detail of the generalization process. At the other end, designing an algorithm that produces a good result in all cases has been and still is an illusive goal. The recent methods work well only for simple point data, and do not produce satisfactory results for lines and polygons. We have designed our generalization framework so that it spans the spectrum between human control and algorithmic control. We believe that human-computer interaction should ideally be a dialogue between the human and the computer, rather than a monologue by one part. For the purpose of dialogue we have designed a language for cartographic generalization which we call CVL (pronounced \emph{civil}).
+
+While recent results with complete automation are impressive in many ways, they lack in quality. The other extreme, that a human cartographer decides everything is prohibitively time consuming.
+
+
+ There are issues Qualitative issues in the resulting maps are very clear to the human eye. We are not talking about complex issues, but rather things that have a simple solution.
+
+OTHER STUFF: Other trends are reverse data management, data processing, .
 
 Vertical trends: Vector data in maps \cite{apple,googlemaps} produce better user experiences, high quality human generated background maps are shared online \cite{openstreetmap,googlemaps,tilemill}  fiting into a general trend of crowd-sourcing, narrow geographical datasets are abundantly available.

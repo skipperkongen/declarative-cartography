@@ -1,0 +1,101 @@
+% !TEX root = ./cvl.tex
+\section{CVL model and language}
+
+As part of this work, we have designed the declarative language CVL, designed to enable a human cartographer to concisely state how to generalize a spatial dataset. CVL is an acronym for \emph{Cartographic Visualization Language}. The syntax and semantics of the language are defined in this section.
+
+\subsection{CVL language}
+
+The language has two mandatory clauses, the first of which is a specification of input and output. The input dataset is assumed to exist at evaluation time, while the output dataset is created as part of evaluating the CVL script. The user must specify fields holding the unique record id and record geometry: 
+
+\begin{lstlisting}
+GENERALIZE 
+   {input:string} TO {output:string}
+WITH ID
+   {field:string}
+WITH GEOMETRY 
+   {field:string}
+\end{lstlisting}
+
+Optionally one can add a clause for other fields, which are simply copied from input to output:
+
+\begin{lstlisting}
+WITH OTHER {list of fields:strings}
+\end{lstlisting}
+
+The second mandatory clause specifies the number of zoom-levels to generalize for. Zoom-levels are assumed to run from 0 (lowest scale) to some $\mathcal{Z}$ (largest scale). As zoom-levels are zero-indexed, the number that is given in the clause is $\mathcal{Z}-1$:
+
+\begin{lstlisting}
+AT {z:integer} ZOOM LEVELS
+\end{lstlisting}
+
+A ranking expression (e.g. a user defined function) is optionally given to guide the generalization process and give priority to "important" records. If the clause is left out, records are ranked by the constant $1$:
+
+\begin{lstlisting}
+RANK BY {rank:float}
+\end{lstlisting}
+
+A partitioning expression (e.g. the name of a record field) is optionally given to semantically split the input dataset into subpartitions. Subpartitions are treated separately by the CVL interpreter. If no clause is given, all records are partitioned by the constant $1$. Optionally, the merge clause can be used to recombine partitions into bigger ones:
+
+\begin{lstlisting}
+PARTITION BY
+   {partition:scalar}
+MERGE PARTITIONS    
+    {list of partitions:scalars}
+    AS {partition:scalar}
+[AND 
+   {list of partitions:scalars} 
+   AS {partition:scalar}]
+[...]
+[AND 
+   * AS {partition:scalar}]
+\end{lstlisting}
+
+One of the most central clauses is actually optional. The subject-to clause states the cartographic constraints that must hold for each partition at each zoom-level. Constraint are parameterized by a single float-valued expression, typically a constant:
+
+\begin{lstlisting}
+SUBJECT TO 
+   {constraint:string} {parameter:float} 
+[AND
+   {constraint:string} {parameter:float}]
+[...]
+\end{lstlisting}
+
+The user may optionally choose to manually set the minimum zoom-level (integer) for a partition (scalar). Constraints are not evaluated for these partitions:
+
+\begin{lstlisting}
+FORCE MIN LEVEL
+   {z:integer} FOR {partition:scalar}
+[AND
+   {z:integer} FOR {partition:scalar}]
+[...]
+\end{lstlisting}
+
+The user may optionally name a set of finalizing steps to be performed at the end of the generalization process. CVL has support for two such steps: simplification and a novel "all-or-nothing" transformation. The all-or-nothing transformation ensures that either all records in a partition are visible at a given zoom-level or none of them are.
+
+\begin{lstlisting}
+TRANSFORM BY
+   {operator:string} [, {operators:strings}]
+\end{lstlisting}
+
+\subsection{Ranking and partitioning functions}
+
+Records are ranked by a user-defined expression. Conceptually this is a function $rank: record \mapsto \mathbb{R}_0^+$ that maps records to a real value. In practice it can be any expression for which a total ordering is defined.
+
+Records are partitioned by a user defined expression. Conceptually this is a user-defined function $p: record \mapsto scalar$.
+
+\subsection{Cartographic constraints and conflicts}
+
+We use two related terms to deal with selection of records at multiple zoom-levels: Constraints and conflicts. A \emph{constraint} states a condition that must hold over a set of records. A \emph{conflict} represents a subset of records that together violate a constraint. A conflict can always be resolved by deleting some of the records, indicated by the \emph{degree} of the conflict.
+
+\subsubsection{Example}
+Consider a proximity constraint that states that every pair of records must be separated by some minimum distance. Evaluating this constraint over a set of records produces a conflict for each a pair of records that are too close together. For each conflict, one of the records must be deleted in order to respect the constraint.
+
+\subsection{Constraints}
+We consider the following constraints in our work, but our implementation allows a user to define any constraint that conforms with the requirements mentioned above. 
+
+\begin{description}
+\item [Proximity] All pairs of records on a given zoom-level must be at least $d$ pixels apart
+\item [Visibility] Given a uniform grid of cells at a given zoom-level, at most $K$ records may intersect each cell
+\item [All-or-nothing] If one record is deleted from partition $P$ at a given zoom-level, then all records in partition $P$ must be deleted from the zoom-level
+\end{description}
+

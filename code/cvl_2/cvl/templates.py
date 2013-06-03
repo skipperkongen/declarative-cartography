@@ -44,13 +44,7 @@ UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_tile_level, 25
 ALLORNOTHING = \
 """
 -- all or nothing
-SELECT 
-  {fid} AS conflict_id, 
-  {fid} AS record_id, 
-  _rank, 
-  _partition,
-  1 AS min_hits 
-FROM 
+DELETE FROM 
   {output}
 WHERE
   _tile_level = {current_z}

@@ -15,7 +15,6 @@ class CvlCompiler(object):
 		self.query = query
 		self.constraints = self._load_constraints()
 		#pdb.set_trace()
-		sys.exit(0)
 	
 	def _load_constraints(self):
 		constraints = []
@@ -39,20 +38,20 @@ class CvlCompiler(object):
 	
 	def generate_sql(self):
 		code = []
-		code.append( INFO_COMMENT.format( **self.query ))
+		code.append( INFO_COMMENT.format( **self.query.__dict__ ))
 		code.append( BEGIN_TX )
 		code.extend( self.setup() )
 		code.extend( self.create_levels() )
 		code.extend( self.finalize() )
 		code.extend( self.cleanup() )
 		code.append( COMMIT_TX )
-		code.append( INSPECTION_HELPER.format( **self.query ))
+		code.append( INSPECTION_HELPER.format( **self.query.__dict__ ))
 		return "".join( code )
 		
 	def setup(self):
 		"""TODO"""
 		code = []
-		sql = SET_UP.format( **self.query )
+		sql = SET_UP.format( **self.query.__dict__ )
 		code.append( sql )
 		return code
 
@@ -60,14 +59,18 @@ class CvlCompiler(object):
 		"""TODO"""
 		code = []
 		code.append( CREATE_LEVELS_HEADER )
-		for current_z in reversed(range( self.query['zoomlevels'] )):
+		for current_z in reversed(range( self.query.zoomlevels )):
 			code.extend( self.create_level_z( current_z ))
 		
 		return code
 	
 	def create_level_z(self, current_z ):
 		code = []
-		format_obj = dict( self.query.items() + [('current_z', current_z), ('conflict_resolution', "".join(self.hittingset.solver_sql()))] )
+		format_obj = dict( 
+			self.query.__dict__.items() + 
+			[('current_z', current_z)] + 
+			[('conflict_resolution', "".join(self.conflict_resolver.solver_sql()))]
+		)
 		code.append( CREATE_LEVEL_Z_HEADER.format( **format_obj ))
 		code.append(COPY_DOWN.format( **format_obj ))
 		
@@ -89,14 +92,14 @@ class CvlCompiler(object):
 	def cleanup(self):
 		"""TODO"""
 		code = []
-		sql = CLEAN_UP.format(**self.query)
+		sql = CLEAN_UP.format(**self.query.__dict__)
 		code.append( sql )
 		return code
 	
 	def finalize(self):
-		if self.query['simplify']:
-			return ["UPDATE {table} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_tile_level, 256)/2);".format(
-			**self.query
+		if 'simplify' in self.query.transform_by:
+			return ["UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_tile_level, 256)/2);".format(
+			**self.query.__dict__
 			)]
 		else:
 			return []

@@ -10,15 +10,15 @@ SELECT
 	unnest(array[._partition, r._partition]) as _partition
 	1 as min_hits
 FROM 
-	{table} l 
+	{output} l 
 JOIN
-	{table} r
+	{output} r
 ON 
 	l.{fid} < r.{fid}
 AND	l._partition = r._partition
 AND	l._tile_level = {current_z}
 AND	r._tile_level = {current_z}
-AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {_pixels});
+AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {parameter_1});
 """
 
 CLEAN_UP = \

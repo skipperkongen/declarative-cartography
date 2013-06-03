@@ -8,7 +8,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 		_rank,
 		_partition
 	FROM 
-		{table}
+		{output}
 	WHERE 
 		_tile_level = {current_z}
 );
@@ -29,13 +29,13 @@ JOIN
 	-- Find all cells with more than K records
 	SELECT 
 		cell_id, 
-		count(*) - {_k} AS min_hits
+		count(*) - {parameter_1} AS min_hits
 	FROM 
 		_cellbound_1
 	GROUP BY 
 		cell_id
 	HAVING 
-		count(*) > {_k}
+		count(*) > {parameter_1}
 ) f 
 ON c.cell_id = f.cell_id;
 """

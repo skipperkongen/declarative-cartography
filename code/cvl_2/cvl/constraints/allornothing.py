@@ -10,7 +10,7 @@ SELECT
   _partition,
   1 AS min_hits 
 FROM 
-  {table}
+  {output}
 WHERE
   _tile_level = {current_z}
 AND
@@ -22,7 +22,7 @@ AND
       _partition, 
       count(*) AS count
     FROM 
-      {table}
+      {output}
     WHERE 
       _tile_level= {current_z}
     GROUP BY _partition
@@ -33,7 +33,7 @@ AND
       _partition, 
       count(*) AS count
     FROM 
-      {table} 
+      {output} 
     WHERE
       _tile_level = {current_z} + 1
     GROUP BY 

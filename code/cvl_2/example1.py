@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from cvl.compiler import CvlCompiler
-from cvl.query import Query,WILDCARD
+from cvl.query import Query, WILDCARD
 
 if __name__ == '__main__':
 	query_dict = {
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 			(['motorway','motorway_link'], 'motorways'),
 			(['primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','road'], 'big_streets'),
 			(['residential','pedestrian','living_street'], 'medimum_streets'),
-			#(WILDCARD, 'the_rest')
+			(WILDCARD, 'the_rest')
 		],
 		'subject_to' : [('cellbound', 16)],
 		'force_level': [('the_rest', 20)],

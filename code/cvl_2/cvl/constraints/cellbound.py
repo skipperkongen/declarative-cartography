@@ -16,6 +16,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 
 FIND_CONFLICTS = \
 """
+-- select records with conflict
 SELECT 
 	c.cell_id as conflict_id, 
 	c.record_id, 

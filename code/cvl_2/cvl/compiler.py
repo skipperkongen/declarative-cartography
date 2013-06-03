@@ -14,6 +14,7 @@ class CvlCompiler(object):
 		self.conflict_resolver = conflict_resolver( query )
 		self.query = query
 		self.constraints = self._load_constraints()
+		pdb.set_trace()
 		sys.exit(0)
 	
 	def _load_constraints(self):

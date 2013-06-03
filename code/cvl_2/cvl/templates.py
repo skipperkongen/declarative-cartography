@@ -44,39 +44,26 @@ UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_tile_level, 25
 ALLORNOTHING = \
 """
 -- all or nothing
-DELETE FROM 
-  {output}
-WHERE
-  _tile_level = {current_z}
-AND
-  _partition IN
+DELETE FROM {output}
+WHERE _tile_level = {current_z}
+AND _partition IN
 (
-  SELECT l._partition FROM 
+  SELECT low._partition FROM 
   (
-    SELECT 
-      _partition, 
-      count(*) AS count
-    FROM 
-      {output}
-    WHERE 
-      _tile_level= {current_z}
+    SELECT _partition, count(*) AS count
+    FROM {output}
+    WHERE _tile_level= {current_z}
     GROUP BY _partition
-  ) l 
+  ) low 
   JOIN
   (
-    SELECT 
-      _partition, 
-      count(*) AS count
-    FROM 
-      {output} 
-    WHERE
-      _tile_level = {current_z} + 1
-    GROUP BY 
-      _partition
-  ) r
-  ON 
-    l._partition = r._partition
-  WHERE r.count - l.count > 0);
+    SELECT _partition, count(*) AS count
+    FROM {output} 
+    WHERE _tile_level = {current_z} + 1
+    GROUP BY _partition
+  ) high
+  ON low._partition = high._partition
+  WHERE low.count < high.count);
 """
 
 

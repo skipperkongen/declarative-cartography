@@ -11,7 +11,9 @@ HITTING_SET_HEURISTIC = \
 
 class HittingSetHeuristic(object):
 	"""docstring for HittingSetHeuristic"""
-	def __init__(self):
+	def __init__(self, query):
 		super(HittingSetHeuristic, self).__init__()
-	def solver_sql(self, query):
-		return [HITTING_SET_HEURISTIC.format(**query.__dict__)]
+		self.query = query
+
+	def solver_sql(self):
+		return [HITTING_SET_HEURISTIC.format(**self.query.__dict__)]

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-from cvl.cvlmain import CvlMain
-from cvl.constraints import cellbound, proximity, allornothing, density2 
+from cvl.compiler import CvlCompiler
 from cvl.query import Query,WILDCARD
 
 if __name__ == '__main__':
@@ -16,7 +15,7 @@ if __name__ == '__main__':
 	 	'partition_by' : 'type',
 		'merge_partitions': [
 			(['motorway','motorway_link'], 'motorways'),
-			(['primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','road'], 'big_streets')
+			(['primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','road'], 'big_streets'),
 			(['residential','pedestrian','living_street'], 'medimum_size'),
 			(WILDCARD, 'the_rest')
 		],
@@ -25,5 +24,5 @@ if __name__ == '__main__':
 		'transform_by': ['simplify','allornothing']
 	}
 	query = Query(**query_dict)
-	cm = CvlMain(query)
-	print cm.generate_sql()
+	comp = CvlCompiler(query)
+	print comp.generate_sql()

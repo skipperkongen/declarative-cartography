@@ -1,24 +1,39 @@
 from constraints import cellbound, proximity, allornothing 
 from algo.hittingset import HittingSetHeuristic
-from query import Constraint
+from constraints import Constraint
 from templates import *
 
 import imp
+import sys, os
+import pdb
 
-class CvlMain(object):
+class CvlCompiler(object):
 	"""docstring for CvlMain"""
-	def __init__( self, conflict_resolver=HittingSetHeuristic, query ):
-		super( CvlMain, self ).__init__()
+	def __init__( self, query, conflict_resolver=HittingSetHeuristic ):
+		super( CvlCompiler, self ).__init__()
 		self.conflict_resolver = conflict_resolver( query )
 		self.query = query
-		self.constraints = _load_constraint_implementations( query )
+		self.constraints = self._load_constraints()
+		sys.exit(0)
 	
-	def _load_constraint_implementations(self):
-		for constraint in query.subject_to:
+	def _load_constraints(self):
+		constraints = []
+		constraints_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'constraints')
+		print constraints_dir
+		
+		for constraint in self.query.subject_to:
 			name = constraint[0]
 			params = list(constraint[1:])
-			mod = imp.load_source('constraints.'+name, 'constraints/'+name+'.py')
-			impl = 
+			module_name = 'constraints.%s' % name
+			module_file = '%s/%s.py' % (constraints_dir, name)
+			#pdb.set_trace()
+			mod = imp.load_source( module_name, module_file )
+			
+			constraints.append(
+				Constraint(name, self.query, mod.SET_UP, mod.FIND_CONFLICTS, mod.CLEAN_UP, params)
+			)
+			
+		return constraints
 		
 	
 	def generate_sql(self):

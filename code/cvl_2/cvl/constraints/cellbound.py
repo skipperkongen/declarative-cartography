@@ -18,13 +18,13 @@ FIND_CONFLICTS = \
 """
 -- select records with conflict
 SELECT 
-	c.cell_id as conflict_id, 
-	c.record_id, 
-	c._rank,
-	c._partition
+	cells.cell_id as conflict_id, 
+	cells.record_id, 
+	cells._rank,
+	cells._partition,
 	f.min_hits
 FROM 
-	_cellbound_1 c
+	_cellbound_1 cells
 JOIN
 (
 	-- Find all cells with more than K records
@@ -38,7 +38,7 @@ JOIN
 	HAVING 
 		count(*) > {parameter_1}
 ) f 
-ON c.cell_id = f.cell_id;
+ON c.cell_id = f.cell_id
 """
 
 CLEAN_UP = \

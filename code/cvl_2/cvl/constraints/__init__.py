@@ -16,10 +16,9 @@ class Constraint(object):
 		fmt_obj = self._get_format_obj(current_z)
 		return [self.SET_UP.format(**fmt_obj)]
 
-	def find_conflicts(self, current_z, skeleton):
+	def find_conflicts(self, current_z):
 		fmt_obj = self._get_format_obj(current_z)
-		constraint_select = self.FIND_CONFLICTS.format(**fmt_obj)
-		return skeleton.format(constraint_select=constraint_select)
+		return self.FIND_CONFLICTS.format( **fmt_obj )
 
 	def clean_up(self, current_z):
 		fmt_obj = self._get_format_obj(current_z)

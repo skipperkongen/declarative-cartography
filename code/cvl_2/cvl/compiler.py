@@ -100,7 +100,8 @@ class CvlCompiler(object):
 		format_obj = dict( 
 			self.query.__dict__.items() + 
 			[('current_z', current_z)] + 
-			[('conflict_resolution', "".join(self.conflict_resolver.solver_sql()))]
+			[('conflict_resolution', ''.join(self.conflict_resolver.solver_sql()))] + 
+			[('ignored_partitions',  ', '.join(map(lambda x: ("'%s'" % x[0]), self.query.force_level)))]
 		)
 
 		code.append( INIT_LEVEL.format(**format_obj) )
@@ -108,7 +109,8 @@ class CvlCompiler(object):
 		for constraint in self.constraints:
 			code.append( HEADER_CONSTRAINT.format(constraint_name=constraint.name) )
 			code.extend( constraint.set_up(current_z) )
-			code.extend( constraint.find_conflicts(current_z, INSERT_INTO_CONFLICTS).format(**format_obj) )
+			format_obj['constraint_select'] = constraint.find_conflicts(current_z)
+			code.extend( INSERT_INTO_CONFLICTS.format(**format_obj) )
 			code.extend( constraint.clean_up( current_z ) )
 
 		code.append( RESOLVE_CONFLICTS.format(**format_obj) )

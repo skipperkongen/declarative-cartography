@@ -2,20 +2,28 @@
 
 from cvl.cvlmain import CvlMain
 from cvl.constraints import cellbound, proximity, allornothing, density2 
-from cvl.algo.hittingset import HittingSetHeuristic
+from cvl.query import Query,WILDCARD
 
 if __name__ == '__main__':
-	query = {
-		'datasource': 'cph_highway',
-		'table': 'cph_highway_output',
-		'id': 'ogc_fid',
+	query_dict = {
+		'zoomlevels': 20,
+		'input': 'cph_highway',
+		'output': 'cph_highway_output',
+		'fid': 'ogc_fid',
 		'geometry': 'wkb_geometry',
-		'other': 'type, name, oneway, lanes,_cluster_id',
-		'zoomlevels': 15,
-		'rank_by': 'ST_Length(wkb_geometry)',
+		'other': ['type', 'name', 'oneway', 'lanes'],
+		'rank_by': '1',
 	 	'partition_by' : 'type',
-		'_k': 50,
-		'simplify': True
+		'merge_partitions': [
+			(['motorway','motorway_link'], 'motorways'),
+			(['primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','road'], 'big_streets')
+			(['residential','pedestrian','living_street'], 'medimum_size'),
+			(WILDCARD, 'the_rest')
+		],
+		'subject_to' : [('cellbound', 16)],
+		'force_level': [('the_rest', 20)],
+		'transform_by': ['simplify','allornothing']
 	}
-	cm = CvlMain(HittingSetHeuristic(**query), [cellbound.CellboundConstraint(**query), allornothing.AllOrNothingConstraint(**query)], **query)
-	print cm.generate_sql() # Query returned successfully with no result in 68070 ms on MacBook Pro
+	query = Query(**query_dict)
+	cm = CvlMain(query)
+	print cm.generate_sql()

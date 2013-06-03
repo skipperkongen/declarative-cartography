@@ -16,8 +16,8 @@ if __name__ == '__main__':
 		'merge_partitions': [
 			(['motorway','motorway_link'], 'motorways'),
 			(['primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','road'], 'big_streets'),
-			(['residential','pedestrian','living_street'], 'medimum_size'),
-			(WILDCARD, 'the_rest')
+			(['residential','pedestrian','living_street'], 'medimum_streets'),
+			#(WILDCARD, 'the_rest')
 		],
 		'subject_to' : [('cellbound', 16)],
 		'force_level': [('the_rest', 20)],

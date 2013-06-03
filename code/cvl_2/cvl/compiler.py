@@ -1,9 +1,11 @@
 from constraints import cellbound, proximity, allornothing 
 from algo.hittingset import HittingSetHeuristic
 from constraints import Constraint
+from query import WILDCARD
 from templates import *
 
 import imp
+import re
 import sys, os
 import pdb
 
@@ -50,9 +52,38 @@ class CvlCompiler(object):
 		
 	def setup(self):
 		"""TODO"""
+		Q = self.query
 		code = []
-		sql = SET_UP.format( **self.query.__dict__ )
-		code.append( sql )
+		code.append( SET_UP.format( **self.query.__dict__ ) )
+		code.append( HEADER_MERGE )
+		# merge partitions
+		# pass 1: find wildcard and collect partitions to be merged
+		to_be_merged = []
+		has_merge_wildcard = False
+		add_quotes = re.compile(r'(.*)')
+		for merge in Q.merge_partitions:
+			if merge[0] is not WILDCARD:
+				to_be_merged.extend(merge[0])
+			else:
+				has_merge_wildcard = True
+		# pass 2: create sql
+		for merge in Q.merge_partitions:
+			if merge[0] is not WILDCARD:
+				code.append( MERGE_PARTITIONS.format(
+					output=Q.output, 
+					before_merge=', '.join(
+						map(lambda x: add_quotes.sub(r"'\1'", x), merge[0])
+					), 
+					after_merge=merge[1]
+				))
+			else:
+				code.append( MERGE_PARTITIONS_REST.format(
+					output=Q.output,
+					to_be_merged = ', '.join(
+						map(lambda x: add_quotes.sub(r"'\1'", x), to_be_merged)
+					),
+					after_merge = merge[1]
+				))
 		return code
 
 	def create_levels(self):

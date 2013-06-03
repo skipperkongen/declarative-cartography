@@ -22,7 +22,7 @@ SELECT
 	cells.record_id, 
 	cells._rank,
 	cells._partition,
-	f.min_hits
+	exceeded.min_hits
 FROM 
 	_cellbound_1 cells
 JOIN
@@ -37,8 +37,8 @@ JOIN
 		cell_id
 	HAVING 
 		count(*) > {parameter_1}
-) f 
-ON c.cell_id = f.cell_id
+) exceeded
+ON cells.cell_id = exceeded.cell_id
 """
 
 CLEAN_UP = \

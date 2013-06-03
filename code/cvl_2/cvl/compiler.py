@@ -112,6 +112,13 @@ class CvlCompiler(object):
 			format_obj['constraint_select'] = constraint.find_conflicts(current_z)
 			code.extend( INSERT_INTO_CONFLICTS.format(**format_obj) )
 			code.extend( constraint.clean_up( current_z ) )
+		
+		# delete records whos time have come, vis-a-vis the force_level clause
+		#pdb.set_trace()
+		for force_delete in filter(lambda x: x[1] == current_z+1, self.query.force_level):
+			#pdb.set_trace()
+			format_obj['delete_partition'] = "'%s'" % force_delete[0]
+			code.append( FORCE_DELETE.format(**format_obj) )
 
 		code.append( RESOLVE_CONFLICTS.format(**format_obj) )
 		if 'allornothing' in self.query.transform_by:

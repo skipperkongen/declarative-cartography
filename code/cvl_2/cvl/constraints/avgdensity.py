@@ -43,6 +43,7 @@ SELECT
 FROM 
 	{output}
 WHERE
+	_tile_level = {current_z} AND
 	_partition IN
 (
 	-- Find all cells, partitions high average density
@@ -53,7 +54,7 @@ WHERE
 	GROUP BY 
 		_partition
 	HAVING 
-		Avg(cell_area/itx_area) > {parameter_1}
+		Avg(itx_area/cell_area) > {parameter_1}
 )
 """
 

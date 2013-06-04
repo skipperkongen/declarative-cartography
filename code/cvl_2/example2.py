@@ -19,7 +19,7 @@ if __name__ == '__main__':
 			(['residential','pedestrian','living_street'], 'medimum_streets'),
 			(WILDCARD, 'the_rest')
 		],
-		'subject_to' : [('avgdensity', 40)],
+		'subject_to' : [('avgdensity', 0.3)],
 		'transform_by': ['simplify_once']
 	}
 	query = Query(**query_dict)

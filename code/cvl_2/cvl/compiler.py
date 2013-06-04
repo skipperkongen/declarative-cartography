@@ -16,7 +16,6 @@ class CvlCompiler(object):
 		self.conflict_resolver = conflict_resolver( query )
 		self.query = query
 		self.constraints = self._load_constraints()
-		#pdb.set_trace()
 	
 	def _load_constraints(self):
 		constraints = []
@@ -41,7 +40,9 @@ class CvlCompiler(object):
 		code = []
 		code.append( INFO_COMMENT.format( **self.query.__dict__ ))
 		code.append( BEGIN_TX )
+		# GENERALIZE, RANK BY and PARTITION BY
 		code.extend( self.setup() )
+		# SUBJECT TO, FORCE LEVEL, TRANSFORM BY
 		code.extend( self.create_levels() )
 		code.extend( self.finalize() )
 		code.append( COMMIT_TX )
@@ -54,7 +55,7 @@ class CvlCompiler(object):
 		code = []
 		code.append( SET_UP.format( **self.query.__dict__ ) )
 		code.append( HEADER_MERGE )
-		# merge partitions
+		# MERGE PARTITIONS
 		# pass 1: find wildcard and collect partitions to be merged
 		merged = []
 		has_merge_wildcard = False
@@ -70,7 +71,6 @@ class CvlCompiler(object):
 			))
 			merged.append(after_merge)
 		for merge in filter(lambda x: x[0] is WILDCARD, Q.merge_partitions):
-			#pdb.set_trace()
 			code.append( MERGE_PARTITIONS_REST.format(
 				output=Q.output,
 				merged = ', '.join(
@@ -92,7 +92,6 @@ class CvlCompiler(object):
 	def create_level_z(self, current_z ):
 
 		code = []
-
 		format_obj = dict( 
 			self.query.__dict__.items() + 
 			[('current_z', current_z)] + 
@@ -100,8 +99,10 @@ class CvlCompiler(object):
 			[('ignored_partitions',  ', '.join(map(lambda x: ("'%s'" % x[0]), self.query.force_level)))]
 		)
 
+		# create _conflicts
 		code.append( INIT_LEVEL.format(**format_obj) )
 		
+		# SUBJECT TO
 		for constraint in self.constraints:
 			code.append( HEADER_CONSTRAINT.format(constraint_name=constraint.name) )
 			code.extend( constraint.set_up(current_z) )
@@ -109,16 +110,21 @@ class CvlCompiler(object):
 			code.extend( INSERT_INTO_CONFLICTS.format(**format_obj) )
 			code.extend( constraint.clean_up( current_z ) )
 		
-		# delete records whos time have come, vis-a-vis the force_level clause
-		#pdb.set_trace()
+		# FORCE LEVEL
 		for force_delete in filter(lambda x: x[1] == current_z+1, self.query.force_level):
-			#pdb.set_trace()
 			format_obj['delete_partition'] = "'%s'" % force_delete[0]
 			code.append( FORCE_DELETE.format(**format_obj) )
 
+		# make level feasible by deleting records
 		code.append( RESOLVE_CONFLICTS.format(**format_obj) )
+
+		# TRANSFORM BY
 		if 'allornothing' in self.query.transform_by:
-			code.append( ALLORNOTHING.format(**format_obj) )				
+			code.append( ALLORNOTHING.format(**format_obj) )
+		if 'simplify_carry' in self.query.transform_by:
+			code.append( SIMPLIFY_LEVEL.format(**format_obj) )
+		
+		# delete _conflicts			
 		code.append( CLEAN_UP_LEVEL.format(**format_obj) )
 
 		return code
@@ -126,7 +132,7 @@ class CvlCompiler(object):
 	def finalize(self):
 		code = []
 		code.append( HEADER_FINALIZE.format(**self.query.__dict__) )
-		if 'simplify' in self.query.transform_by:
+		if 'simplify_once' in self.query.transform_by:
 			code.append( SIMPLIFY.format(**self.query.__dict__))
 		code.append( FINALIZE.format(**self.query.__dict__) )
 		return code

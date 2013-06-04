@@ -19,9 +19,9 @@ if __name__ == '__main__':
 			(['residential','pedestrian','living_street'], 'medimum_streets'),
 			(WILDCARD, 'the_rest')
 		],
-		'subject_to' : [('cellbound', 16)],
+		'subject_to' : [('cellbound', 40)],
 		'force_level': [('the_rest', 20)],
-		'transform_by': ['simplify','allornothing']
+		'transform_by': ['simplify_once','simplify_carry','allornothing']
 	}
 	query = Query(**query_dict)
 	comp = CvlCompiler(query)

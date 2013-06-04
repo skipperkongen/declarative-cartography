@@ -41,6 +41,15 @@ SIMPLIFY = \
 UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_tile_level, 256)/2);
 """
 
+SIMPLIFY_LEVEL = \
+"""
+-- simplifying records on current level
+
+UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({current_z}, 256)/2) WHERE _tile_level={current_z};
+"""
+
+
+
 ALLORNOTHING = \
 """
 -- all or nothing

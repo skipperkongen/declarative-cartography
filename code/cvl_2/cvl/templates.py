@@ -258,6 +258,17 @@ SELECT
 	s.record_id,
 	s._rank,
 	s.min_hits
+FROM ({constraint_select}) s;
+"""
+
+INSERT_INTO_CONFLICTS_IGNORED_PARTITIONS = \
+"""
+INSERT INTO _conflicts 
+SELECT 
+	s.conflict_id,
+	s.record_id,
+	s._rank,
+	s.min_hits
 FROM ({constraint_select}) s
 WHERE s._partition NOT IN ({ignored_partitions});
 """

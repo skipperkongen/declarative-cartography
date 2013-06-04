@@ -98,6 +98,7 @@ class CvlCompiler(object):
 			[('conflict_resolution', ''.join(self.conflict_resolver.solver_sql()))] + 
 			[('ignored_partitions',  ', '.join(map(lambda x: ("'%s'" % x[0]), self.query.force_level)))]
 		)
+		format_obj['comment'] = '--' if format_obj['ignored_partitions'] == '' else ''
 
 		# create _conflicts
 		code.append( INIT_LEVEL.format(**format_obj) )
@@ -107,7 +108,10 @@ class CvlCompiler(object):
 			code.append( HEADER_CONSTRAINT.format(constraint_name=constraint.name) )
 			code.extend( constraint.set_up(current_z) )
 			format_obj['constraint_select'] = constraint.find_conflicts(current_z)
-			code.extend( INSERT_INTO_CONFLICTS.format(**format_obj) )
+			if format_obj['ignored_partitions'] == '':
+				code.extend( INSERT_INTO_CONFLICTS.format(**format_obj) )
+			else:
+				code.extend( INSERT_INTO_CONFLICTS_IGNORED_PARTITIONS.format(**format_obj) )
 			code.extend( constraint.clean_up( current_z ) )
 		
 		# FORCE LEVEL

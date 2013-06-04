@@ -11,24 +11,24 @@ SELECT
 	{fid},
 	_partition
 FROM 
-	{output};
+	{output}
 WHERE
 	_tile_level = {current_z};
 
 CREATE TEMP TABLE _avg_density_sums AS
 SELECT 
-	sum(ST_Area(ST_Intersection(c.cell_box, ST_Buffer(h.{geometry}, st_ResZ({current_z}, 256))))) AS itx_area,
+	sum(ST_Area(ST_Intersection(cells.cell_box, ST_Buffer(output.{geometry}, st_ResZ({current_z}, 256))))) AS itx_area,
 	pow(ST_CellSizeZ({current_z}),2) AS cell_area,
-	h._partition
+	output._partition
 FROM 
-	cph_highway h JOIN cells 
+	{output} output JOIN cells 
 ON 
-	h.{fid} = c.{fid} 
+	output.{fid} = cells.{fid} 
 AND 
-	h._partition = c._partition
+	output._partition = cells._partition
 GROUP BY 
-	ST_PointHash(ST_Centroid(c.cell_box)), 
-	h._partition;
+	ST_PointHash(ST_Centroid(cells.cell_box)), 
+	output._partition;
 """
 
 FIND_CONFLICTS = \
@@ -47,14 +47,14 @@ WHERE
 (
 	-- Find all cells, partitions high average density
 	SELECT
-		_partition, 
+		_partition 
 	FROM 
 		_avg_density_sums
 	GROUP BY 
 		_partition
 	HAVING 
 		Avg(cell_area/itx_area) > {parameter_1}
-) foo
+)
 """
 
 CLEAN_UP = \

@@ -20,7 +20,6 @@ if __name__ == '__main__':
 			(WILDCARD, 'the_rest')
 		],
 		'subject_to' : [('avgdensity', 40)],
-		'force_level': [('the_rest', 20)],
 		'transform_by': ['simplify_once']
 	}
 	query = Query(**query_dict)

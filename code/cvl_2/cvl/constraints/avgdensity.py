@@ -21,7 +21,7 @@ SELECT
 	pow(ST_CellSizeZ({current_z}),2) AS cell_area,
 	output._partition
 FROM 
-	{output} output JOIN cells 
+	{output} output JOIN _avg_density_cells cells 
 ON 
 	output.{fid} = cells.{fid} 
 AND 

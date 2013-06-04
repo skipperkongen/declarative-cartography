@@ -5,9 +5,9 @@ from cvl.query import Query, WILDCARD
 
 if __name__ == '__main__':
 	query_dict = {
-		'zoomlevels': 20,
-		'input': 'mini_highway',
-		'output': 'mini_highway_output',
+		'zoomlevels': 16,
+		'input': 'cph_highway',
+		'output': 'cph_highway_output',
 		'fid': 'ogc_fid',
 		'geometry': 'wkb_geometry',
 		'other': ['type', 'name', 'oneway', 'lanes'],

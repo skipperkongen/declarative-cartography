@@ -14,9 +14,11 @@ if __name__ == '__main__':
 		'rank_by': '1',
 	 	'partition_by' : 'type',
 		'merge_partitions': [
-			(['motorway','motorway_link'], 'motorways'),
-			(['primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','road'], 'big_streets'),
-			(['residential','pedestrian','living_street'], 'medimum_streets'),
+			# http://wiki.openstreetmap.org/wiki/Key:highway
+			(['motorway','motorway_link','trunk', 'trunk_link'], 'motorways'),
+			(['primary','primary_link','secondary','secondary_link','tertiary','tertiary_link'], 'big_streets'),
+			(['residential','pedestrian','living_street','unclassified', 'road'], 'medimum_streets'),
+			(['service','track','bus_guideway','raceway','path','footway','cycleway','bridleway','steps','mini_roundabout'], 'small_streets'),
 			(WILDCARD, 'the_rest')
 		],
 		'subject_to' : [('cellbound', 40)],

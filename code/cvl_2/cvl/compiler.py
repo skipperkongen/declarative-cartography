@@ -77,15 +77,19 @@ class TransactionBuilder(object):
 		self.tx.append( self.T.ADD_INFO.format( **self.F ) )
 	
 	def AddFramework( self ):
+		self.Comment( 'Adding CVL tiling framework' )
 		self.tx.append( self.T.ADD_FRAMEWORK.format( **self.F ))
 	
 	def RemoveFramework( self ):
+		self.Comment( 'Removing CVL tiling framework' )
 		self.tx.append( self.T.REMOVE_FRAMEWORK.format( **self.F ))
 
 	def InitializeOutput( self ):
+		self.Comment( 'Initializing output' )
 		self.tx.append( self.T.INITIALIZE_OUTPUT.format( **self.F ))
 			
 	def MergePartitions( self ):
+		self.Comment( 'Merging partitions' )
 		_tx = []
 		merged = []
 		has_merge_wildcard = False
@@ -106,17 +110,20 @@ class TransactionBuilder(object):
 		self.tx.extend(_tx)
 	
 	def CopyLevel( self, from_z, to_z ):
+		self.Comment( 'Copy level' )
 		self.F['from_z'] = from_z
 		self.F['to_z'] = to_z
 		self.tx.append( self.T.COPY_LEVEL.format( **self.F )
 	
 	def InitializeLevel( self, z ):
+		self.Comment( 'Initialize level' )
 		self.F['current_z'] = z
 		self.tx.append( self.T.INITIALIZE_LEVEL.format( **self.F ) )
 
 	def PreTransform(self, z ):
 		# FORCE LEVEL
 		for force_delete in filter(lambda x: x[1] == z+1, self.Q.force_level):
+			self.Comment( 'Prepruning records' )
 			self.F['delete_partition'] = "'%s'" % force_delete[0]
 			self.tx.append( self.T.FORCE_DELETE.format( **self.F ) )
 		
@@ -127,6 +134,7 @@ class TransactionBuilder(object):
 		
 		# find conflicts
 		for constraint in self.C:
+			self.Comment( 'Applying constraints' )
 			self.tx.extend( constraint.set_up( z ) )
 			self.F['constraint_select'] = constraint.find_conflicts( z )
 			if self.F['ignored_partitions'] == '':
@@ -140,22 +148,28 @@ class TransactionBuilder(object):
 
 	def PostTransform( self, z ):
 		if 'allornothing' in self.Q.transform_by:
+			self.Comment( 'Apply all-or-nothing' )
 			self.tx.append( self.T.POSTPRUNE_LEVEL.format( **self.F ) )
 		if 'simplify_carryforward' in self.Q.transform_by:
+			self.Comment( 'Simplifying level' )
 			self.tx.append( self.T.SIMPLIFY_LEVEL.format( **self.F ) )
 			
 	def CleanLevel( self, z ):
+		self.Comment( 'Clean-up level' )
 		self.tx.append( self.T.CLEAN_LEVEL.format( **self.F ) )
 
 	def SimplifyOutput( self ):
+		self.Comment( 'Simplifying output' )
 		if 'simplify_once' in self.Q.transform_by:
 			self.tx.append( self.T.SIMPLIFY_OUTPUT.format( **self.F ) )
 
 	def FinalizeOutput( self ):
+		self.Comment( 'Finalizing output ' )
 		self.tx.append( self.T.FINALIZE_OUTPUT.format( **self.F ) )
 	
 	def TryThis( self ):
-		self.tx.append( self.T.COMMENT.format(comment=self.T.TRYTHIS) )
+		self.Comment( 'Something you can try')
+		self.Comment( self.T.TRYTHIS )
 	
 	def Comment( self, comment ):
 		self.tx.append( self.T.COMMENT.format(comment=comment) )

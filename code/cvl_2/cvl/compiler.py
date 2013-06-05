@@ -42,6 +42,7 @@ class CvlToSqlCompiler(object):
 		tx.MergePartitions() # MERGE PARTITIONS
 		# main loop: bottom up
 		for z in reversed(range( query.zoomlevels )):
+			tx.BigComment( 'Creating zoom-level %d' % z )
 			tx.CopyLevel( z+1, z )
 			tx.InitializeLevel( z )
 			tx.PreTransform( z ) # FORCE LEVEL
@@ -110,13 +111,13 @@ class TransactionBuilder(object):
 		self.tx.extend(_tx)
 	
 	def CopyLevel( self, from_z, to_z ):
-		self.Comment( 'Copy level' )
+		self.Comment( 'Copy data from level %d to level %d' % (from_z, to_z) )
 		self.F['from_z'] = from_z
 		self.F['to_z'] = to_z
 		self.tx.append( self.T.COPY_LEVEL.format( **self.F ) )
 	
 	def InitializeLevel( self, z ):
-		self.Comment( 'Initialize level' )
+		self.Comment( 'Initialization for level %d' % z )
 		self.F['current_z'] = z
 		self.tx.append( self.T.INITIALIZE_LEVEL.format( **self.F ) )
 
@@ -134,7 +135,7 @@ class TransactionBuilder(object):
 		
 		# find conflicts
 		for constraint in self.C:
-			self.Comment( 'Applying constraints' )
+			self.Comment( 'Finding conflicts' )
 			self.tx.extend( constraint.set_up( z ) )
 			self.F['constraint_select'] = constraint.find_conflicts( z )
 			if self.F['ignored_partitions'] == '':
@@ -144,6 +145,7 @@ class TransactionBuilder(object):
 			self.tx.extend( constraint.clean_up( z ) )
 		
 		# resolve conflicts
+		self.Comment( 'Resolve conflicts' )
 		self.tx.append( self.T.RESOLVE_CONFLICTS.format( **self.F ) )
 
 	def PostTransform( self, z ):
@@ -155,7 +157,7 @@ class TransactionBuilder(object):
 			self.tx.append( self.T.SIMPLIFY_LEVEL.format( **self.F ) )
 			
 	def CleanLevel( self, z ):
-		self.Comment( 'Clean-up level' )
+		self.Comment( 'Clean-up for level %d' % z )
 		self.tx.append( self.T.CLEAN_LEVEL.format( **self.F ) )
 
 	def SimplifyOutput( self ):
@@ -173,6 +175,9 @@ class TransactionBuilder(object):
 	
 	def Comment( self, comment ):
 		self.tx.append( self.T.COMMENT.format(comment=comment) )
+	
+	def BigComment( self, comment ):
+		self.tx.append( self.T.BIG_COMMENT.format(comment=comment) )
 	
 	def get_sql( self ):
 		return "".join( self.tx )

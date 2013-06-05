@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from cvl.compiler import CvlCompiler
+from cvl.compiler import CvlToSqlCompiler
 from cvl.query import Query, WILDCARD
 
 if __name__ == '__main__':
@@ -23,8 +23,8 @@ if __name__ == '__main__':
 		],
 		'subject_to' : [('cellbound', 40)],
 		'force_level': [('the_rest', 20)],
-		'transform_by': ['simplify_once','simplify_carry','allornothing']
+		'transform_by': ['simplify_carryforward','allornothing']
 	}
 	query = Query(**query_dict)
-	comp = CvlCompiler(query)
-	print comp.generate_sql()
+	compiler = CvlToSqlCompiler(query)
+	print compiler.generate_sql()

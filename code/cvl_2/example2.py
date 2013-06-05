@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from cvl.compiler import CvlCompiler
+from cvl.compiler import CvlToSqlCompiler
 from cvl.query import Query, WILDCARD
 
 if __name__ == '__main__':
@@ -23,5 +23,5 @@ if __name__ == '__main__':
 		'transform_by': ['simplify_once']
 	}
 	query = Query(**query_dict)
-	comp = CvlCompiler(query)
+	comp = CvlToSqlCompiler(query)
 	print comp.generate_sql()

@@ -171,7 +171,7 @@ class TransactionBuilder(object):
 	
 	def TryThis( self ):
 		self.Comment( 'Something you can try')
-		self.Comment( self.T.TRYTHIS )
+		self.tx.append( self.T.TRYTHIS.format( **self.F) )
 	
 	def Comment( self, comment ):
 		self.tx.append( self.T.COMMENT.format(comment=comment) )

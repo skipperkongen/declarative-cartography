@@ -23,5 +23,5 @@ if __name__ == '__main__':
 		'transform_by': ['simplify_once']
 	}
 	query = Query(**query_dict)
-	comp = CvlToSqlCompiler(query)
-	print comp.generate_sql()
+	comp = CvlToSqlCompiler()
+	print comp.compile( query)

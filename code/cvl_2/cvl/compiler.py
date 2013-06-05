@@ -1,8 +1,8 @@
 from constraints import cellbound, proximity, allornothing 
-import algo import HittingSetHeuristic
+import solvers
+import templates
 from constraints import Constraint
-from query import WILDCARD
-from templates.postgis import *
+from query import Query,WILDCARD
 
 import imp
 import re
@@ -26,11 +26,11 @@ class CvlToSqlCompiler(object):
 			#pdb.set_trace()
 			mod = imp.load_source( module_name, module_file )
 			constraints.append(
-				Constraint(name, self.query, mod.SET_UP, mod.FIND_CONFLICTS, mod.CLEAN_UP, *params)
+				Constraint(name, query, mod.SET_UP, mod.FIND_CONFLICTS, mod.CLEAN_UP, *params)
 			)
 		return constraints
 	
-	def compile( self, query, templates=templates.postgis, optimizer=algo.hittingset.HittingSetHeuristic ):
+	def compile( self, query, templates=templates.postgis, optimizer=solvers.pgsolvers.HittingSetHeuristic ):
 		# initialize empty SQL transaction tx
 		constraints = self._load_constraints( query )
 		tx = TransactionBuilder( query, templates, optimizer, *constraints )
@@ -61,9 +61,9 @@ class TransactionBuilder(object):
 	def __init__( self, query, templates, optimizer, *constraints ):
 		super(TransactionBuilder, self).__init__()
 		self.Q = query
-		self.F = Q.__dict__
+		self.F = query.__dict__
 		self.T = templates
-		self.O = optimizer
+		self.O = optimizer()
 		self.C = constraints
 		self.tx = []
 
@@ -105,7 +105,7 @@ class TransactionBuilder(object):
 			self.F['merged'] = ', '.join(map(lambda x: add_quotes.sub(r"'\1'", x), merged))
 			self.F['after_merge'] = merge[1]
 
-			_tx.append( MERGE_PARTITIONS_REST.format( **self.F ))
+			_tx.append( self.T.MERGE_PARTITIONS_REST.format( **self.F ))
 		
 		self.tx.extend(_tx)
 	
@@ -113,7 +113,7 @@ class TransactionBuilder(object):
 		self.Comment( 'Copy level' )
 		self.F['from_z'] = from_z
 		self.F['to_z'] = to_z
-		self.tx.append( self.T.COPY_LEVEL.format( **self.F )
+		self.tx.append( self.T.COPY_LEVEL.format( **self.F ) )
 	
 	def InitializeLevel( self, z ):
 		self.Comment( 'Initialize level' )
@@ -128,9 +128,9 @@ class TransactionBuilder(object):
 			self.tx.append( self.T.FORCE_DELETE.format( **self.F ) )
 		
 	def OptimizeLevel( self, z ):
-		self.F['conflict_resolution'] = ''.join(self.conflict_resolver.solver_sql( query ))
-		self.F['ignored_partitions'] = ', '.join(map(lambda x: ("'%s'" % x[0]), self.query.force_level))
-		self.F['comment'] = '--' if format_obj['ignored_partitions'] == '' else ''
+		self.F['conflict_resolution'] = ''.join(self.O.get_solver( self.Q ))
+		self.F['ignored_partitions'] = ', '.join(map(lambda x: ("'%s'" % x[0]), self.Q.force_level))
+		self.F['comment'] = '--' if self.F['ignored_partitions'] == '' else ''
 		
 		# find conflicts
 		for constraint in self.C:
@@ -174,7 +174,7 @@ class TransactionBuilder(object):
 	def Comment( self, comment ):
 		self.tx.append( self.T.COMMENT.format(comment=comment) )
 	
-	def get_sql():
+	def get_sql( self ):
 		return "".join( self.tx )
 		
 if __name__ == '__main__':

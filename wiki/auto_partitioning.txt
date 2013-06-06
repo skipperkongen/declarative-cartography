@@ -1,0 +1,31 @@
+# Auto partitioning
+
+## Caution
+
+Before getting too involved with this approach, see if manual clustering of partitions helps at all.
+
+## Approach
+
+Initial experiments with OSM data suggest that it is hard to generalize without having a look at the actual data.
+
+CVL as-is might be good enough, if good partitions can be computed by analyzing the data. For OSM data the problem is that there are 30+ types of streets. Generalizing so many partitions separately does not makes too much sense.
+
+An idea is to create an analytical point in K dimensions for each record, and use K-means to cluster the records in groups
+
+```
+SELECT CLUSTERS 5 AS _cluster_id
+FROM cph_highway 
+GEOMETRY IS wkb_geometry
+KEEP GROUPS type
+ANALYZE USING	
+	geometry_length, 
+	geometry_crookedness,
+	geometry_area,
+	auto_group_columns
+	...
+	
+```
+
+The underlying algorithm is e.g. K-means.
+
+Perhaps the output is a new table with a new column called _cluster_id

@@ -12,8 +12,12 @@ This does not mean that automated cartographic generalization is a closed chapte
 
 While fully automatic generalization methods have been demonstrated to work on these types of data, they work best for simple point datasets. With CVL we take a small step back towards giving humans control of the generalization process. Just enough to improve the quality over fully automatic methods, but not so much as to require humans to waste a lot of time managing every detail of the generalization process~\cite{fme}. We believe that human-computer interaction should ideally be a dialogue between the human and the computer, rather than a monologue by one part.
 
- There are issues Qualitative issues in the resulting maps are very clear to the human eye. We are not talking about complex issues, but rather things that have a simple solution.
+We make the following contributions:
 
-OTHER STUFF: Other trends are reverse data management, data processing, .
-
-Vertical trends: Vector data in maps \cite{apple,googlemaps} produce better user experiences, high quality human generated background maps are shared online \cite{openstreetmap,googlemaps,tilemill}  fiting into a general trend of crowd-sourcing, narrow geographical datasets are abundantly available.
+\begin{itemize}
+\item The specification of a concise domain-specific language, CVL, for declaratively stating how automated generalization should be performed
+\item A formulation of the automated generalization problem as a hitting set problem.
+\item An extensible CVL compiler that compiles CVL to SQL for processing in a relational database
+\item A CVL compiler that compiles a slightly constrained version of CVL to a two-stage map-reduce program, which makes the CVL scale to almost arbitrary dataset sizes.
+\item Some initial results for serving vector tiles produced by CVL using a novel tight packing
+\end{itemize}

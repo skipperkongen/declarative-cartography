@@ -3,7 +3,7 @@ import os
 
 from tornado.options import define, options, parse_command_line
 
-from vectile.web import TornadoServer
+from pgtiler.web import TornadoServer
 
 define("port", default=8080, help="run on the given port", type=int)
 

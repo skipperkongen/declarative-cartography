@@ -17,10 +17,10 @@ import tornado.ioloop
 import tornado.options
 import tornado.web
 
-from vectile.postgis import PGSource, PGConnectionSettings
-from vectile.postgis import PGSource
-from vectile.gridsets import gridset_by_srid
-from vectile.maprules import ResolutionRule
+from pgtiler.postgis import PGSource, PGConnectionSettings
+from pgtiler.postgis import PGSource
+from pgtiler.gridsets import gridset_by_srid
+from pgtiler.maprules import ResolutionRule
 
 # http://localhost:8080/vectile/denmark_highway/3857/17/70123/41032.ids
 
@@ -92,7 +92,7 @@ class TornadoServer(object):
 		handlers = [
 			(r'/', RootHandler),
 			(r'/uptime', UptimeHandler, dict([('startup_millis',startup_millis)])),
-			(r'/vectile/([a-zA-Z0-9-_]+)/([0-9]+)/([0-9]+)/([0-9]+)/([0-9]+).(json|ids)', VectileHandler, 	
+			(r'/vectile/([a-zA-Z0-9-_]+)/([0-9]+)/([0-9]+)/([0-9]+)/([0-9]+).(json|ids)', PgtilerHandler, 	
 				dict([
 					('datasources',datasources), 
 					('caching', caching)
@@ -128,7 +128,7 @@ class MapStyleHandler(tornado.web.RequestHandler):
 		self.write( fh.read() )
 		
 
-class VectileHandler(tornado.web.RequestHandler):
+class PgtilerHandler(tornado.web.RequestHandler):
 	
 	def initialize(self, datasources, caching):
 		self.datasources = datasources

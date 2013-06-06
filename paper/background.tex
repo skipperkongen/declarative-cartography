@@ -1,3 +1,30 @@
 % !TEX root = ./cvl.tex
 \section{Background}
-Cartography as a field has long tradition spanning hundreds of years, and has rightly been considered as much an art as a science. Until recently automated cartographic generalization carried a lot of this legacy. With the appearance of high-quality user created background maps which are shared online, the focus has recently shifted away from generalizing topographical data, to dealing with simpler datasets used as overlays to supplement e.g. news stories~\cite{fusiontables,datajournalism}.  This has led to a reboot of the area of cartographic generalization \cite{fusiontables}. In this new version of the field, a generally much more uniform approach is taken to generalizing data. The trends has been to largely ignore the domain of the data, and focus mainly on the pure geometric properties~\cite{fusiontables}. The focus is on performance, scalability and reasonably good average quality, while perhaps sacrificing the ability to generalize rich topographical datasets.
+Cartography has a long tradition spanning hundreds of years, and has rightly been considered as much an art as a science. It is well-known that there is no consensus even among highly trained cartographers, and that the domain of the data is very important. Cartography is a rich discipline full of aesthetic choices and time consuming trial and error. When the field of automated generalization emerged some decades ago, this historical backdrop provided a lot of legacy to the new field. The conventional wisdom was still very much that the domain of the data matters a lot~\cite{a bunch of papers}.
+
+With the appearance of high-quality human created background maps which are shared online, the focus of automated generalization has shifted. It has shifted away from generalizing rich topographical dataset, towards dealing with much simpler datasets used as overlays on high-quality background maps. Examples include narrow datasets used to supplement a news story, such as casualties of the war in Iraq~\cite{datablog1} and the distribution of people with a non-english language as their main language in England~\cite{datablog2}. There are simply not enough trained cartographers in the world to cover the growing demand for visualizing spatial datasets in todays fast moving communications world. This has led to a reboot of the area of automated cartographic generalization in which a much more data-agnostic approach is taken~\cite{fusiontables}. By data-agnostic we mean that the main focus is on the purely geometric properties of the data, and to a much lesser extent on the domain of the data. In this point of view a polygon is a polygon regardless of whether it represents the spread of a disease, the outline of a building or the borders of a country.
+
+\subsection{Map services}
+
+A typical architecture used for map services consists of a rendering process and a database process. In this architecture each section of the map is visualized by following these three steps:
+
+\begin{description}
+\item[Scale-oblivious spatial filtering] The rendering process fetches data from the database using a spatial predicate such as \emph{intersects-boundingbox} to fetch data that overlaps the section of the map being rendered. The filtering is computed by the database and is made fast by the use of spatial indexes.
+\item[Scale-aware attribute filtering] The rendering process applies \emph{post-filtering} to the data that was retrieved, using range and equality predicates according to scale. The predicates come from \emph{cartographic filtering rules} that make statements of what sets of records should be omitted/included at what scales, such as "omit individual buildings on a map of the world" or "include restaurants on a map of a city".
+\item[Rendering] After the data has been filtered, it is rendered using \emph{cartographic visualization rules} such as "color lakes blue".
+\end{description}
+
+Different steps are certainly possible, but these step represent the most typical case. In this work we realize an opportunity for making the rendering process more efficient. 
+
+\subsection{Specializing datasets by fixing filters}
+One of the reasons that such map services are hard to scale is that all three steps are performed every time a map visualization is produced. The first filtering step is both I/O and CPU intensive. The second filtering step is mainly CPU intensive. The third visualization step is also mainly CPU intensive. Our goal is to make the overall process less I/O and CPU intensive. Another approach would be to simply make redundancies in the system, by replicating the processes. While the rendering process is fairly cheap to replicate, as it is completely stateless, the database has state (the data) which makes it harder or at least more expensive to replicate.
+
+Here we discuss how a dataset can be specialized to a set of cartographic filtering rules, without fixing the cartographic visualization rules that can be applied later. By doing so the overall task of visualizing the data becomes less I/O and CPU intensive, and the total cost of the system can therefore be expected to decrease. The idea is to do most of the filtering as preprocessing, and deferring only the rendering of the data.
+
+The first realization is that the scale-oblivious spatial filtering does not dependent on how the data will be rendered in the end. A street either intersects a geographical area corresponding to a section of the map or it doesn't. It makes no difference whether the street is eventually colored red or blue. This implies that scale-oblivious spatial filtering can be done once, as pre-processing.
+
+The second realization is that there is a relationship between the principle of constant information density and the scale-aware attribute filtering. If residential streets are excluded from one world map, simply because there are too many, they are likely to be excluded from any other world map. This implies that scale-aware attribute filtering can be done once, as pre-processing.
+
+The task that remains corresponds roughly to deciding which color to draw the records that survived the filtering process, which is outside the focus of CVL.
+
+

@@ -14,11 +14,11 @@ def build_models( cursor, table ):
 	Z = 1
 	models = []
 	for z in range(Z):
-		record_ids = ['x1','x2']
-		record_ranks = [42.0,127.0]
-		A = matrix([ [-1.0, -1.0, 0.0, 1.0], [1.0, -1.0, -1.0, -2.0] ])
-		b = matrix([ 1.0, -2.0, 0.0, 4.0 ])
-		c = matrix([ 2.0, 1.0 ])
+		record_ids = 	['x1','x2']
+		record_ranks = 	[42.0,127.0]
+		A = 			matrix([ [-1.0, -1.0, 0.0, 1.0], [1.0, -1.0, -1.0, -2.0] ])
+		b = 			matrix([ 1.0, -2.0, 0.0, 4.0 ])
+		c = 			matrix([ 2.0, 1.0 ])
 		models += [(record_ids, record_ranks, A, b, c, z)]
 	return models
 
@@ -31,19 +31,25 @@ def connect_to_db( database_connection_string ):
 	cur = conn.cursor()
 	return conn, cur
 
-def build_test_table( cur ):
-	pass
+def build_test_table( conn, cur, test_table_name ):
+	cur.execute("CREATE TEMP TABLE IF NOT EXISTS {test_table_name} (z int, conflict_id int, record_id text, record_rank float, min_hits int);".format(test_table_name=test_table_name))
+	conn.commit()
+	cur.execute("INSERT INTO {test_table_name} VALUES (0, 1, 'fid1', 42.0, 1);".format(test_table_name=test_table_name))
+	cur.execute("INSERT INTO {test_table_name} VALUES (0, 1, 'fid2', 127.5, 1);".format(test_table_name=test_table_name))
+	cur.execute("INSERT INTO {test_table_name} VALUES (0, 1, 'fid3', 17.5, 1);".format(test_table_name=test_table_name))
+	conn.commit()
 
 def main(options, table):
 	print "Running LP solver for CVL"
-	print "\tConnect:\t",options.database_connection
-	print "\tOutput file:\t",options.output_file
-	print "\tTable name:\t", table
+	print "\tConnect:\t",		options.database_connection
+	print "\tOutput file:\t",	options.output_file
+	print "\tTable name:\t", 	table
 
 	# Build models
 	conn, cur = connect_to_db( options.database_connection )
-	if options.build_test_table:
-		build_test_table( cur )
+	if options.use_test_table:
+		# Using a test table
+		build_test_table( conn, cur, table )
 	print "Building model..."
 	models = build_models( cur, table )
 	conn.close()
@@ -72,8 +78,8 @@ def main(options, table):
 if __name__ == '__main__':
 	usage = "usage: %prog [options] table_name"
 	parser = OptionParser(usage=usage)
-	parser.add_option("-t", "--build-test-table", 
-		dest="build_test_table", action="store_true", default=False,
+	parser.add_option("-t", "--use-test-table", 
+		dest="use_test_table", action="store_true", default=False,
 		help="Ignore table argument and build a test table to use")
 	parser.add_option("-c", "--database-connection", 
 		dest="database_connection", default="host='localhost' user='postgres'  password='postgres' dbname='cvl_paper'",
@@ -82,7 +88,7 @@ if __name__ == '__main__':
 		help="Name of a file to write results to")
 	(options, args) = parser.parse_args()
 
-	if options.build_test_table:
-		main(options, "cvl_lp_test_table")
+	if options.use_test_table:
+		main(options, "cvl_conflicts_test_table")
 	else:
 		main(options, args[0])

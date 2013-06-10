@@ -1,8 +1,6 @@
 # 1: connect to database (input parameters point to tables)
 # 2: read data from conflict tables (one for each zoom)
 # 3: build LP from conflict data
-# 4: solve LP
-# 5: write solution (records to delete for each zoom level) to file as *(z, id)* pairs
 
 import psycopg2
 from optparse import OptionParser
@@ -10,6 +8,7 @@ import sys
 import pdb
 from math import floor
 import ConfigParser
+from serializer import Serializer
 
 BUFFER_SIZE = 1000
 
@@ -102,21 +101,7 @@ def build_test_table( conn, cur, table ):
 	cur.execute("INSERT INTO {table} VALUES (1, 3, 'fid4', 17.5, 1);".format(table=table))
 	cur.execute("INSERT INTO {table} VALUES (1, 3, 'fid5', 32.2, 1);".format(table=table))
 	conn.commit()
-
-def write_instances( instances, output_file ):
-	# instance = (record_ids, record_ranks, A, b, c, z)
-	config = ConfigParser.ConfigParser()
-	for instance in instances:
-		config.add_section( str(instance['z']) )
-		config.set( str(instance['z']), 'record_ids'	, instance['record_ids'] )
-		config.set( str(instance['z']), 'record_ranks'	, instance['record_ranks'] )
-		config.set( str(instance['z']), 'A'				, instance['A'] )
-		config.set( str(instance['z']), 'b'	 			, instance['b'] )
-		config.set( str(instance['z']), 'c' 			, instance['c'] )
-
-	with open( output_file, 'w' ) as configfile:    # save
-	    config.write( configfile )
-
+	
 def main(options, table):
 
 	# connect to database
@@ -131,7 +116,7 @@ def main(options, table):
 	conn.close()
 
 	# write instances
-	write_instances( instances, options.output_file )
+	Serializer().serialize( instances, options.output_file )
 		
 	print "Solution written to", options.output_file 
 

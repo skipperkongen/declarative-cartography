@@ -9,9 +9,9 @@ import pdb
 from math import floor
 from serializer import Serializer
 
-BUFFER_SIZE = 1000
+EPSILON = 0.0001
 
-snap = round
+snap = lambda x: math.ceil(x) if abs(x - round(x)) > EPSILON else round(x)
 
 def main(options, input_file):
 

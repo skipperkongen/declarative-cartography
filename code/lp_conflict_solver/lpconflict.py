@@ -9,6 +9,7 @@ import psycopg2
 from optparse import OptionParser
 import sys
 import pdb
+from math import floor
 
 BUFFER_SIZE = 1000
 
@@ -130,7 +131,8 @@ def main(options, table):
 		for x in filter(lambda x: x[1]>0, variables):
 			print x
 			#pdb.set_trace()
-			results += ["{z},{variable},{variable_value},{variable_rank}".format(z=z, variable=x[0], variable_value=x[1], variable_rank=x[2])]
+			#results += ["{z},{variable},{variable_value},{variable_rank}".format(z=z, variable=x[0], variable_value=floor(x[1]), variable_rank=x[2])] # tempting...
+			results += ["{z},{variable},{variable_value},{variable_rank}".format(z=z, variable=x[0], variable_value=floor(x[1]), variable_rank=x[2])]
 	
 	#pdb.set_trace()
 	print "All models solved..."

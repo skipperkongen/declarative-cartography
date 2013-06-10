@@ -23,7 +23,7 @@ def build_models( cur, table ):
 	# build model for each zoom-level
 	models = []
 	for z in range(Z):
-		variables = set()
+		_variables = set()
 		conflicts = []
 		# get data for A and c
 		cur.execute("""
@@ -48,31 +48,38 @@ def build_models( cur, table ):
 				record_ranks 	= row[2]
 				min_hits 		= row[3]
 				var_subset = set( zip(record_ids, record_ranks) )
-				variables = variables.union( var_subset ) # extend variable set
+				_variables = _variables.union( var_subset ) # extend variable set
 				#pdb.set_trace()
 				conflicts.append( {'ids': set(record_ids), 'min_hits': min_hits} )
 			rows = cur.fetchmany(BUFFER_SIZE)
 		
-		variables = [{'id':fid, 'rank':rank} for fid, rank in variables]
+		variables = [{'id':fid, 'rank':rank} for fid, rank in _variables]
 		_A, _b, _c = [], [], []
-		# generate A, c one column at a time, looping over variables, conflicts
-		for var in variables:
-			A_col = []
+		# generate A and c one column at a time, variables (cols) in outer loop, conflicts (rows) in inner loop
+		for i, var in enumerate(variables):
+			# create c vector
 			_c.append(var['rank']) # coefficients
+			# create A matrix
+			A_col = []
+			for j in range(len(variables)):
+				A_col.append( -float(i==j)) # non-negativity constraints
 			for cn in conflicts:
-				A_col.append( int(var['id'] in cn['ids']) ) # 1 or 0
+				A_col.append( -float(var['id'] in cn['ids']) ) # 1.0 or 0.0 conflict 
 			_A.append( A_col )
-		#pdb.set_trace()
-		A = matrix( _A )
-		c = matrix( _c )
-		# generate b, looping over conflicts
+		# create b vector, looping over conflicts
+		for i in range(len(variables)):
+			_b.append( -1.0 ) # non-negativity constraints
 		for cn in conflicts:
-			_b.append(cn['min_hits'])
-		b = matrix( _b )
-		pdb.set_trace()
+			_b.append( -float(cn['min_hits']) )
 		record_ids 		= map(lambda x: x['id'], variables)
 		record_ranks 	= map(lambda x: x['rank'], variables)
-		models += [(record_ids, record_ranks, A, b, c, z)]
+		print "DEBUG"
+		print 42 * "-"
+		print "c:", _c
+		print "A:", _A
+		print "b:", _b
+		print 42 * "-"
+		models += [(record_ids, record_ranks, matrix(_A), matrix(_b), matrix(_c), z)]
 	return models
 
 def connect_to_db( database_connection_string ):
@@ -90,8 +97,10 @@ def build_test_table( conn, cur, table ):
 	conn.commit()
 	cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid1', 42.0, 1);".format(table=table))
 	cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid2', 127.5, 1);".format(table=table))
-	cur.execute("INSERT INTO {table} VALUES (1, 1, 'fid3', 17.5, 1);".format(table=table))
-	cur.execute("INSERT INTO {table} VALUES (1, 1, 'fid4', 127.5, 1);".format(table=table))
+	cur.execute("INSERT INTO {table} VALUES (0, 2, 'fid1', 42.0, 1);".format(table=table))
+	cur.execute("INSERT INTO {table} VALUES (0, 2, 'fid3', 27.1, 1);".format(table=table))	
+	cur.execute("INSERT INTO {table} VALUES (1, 3, 'fid4', 17.5, 1);".format(table=table))
+	cur.execute("INSERT INTO {table} VALUES (1, 3, 'fid5', 32.2, 1);".format(table=table))
 	conn.commit()
 	#pdb.set_trace()
 
@@ -108,6 +117,7 @@ def main(options, table):
 		build_test_table( conn, cur, table )
 	print "Building model..."
 	models = build_models( cur, table )
+	del cur
 	conn.close()
 	
 	# Solve models

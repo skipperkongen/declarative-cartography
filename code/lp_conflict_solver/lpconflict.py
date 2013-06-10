@@ -50,7 +50,6 @@ def build_models( cur, table ):
 				min_hits 		= row[3]
 				var_subset = set( zip(record_ids, record_ranks) )
 				_variables = _variables.union( var_subset ) # extend variable set
-				#pdb.set_trace()
 				conflicts.append( {'ids': set(record_ids), 'min_hits': min_hits} )
 			rows = cur.fetchmany(BUFFER_SIZE)
 		
@@ -69,7 +68,7 @@ def build_models( cur, table ):
 			_A.append( A_col )
 		# create b vector, looping over conflicts
 		for i in range(len(variables)):
-			_b.append( -1.0 ) # non-negativity constraints
+			_b.append( 0.0 ) # non-negativity constraints
 		for cn in conflicts:
 			_b.append( -float(cn['min_hits']) )
 		record_ids 		= map(lambda x: x['id'], variables)
@@ -93,7 +92,6 @@ def connect_to_db( database_connection_string ):
 	return conn, cur
 
 def build_test_table( conn, cur, table ):
-	#pdb.set_trace()
 	cur.execute("CREATE TEMP TABLE IF NOT EXISTS {table} (z int, conflict_id int, record_id text, record_rank float, min_hits int);".format(table=table))
 	conn.commit()
 	cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid1', 42.0, 1);".format(table=table))
@@ -103,20 +101,14 @@ def build_test_table( conn, cur, table ):
 	cur.execute("INSERT INTO {table} VALUES (1, 3, 'fid4', 17.5, 1);".format(table=table))
 	cur.execute("INSERT INTO {table} VALUES (1, 3, 'fid5', 32.2, 1);".format(table=table))
 	conn.commit()
-	#pdb.set_trace()
 
 def main(options, table):
-	print "Running LP solver for CVL"
-	print "\tConnect:\t",		options.database_connection
-	print "\tOutput file:\t",	options.output_file
-	print "\tTable name:\t", 	table
 
 	# Build models
 	conn, cur = connect_to_db( options.database_connection )
 	if options.use_test_table:
 		# Using a test table
 		build_test_table( conn, cur, table )
-	print "Building model..."
 	models = build_models( cur, table )
 	del cur
 	conn.close()
@@ -125,22 +117,18 @@ def main(options, table):
 	results = ["zoomlevel,record_id,solution_value,record_rank"]
 	solvers.options['show_progress'] = False
 	for record_ids, record_ranks, A, b, c, z in models:
-		print "Solving model for zoom-level", z
 		sol = solvers.lp(c, A, b)
+		pdb.set_trace()
 		variables = zip(record_ids, sol['x'], record_ranks)
 		for x in filter(lambda x: x[1]>0, variables):
-			print x
-			#pdb.set_trace()
 			#results += ["{z},{variable},{variable_value},{variable_rank}".format(z=z, variable=x[0], variable_value=floor(x[1]), variable_rank=x[2])] # tempting...
-			results += ["{z},{variable},{variable_value},{variable_rank}".format(z=z, variable=x[0], variable_value=floor(x[1]), variable_rank=x[2])]
+			results += ["{z},{variable},{variable_value},{variable_rank}".format(z=z, variable=x[0], variable_value=x[1], variable_rank=x[2])]
 	
-	#pdb.set_trace()
-	print "All models solved..."
 	f = open(options.output_file, "w")
 	for line in results:
 		f.write(str(line)+"\n")
 	f.close()
-	print "Data written to", options.output_file 
+	print "Solution written to", options.output_file 
 
 
 if __name__ == '__main__':

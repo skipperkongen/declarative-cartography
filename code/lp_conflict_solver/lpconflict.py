@@ -23,6 +23,8 @@ def build_models( cur, table ):
 	# build model for each zoom-level
 	models = []
 	for z in range(Z):
+		variables = set()
+		conflicts = []
 		# get data for A and c
 		cur.execute("""
 		SELECT 
@@ -36,18 +38,40 @@ def build_models( cur, table ):
 		GROUP BY
 			conflict_id;""".format(z=z,table=table))
 		rows = cur.fetchmany(BUFFER_SIZE)
+		# Create A, b, c
 		while rows:
 			for row in rows:
-				print "zoom",z,":",row
+				# zoom 0 : (1, ['fid1', 'fid2'], [42.0, 127.5], 1)
+				# zoom 1 : (1, ['fid3', 'fid4'], [17.5, 127.5], 1)
+				conflict_id 	= row[0]
+				record_ids 		= row[1]
+				record_ranks 	= row[2]
+				min_hits 		= row[3]
+				var_subset = set( zip(record_ids, record_ranks) )
+				variables = variables.union( var_subset ) # extend variable set
+				#pdb.set_trace()
+				conflicts.append( {'ids': set(record_ids), 'min_hits': min_hits} )
 			rows = cur.fetchmany(BUFFER_SIZE)
-		# find distinct record_ids, there is one variable per record
 		
-		 
-		record_ids = 	['x1','x2']
-		record_ranks = 	[42.0,127.0]
-		A = 			matrix([ [-1.0, -1.0, 0.0, 1.0], [1.0, -1.0, -1.0, -2.0] ])
-		b = 			matrix([ 1.0, -2.0, 0.0, 4.0 ])
-		c = 			matrix([ 2.0, 1.0 ])
+		variables = [{'id':fid, 'rank':rank} for fid, rank in variables]
+		_A, _b, _c = [], [], []
+		# generate A, c one column at a time, looping over variables, conflicts
+		for var in variables:
+			A_col = []
+			_c.append(var['rank']) # coefficients
+			for cn in conflicts:
+				A_col.append( int(var['id'] in cn['ids']) ) # 1 or 0
+			_A.append( A_col )
+		#pdb.set_trace()
+		A = matrix( _A )
+		c = matrix( _c )
+		# generate b, looping over conflicts
+		for cn in conflicts:
+			_b.append(cn['min_hits'])
+		b = matrix( _b )
+		pdb.set_trace()
+		record_ids 		= map(lambda x: x['id'], variables)
+		record_ranks 	= map(lambda x: x['rank'], variables)
 		models += [(record_ids, record_ranks, A, b, c, z)]
 	return models
 

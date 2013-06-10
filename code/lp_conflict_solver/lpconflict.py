@@ -10,10 +10,39 @@ from optparse import OptionParser
 import sys
 import pdb
 
-def build_models( cursor, table ):
-	Z = 1
+BUFFER_SIZE = 1000
+
+def build_models( cur, table ):
+	# find number of zoom-levels
+	try:
+		cur.execute("SELECT max(z) FROM {table};".format(table=table))
+	except:
+		print "[ERROR] error querying table:", table
+		sys.exit(1)
+	Z = int(cur.fetchall()[0][0]) + 1
+	# build model for each zoom-level
 	models = []
 	for z in range(Z):
+		# get data for A and c
+		cur.execute("""
+		SELECT 
+			conflict_id,
+			array_agg(record_id) as record_ids, 
+			array_agg(record_rank) as record_ranks, 
+			(SELECT min_hits FROM {table} where conflict_id=conflict_id LIMIT 1)
+		FROM 
+			{table}
+		WHERE z = {z}
+		GROUP BY
+			conflict_id;""".format(z=z,table=table))
+		rows = cur.fetchmany(BUFFER_SIZE)
+		while rows:
+			for row in rows:
+				print "zoom",z,":",row
+			rows = cur.fetchmany(BUFFER_SIZE)
+		# find distinct record_ids, there is one variable per record
+		
+		 
 		record_ids = 	['x1','x2']
 		record_ranks = 	[42.0,127.0]
 		A = 			matrix([ [-1.0, -1.0, 0.0, 1.0], [1.0, -1.0, -1.0, -2.0] ])
@@ -31,13 +60,16 @@ def connect_to_db( database_connection_string ):
 	cur = conn.cursor()
 	return conn, cur
 
-def build_test_table( conn, cur, test_table_name ):
-	cur.execute("CREATE TEMP TABLE IF NOT EXISTS {test_table_name} (z int, conflict_id int, record_id text, record_rank float, min_hits int);".format(test_table_name=test_table_name))
+def build_test_table( conn, cur, table ):
+	#pdb.set_trace()
+	cur.execute("CREATE TEMP TABLE IF NOT EXISTS {table} (z int, conflict_id int, record_id text, record_rank float, min_hits int);".format(table=table))
 	conn.commit()
-	cur.execute("INSERT INTO {test_table_name} VALUES (0, 1, 'fid1', 42.0, 1);".format(test_table_name=test_table_name))
-	cur.execute("INSERT INTO {test_table_name} VALUES (0, 1, 'fid2', 127.5, 1);".format(test_table_name=test_table_name))
-	cur.execute("INSERT INTO {test_table_name} VALUES (0, 1, 'fid3', 17.5, 1);".format(test_table_name=test_table_name))
+	cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid1', 42.0, 1);".format(table=table))
+	cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid2', 127.5, 1);".format(table=table))
+	cur.execute("INSERT INTO {table} VALUES (1, 1, 'fid3', 17.5, 1);".format(table=table))
+	cur.execute("INSERT INTO {table} VALUES (1, 1, 'fid4', 127.5, 1);".format(table=table))
 	conn.commit()
+	#pdb.set_trace()
 
 def main(options, table):
 	print "Running LP solver for CVL"

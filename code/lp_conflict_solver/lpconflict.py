@@ -15,10 +15,11 @@ def build_models( cursor, table ):
 	models = []
 	for z in range(Z):
 		record_ids = ['x1','x2']
+		record_ranks = [42.0,127.0]
 		A = matrix([ [-1.0, -1.0, 0.0, 1.0], [1.0, -1.0, -1.0, -2.0] ])
 		b = matrix([ 1.0, -2.0, 0.0, 4.0 ])
 		c = matrix([ 2.0, 1.0 ])
-		models += [(record_ids, A, b, c, z)]
+		models += [(record_ids, record_ranks, A, b, c, z)]
 	return models
 
 def connect_to_db( database_connection_string ):
@@ -48,16 +49,16 @@ def main(options, table):
 	conn.close()
 	
 	# Solve models
-	results = []
+	results = ["zoomlevel,record_id,solution_value,record_rank"]
 	solvers.options['show_progress'] = False
-	for rec_ids, A, b, c, z in models:
+	for record_ids, record_ranks, A, b, c, z in models:
 		print "Solving model for zoom-level", z
 		sol = solvers.lp(c, A, b)
-		variables = zip(rec_ids, sol['x'])
+		variables = zip(record_ids, sol['x'], record_ranks)
 		for x in filter(lambda x: x[1]>0, variables):
 			print x
 			#pdb.set_trace()
-			results += ["{z},{record_id}".format(z=z, record_id=x[0])]
+			results += ["{z},{variable},{variable_value},{variable_rank}".format(z=z, variable=x[0], variable_value=x[1], variable_rank=x[2])]
 	
 	#pdb.set_trace()
 	print "All models solved..."

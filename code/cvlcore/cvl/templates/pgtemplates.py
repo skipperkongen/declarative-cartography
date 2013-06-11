@@ -85,7 +85,7 @@ $$ LANGUAGE sql IMMUTABLE STRICT;
 
 -- web mercator cells
 
-CREATE OR REPLACE FUNCTION ST_WebCells
+CREATE OR REPLACE FUNCTION ST_WebMercatorCells
 (
   geom geometry,
   zoom integer,

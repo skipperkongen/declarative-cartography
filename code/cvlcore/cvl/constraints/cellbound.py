@@ -20,6 +20,7 @@ FIND_CONFLICTS = \
 SELECT 
 	cells.cell_id as conflict_id, 
 	cells.record_id, 
+	cells._partition,
 	cells._rank,
 	exceeded.min_hits
 FROM 

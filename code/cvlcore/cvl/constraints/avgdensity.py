@@ -36,7 +36,8 @@ FIND_CONFLICTS = \
 -- select records with conflict
 SELECT 
 	{fid} as conflict_id, 
-	{fid} as record_id, 
+	{fid} as record_id,
+	_partition,
 	_rank,
 	1 as min_hits
 FROM 

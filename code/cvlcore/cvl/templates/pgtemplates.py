@@ -207,9 +207,18 @@ CREATE TEMP TABLE _hitting_set AS
 SELECT hs.* FROM ({hittings_set_solution}) hs;
 """
 
+
+CREATE_EXPORT_TABLE = \
+"""
+CREATE TABLE {export_table} AS
+(SELECT * FROM _conflicts where 1=0);
+"""
+
+
 EXPORT = \
 """
--- export
+INSERT INTO {export_table}
+SELECT *, {current_z} as _tile_level FROM _conflicts;
 """
 
 DELETE_HITTING_SET = \

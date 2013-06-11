@@ -41,6 +41,8 @@ class CvlToSqlCompiler(object):
 		tx.AddFramework()
 		tx.InitializeOutput() 
 		tx.MergePartitions() # MERGE PARTITIONS
+		if self.options.get('export', ''):
+			tx.CreateExportTable( self.options['export'] ) # export hitting set for later analysis
 		# main loop: bottom up
 		for z in reversed(range( query.zoomlevels )):
 			tx.BigComment( 'Creating zoom-level %d' % z )
@@ -51,8 +53,8 @@ class CvlToSqlCompiler(object):
 			# SUBJECT TO
 			tx.FindConflicts( z ) # find conflicts
 			tx.FindHittingSet( z ) #  create hitting set
-			if self.options.get('export', False):
-				tx.Export( z ) # export hitting set for later analysis
+			if self.options.get('export', ''):
+				tx.Export( self.options['export'], z ) # export hitting set for later analysis
 			tx.DeleteHittingSet( z ) 
 			# TRANSFORM: allornothing, simplify_level
 			tx.LevelTransforms( z ) 
@@ -159,9 +161,14 @@ class TransactionBuilder(object):
 		self.Comment( 'Delete hitting set' )
 		self.tx.append( self._templates.DELETE_HITTING_SET.format( **self._formatter ) )
 	
-	def Export(self, z ):
-		# TODO
-		pass
+	def CreateExportTable( self, export_table ):
+		self.Comment( 'Creating export table')
+		self._formatter['export_table'] = export_table
+		self.tx.append( self._templates.CREATE_EXPORT_TABLE.format ( **self._formatter ))
+	
+	def Export( self, z ):
+		self.Comment( 'Exporting conflicts' )
+		self.tx.append( self._templates.EXPORT.format( **self._formatter ))
 	
 	def LevelTransforms( self, z ):
 		if 'allornothing' in self._query.transform_by:

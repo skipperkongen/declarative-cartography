@@ -26,5 +26,5 @@ if __name__ == '__main__':
 		'transform_by': ['allornothing','simplify_once']
 	}
 	query = Query(**query_dict)
-	comp = CvlToSqlCompiler()
+	comp = CvlToSqlCompiler(export='cph_highway_exported')
 	print comp.compile( query)

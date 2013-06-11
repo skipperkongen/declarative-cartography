@@ -21,7 +21,7 @@ if __name__ == '__main__':
 			(['residential','pedestrian','living_street','unclassified', 'roundabout','road'], 'medium_streets'),
 			(['service','track','bus_guideway','raceway','path','footway','cycleway','bridleway','steps','mini_roundabout'], 'small_streets'),
 			(WILDCARD, 'the_rest')],
-		'subject_to' : [('cellbound', 400)],
+		'subject_to' : [('cellbound', 800)],
 		'force_level': [('the_rest', 15)],
 		'transform_by': ['allornothing','simplify_once']
 	}

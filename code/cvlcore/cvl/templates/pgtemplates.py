@@ -210,8 +210,8 @@ SELECT hs.* FROM ({hittings_set_solution}) hs;
 
 CREATE_EXPORT_TABLE = \
 """
-CREATE TABLE {export_table} AS
-(SELECT * FROM _conflicts where 1=0);
+DROP TABLE IF EXISTS {export_table};
+CREATE TABLE {export_table} (conflict_id text, record_id integer, _rank float, min_hits integer);
 """
 
 EXPORT = \

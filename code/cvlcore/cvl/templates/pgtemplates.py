@@ -83,6 +83,19 @@ AND
   ST_Intersects($1, ST_Envelope(ST_Buffer(PT.pt, $2/2)));
 $$ LANGUAGE sql IMMUTABLE STRICT;
 
+-- web mercator cells
+
+CREATE OR REPLACE FUNCTION ST_WEBMERCATOR_CELLS
+(
+  geom geometry,
+  zoom integer,
+  OUT pt geometry
+) RETURNS SETOF geometry AS
+$$
+SELECT
+  ST_Cellify($1, ST_CellSizeZ($2), -20037508.34, -20037508.34) as pt
+$$ LANGUAGE sql IMMUTABLE STRICT;
+
 -- ST_ResZ
 
 CREATE OR REPLACE FUNCTION ST_ResZ

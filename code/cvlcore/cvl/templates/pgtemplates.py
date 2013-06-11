@@ -214,7 +214,6 @@ CREATE TABLE {export_table} AS
 (SELECT * FROM _conflicts where 1=0);
 """
 
-
 EXPORT = \
 """
 INSERT INTO {export_table}

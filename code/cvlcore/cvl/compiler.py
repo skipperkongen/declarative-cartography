@@ -54,7 +54,7 @@ class CvlToSqlCompiler(object):
 			tx.FindConflicts( z ) # find conflicts
 			tx.FindHittingSet( z ) #  create hitting set
 			if self.options.get('export', ''):
-				tx.Export( self.options['export'], z ) # export hitting set for later analysis
+				tx.Export( z ) # export hitting set for later analysis
 			tx.DeleteHittingSet( z ) 
 			# TRANSFORM: allornothing, simplify_level
 			tx.LevelTransforms( z ) 

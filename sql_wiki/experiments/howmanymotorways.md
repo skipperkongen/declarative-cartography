@@ -17,7 +17,7 @@ FROM
 WHERE 
 	ST_Intersects(
 		wkb_geometry, 
-		ST_Envelope(st_buffer(st_setsrid(st_makepoint(1389728,7494466),3857), ST_CellSizeZ(10)/2 ))
+		ST_Envelope(st_buffer(ST_SetSRID(ST_MakePoint(1389728,7494466),3857), ST_CellSizeZ(10)/2 ))
 	)
 AND 
 	type IN ('motorway','motorway_link','motorway_junction','trunk', 'trunk_link');

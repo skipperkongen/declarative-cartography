@@ -1,1 +1,1 @@
-import postgis
+import pgtemplates

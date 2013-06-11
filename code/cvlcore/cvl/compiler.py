@@ -11,7 +11,7 @@ import pdb
 
 class CvlToSqlCompiler(object):
 	"""Compiler that turns CVL into a single transaction in SQL"""
-	def __init__( self, **options=None ):
+	def __init__( self, **options ):
 		super( CvlToSqlCompiler, self ).__init__()
 		self.options = options
 	
@@ -44,22 +44,21 @@ class CvlToSqlCompiler(object):
 		# main loop: bottom up
 		for z in reversed(range( query.zoomlevels )):
 			tx.BigComment( 'Creating zoom-level %d' % z )
-			tx.CopyLevel( z+1, z )
-			tx.InitializeLevel( z )
+			tx.CopyLevel( z + 1, z )
+			tx.InitializeLevel( z ) # create _conflict table
 			# FORCE LEVEL
-			tx.ApplyForceLevel( z ) 
+			tx.ForceLevel( z ) 
 			# SUBJECT TO
 			tx.FindConflicts( z ) # find conflicts
-			tx.CreateHittingSet( z ) #  create hitting set
-			if self.options['export']:
+			tx.FindHittingSet( z ) #  create hitting set
+			if self.options.get('export', False):
 				tx.Export( z ) # export hitting set for later analysis
-			tx.SolveHittingSet( z ) 
-			# TRANSFORM: allornothing, simplify_carryforward
-			tx.ApplyTransformBy( z ) 
+			tx.DeleteHittingSet( z ) 
+			# TRANSFORM: allornothing, simplify_level
+			tx.LevelTransforms( z ) 
 			tx.CleanLevel( z )
 		# finalize
-		tx.SimplifyOutput() # TRANSFORM: simplify_once
-		tx.FinalizeOutput() # TRANSFORM
+		tx.SimplifyAll() # TRANSFORM: simplify_once
 		tx.RemoveFramework()
 		tx.CommitTx()
 		tx.TryThis()
@@ -86,11 +85,11 @@ class TransactionBuilder(object):
 		self.tx.append( self._templates.ADD_INFO.format( **self._formatter ) )
 	
 	def AddFramework( self ):
-		self.Comment( 'Adding CVL tiling framework' )
+		self.Comment( 'Adding CVL generalization framework' )
 		self.tx.append( self._templates.ADD_FRAMEWORK.format( **self._formatter ))
 	
 	def RemoveFramework( self ):
-		self.Comment( 'Removing CVL tiling framework' )
+		self.Comment( 'Removing CVL generalization framework' )
 		self.tx.append( self._templates.REMOVE_FRAMEWORK.format( **self._formatter ))
 
 	def InitializeOutput( self ):
@@ -130,12 +129,12 @@ class TransactionBuilder(object):
 		
 		self.tx.append( self._templates.INITIALIZE_LEVEL.format( **self._formatter ) )
 
-	def ApplyForceLevel(self, z ):
+	def ForceLevel(self, z ):
 		# FORCE LEVEL
 		for force_delete in filter(lambda x: x[1] == z+1, self._query.force_level):
 			self.Comment( 'Force delete records' )
 			self._formatter['delete_partition'] = "'%s'" % force_delete[0]
-			self.tx.append( self._templates.FORCE_DELETE.format( **self._formatter ) )
+			self.tx.append( self._templates.FORCE_LEVEL.format( **self._formatter ) )
 		
 	def FindConflicts( self, z ):
 		self._formatter['ignored_partitions'] = ', '.join(map(lambda x: ("'%s'" % x[0]), self._query.force_level))
@@ -145,9 +144,9 @@ class TransactionBuilder(object):
 			self.tx.extend( constraint.set_up( z ) )
 			self._formatter['constraint_select'] = constraint.find_conflicts( z )
 			if self._formatter['ignored_partitions'] == '':
-				self.tx.extend( self._templates.APPEND_TO_HITTING_SET.format( **self._formatter ) )
+				self.tx.extend( self._templates.FIND_CONFLICTS.format( **self._formatter ) )
 			else:
-				self.tx.extend( self._templates.APPEND_TO_HITTING_SET.format( **self._formatter ) )
+				self.tx.extend( self._templates.FIND_CONFLICTS_IGNORE.format( **self._formatter ) )
 			self.tx.extend( constraint.clean_up( z ) )
 	
 	def FindHittingSet( self, z ):
@@ -164,26 +163,22 @@ class TransactionBuilder(object):
 		# TODO
 		pass
 	
-	def ApplyTransformBy( self, z ):
+	def LevelTransforms( self, z ):
 		if 'allornothing' in self._query.transform_by:
 			self.Comment( 'Apply all-or-nothing' )
-			self.tx.append( self._templates.POSTPRUNE_LEVEL.format( **self._formatter ) )
-		if 'simplify_carryforward' in self._query.transform_by:
+			self.tx.append( self._templates.ALLORNOTHING.format( **self._formatter ) )
+		if 'simplify' in self._query.transform_by:
 			self.Comment( 'Simplifying level' )
-			self.tx.append( self._templates.SIMPLIFY_LEVEL.format( **self._formatter ) )
+			self.tx.append( self._templates.SIMPLIFY.format( **self._formatter ) )
 			
 	def CleanLevel( self, z ):
 		self.Comment( 'Clean-up for level %d' % z )
 		self.tx.append( self._templates.CLEAN_LEVEL.format( **self._formatter ) )
 
-	def SimplifyOutput( self ):
+	def SimplifyAll( self ):
 		self.Comment( 'Simplifying output' )
 		if 'simplify_once' in self._query.transform_by:
-			self.tx.append( self._templates.SIMPLIFY_OUTPUT.format( **self._formatter ) )
-
-	def FinalizeOutput( self ):
-		self.Comment( 'Finalizing output ' )
-		self.tx.append( self._templates.FINALIZE_OUTPUT.format( **self._formatter ) )
+			self.tx.append( self._templates.SIMPLIFY_ALL.format( **self._formatter ) )
 	
 	def TryThis( self ):
 		self.Comment( 'Something you can try')

@@ -61,14 +61,20 @@ def build_instances( cur, table ):
 			# create A matrix
 			A_col = []
 			for j in range(len(variables)):
-				A_col.append( -float(i==j)) # non-negativity constraints
+				# non-negativity and less than one constraints
+				A_col.append( -float(i==j)) # non-neg
+				A_col.append(  float(i==j)) # less than one
 			for cn in conflicts:
-				A_col.append( -float(var['id'] in cn['ids']) ) # 1.0 or 0.0 conflict 
+				# hitting set constraints
+				A_col.append( -float(var['id'] in cn['ids']) )
 			A.append( A_col )
 		# create b vector, looping over conflicts
 		for i in range(len(variables)):
-			b.append( 0.0 ) # non-negativity constraints
+			# non-negativity and less than one RHS
+			b.append( 0.0 ) # non-neg
+			b.append( 1.0 ) # less than one
 		for cn in conflicts:
+			# hitting set RHS
 			b.append( -float(cn['min_hits']) )
 		record_ids 		= map(lambda x: x['id'], variables)
 		record_ranks 	= map(lambda x: x['rank'], variables)

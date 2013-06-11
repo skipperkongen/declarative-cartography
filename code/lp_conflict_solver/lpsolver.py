@@ -12,6 +12,7 @@ from serializer import Serializer
 EPSILON = 0.0001
 
 snap = lambda x: math.ceil(x) if abs(x - round(x)) > EPSILON else round(x)
+#snap = lambda x: x
 
 def main(options, input_file):
 

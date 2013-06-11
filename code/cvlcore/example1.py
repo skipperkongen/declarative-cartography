@@ -21,9 +21,9 @@ if __name__ == '__main__':
 			(['residential','pedestrian','living_street','unclassified', 'roundabout','road'], 'medium_streets'),
 			(['service','track','bus_guideway','raceway','path','footway','cycleway','bridleway','steps','mini_roundabout'], 'small_streets'),
 			(WILDCARD, 'the_rest')],
-		'subject_to' : [('cellbound', 200)],
+		'subject_to' : [('cellbound', 400)],
 		'force_level': [('the_rest', 15)],
-		'transform_by': ['simplify_once']
+		'transform_by': ['allornothing','simplify_once']
 	}
 	query = Query(**query_dict)
 	comp = CvlToSqlCompiler()

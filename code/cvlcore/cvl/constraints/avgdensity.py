@@ -4,7 +4,7 @@ CREATE TEMP TABLE _avg_density_cells AS
 SELECT
 	ST_Envelope(
 		ST_Buffer(
-			ST_Cellify({geometry}, ST_CellSizeZ({current_z}), 0, 0 ),
+			ST_WebMercatorCells({geometry}, {current_z})),
 			ST_CellSizeZ({current_z})/2
 		)
 	) AS cell_box,
@@ -38,7 +38,6 @@ SELECT
 	{fid} as conflict_id, 
 	{fid} as record_id, 
 	_rank,
-	_partition,
 	1 as min_hits
 FROM 
 	{output}

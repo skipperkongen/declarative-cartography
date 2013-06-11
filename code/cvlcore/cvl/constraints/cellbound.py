@@ -3,7 +3,7 @@ SET_UP = \
 CREATE TEMPORARY TABLE _cellbound_1 AS 
 (
 	SELECT
-		ST_PointHash(ST_Cellify({geometry}, ST_CellSizeZ( {current_z} ), 0, 0 )) || _partition AS cell_id,
+		ST_PointHash(ST_WebMercatorCells({geometry}, {current_z})) || _partition AS cell_id,
 		{fid} AS record_id,
 		_rank,
 		_partition
@@ -21,7 +21,6 @@ SELECT
 	cells.cell_id as conflict_id, 
 	cells.record_id, 
 	cells._rank,
-	cells._partition,
 	exceeded.min_hits
 FROM 
 	_cellbound_1 cells

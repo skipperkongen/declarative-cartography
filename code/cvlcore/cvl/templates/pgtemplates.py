@@ -27,6 +27,17 @@ ADD_INFO = \
 
 ADD_FRAMEWORK = \
 """
+-- ST_CellSizeZ
+
+CREATE OR REPLACE FUNCTION ST_CellSizeZ
+(
+  z integer,
+  OUT meter_per_pixel float
+) RETURNS float AS
+$$
+SELECT 40075016.68 / power(2, $1)
+$$ LANGUAGE sql IMMUTABLE STRICT;
+
 -- ST_PointHash
 
 CREATE OR REPLACE FUNCTION ST_PointHash
@@ -107,22 +118,12 @@ CREATE OR REPLACE FUNCTION ST_ResZ
 $$
 SELECT (40075016.68 / power(2, $1)) / $2
 $$ LANGUAGE sql IMMUTABLE STRICT;
-
--- ST_CellSizeZ
-
-CREATE OR REPLACE FUNCTION ST_CellSizeZ
-(
-  z integer,
-  OUT meter_per_pixel float
-) RETURNS float AS
-$$
-SELECT 40075016.68 / power(2, $1)
-$$ LANGUAGE sql IMMUTABLE STRICT;
 """
 
 REMOVE_FRAMEWORK = \
 """
 DROP FUNCTION ST_PointHash(geometry);
+DROP FUNCTION ST_WebMercatorCells(geometry, integer);
 DROP FUNCTION ST_Cellify(geometry, float8, float8, float8);
 DROP FUNCTION ST_ResZ(integer,integer);
 DROP FUNCTION ST_CellSizeZ(integer);

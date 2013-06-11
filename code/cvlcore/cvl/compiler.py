@@ -11,8 +11,9 @@ import pdb
 
 class CvlToSqlCompiler(object):
 	"""Compiler that turns CVL into a single transaction in SQL"""
-	def __init__( self ):
+	def __init__( self, **options=None ):
 		super( CvlToSqlCompiler, self ).__init__()
+		self.options = options
 	
 	def _load_constraints( self, query ):
 		constraints = []
@@ -45,9 +46,16 @@ class CvlToSqlCompiler(object):
 			tx.BigComment( 'Creating zoom-level %d' % z )
 			tx.CopyLevel( z+1, z )
 			tx.InitializeLevel( z )
-			tx.PreTransform( z ) # FORCE LEVEL
-			tx.OptimizeLevel( z ) # SUBJECT TO
-			tx.PostTransform( z ) # TRANSFORM: allornothing, simplify_carryforward
+			# FORCE LEVEL
+			tx.ApplyForceLevel( z ) 
+			# SUBJECT TO
+			tx.FindConflicts( z ) # find conflicts
+			tx.CreateHittingSet( z ) #  create hitting set
+			if self.options['export']:
+				tx.Export( z ) # export hitting set for later analysis
+			tx.SolveHittingSet( z ) 
+			# TRANSFORM: allornothing, simplify_carryforward
+			tx.ApplyTransformBy( z ) 
 			tx.CleanLevel( z )
 		# finalize
 		tx.SimplifyOutput() # TRANSFORM: simplify_once
@@ -61,33 +69,33 @@ class TransactionBuilder(object):
 	"""docstring for Transaction"""
 	def __init__( self, query, templates, optimizer, *constraints ):
 		super(TransactionBuilder, self).__init__()
-		self.Q = query
-		self.F = query.__dict__
-		self.T = templates
-		self.O = optimizer()
-		self.C = constraints
+		self._query = query
+		self._formatter = query.__dict__
+		self._templates = templates
+		self._optimizer = optimizer()
+		self._constraints = constraints
 		self.tx = []
 
 	def BeginTx( self ):
-		self.tx.append( self.T.BEGIN_TX.format( **self.F ) )
+		self.tx.append( self._templates.BEGIN_TX.format( **self._formatter ) )
 
 	def CommitTx( self ):
-		self.tx.append( self.T.COMMIT_TX.format( **self.F ) )
+		self.tx.append( self._templates.COMMIT_TX.format( **self._formatter ) )
 	
 	def AddInfo( self ):
-		self.tx.append( self.T.ADD_INFO.format( **self.F ) )
+		self.tx.append( self._templates.ADD_INFO.format( **self._formatter ) )
 	
 	def AddFramework( self ):
 		self.Comment( 'Adding CVL tiling framework' )
-		self.tx.append( self.T.ADD_FRAMEWORK.format( **self.F ))
+		self.tx.append( self._templates.ADD_FRAMEWORK.format( **self._formatter ))
 	
 	def RemoveFramework( self ):
 		self.Comment( 'Removing CVL tiling framework' )
-		self.tx.append( self.T.REMOVE_FRAMEWORK.format( **self.F ))
+		self.tx.append( self._templates.REMOVE_FRAMEWORK.format( **self._formatter ))
 
 	def InitializeOutput( self ):
 		self.Comment( 'Initializing output' )
-		self.tx.append( self.T.INITIALIZE_OUTPUT.format( **self.F ))
+		self.tx.append( self._templates.INITIALIZE_OUTPUT.format( **self._formatter ))
 			
 	def MergePartitions( self ):
 		self.Comment( 'Merging partitions' )
@@ -95,89 +103,97 @@ class TransactionBuilder(object):
 		merged = []
 		has_merge_wildcard = False
 		add_quotes = re.compile(r'(.*)')
-		for merge in filter(lambda x: x[0] is not WILDCARD, self.Q.merge_partitions):
-			self.F['before_merge'] = ', '.join(map(lambda x: add_quotes.sub(r"'\1'", x), merge[0]))
-			self.F['after_merge'] = merge[1]
+		for merge in filter(lambda x: x[0] is not WILDCARD, self._query.merge_partitions):
+			self._formatter['before_merge'] = ', '.join(map(lambda x: add_quotes.sub(r"'\1'", x), merge[0]))
+			self._formatter['after_merge'] = merge[1]
 			
-			_tx.append( self.T.MERGE_PARTITIONS.format( **self.F ))
+			_tx.append( self._templates.MERGE_PARTITIONS.format( **self._formatter ))
 
 			merged.append( merge[1] )
-		for merge in filter(lambda x: x[0] is WILDCARD, self.Q.merge_partitions):
-			self.F['merged'] = ', '.join(map(lambda x: add_quotes.sub(r"'\1'", x), merged))
-			self.F['after_merge'] = merge[1]
+		for merge in filter(lambda x: x[0] is WILDCARD, self._query.merge_partitions):
+			self._formatter['merged'] = ', '.join(map(lambda x: add_quotes.sub(r"'\1'", x), merged))
+			self._formatter['after_merge'] = merge[1]
 
-			_tx.append( self.T.MERGE_PARTITIONS_REST.format( **self.F ))
+			_tx.append( self._templates.MERGE_PARTITIONS_REST.format( **self._formatter ))
 		
 		self.tx.extend(_tx)
 	
 	def CopyLevel( self, from_z, to_z ):
 		self.Comment( 'Copy data from level %d to level %d' % (from_z, to_z) )
-		self.F['from_z'] = from_z
-		self.F['to_z'] = to_z
-		self.tx.append( self.T.COPY_LEVEL.format( **self.F ) )
+		self._formatter['from_z'] = from_z
+		self._formatter['to_z'] = to_z
+		self.tx.append( self._templates.COPY_LEVEL.format( **self._formatter ) )
 	
 	def InitializeLevel( self, z ):
 		self.Comment( 'Initialization for level %d' % z )
-		self.F['current_z'] = z
-		self.tx.append( self.T.INITIALIZE_LEVEL.format( **self.F ) )
+		self._formatter['current_z'] = z
+		
+		self.tx.append( self._templates.INITIALIZE_LEVEL.format( **self._formatter ) )
 
-	def PreTransform(self, z ):
+	def ApplyForceLevel(self, z ):
 		# FORCE LEVEL
-		for force_delete in filter(lambda x: x[1] == z+1, self.Q.force_level):
-			self.Comment( 'Prepruning records' )
-			self.F['delete_partition'] = "'%s'" % force_delete[0]
-			self.tx.append( self.T.FORCE_DELETE.format( **self.F ) )
+		for force_delete in filter(lambda x: x[1] == z+1, self._query.force_level):
+			self.Comment( 'Force delete records' )
+			self._formatter['delete_partition'] = "'%s'" % force_delete[0]
+			self.tx.append( self._templates.FORCE_DELETE.format( **self._formatter ) )
 		
-	def OptimizeLevel( self, z ):
-		self.F['conflict_resolution'] = ''.join(self.O.get_solver( self.Q ))
-		self.F['ignored_partitions'] = ', '.join(map(lambda x: ("'%s'" % x[0]), self.Q.force_level))
-		self.F['comment'] = '--' if self.F['ignored_partitions'] == '' else ''
-		
+	def FindConflicts( self, z ):
+		self._formatter['ignored_partitions'] = ', '.join(map(lambda x: ("'%s'" % x[0]), self._query.force_level))
 		# find conflicts
-		for constraint in self.C:
-			self.Comment( 'Finding conflicts' )
+		for constraint in self._constraints:
+			self.Comment( 'Find conflicts' )
 			self.tx.extend( constraint.set_up( z ) )
-			self.F['constraint_select'] = constraint.find_conflicts( z )
-			if self.F['ignored_partitions'] == '':
-				self.tx.extend( self.T.INSERT_INTO_CONFLICTS.format( **self.F ) )
+			self._formatter['constraint_select'] = constraint.find_conflicts( z )
+			if self._formatter['ignored_partitions'] == '':
+				self.tx.extend( self._templates.APPEND_TO_HITTING_SET.format( **self._formatter ) )
 			else:
-				self.tx.extend( self.T.INSERT_INTO_CONFLICTS_IGNORED_PARTITIONS.format( **self.F ) )
+				self.tx.extend( self._templates.APPEND_TO_HITTING_SET.format( **self._formatter ) )
 			self.tx.extend( constraint.clean_up( z ) )
-		
+	
+	def FindHittingSet( self, z ):
+		self._formatter['hittings_set_solution'] = ''.join(self._optimizer.get_solver( self._query ))
 		# resolve conflicts
-		self.Comment( 'Resolve conflicts' )
-		self.tx.append( self.T.RESOLVE_CONFLICTS.format( **self.F ) )
-
-	def PostTransform( self, z ):
-		if 'allornothing' in self.Q.transform_by:
+		self.Comment( 'Find hitting set' )
+		self.tx.append( self._templates.FIND_HITTING_SET.format( **self._formatter ) )
+	
+	def DeleteHittingSet( self, z ):
+		self.Comment( 'Delete hitting set' )
+		self.tx.append( self._templates.DELETE_HITTING_SET.format( **self._formatter ) )
+	
+	def Export(self, z ):
+		# TODO
+		pass
+	
+	def ApplyTransformBy( self, z ):
+		if 'allornothing' in self._query.transform_by:
 			self.Comment( 'Apply all-or-nothing' )
-			self.tx.append( self.T.POSTPRUNE_LEVEL.format( **self.F ) )
-		if 'simplify_carryforward' in self.Q.transform_by:
+			self.tx.append( self._templates.POSTPRUNE_LEVEL.format( **self._formatter ) )
+		if 'simplify_carryforward' in self._query.transform_by:
 			self.Comment( 'Simplifying level' )
-			self.tx.append( self.T.SIMPLIFY_LEVEL.format( **self.F ) )
+			self.tx.append( self._templates.SIMPLIFY_LEVEL.format( **self._formatter ) )
 			
 	def CleanLevel( self, z ):
 		self.Comment( 'Clean-up for level %d' % z )
-		self.tx.append( self.T.CLEAN_LEVEL.format( **self.F ) )
+		self.tx.append( self._templates.CLEAN_LEVEL.format( **self._formatter ) )
 
 	def SimplifyOutput( self ):
 		self.Comment( 'Simplifying output' )
-		if 'simplify_once' in self.Q.transform_by:
-			self.tx.append( self.T.SIMPLIFY_OUTPUT.format( **self.F ) )
+		if 'simplify_once' in self._query.transform_by:
+			self.tx.append( self._templates.SIMPLIFY_OUTPUT.format( **self._formatter ) )
 
 	def FinalizeOutput( self ):
 		self.Comment( 'Finalizing output ' )
-		self.tx.append( self.T.FINALIZE_OUTPUT.format( **self.F ) )
+		self.tx.append( self._templates.FINALIZE_OUTPUT.format( **self._formatter ) )
 	
 	def TryThis( self ):
 		self.Comment( 'Something you can try')
-		self.tx.append( self.T.TRYTHIS.format( **self.F) )
+		self.tx.append( self._templates.TRYTHIS.format( **self._formatter) )
 	
 	def Comment( self, comment ):
-		self.tx.append( self.T.COMMENT.format(comment=comment) )
+		self.tx.append( self._templates.COMMENT.format(comment=comment) )
 	
 	def BigComment( self, comment ):
-		self.tx.append( self.T.BIG_COMMENT.format(comment=comment) )
+		self.tx.append( self._templates.BIG_COMMENT.format(comment=comment) )
 	
 	def get_sql( self ):
 		return "".join( self.tx )

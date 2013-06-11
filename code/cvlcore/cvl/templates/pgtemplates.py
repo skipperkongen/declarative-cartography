@@ -199,19 +199,6 @@ AND _partition IN
   WHERE low.count < high.count);
 """
 
-
-RESOLVE_CONFLICTS = \
-"""
-DELETE FROM {output}
-WHERE 
-    _tile_level = {current_z}
-AND {fid} IN
-(
-{conflict_resolution}
-);
-"""
-
-
 FINALIZE_OUTPUT = \
 """
 -- ALTER TABLE {output} DROP COLUMN _rank, DROP COLUMN _partition;
@@ -235,7 +222,7 @@ CLEAN_LEVEL = \
 DROP TABLE _conflicts;
 """
 
-INSERT_INTO_CONFLICTS = \
+ADD_CONFLICTS = \
 """
 INSERT INTO _conflicts 
 SELECT 
@@ -246,7 +233,7 @@ SELECT
 FROM ({constraint_select}) s;
 """
 
-INSERT_INTO_CONFLICTS_IGNORED_PARTITIONS = \
+ADD_CONFLICTS_IGNORE_PARTITIONS = \
 """
 INSERT INTO _conflicts 
 SELECT 
@@ -256,6 +243,20 @@ SELECT
 	s.min_hits
 FROM ({constraint_select}) s
 WHERE s._partition NOT IN ({ignored_partitions});
+"""
+
+FIND_HITTING_SET = \
+"""
+CREATE TEMP TABLE _hitting_set AS
+SELECT hs.* FROM ({hittings_set_solution}) hs;
+"""
+
+DELETE_HITTING_SET = \
+"""
+DELETE FROM {output}
+WHERE 
+    _tile_level = {current_z}
+AND {fid} IN _hitting_set};
 """
 
 FORCE_DELETE = \

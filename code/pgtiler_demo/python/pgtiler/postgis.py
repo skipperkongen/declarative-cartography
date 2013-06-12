@@ -1,9 +1,8 @@
 import psycopg2
 import geojson
 
+TABLE_ALIAS = 'foo'
 MAX_FEATURES = 0
-TABLE_ALIAS = "foo"
-RANDOM_STRING = "vctlqqq"
 
 class PGSource(object):
 	"""docstring for PostGISDataSource"""
@@ -16,27 +15,24 @@ class PGSource(object):
 		self.property_cols = property_cols
 		self.maprules = maprules
 		self.conn = None
+		self.native_srid = 3857 # actually read from data
 
 	# RESUABLE PARTS
 
-	def _envelope(self, bbox, srid):
-		envelope = "ST_MakeEnvelope({0}, {1}, {2}, {3}, {4})".format(bbox.minx, bbox.miny, bbox.maxx, bbox.maxy, srid)
+	def _transformed_envelope(self, bbox, srid, native_srid):
+		envelope = "ST_Transform(ST_MakeEnvelope({0}, {1}, {2}, {3}, {4}), {5})".format(bbox.minx, bbox.miny, bbox.maxx, bbox.maxy, srid, native_srid)
 		return envelope
-	
-	def _transformed_geom(self, srid):
-		transformed_geom = "ST_Transform({0}, {1})".format(self.geom_col, srid)
-		return transformed_geom
-	
+		
 	# SELECTIONS/PROJECTIONS
 
 	def _id_digest_projection(self):
 		# howto hash row: http://stackoverflow.com/questions/3878499/finding-the-hash-value-of-a-row-in-postgresql
 		projections = [
 			{
-				"sql": "{0} as fid_{1}".format(self.fid_col, RANDOM_STRING), 
+				"sql": "{0} as fid".format( self.fid_col ), 
 				"type": "id" },
 			{
-				"sql": "md5({0}.*::text) as rowhash_{1}".format(TABLE_ALIAS, RANDOM_STRING),
+				"sql": "md5({0}.*::text) as rowhash".format( TABLE_ALIAS ),
 				"type": "property",
 				"name": "digest" }
 		]
@@ -44,34 +40,32 @@ class PGSource(object):
 	
 	def _feature_projection(self, bbox, srid, resolution, clip=True, result_srid=4326):
 		
-		transformed_geom = self._transformed_geom( srid )
-		envelope = self._envelope( bbox, srid )
-
+		transformed_envelope = self._transformed_envelope( bbox, srid, self.native_srid )
+		geom = self.geom_col
+		
 		# Clip geometries?
 		if clip:
-			transformed_geom = "ST_Intersection({0},{1})".format(transformed_geom, envelope)
+			geom = "ST_Intersection({0},{1})".format( geom, transformed_envelope )
 
 		# Snap to grid?		
 		if resolution:
-			transformed_geom = "ST_Simplify({0}, {1})".format(transformed_geom, resolution)
+			geom = "ST_Simplify({0}, {1})".format( geom, resolution )
 
 
-		# Do final transform and convert to geojson
-		geom_projection = "ST_AsGeoJSON(ST_Transform({0},{1})) as geom_{2}".format(transformed_geom, result_srid, RANDOM_STRING)
-		
+		# Do final transform and convert to geojson		
 		projections = [
 			{
-				"sql": "{0} as fid_{1}".format(self.fid_col, RANDOM_STRING), 
+				"sql": "{0} as fid".format( self.fid_col ), 
 				"type":"id" },			
 			{
-				"sql": geom_projection, 
+				"sql": "ST_AsGeoJSON(ST_Transform({0},{1})) as the_geom".format( geom, result_srid ), 
 				"type": "geometry" },
 			{
-				"sql": "md5({0}.*::text) as rowhash_{1}".format(TABLE_ALIAS, RANDOM_STRING), 
+				"sql": "md5({0}.*::text) as rowhash".format( TABLE_ALIAS ), 
 				"type": "property", 
 				"name": "digest" },
 			{
-				"sql": "GeometryType({0}) as geomtype_{1}".format(self.geom_col, RANDOM_STRING),
+				"sql": "GeometryType({0}) as geomtype".format( self.geom_col ),
 				"type": "property",
 				"name": "orig_geomtype"
 			}
@@ -79,7 +73,7 @@ class PGSource(object):
 		for prop_name in self.property_cols:
 			projections.append(
 			{
-				"sql": "{0} as {0}_{1}".format(prop_name, RANDOM_STRING),
+				"sql": "{0}".format( prop_name ),
 				"type": "property",
 				"name": prop_name })
 				
@@ -90,13 +84,12 @@ class PGSource(object):
 	def _id_in_where_clause(self, bbox, srid):
 		pass
 
-	def _bbox_where_clause(self, bbox, srid, resolution=None):
+	def _where_clause(self, bbox, srid, resolution=None):
 		print "Resolution: ", resolution
-		transformed_geom = self._transformed_geom( srid )
-		envelope = self._envelope( bbox, srid )
+		transformed_envelope = self._transformed_envelope( bbox, srid, self.native_srid )
 		clauses = [
-			"{0} && {1}".format( transformed_geom, envelope ),
-			"ST_Intersects({0},{1})".format(transformed_geom, envelope)
+			"{0} && {1}".format( self.geom_col, transformed_envelope ),
+			"ST_Intersects({0},{1})".format( self.geom_col, transformed_envelope )
 		]
 		if resolution and self.maprules:
 			clauses_from_rules = filter(lambda x: x is not None, map(lambda r: r(resolution), self.maprules))
@@ -158,7 +151,7 @@ class PGSource(object):
 		from_table = "{0} {1}".format( self.table, TABLE_ALIAS )
 
 		# where 
-		where_clauses = self._bbox_where_clause( bbox, srid )
+		where_clauses = self._where_clause( bbox, srid )
 		
 		# final sql
 		sql = self._final_sql( projections, from_table, where_clauses )
@@ -180,7 +173,7 @@ class PGSource(object):
 		from_table = "{0} {1}".format(self.table, TABLE_ALIAS)
 
 		# where 
-		where_clauses = self._bbox_where_clause( bbox, srid, resolution)
+		where_clauses = self._where_clause( bbox, srid, resolution)
 		
 		# final sql
 		sql = self._final_sql(projections, from_table, where_clauses, limit=MAX_FEATURES)

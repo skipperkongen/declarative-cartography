@@ -9,7 +9,7 @@ A high-level view of compiling CVL to a bottom-up plan is shown in Figure~\ref{f
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[scale=.75]{figs/cvl_compilation.pdf}
+\includegraphics[scale=.7]{figs/cvl_compilation.pdf}
 \caption{Compiling CVL to a bottom-up plan}
 \label{fig:compilation}
 \end{center}
@@ -19,14 +19,19 @@ The bottom-up plan consists of three overall phases. A \emph{initialization} pha
 
 The generalization phase consists a $\mathcal{Z}$ stages, which are named after the zoom-levels. The stages are executed separately for each partition computed during the initialization phase. The bottom-up plan gets its name because it generalizes partitions starting with the highest scale (called Stage $\mathcal{Z}$), and ending with the lowest scale (called Stage $1$).
 
-Let's consider the generalization phase for a single partition. The objective at each stage is to generalize the data in the partition for some zoom-level. At each level, the work consists of five steps or sub-stages. This is shown in Figure~\ref{fig:stages}. The output of stage is used as input to the next stage.  The stage names reflect the zoom-level for which the data is currently being generalized.
+Let's consider the generalization phase for a single partition. The objective at each stage is to generalize the data in the partition for some zoom-level. Intuitively, the records that make it to the next stage, are the one that survived the generalization process at the previous stage. This implies that the records being processed a given stage are a subset of the records that were processed during the previous stage.
 
-Intuitively, the records that make it to the next stage, are the one that survived the generalization process at the previous stage. This implies that the records being processed a given stage are a subset of the records that were processed during the previous stage.
+There are many algorithms that could be used to compute a stage. In this work we consider only one type of algorithm, namely an algorithm for the \emph{multi-hitting set problem}. The multi-hitting set problem and an several algorithms are covered in more detail in Section~\ref{sec:algorithms}. For now we simply state that there is a mapping from cartographic generalization to the hitting set problem.
+
+\subsubsection{Sub-stages solve hitting set}
+In this work we model the problem of generalizing records at a given zoom-level, by mapping to an instance of the multi-hitting set problem. This is implemented for each stage by performing five steps or sub-stages. This is shown in Figure~\ref{fig:stages}. 
+
+As with the main stages, the output of a sub-stage is used as input to the next sub-stage.
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[scale=.75]{figs/cvl_stages.pdf}
-\caption{Stages of the bottom-up plan}
+\includegraphics[scale=.7]{figs/cvl_stages.pdf}
+\caption{Sub-stages of the bottom-up plan}
 \label{fig:stages}
 \end{center}
 \end{figure}

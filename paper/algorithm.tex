@@ -1,7 +1,24 @@
 % !TEX root = ./cvl.tex
 \section{CVL algorithm}
 
-The clauses of the CVL language were introduced in Section~\ref{sec:language}. In this section we describe how the various clauses are used by the CVL algorithm to produce a generalized dataset. See Figure~\ref{fig:evaluation} for a top down view of the algorithm performed by CVL.
+The clauses of the CVL language were introduced in Section~\ref{sec:language}. In this section we describe how the various clauses are transformed into an execution plan. CVL is compiled to a specific engine for execution, and there are in principle many types of plans. In this work we consider only one type of plan, namely the \emph{bottom-up} plan. A high-level view of compiling CVL to a bottom-up plan is shown in Figure~\ref{fig:compilation}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=.75]{figs/cvl_compilation.pdf}
+\caption{Compiling CVL to a bottom-up plan}
+\label{fig:compilation}
+\end{center}
+\end{figure}
+
+The bottom-up plan consists of three overall phases. A \emph{initialization} phase, a \emph{generalization} phase, and an \emph{finalization} stage. During the initializes phase the elements of the input are ranked and partitioned according to the CVL clauses for ranking and partitioning. The generalization phase consists a $\mathcal{Z}$ stages are executed separately (e.g. in parallel) for each partition. The output of stage $i$ is used as input to stage $i+1$. The bottom-up plan generalizes the dataset starting with the highest scale, and ending with the lowest scale. Intuitively, the records that survive the generalization process at stage $i$ (corresponding to some zoom-level $z$), are copied to stage $i+1$ (corresponding to some zoom-level $z-1$).
+
+A single stage in the generalization phase consists of four sub-stages, which are also 
+
+ the $\mathcal{Z}$ stages   of the elements in the input. The output of one stage is used as input to the next stage. Inside 
+
+
+used by the CVL algorithm to produce a generalized dataset. See Figure~\ref{fig:evaluation} for a top down view of the algorithm performed by CVL.
 
 \begin{figure}[htbp]
 \begin{center}

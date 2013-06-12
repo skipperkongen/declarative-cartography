@@ -8,54 +8,54 @@ This declarative language has clauses, much like SQL, but is otherwise much simp
 
 \begin{lstlisting}
 GENERALIZE 
-   {input:string} TO {output:string}
+   {source} TO {target}
 WITH ID
-   {field:string}
+   {field}
 WITH GEOMETRY 
-   {field:string}
+   {field}
 \end{lstlisting}
 
 Optionally one can add a clause for other fields, which are simply copied from input to output:
 
 \begin{lstlisting}
-WITH OTHER {list of fields:strings}
+WITH OTHER {list of fields}
 \end{lstlisting}
 
 The second mandatory clause specifies the number of zoom-levels to generalize for. Zoom-levels are assumed to run from 0 (lowest scale) to some $\mathcal{Z}$ (largest scale). As zoom-levels are zero-indexed, the number that is given in the clause is $\mathcal{Z}-1$:
 
 \begin{lstlisting}
-AT {z:integer} ZOOM LEVELS
+AT {integer} ZOOM LEVELS
 \end{lstlisting}
 
 A ranking expression (e.g. a user defined function) is optionally given to guide the generalization process and give priority to "important" records. If the clause is left out, records are ranked by the constant $1$:
 
 \begin{lstlisting}
-RANK BY {rank:float}
+RANK BY {float expr}
 \end{lstlisting}
 
 A partitioning expression (e.g. the name of a record field) is optionally given to semantically split the input dataset into subpartitions. Subpartitions are treated separately by the CVL interpreter. If no clause is given, all records are partitioned by the constant $1$. Optionally, the merge clause can be used to recombine partitions into bigger ones:
 
 \begin{lstlisting}
 PARTITION BY
-   {partition:scalar}
+   {scalar expr}
 MERGE PARTITIONS    
-    {list of partitions:scalars}
-    AS {partition:scalar}
+    {partitons}
+    AS {scalar expr}
 [AND 
-   {list of partitions:scalars} 
-   AS {partition:scalar}]
+   {partitions} 
+   AS {scalar expr}]
 [...]
 [AND 
-   * AS {partition:scalar}]
+   * AS {scalar expr}]
 \end{lstlisting}
 
 One of the most central clauses is actually optional. The subject-to clause states the cartographic constraints that must hold for each partition at each zoom-level. Constraint are parameterized by a single float-valued expression, typically a constant:
 
 \begin{lstlisting}
 SUBJECT TO 
-   {constraint:string} {parameter:float} 
+   {constraint} {float parameters} 
 [AND
-   {constraint:string} {parameter:float}]
+   {constraint} {float parameters}]
 [...]
 \end{lstlisting}
 
@@ -63,9 +63,9 @@ The user may optionally choose to manually set the minimum zoom-level (integer) 
 
 \begin{lstlisting}
 FORCE MIN LEVEL
-   {z:integer} FOR {partition:scalar}
+   {zoom-level} FOR {partition}
 [AND
-   {z:integer} FOR {partition:scalar}]
+   {zoom-level} FOR {partition}]
 [...]
 \end{lstlisting}
 
@@ -73,6 +73,6 @@ The user may optionally name a set of finalizing steps to be performed at the en
 
 \begin{lstlisting}
 TRANSFORM BY
-   {operator:string} [, {operators:strings}]
+   {operator} [, {operators}]
 \end{lstlisting}
 

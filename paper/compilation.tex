@@ -21,17 +21,17 @@ The generalization phase consists a $\mathcal{Z}$ stages, which are named after 
 
 Let's consider the generalization phase for a single partition. The objective at each stage is to generalize the data in the partition for some zoom-level. Intuitively, the records that make it to the next stage, are the one that survived the generalization process at the previous stage. This implies that the records being processed a given stage are a subset of the records that were processed during the previous stage.
 
-There are many algorithms that could be used to compute a stage. In this work we consider only one type of algorithm, namely an algorithm for the \emph{multi-hitting set problem}. The multi-hitting set problem and an several algorithms are covered in more detail in Section~\ref{sec:algorithms}. For now we simply state that there is a mapping from cartographic generalization to the hitting set problem.
+There are many algorithms that could be used to compute a stage. In this work we consider only one type of algorithm, namely an algorithm for the \emph{multi-hitting set problem}.
 
 \subsubsection{Sub-stages solve hitting set}
-In this work we model the problem of generalizing records at a given zoom-level, by mapping to an instance of the multi-hitting set problem. This is implemented for each stage by performing five steps or sub-stages. This is shown in Figure~\ref{fig:stages}. 
+In our approach we implement the stages as follows. At each level, and for each partition, the cartographic generalization problem is mapped to an instance of the multi-hitting set problem, which we then solve. This details of the mapping and the problem are covered in more detail in Section~\ref{sec:algorithms}. The solution to the hitting set problem are exactly those record that we will delete in order to satisfy all the constraints at the given level. 
 
-As with the main stages, the output of a sub-stage is used as input to the next sub-stage.
+For each stage in the execution plan, this is handled by breaking each stage into five steps or \emph{sub-stages}. This is shown in Figure~\ref{fig:stages}. As with the main stages, the output of a sub-stage is used as input to the next sub-stage, which implies that the sub-stages must be computed sequentially.
 
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[scale=.7]{figs/cvl_stages.pdf}
-\caption{Sub-stages of the bottom-up plan}
+\caption{Sub-stages of the bottom-up plan for the multi-hitting set mapping}
 \label{fig:stages}
 \end{center}
 \end{figure}

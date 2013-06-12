@@ -1,10 +1,6 @@
 import psycopg2
 import geojson
 
-MAX_FEATURES = 0
-TABLE_ALIAS = "foo"
-RANDOM_STRING = "vctlqqq"
-
 INDEXTILES = \
 """
 SELECT 
@@ -47,7 +43,7 @@ class PGSource(object):
 		self.maprules = maprules
 		self.data_srid = self._learn_srid()
 
-	def _learn_srid():
+	def _learn_srid( self ):
 		conn, cur = self.connect()
 		cur.execute('SELECT ST_SRID({geometry}) FROM {table} LIMIT 1;'.format(geometry=self.geom_col, table=self.table))
 		rows = cur.fetchall()
@@ -56,13 +52,13 @@ class PGSource(object):
 	
 	# Vectile interface
 	
-	def get_feature_ids(self, bbox, srid):
+	def get_feature_ids( self, bbox, srid ):
 		return map(lambda row: self._row_to_feature(row, projections), rows)
 
-	def get_features(self, bbox, srid, resolution=None, store_geom=None, map_rules=None):
+	def get_features( self, bbox, srid, resolution=None, store_geom=None, map_rules=None ):
 		return map(lambda row: self._row_to_feature(row, projections), rows)
 
-	def _row_to_feature(self, row, projections):
+	def _row_to_feature( self, row, projections ):
 		#col_map {'id':0, 'geom':1, 'properties':[('digest', 2),('name':3),('type':4 )] }
 		# convert to GeoJSON feature collection
 		fid = None

@@ -1,5 +1,7 @@
 SET_UP = \
 """
+-- averate density constraint
+
 CREATE TEMP TABLE _avg_density_cells AS
 SELECT
 	ST_Envelope(

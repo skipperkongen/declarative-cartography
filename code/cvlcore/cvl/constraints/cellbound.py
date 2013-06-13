@@ -1,5 +1,7 @@
 SET_UP = \
 """
+-- cellbound constraint
+
 CREATE TEMPORARY TABLE _cellbound_1 AS 
 (
 	SELECT

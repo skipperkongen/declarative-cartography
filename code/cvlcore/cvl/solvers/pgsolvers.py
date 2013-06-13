@@ -14,5 +14,5 @@ class HittingSetHeuristic(object):
 	def __init__( self ):
 		super(HittingSetHeuristic, self).__init__()
 
-	def get_solver( self, query ):
+	def get_solution( self, query ):
 		return [HITTING_SET_HEURISTIC.format( **query.__dict__ )]

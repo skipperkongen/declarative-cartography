@@ -1,5 +1,7 @@
 SET_UP = \
-""""""
+"""
+-- proximity constraints
+"""
 
 FIND_CONFLICTS = \
 """

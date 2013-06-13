@@ -7,7 +7,7 @@ from cvl.query import Query, WILDCARD
 
 if __name__ == '__main__':
 	query_dict = {
-		'zoomlevels': 15,
+		'zoomlevels': 18,
 		'input': 'cph_highway',
 		'output': 'cph_highway_output',
 		'fid': 'ogc_fid',
@@ -25,6 +25,6 @@ if __name__ == '__main__':
 		'force_level': [('the_rest', 15)],
 		'transform_by': ['allornothing','simplify_once']
 	}
-	query = Query(**query_dict)
-	comp = CvlToSqlCompiler(export='cph_highway_exported')
-	print comp.compile( query)
+	query = Query( **query_dict )
+	comp = CvlToSqlCompiler( export=True, drop_tables=True )
+	print comp.bottomup_plan( query )

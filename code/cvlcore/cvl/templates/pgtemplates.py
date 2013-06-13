@@ -302,8 +302,11 @@ BIG_COMMENT_FOOTER = \
 -----------------------------
 """
 
-
 TRYTHIS = \
 """
+-- number of records remaining per zoom-level:
 -- SELECT _tile_level, _partition, Count(*) FROM {output} GROUP BY _tile_level, _partition ORDER BY _tile_level, _partition;
+
+-- rank sum per zoom-level:
+-- SELECT _tile_level, Sum(_rank) FROM openflights_airports_thinned_cb GROUP BY _tile_level ORDER BY _tile_level
 """

@@ -1,6 +1,4 @@
-# 1: connect to database (input parameters point to tables)
-# 2: read data from conflict tables (one for each zoom)
-# 3: build LP from conflict data
+#!/usr/bin/env python
 
 import psycopg2
 from optparse import OptionParser
@@ -9,20 +7,27 @@ import pdb
 from math import floor
 import ConfigParser
 from serializer import Serializer
+import time
 
 BUFFER_SIZE = 1000
 
 def build_instances( cur, table ):
 	# find number of zoom-levels
 	try:
-		cur.execute("SELECT max(z) FROM {table};".format(table=table))
-	except:
-		print "[ERROR] error querying table:", table
+		cur.execute("SELECT max(zoom) FROM {table};".format(table=table))
+	except Exception, e:
+		print "[ERROR] error querying table:", str(e)
 		sys.exit(1)
-	Z = int(cur.fetchall()[0][0]) + 1
+	Z = int(cur.fetchall()[0][0]) + 1 # zoom-levels zero-indexed
+		
 	# build model for each zoom-level
 	models = []
-	for z in range(Z):
+	for zoom in range(Z):
+		if zoom > 4:
+			print "quitting, instances are becoming too large"
+			break
+		print "building LP instance for level", zoom
+		t0 = time.clock()
 		_variables = set()
 		conflicts = []
 		# get data for A and c
@@ -34,9 +39,9 @@ def build_instances( cur, table ):
 			(SELECT min_hits FROM {table} where conflict_id=conflict_id LIMIT 1)
 		FROM 
 			{table}
-		WHERE z = {z}
+		WHERE zoom = {zoom}
 		GROUP BY
-			conflict_id;""".format(z=z,table=table))
+			conflict_id;""".format(zoom=zoom,table=table))
 		rows = cur.fetchmany(BUFFER_SIZE)
 		# Create A, b, c
 		while rows:
@@ -84,8 +89,10 @@ def build_instances( cur, table ):
 			'A': A, 
 			'b': b, 
 			'c': c, 
-			'z': z
+			'zoom': zoom
 		}]
+		print " - A matrix (cols,rows): %d x %d" % (len(c), len(b))
+		print " -",((time.clock()-t0) * 1000),"ms"
 	return models
 
 def connect_to_db( database_connection_string ):
@@ -98,7 +105,7 @@ def connect_to_db( database_connection_string ):
 	return conn, cur
 
 def build_test_table( conn, cur, table ):
-	cur.execute("CREATE TEMP TABLE IF NOT EXISTS {table} (z int, conflict_id int, record_id text, record_rank float, min_hits int);".format(table=table))
+	cur.execute("CREATE TEMP TABLE IF NOT EXISTS {table} (zoom int, conflict_id int, record_id text, record_rank float, min_hits int);".format(table=table))
 	conn.commit()
 	cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid1', 42.0, 1);".format(table=table))
 	cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid2', 127.5, 1);".format(table=table))
@@ -122,7 +129,7 @@ def main(options, table):
 	conn.close()
 
 	# write instances
-	Serializer().serialize( instances, options.output_file )
+	Serializer().serialize( instances, options.output_file)
 		
 	print "Solution written to", options.output_file 
 

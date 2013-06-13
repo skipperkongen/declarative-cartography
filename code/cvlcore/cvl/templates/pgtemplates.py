@@ -137,7 +137,7 @@ SELECT
   {fid}, {geometry}, {other}, 
   {rank_by}::float AS _rank, 
   {partition_by} AS _partition, 
-  {zoomlevels} as _tile_level 
+  {zoomlevels} as _zoom 
 FROM
   {input};
 
@@ -161,9 +161,9 @@ UPDATE {output} SET _partition = '{after_merge}' WHERE _partition NOT IN ({merge
 COPY_LEVEL = \
 """
 INSERT INTO {output}
-SELECT {fid}, {geometry}, {other}, _rank, _partition, {to_z} as _tile_level
+SELECT {fid}, {geometry}, {other}, _rank, _partition, {to_z} as _zoom
 FROM {output}
-WHERE _tile_level = {from_z};
+WHERE _zoom = {from_z};
 """
 
 INITIALIZE_LEVEL = \
@@ -175,7 +175,7 @@ CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} integer, _rank float,
 FORCE_LEVEL = \
 """
 DELETE FROM {output}
-WHERE _tile_level = {current_z}
+WHERE _zoom = {current_z}
 AND _partition = {delete_partition};
 """
 
@@ -216,14 +216,14 @@ DROP TABLE IF EXISTS {output}_export_deletions;
 
 CREATE_EXPORT_TABLES = \
 """
-CREATE TABLE {output}_export_conflicts (conflict_id text, record_id integer, _rank float, min_hits integer, _tile_level integer);
-CREATE TABLE {output}_export_deletions (record_id integer, _rank float, _tile_level integer);
+CREATE TABLE {output}_export_conflicts (conflict_id text, record_id integer, _rank float, min_hits integer, _zoom integer);
+CREATE TABLE {output}_export_deletions (record_id integer, _rank float, _zoom integer);
 """
 
 EXPORT_LEVEL = \
 """
 INSERT INTO {output}_export_conflicts
-SELECT conflict_id, {fid} as record_id, _rank, min_hits, {current_z} as _tile_level FROM _conflicts;
+SELECT conflict_id, {fid} as record_id, _rank, min_hits, {current_z} as _zoom FROM _conflicts;
 
 INSERT INTO {output}_export_deletions
 SELECT {fid} as record_id, _rank, {current_z} from _deletions;
@@ -233,28 +233,28 @@ APPLY_DELETIONS = \
 """
 DELETE FROM {output}
 WHERE 
-    _tile_level = {current_z}
+    _zoom = {current_z}
 AND {fid} IN (SELECT {fid} FROM _deletions);
 """
 
 ALLORNOTHING = \
 """
 DELETE FROM {output}
-WHERE _tile_level = {current_z}
+WHERE _zoom = {current_z}
 AND _partition IN
 (
   SELECT low._partition FROM 
   (
     SELECT _partition, count(*) AS count
     FROM {output}
-    WHERE _tile_level= {current_z}
+    WHERE _zoom= {current_z}
     GROUP BY _partition
   ) low 
   JOIN
   (
     SELECT _partition, count(*) AS count
     FROM {output} 
-    WHERE _tile_level = {current_z} + 1
+    WHERE _zoom = {current_z} + 1
     GROUP BY _partition
   ) high
   ON low._partition = high._partition
@@ -263,7 +263,7 @@ AND _partition IN
 
 SIMPLIFY = \
 """
-UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({current_z}, 256)/2) WHERE _tile_level={current_z};
+UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({current_z}, 256)/2) WHERE _zoom={current_z};
 """
 
 CLEAN_LEVEL = \
@@ -276,7 +276,7 @@ DROP TABLE _deletions;
 
 SIMPLIFY_ALL = \
 """
-UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_tile_level, 256)/2);
+UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_zoom, 256)/2);
 """
 
 
@@ -305,8 +305,8 @@ BIG_COMMENT_FOOTER = \
 TRYTHIS = \
 """
 -- number of records remaining per zoom-level:
--- SELECT _tile_level, _partition, Count(*) FROM {output} GROUP BY _tile_level, _partition ORDER BY _tile_level, _partition;
+-- SELECT _zoom, _partition, Count(*) FROM {output} GROUP BY _zoom, _partition ORDER BY _zoom, _partition;
 
 -- rank sum per zoom-level:
--- SELECT _tile_level, Sum(_rank) FROM openflights_airports_thinned_cb GROUP BY _tile_level ORDER BY _tile_level
+-- SELECT _zoom, Sum(_rank) FROM openflights_airports_thinned_cb GROUP BY _zoom ORDER BY _zoom
 """

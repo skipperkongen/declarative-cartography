@@ -17,8 +17,8 @@ JOIN
 	{output} r
 ON 
 	l.{fid} < r.{fid}
-AND	l._tile_level = {current_z}
-AND	r._tile_level = {current_z}
+AND	l._zoom = {current_z}
+AND	r._zoom = {current_z}
 -- AND l._partition = r._partition
 AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {parameter_1})
 """

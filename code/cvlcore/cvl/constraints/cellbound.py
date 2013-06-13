@@ -12,7 +12,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 	FROM 
 		{output}
 	WHERE 
-		_tile_level = {current_z}
+		_zoom = {current_z}
 );
 """
 

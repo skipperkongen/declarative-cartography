@@ -15,7 +15,7 @@ SELECT
 FROM 
 	{output}
 WHERE
-	_tile_level = {current_z};
+	_zoom = {current_z};
 
 CREATE TEMP TABLE _avg_density_sums AS
 SELECT 
@@ -45,7 +45,7 @@ SELECT
 FROM 
 	{output}
 WHERE
-	_tile_level = {current_z} AND
+	_zoom = {current_z} AND
 	_partition IN
 (
 	-- Find all cells, partitions high average density

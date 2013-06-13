@@ -10,9 +10,9 @@ if __name__ == '__main__':
 		'zoomlevels': 18,
 		'input': 'openflights_airports',
 		'output': 'openflights_airports_thinned',
-		'fid': 'airport_id',
+		'fid': 'ogc_fid',
 		'geometry': 'wkb_geometry',
-		'other': ['name', 'city', 'country', 'num_routes'],
+		'other': ['airport_id, name', 'city', 'country', 'num_routes'],
 		'rank_by': 'num_routes',
 		'subject_to' : [('proximity', 10)],
 	}

@@ -6,7 +6,7 @@ CREATE TEMPORARY TABLE _cellbound_1 AS
 (
 	SELECT
 		ST_PointHash(ST_WebMercatorCells({geometry}, {current_z})) || _partition AS cell_id,
-		{fid} AS record_id,
+		{fid},
 		_rank,
 		_partition
 	FROM 
@@ -21,7 +21,7 @@ FIND_CONFLICTS = \
 -- select records with conflict
 SELECT 
 	cells.cell_id as conflict_id, 
-	cells.record_id, 
+	cells.{fid}, 
 	cells._partition,
 	cells._rank,
 	exceeded.min_hits

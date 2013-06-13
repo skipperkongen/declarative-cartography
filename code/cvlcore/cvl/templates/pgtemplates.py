@@ -134,7 +134,7 @@ CREATE_OUTPUT_TABLE = \
 """
 CREATE TABLE {output} AS
 SELECT 
-  *, 
+  {fid}, {geometry}, {other}, 
   {rank_by} AS _rank, 
   {partition_by} AS _partition, 
   {zoomlevels} as _tile_level 
@@ -168,8 +168,8 @@ WHERE _tile_level = {from_z};
 
 INITIALIZE_LEVEL = \
 """
-CREATE TEMPORARY TABLE _deletions (record_id integer);
-CREATE TEMPORARY TABLE _conflicts (conflict_id text, record_id integer, _rank float, min_hits integer);
+CREATE TEMPORARY TABLE _deletions ({fid} integer);
+CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} integer, _rank float, min_hits integer);
 """
 
 FORCE_LEVEL = \
@@ -184,7 +184,7 @@ FIND_CONFLICTS = \
 INSERT INTO _conflicts 
 SELECT 
 	s.conflict_id,
-	s.record_id,
+	s.{fid},
 	s._rank,
 	s.min_hits
 FROM ({constraint_select}) s;
@@ -195,7 +195,7 @@ FIND_CONFLICTS_IGNORE = \
 INSERT INTO _conflicts 
 SELECT 
 	s.conflict_id,
-	s.record_id,
+	s.{fid},
 	s._rank,
 	s.min_hits
 FROM ({constraint_select}) s
@@ -205,7 +205,7 @@ WHERE s._partition NOT IN ({ignored_partitions});
 FIND_DELETIONS = \
 """
 INSERT INTO _deletions 
-SELECT sol.record_id FROM ({solution}) sol;
+SELECT sol.{fid} FROM ({solution}) sol;
 """
 
 DROP_EXPORT_TABLES = \
@@ -223,10 +223,10 @@ CREATE TABLE {output}_export_deletions (record_id integer, _tile_level integer);
 EXPORT_LEVEL = \
 """
 INSERT INTO {output}_export_conflicts
-SELECT *, {current_z} as _tile_level FROM _conflicts;
+SELECT conflict_id, {fid} as record_id, _rank, min_hits, {current_z} as _tile_level FROM _conflicts;
 
 INSERT INTO {output}_export_deletions
-SELECT *, {current_z} from _deletions
+SELECT {fid} as record_id, {current_z} from _deletions;
 """
 
 APPLY_DELETIONS = \

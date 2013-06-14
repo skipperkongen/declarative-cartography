@@ -23,7 +23,7 @@ def build_instances( cur, table ):
 	# build model for each zoom-level
 	models = []
 	for zoom in range(Z):
-		if zoom > 3:
+		if zoom > 2:
 			print "quitting, instances are becoming too large"
 			break
 		print "building LP instance for level", zoom
@@ -36,13 +36,14 @@ def build_instances( cur, table ):
 			conflict_id,
 			array_agg(record_id) as record_ids, 
 			array_agg(record_rank) as record_ranks, 
-			(SELECT min_hits FROM {table} where conflict_id=conflict_id LIMIT 1)
+			(SELECT min_hits FROM {table} where zoom = {zoom} and conflict_id = conflict_id LIMIT 1)
 		FROM 
 			{table}
 		WHERE zoom = {zoom}
 		GROUP BY
 			conflict_id;""".format(zoom=zoom,table=table))
 		rows = cur.fetchmany(BUFFER_SIZE)
+		#pdb.set_trace()
 		# Create A, b, c
 		while rows:
 			for row in rows:

@@ -1,3 +1,7 @@
+import avgdensity
+import cellbound
+import proximity
+
 class Constraint(object):
 	"""docstring for Constraint"""
 	def __init__(self, name, query, set_up, find_conflicts, clean_up, *parameters):

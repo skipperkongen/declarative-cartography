@@ -1,1 +1,1 @@
-import pgsolvers
+import postgis

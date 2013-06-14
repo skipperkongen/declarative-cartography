@@ -32,7 +32,7 @@ class CvlToSqlCompiler(object):
 			)
 		return constraints
 	
-	def bottomup_plan( self, query, templates=templates.pgtemplates, solver=solvers.pgsolvers.HittingSetHeuristic ):
+	def bottomup_plan( self, query, templates=templates.postgis, solver=solvers.postgis.HittingSetHeuristic ):
 		# initialize empty SQL transaction tx
 		constraints = self._load_constraints( query )
 		tx = TransactionBuilder( query, templates, solver, *constraints )

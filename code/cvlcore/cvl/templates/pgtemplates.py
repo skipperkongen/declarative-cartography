@@ -216,17 +216,17 @@ DROP TABLE IF EXISTS {output}_export_deletions;
 
 CREATE_EXPORT_TABLES = \
 """
-CREATE TABLE {output}_export_conflicts (conflict_id text, record_id integer, _rank float, min_hits integer, _zoom integer);
-CREATE TABLE {output}_export_deletions (record_id integer, _rank float, _zoom integer);
+CREATE TABLE {output}_export_conflicts (conflict_id text, record_id integer, record_rank float, min_hits integer, zoom integer);
+CREATE TABLE {output}_export_deletions (record_id integer, record_rank float, zoom integer);
 """
 
 EXPORT_LEVEL = \
 """
 INSERT INTO {output}_export_conflicts
-SELECT conflict_id, {fid} as record_id, _rank, min_hits, {current_z} as _zoom FROM _conflicts;
+SELECT conflict_id, {fid} as record_id, _rank as record_rank, min_hits, {current_z} as zoom FROM _conflicts;
 
 INSERT INTO {output}_export_deletions
-SELECT {fid} as record_id, _rank, {current_z} from _deletions;
+SELECT {fid} as record_id, _rank as record_rank, {current_z} as zoom from _deletions;
 """
 
 APPLY_DELETIONS = \

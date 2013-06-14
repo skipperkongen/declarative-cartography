@@ -23,7 +23,7 @@ def build_instances( cur, table ):
 	# build model for each zoom-level
 	models = []
 	for zoom in range(Z):
-		if zoom > 4:
+		if zoom > 3:
 			print "quitting, instances are becoming too large"
 			break
 		print "building LP instance for level", zoom

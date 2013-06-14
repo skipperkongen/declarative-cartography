@@ -5,14 +5,16 @@ from optparse import OptionParser
 import ConfigParser
 import sys
 import pdb
-from math import floor
+from math import ceil
 from serializer import Serializer
 import time
 
 EPSILON = 0.0001
 
+#snap = lambda x: x if abs(x - round(x)) > EPSILON else round(x)
 #snap = lambda x: ceil(x) if abs(x - round(x)) > EPSILON else round(x)
-snap = lambda x: x
+snap = lambda x: min(1, ceil(x))
+#snap = lambda x: x
 
 def main(options, input_file):
 

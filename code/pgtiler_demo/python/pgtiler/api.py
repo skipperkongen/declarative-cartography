@@ -1,4 +1,3 @@
-# INTERFACE 1
 def get_feature_ids(bbox, srid):
 	"""Returns a list of (id,hash) of intersected features, where id is the unique feature id, 
 	and hash is a (large) digest of the feature used for change detection"""

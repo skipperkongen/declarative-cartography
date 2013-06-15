@@ -20,11 +20,19 @@ from maprules import ResolutionRule
 
 # http://localhost:8080/vectile/denmark_highway/3857/17/70123/41032.ids
 
+
 class TornadoServer(object):
     """docstring for TornadoBase"""
 
-    def __init__(self, port=8080, static_path=None, template_path=None, server_conf=None, datasources_conf=None,
-                 **kwargs):
+    def __init__(self, port=8080, static_path=None, template_path=None, server_conf=None, datasources_conf=None):
+        """
+
+        :param port:
+        :param static_path:
+        :param template_path:
+        :param server_conf:
+        :param datasources_conf:
+        """
         super(TornadoServer, self).__init__()
 
         settings = {
@@ -44,7 +52,7 @@ class TornadoServer(object):
             'generate_key': (
                 lambda dataset, srid, tilekey, extension: cache_key_formatstring.format(dataset, srid, tilekey,
                                                                                         extension)),
-            'memcached': memcache.Client(memcached_nodes, debug=0) # remember to start memcached, /usr/bin/memcached
+            'memcached': memcache.Client(memcached_nodes, debug=0)  # remember to start memcached, /usr/bin/memcached
         }
 
         # Read postgis datasources configuration
@@ -73,8 +81,7 @@ class TornadoServer(object):
                         ResolutionRule.get_rule(rule_json["where_clause"], **rule_json["args"])
                     )
             except Exception, e:
-                print "[Warning] %s" % (e)
-                #sys.exit(1)
+                print "[Warning] %s" % e
 
             # Add datasource
             datasources[ds_name] = PGSource(
@@ -108,7 +115,7 @@ class TornadoServer(object):
 
         http_server = tornado.httpserver.HTTPServer(app, xheaders=True)
         http_server.listen(port)
-        print "Starting vectile server on port %d" % (port)
+        print "Starting vectile server on port {0:d}".format(port)
         print "Check demo: demo/vectile.html (open file in browser)"
         print "Try this request: http://localhost:8080/vectile/denmark_highway/3857/18/140231/82057.json"
         print "Also try this request: http://localhost:8080/vectile/denmark_highway/3857/18/140231/82057.ids"
@@ -133,8 +140,6 @@ class PgtilerHandler(tornado.web.RequestHandler):
         self.caching = caching
 
     def get(self, dataset, srid, z, x, y, extension):
-
-        result = "{}"
 
         try:
             gridset = gridset_by_srid(srid)
@@ -195,7 +200,3 @@ class UptimeHandler(tornado.web.RequestHandler):
         diff_millis = current_millis - self.startup_millis
         delta = datetime.timedelta(seconds=diff_millis)
         self.write("uptime: %dd%ds" % (delta.days, delta.seconds))
-		
-		
-
-

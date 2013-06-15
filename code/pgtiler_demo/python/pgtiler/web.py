@@ -24,14 +24,13 @@ from maprules import ResolutionRule
 class TornadoServer(object):
     """docstring for TornadoBase"""
 
-    def __init__(self, port=8080, static_path=None, template_path=None, server_conf=None, datasources_conf=None):
+    def __init__(self, port=8080, static_path=None, template_path=None, configuration_path=None):
         """
 
         :param port:
         :param static_path:
         :param template_path:
-        :param server_conf:
-        :param datasources_conf:
+        :param configuration_path:
         """
         super(TornadoServer, self).__init__()
 
@@ -42,8 +41,8 @@ class TornadoServer(object):
 
         # Read general vectile configuration, i.e. caching options
         server_config = ConfigParser.ConfigParser()
-        server_config.read(server_conf)
-        memcached_nodes = map(lambda x: x.strip(), server_config.get('caching', 'memcached_nodes').split(","))
+        server_config.read(os.path.join(configuration_path, "memcached.conf"))
+        memcached_nodes = map(lambda x: x.strip(), server_config.get('memcached', 'nodes').split(","))
         print "Remember to start up memcached nodes (e.g. /usr/bin/memcached): %s" % str(memcached_nodes)
         # Generate a cachekey unique to this server process
         cache_key_formatstring = "vectile_%s:{0}:{1}:{2}:{3}" % uuid.uuid4().hex
@@ -57,7 +56,7 @@ class TornadoServer(object):
 
         # Read postgis datasources configuration
         config = ConfigParser.ConfigParser()
-        config.read(datasources_conf)
+        config.read(os.path.join(configuration_path, "datasources.conf"))
         datasources = {}
         for section in config.sections():
             print "[Info] Reading datasource section", section
@@ -73,7 +72,7 @@ class TornadoServer(object):
             maprules = []
             try:
                 maprules_file = config.get(section, 'maprules_file')
-                fp = open(maprules_file, 'r')
+                fp = open(os.path.join(configuration_path, "rules", maprules_file), 'r')
                 maprules_json = json.load(fp)
                 print "[Info] Reading map rules from file", maprules_file
                 for rule_json in maprules_json['rules']:

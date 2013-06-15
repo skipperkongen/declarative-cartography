@@ -11,13 +11,12 @@ if __name__ == '__main__':
     parse_command_line()
     static_path = os.path.join(os.path.dirname(__file__), "static")
     template_path = os.path.join(os.path.dirname(__file__), "templates")
-    server_conf = os.path.join(os.path.dirname(__file__), "conf", "cluster.conf")
-    datasources_conf = os.path.join(os.path.dirname(__file__), "conf", "datasources.conf")
+    configuration_path = os.path.join(os.path.dirname(__file__), "conf")
+
     TornadoServer(
         port=options.port,
         static_path=static_path,
         template_path=template_path,
-        datasources_conf=datasources_conf,
-        server_conf=server_conf
+        configuration_path=configuration_path
     )
 

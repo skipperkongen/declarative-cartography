@@ -8,7 +8,8 @@ class BoundingBox(object):
 		self.maxy = maxy
 	
 	def __str__(self):
-		return "{'minx':%f, 'miny':%f, 'maxx':%f, 'maxy':%f}" % (self.minx, self.miny,self.maxx,self.maxy)
+		return "{{'minx':{0:f}, 'miny':{1:f}, 'maxx':{2:f}, 'maxy':{3:f}}}".format(self.minx, self.miny, self.maxx,
+                                                                                   self.maxy)
 	
 	def __repr__(self):
 		return self.__str__()	

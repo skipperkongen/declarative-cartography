@@ -42,7 +42,7 @@ class Grid(object):
 	
 	def get_resolution(self, z, image_dimensions=(256.0,256.0)):
 		cell_width, cell_height = self.get_cell_size( z )
-		return (cell_width / image_dimensions[0], cell_height / image_dimensions[1])
+		return cell_width / image_dimensions[0], cell_height / image_dimensions[1]
 		
 	def validate(self, x, y, z):
 		raise NotImplementedError("Not implemented")

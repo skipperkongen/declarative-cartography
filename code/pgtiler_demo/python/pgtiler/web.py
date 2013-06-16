@@ -39,7 +39,7 @@ class TornadoServer(object):
             "template_path": template_path
         }
 
-        # Read general vectile configuration, i.e. caching options
+        # Read general vectile etc, i.e. caching options
         server_config = ConfigParser.ConfigParser()
         server_config.read(os.path.join(configuration_path, "memcached.conf"))
         memcached_nodes = map(lambda x: x.strip(), server_config.get('memcached', 'nodes').split(","))
@@ -54,7 +54,7 @@ class TornadoServer(object):
             'memcached': memcache.Client(memcached_nodes, debug=0)  # remember to start memcached, /usr/bin/memcached
         }
 
-        # Read postgis datasources configuration
+        # Read postgis datasources etc
         config = ConfigParser.ConfigParser()
         config.read(os.path.join(configuration_path, "datasources.conf"))
         datasources = {}

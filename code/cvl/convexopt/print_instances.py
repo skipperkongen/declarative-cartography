@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 from optparse import OptionParser
-import sys
-from serializer import Serializer
 import time
 import pprint
 import os
+
+from cvl.convexopt.serializer import Serializer
 
 
 def main(options, input_file):

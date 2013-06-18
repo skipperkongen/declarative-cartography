@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-from cvxopt import matrix, solvers
 from optparse import OptionParser
-import ConfigParser
-import sys
-import pdb
 from math import ceil
-from serializer import Serializer
 import time
+
+from cvxopt import matrix, solvers
+
+from cvl.convexopt.serializer import Serializer
+
 
 EPSILON = 0.0001
 

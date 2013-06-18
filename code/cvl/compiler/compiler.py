@@ -1,13 +1,9 @@
-from constraints import cellbound, proximity, allornothing 
-import solvers
-import templates
-from constraints import Constraint
-from query import Query,WILDCARD
-
 import imp
 import re
-import sys, os
-import pdb
+import os
+from cvl.compiler.constraints import Constraint
+from cvl.compiler.query import WILDCARD
+
 
 class CvlToSqlCompiler(object):
     """Compiler that turns CVL into a single transaction in SQL"""
@@ -32,7 +28,7 @@ class CvlToSqlCompiler(object):
             )
         return constraints
 
-    def bottomup_plan( self, query, templates=templates.postgis, solver=solvers.postgis.HittingSetHeuristic ):
+    def bottomup_plan( self, query, templates=cvl.compiler.cvl.templates.postgis, solver=cvl.compiler.cvl.solvers.postgis.HittingSetHeuristic ):
         """
 
         :param query:

@@ -1,6 +1,6 @@
-import avgdensity
-import cellbound
-import proximity
+from cvl.compiler.constraints import cellbound
+from cvl.compiler.constraints import avgdensity, proximity
+
 
 class Constraint(object):
 	"""docstring for Constraint"""

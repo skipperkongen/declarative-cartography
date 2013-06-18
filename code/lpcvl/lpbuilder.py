@@ -4,7 +4,7 @@ from optparse import OptionParser
 import sys
 import time
 import psycopg2
-from cvxopt import spmatrix, sparse
+from cvxopt import matrix, spmatrix, sparse
 
 from serializer import Serializer
 
@@ -51,43 +51,27 @@ def build_instances(cur, table):
     for zoom in range(Z):
         print "building LP instance for level", zoom
         t0 = time.clock()
-        variables_set = set()
-        conflicts_list = []
-        # fetch conflicts from database
-        for conflict in query_buffered(cur, SELECT_CONFLICTS, buffer_size=500, zoom=zoom, table=table):
-            conflicts_list.append({'ids': set(conflict[0]), 'min_hits': conflict[2]})
-            variables_in_conflict = set(zip(conflict[0], conflict[1]))
-            variables_set = variables_set.union(variables_in_conflict)  # extend variable set
 
-        variables_list = [{'id': fid, 'rank': rank} for fid, rank in variables_set]
-        A, b_list, c_list = [], [], []
-        # generate A and c one column at a time, variables (cols) in outer loop, conflicts (rows) in inner loop
-        for i, var in enumerate(variables_list):
-            # create c vector
-            c_list.append(var['rank'])  # coefficients
-            # create A matrix
-            A_col = []
-            for j in range(len(variables_list)):
-                # non-negativity and less than one constraints
-                A_col.append(-float(i == j))  # non-neg
-                A_col.append(float(i == j))  # less than one
-            for cn in conflicts_list:
-                # hitting set constraints
-                A_col.append(-float(var['id'] in cn['ids']))
-            A.append(A_col)
-            # create b vector, looping over conflicts
-        for i in range(len(variables_list)):
-            # non-negativity and less than one RHS
-            b_list.append(0.0)  # non-neg
-            b_list.append(1.0)  # less than one
-        for cn in conflicts_list:
-            # hitting set RHS
-            b_list.append(-float(cn['min_hits']))
-        record_ids = map(lambda x: x['id'], variables_list)
-        record_ranks = map(lambda x: x['rank'], variables_list)
-        # record_ranks and c_list are the same
-        instances += [dict(record_ids=record_ids, record_ranks=record_ranks, A=A, b=b_list, c=c_list, zoom=zoom)]
-        print " - A matrix (cols,rows): %d x %d" % (len(c_list), len(b_list))
+        conflicts = []
+        # fetch conflicts from database
+        for row in query_buffered(cur, SELECT_CONFLICTS, buffer_size=500, zoom=zoom, table=table):
+            conflicts.append({'ids': row[0], 'ranks': row[1], 'min_hits': row[2]})
+        num_vars = 42  # CHANGE
+        variables = []  # CHANGE
+
+        # generate b (r.h.s.)
+        b = matrix([-1.0] * num_vars + [1.0] * num_vars + [c['min_hits'] for c in conflicts])
+
+        # generate c (objective coeffients)
+        c = matrix(v['rank'] for v in variables)
+
+        # generate A: non_neg, less_than_one and packing constraints
+        non_neg = spmatrix(-1.0, range(num_vars), range(num_vars))
+        less_than_one = spmatrix(1.0, range(num_vars), range(num_vars))
+        packing = matrix()  # CHANGE
+        A = sparse([non_neg, less_than_one, packing])  # stack blocks (sub-matrices) on top of each other
+
+        instances += [dict(A=A, b=b, c=c, variables=variables, zoom=zoom)]
         print " -", ((time.clock() - t0) * 1000), "ms"
     return instances
 
@@ -95,8 +79,8 @@ def build_instances(cur, table):
 def connect_to_db(database_connection_string):
     try:
         conn = psycopg2.connect(database_connection_string)
-    except:
-        print "could not connect to db using:", database_connection_string
+    except Exception, e:
+        print "could not connect to db:", str(e)
         sys.exit(1)
     cur = conn.cursor()
     return conn, cur
@@ -104,8 +88,9 @@ def connect_to_db(database_connection_string):
 
 def build_test_table(conn, cur, table):
     cur.execute(
-        "CREATE TEMP TABLE IF NOT EXISTS {table} (zoom int, conflict_id int, record_id text, record_rank float, min_hits int);".format(
-            table=table))
+        """CREATE TEMP TABLE IF NOT EXISTS {table} (
+            zoom int, conflict_id int, record_id text, record_rank float, min_hits int
+        );""".format(table=table))
     conn.commit()
     cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid1', 42.0, 1);".format(table=table))
     cur.execute("INSERT INTO {table} VALUES (0, 1, 'fid2', 127.5, 1);".format(table=table))

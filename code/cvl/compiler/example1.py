@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from cvl.compiler import CvlToSqlCompiler
-from cvl.query import Query, WILDCARD
+from cvl.compiler.compiler.cvl.compiler import CvlToSqlCompiler
+from cvl.compiler.compiler.cvl.query import Query, WILDCARD
 
 # ran in 500251 ms = ~8 minutes, on MacBook Pro Dual Core.
 

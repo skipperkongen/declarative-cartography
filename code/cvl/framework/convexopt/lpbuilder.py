@@ -6,7 +6,7 @@ import time
 import psycopg2
 from cvxopt import matrix, spmatrix, sparse
 
-from cvl.convexopt.serializer import Serializer
+from cvl.framework.convexopt.serializer import Serializer
 
 SELECT_CONFLICTS = """
 SELECT

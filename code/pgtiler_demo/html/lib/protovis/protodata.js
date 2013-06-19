@@ -113,9 +113,9 @@ if (!Array.prototype.reduce) Array.prototype.reduce = function(f, v) {
 };
 /**
  * The top-level Protovis namespace. All public methods and fields should be
- * registered on this object. Note that core Protovis source is surrounded by an
+ * registered on this object. Note that framework Protovis source is surrounded by an
  * anonymous function, so any other declared globals will not be visible outside
- * of core methods. This also allows multiple versions of Protovis to coexist,
+ * of framework methods. This also allows multiple versions of Protovis to coexist,
  * since each version will see their own <tt>pv</tt> namespace.
  *
  * @namespace The top-level Protovis namespace, <tt>pv</tt>.
@@ -164,7 +164,7 @@ pv.identity = function(x) { return x; };
  * This method is equivalent to <tt>function() this.index</tt>, but more
  * succinct. Note that the <tt>index</tt> property is also supported for
  * accessor functions with {@link pv.max}, {@link pv.min} and other array
- * utility methods.
+ * util methods.
  *
  * @see pv.Scale
  * @see pv.Mark#index

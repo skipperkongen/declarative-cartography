@@ -1,6 +1,9 @@
-SET_UP = \
+FIND_CONFLICTS = \
     """
-    -- cellbound constraint
+    --------------------------
+    -- cellbound constraint --
+    --------------------------
+    -- set up
 
     CREATE TEMPORARY TABLE _cellbound_1 AS
     (
@@ -14,11 +17,11 @@ SET_UP = \
         WHERE
             _zoom = {current_z}
     );
-    """
 
-FIND_CONFLICTS = \
-    """
-    -- select records with conflict
+    --------------------------
+    -- cellbound constraint --
+    --------------------------
+    -- find conflicts
     SELECT
         cells.cell_id as conflict_id,
         cells.{fid},
@@ -41,9 +44,11 @@ FIND_CONFLICTS = \
             count(*) > {parameter_1}
     ) exceeded
     ON cells.cell_id = exceeded.cell_id
-    """
 
-CLEAN_UP = \
-    """
+    --------------------------
+    -- cellbound constraint --
+    --------------------------
+    -- clean up
+
     DROP TABLE _cellbound_1;
     """

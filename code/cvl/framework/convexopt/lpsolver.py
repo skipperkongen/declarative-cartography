@@ -6,7 +6,7 @@ import time
 
 from cvxopt import matrix, solvers
 
-from cvl.convexopt.serializer import Serializer
+from cvl.framework.convexopt.serializer import Serializer
 
 
 EPSILON = 0.0001

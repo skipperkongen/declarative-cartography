@@ -5,7 +5,7 @@ import time
 import pprint
 import os
 
-from cvl.convexopt.serializer import Serializer
+from cvl.framework.convexopt.serializer import Serializer
 
 
 def main(options, input_file):

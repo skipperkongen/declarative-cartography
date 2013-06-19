@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from cvl.compiler.compiler.cvl.compiler import CvlToSqlCompiler
-from cvl.compiler.compiler.cvl.query import Query
+from cvl.compiler import CvlCompiler
+from cvl.framework.query import Query
 
 # runs in ~1 minute, on MacBook Pro Dual Core.
 
@@ -17,5 +17,5 @@ if __name__ == '__main__':
 		'subject_to' : [('cellbound', 16)],
 	}
 	query = Query( **query_dict )
-	comp = CvlToSqlCompiler( export=True, drop_tables=True )
-	print comp.bottomup_plan( query )
+	compiler = CvlCompiler()
+	print compiler.compile( query, target='postgres', drop_tables=True )

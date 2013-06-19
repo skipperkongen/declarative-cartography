@@ -1,6 +1,9 @@
-SET_UP = \
+FIND_CONFLICTS = \
     """
-    -- average density constraint
+    --------------------------------
+    -- average density constraint --
+    --------------------------------
+    -- setup
 
     CREATE TEMP TABLE _avg_density_cells AS
     SELECT
@@ -31,11 +34,12 @@ SET_UP = \
     GROUP BY
         ST_PointHash(ST_Centroid(cells.cell_box)),
         output._partition;
-    """
 
-FIND_CONFLICTS = \
-    """
-    -- select records with conflict
+    --------------------------------
+    -- average density constraint --
+    --------------------------------
+    -- find conflicts
+
     SELECT
         {fid} as conflict_id,
         {fid},
@@ -58,10 +62,12 @@ FIND_CONFLICTS = \
         HAVING
             Avg(itx_area/cell_area) > {parameter_1}
     )
-    """
 
-CLEAN_UP = \
-    """
+    --------------------------------
+    -- average density constraint --
+    --------------------------------
+    -- clean up
+
     DROP TABLE _avg_density_cells;
     DROP TABLE _avg_density_sums;
     """

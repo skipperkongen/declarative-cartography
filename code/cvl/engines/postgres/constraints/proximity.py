@@ -1,10 +1,10 @@
-SET_UP = \
-    """
-    -- proximity constraints
-    """
-
 FIND_CONFLICTS = \
     """
+    ---------------------------
+    -- proximity constraints --
+    ---------------------------
+    -- find conflicts
+
     SELECT
         ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id,
         Unnest(array[l.{fid}, r.{fid}]) AS {fid},
@@ -22,7 +22,4 @@ FIND_CONFLICTS = \
     -- AND l._partition = r._partition
     AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {parameter_1})
     """
-
-CLEAN_UP = \
-    """"""
 

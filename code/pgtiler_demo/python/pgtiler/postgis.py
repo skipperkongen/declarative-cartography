@@ -32,10 +32,10 @@ class PGSource(object):
         # howto hash row: http://stackoverflow.com/questions/3878499/finding-the-hash-value-of-a-row-in-postgresql
         projections = [
             {
-                "sql": "{0} as fid".format(self.fid_col),
+                "postgres": "{0} as fid".format(self.fid_col),
                 "type": "id"},
             {
-                "sql": "md5({0}.*::text) as rowhash".format(TABLE_ALIAS),
+                "postgres": "md5({0}.*::text) as rowhash".format(TABLE_ALIAS),
                 "type": "property",
                 "name": "digest"}
         ]
@@ -58,17 +58,17 @@ class PGSource(object):
         # Do final transform and convert to geojson
         projections = [
             {
-                "sql": "{0} as fid".format(self.fid_col),
+                "postgres": "{0} as fid".format(self.fid_col),
                 "type": "id"},
             {
-                "sql": "ST_AsGeoJSON(ST_Transform({0},{1})) as the_geom".format(geom, result_srid),
+                "postgres": "ST_AsGeoJSON(ST_Transform({0},{1})) as the_geom".format(geom, result_srid),
                 "type": "geometry"},
             {
-                "sql": "md5({0}.*::text) as rowhash".format(TABLE_ALIAS),
+                "postgres": "md5({0}.*::text) as rowhash".format(TABLE_ALIAS),
                 "type": "property",
                 "name": "digest"},
             {
-                "sql": "GeometryType({0}) as geomtype".format(self.geom_col),
+                "postgres": "GeometryType({0}) as geomtype".format(self.geom_col),
                 "type": "property",
                 "name": "orig_geomtype"
             }
@@ -76,7 +76,7 @@ class PGSource(object):
         for prop_name in self.property_cols:
             projections.append(
                 {
-                    "sql": "{0}".format(prop_name),
+                    "postgres": "{0}".format(prop_name),
                     "type": "property",
                     "name": prop_name})
 
@@ -102,7 +102,7 @@ class PGSource(object):
     # SQL
 
     def _final_sql(self, projections, from_table, where_clauses, limit=0):
-        projections_sql = map(lambda proj: proj["sql"], projections)
+        projections_sql = map(lambda proj: proj["postgres"], projections)
         sql = "SELECT {0} FROM {1} WHERE {2}".format(
             ",".join(projections_sql),
             from_table,
@@ -156,7 +156,7 @@ class PGSource(object):
         # where
         where_clauses = self._where_clause(bbox, srid)
 
-        # final sql
+        # final postgres
         sql = self._final_sql(projections, from_table, where_clauses)
 
         # execute
@@ -179,7 +179,7 @@ class PGSource(object):
         # where
         where_clauses = self._where_clause(bbox, srid, resolution)
 
-        # final sql
+        # final postgres
         sql = self._final_sql(projections, from_table, where_clauses, limit=MAX_FEATURES)
 
         # execute

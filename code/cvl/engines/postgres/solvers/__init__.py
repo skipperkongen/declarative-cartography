@@ -1,1 +1,1 @@
-from cvl.engines.postgres.solvers import postgis
+from cvl.engines.postgres.solvers import heuristic

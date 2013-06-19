@@ -1,4 +1,4 @@
-FIND_CONFLICTS = \
+SET_UP = \
     """
     --------------------------------
     -- average density constraint --
@@ -9,32 +9,35 @@ FIND_CONFLICTS = \
     SELECT
         ST_Envelope(
             ST_Buffer(
-                ST_WebMercatorCells({geometry}, {current_z})),
-                ST_CellSizeZ({current_z})/2
+                ST_WebMercatorCells({geometry}, {z})),
+                ST_CellSizeZ({z})/2
             )
         ) AS cell_box,
         {fid},
-        _partition
+        cvl_partition
     FROM
         {output}
     WHERE
-        _zoom = {current_z};
+        cvl_zoom = {z};
 
     CREATE TEMP TABLE _avg_density_sums AS
     SELECT
-        sum(ST_Area(ST_Intersection(cells.cell_box, ST_Buffer(output.{geometry}, st_ResZ({current_z}, 256))))) AS itx_area,
-        pow(ST_CellSizeZ({current_z}),2) AS cell_area,
-        output._partition
+        sum(ST_Area(ST_Intersection(cells.cell_box, ST_Buffer(output.{geometry}, st_ResZ({z}, 256))))) AS itx_area,
+        pow(ST_CellSizeZ({z}),2) AS cell_area,
+        output.cvl_partition
     FROM
         {output} output JOIN _avg_density_cells cells
     ON
         output.{fid} = cells.{fid}
     AND
-        output._partition = cells._partition
+        output.cvl_partition = cells.cvl_partition
     GROUP BY
         ST_PointHash(ST_Centroid(cells.cell_box)),
-        output._partition;
+        output.cvl_partition;
+    """
 
+FIND_CONFLICTS = \
+    """
     --------------------------------
     -- average density constraint --
     --------------------------------
@@ -43,26 +46,29 @@ FIND_CONFLICTS = \
     SELECT
         {fid} as conflict_id,
         {fid},
-        _partition,
-        _rank,
+        cvl_partition,
+        cvl_rank,
         1 as min_hits
     FROM
         {output}
     WHERE
-        _zoom = {current_z} AND
-        _partition IN
+        cvl_zoom = {z} AND
+        cvl_partition IN
     (
         -- Find all cells, partitions high average density
         SELECT
-            _partition
+            cvl_partition
         FROM
-            _avg_density_sums
+            cvl_avg_density_sums
         GROUP BY
-            _partition
+            cvl_partition
         HAVING
             Avg(itx_area/cell_area) > {parameter_1}
     )
+    """
 
+CLEAN_UP = \
+    """
     --------------------------------
     -- average density constraint --
     --------------------------------

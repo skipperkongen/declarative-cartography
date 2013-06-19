@@ -6,6 +6,7 @@ import os
 
 from cvl.framework.query import WILDCARD
 from cvl.engines.postgres.sql import *
+from cvl.util.anonobject import Object
 
 
 class CodeGenerator(object):
@@ -20,18 +21,28 @@ class CodeGenerator(object):
         self.query = query
         self.constraints = self._load_constraints()
 
+    def _get_formatter(self, **kwargs):
+        formatter = self.query.__dict__.copy()
+        for key, value in kwargs:
+            formatter[key] = value
+        return formatter
+
     def _load_constraints(self):
         constraints = []
         constraints_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'constraints')
 
         for constraint in self.query.subject_to:
-            name = constraint[0]
-            params = list(constraint[1:])
-            module_name = 'cvl.engines.postgres.constraints.%s' % name
-            module_file = '%s/%s.py' % (constraints_dir, name)
+            module_name = 'cvl.engines.postgres.constraints.%s' % constraint.names
+            module_file = '%s/%s.py' % (constraints_dir, constraint.name)
             #pdb.set_trace()
             mod = imp.load_source(module_name, module_file)
-            constraints.append((name, mod.FIND_CONFLICTS))
+            constraints.append(Object(
+                name=constraint.name,
+                params=constraint.params,
+                SET_UP=mod.SET_UP,
+                FIND_CONFLICTS=mod.FIND_CONFLICTS,
+                CLEAN_UP=mod.CLEAN_UP)
+            )
         return constraints
 
     def Info(self, *info):
@@ -40,118 +51,108 @@ class CodeGenerator(object):
             self.code.append("\n")
 
     def Initialize(self):
+        formatter = self._get_formatter()
         self.code.append(BEGIN_TX)
 
         self.Info('Dropping old version of output table')
-        self.code.append(DROP_OUTPUT_TABLE.format(self.query))
+        self.code.append(DROP_OUTPUT_TABLE.format(**formatter))
 
         self.Info('Creating new output table and index')
-        self.code.append(CREATE_OUTPUT_TABLE_AND_INDEX.format(self.query))
+        self.code.append(CREATE_OUTPUT_TABLE_AND_INDEX.format(**formatter))
 
         self.Info('Adding CVL framework')
         self.code.append(ADD_FRAMEWORK)
 
     def Finalize(self):
-        self.Comment('Removing CVL framework')
+        self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
         self.code.append(COMMIT_TX)
 
     def MergePartitions(self):
-        self.Comment('Merging partitions')
+        formatter = self._get_formatter()
         code = []
         merged = []
-        formatter = self.query.__dict__.copy()
-
-        for merge in filter(lambda x: x[0] is not WILDCARD, self.query.merge_partitions):
-            formatter['before_merge'] = ', '.join(map(lambda x: "'{0:s}'".format(x), merge[0]))
-            formatter['after_merge'] = merge[1]
+        self.Info('Merging partitions')
+        for merge in filter(lambda clause: clause.before is not WILDCARD, self.query.merge_partitions):
+            formatter['before_merge'] = ', '.join(map(lambda m: "'{0:s}'".format(m), merge.before))
+            formatter['after_merge'] = merge.after
             code.append(MERGE_PARTITIONS.format(**formatter))
             merged.append(merge[1])
 
-        for merge in filter(lambda x: x[0] is WILDCARD, self.query.merge_partitions):
-            formatter['merged'] = ', '.join(map(lambda x: "'{0:s}'".format(x), merged))
-            formatter['after_merge'] = merge[1]
-
+        for merge in filter(lambda clause: clause.before is WILDCARD, self.query.merge_partitions):
+            formatter['merged'] = ', '.join(map(lambda m: "'{0:s}'".format(m), merged))
+            formatter['after_merge'] = merge.after
             code.append(MERGE_PARTITIONS_REST.format(**formatter))
 
         self.code.extend(code)
 
-    def CopyLevel(self, from_z, to_z):
-        self.Comment('Copy data from level %d to level %d' % (from_z, to_z))
-        self.code.append(COPY_LEVEL.format(**self.formatter))
-
     def InitializeLevel(self, z, copy_from=None):
-        self.Comment('Initialization for level %d' % z)
-        formatter = self.query.__dict__.copy()
+        formatter = self._get_formatter(z=z)
+        self.Info('Initialization for level {0:d}'.format(z))
         if copy_from is not None:
             formatter['copy_from'] = copy_from
-            formatter['z'] = z
-            self.Comment('Copy data from level %d to level %d' % (copy_from, z))
+            self.Info('Copy data from level {0:d} to level {1:d}'.format(**formatter))
             self.code.append(COPY_LEVEL.format(**formatter))
-        self.code.append(INITIALIZE_LEVEL.format(self.query))
+        self.code.append(CREATE_TEMP_TABLES_FOR_LEVEL.format(**formatter))
 
     def ForceLevel(self, z):
-        # FORCE LEVEL
-        for force_delete in filter(lambda x: x[1] == z + 1, self.query.force_level):
-            self.Comment('Force delete records')
-            self.formatter['delete_partition'] = "'%s'" % force_delete[0]
-            self.code.append(FORCE_LEVEL.format(**self.formatter))
+        formatter = self._get_formatter(z=z)
+        for force in filter(lambda clause: clause.min_level == z + 1, self.query.force_level):
+            self.Info('Force delete records')
+            self.formatter['delete_partition'] = "'%s'" % force.partition
+            self.code.append(FORCE_LEVEL.format(**formatter))
 
     def FindConflicts(self, z):
-        self.formatter['ignored_partitions'] = ', '.join(map(lambda x: ("'%s'" % x[0]), self.query.force_level))
-        # find conflicts
+        ignored_partitions=', '.join(map(lambda x: ("'{0:s}'".format(x[0])), self.query.force_level))
+        formatter = self._get_formatter(
+            z=z,
+            ignored_partitions=ignored_partitions)
+        self.Info('Find conflicts')
+        has_ignored = ignored_partitions != ''
         for constraint in self.constraints:
-            self.Comment('Find conflicts')
-            self.code.extend(constraint.set_up(z))
-            self.formatter['constraint_select'] = constraint.find_conflicts(z)
-            if self.formatter['ignored_partitions'] == '':
-                self.code.extend(FIND_CONFLICTS.format(**self.formatter))
+            self.code.append(constraint.SETUP.format(**formatter))
+            for i, param in enumerate(constraint.params):
+                formatter['parameter_{0:d}'.format(i)] = param
+            formatter['constraint_select'] = constraint.FIND_CONFLICTS.format(**formatter)
+            if has_ignored:
+                self.code.extend(FIND_CONFLICTS.format(**formatter))
             else:
-                self.code.extend(FIND_CONFLICTS_IGNORE.format(**self.formatter))
-            self.code.extend(constraint.clean_up(z))
+                self.code.extend(FIND_CONFLICTS_IGNORE.format(**formatter))
+            self.code.append(constraint.CLEAN_UP.format(**formatter))
 
-    def FindDeletions(self, z):
-        self.formatter['solution'] = ''.join(self._solver.get_solution(self.query))
+    def ResolveConflicts(self, z):
+        formatter = self._get_formatter(z=z)
+        formatter['solution'] = ''.join(self._solver.get_solution(self.query))
         # resolve conflicts
-        self.Comment('Find hitting set')
-        self.code.append(FIND_DELETIONS.format(**self.formatter))
+        self.Info('Insert records to delete in temp table')
+        self.code.append(COLLECT_DELETIONS.format(**formatter))
+        self.Info('Delete records')
+        self.code.append(DO_DELETIONS.format(**formatter))
 
-    def ApplyDeletions(self, z):
-        self.Comment('Delete hitting set')
-        self.code.append(APPLY_DELETIONS.format(**self.formatter))
-
-    def DropExportTables(self, ):
-        self.Comment('Dropping old export tables')
-        self.code.append(DROP_EXPORT_TABLES.format(**self.formatter))
-
-    def CreateExportTables(self):
-        self.Comment('Creating export tables')
-        self.code.append(CREATE_EXPORT_TABLES.format(**self.formatter))
-
-    def ExportLevel(self, z):
-        self.Comment('Exporting conflicts')
-        self.code.append(EXPORT_LEVEL.format(**self.formatter))
-
-    def LevelTransforms(self, z):
+    def TransformLevel(self, z):
+        formatter = self._get_formatter(z=z)
         if 'allornothing' in self.query.transform_by:
-            self.Comment('Apply all-or-nothing')
-            self.code.append(ALLORNOTHING.format(**self.formatter))
+            self.Info('Apply all-or-nothing')
+            self.code.append(ALLORNOTHING.format(**formatter))
         if 'simplify' in self.query.transform_by:
-            self.Comment('Simplifying level')
-            self.code.append(SIMPLIFY.format(**self.formatter))
+            self.Info('Simplifying level')
+            self.code.append(SIMPLIFY.format(**formatter))
 
-    def CleanLevel(self, z):
-        self.Comment('Clean-up for level %d' % z)
-        self.code.append(CLEAN_LEVEL.format(**self.formatter))
+    def FinalizeLevel(self, z):
+        formatter = self._get_formatter(z=z)
+        self.Info('Clean-up for level %d' % z)
+        self.code.append(DROP_TEMP_TABLES_FOR_LEVEL.format(**formatter))
 
     def SimplifyAll(self):
-        self.Comment('Simplifying output')
+        formatter = self._get_formatter()
+        self.Info('Simplifying output')
         if 'simplify_once' in self.query.transform_by:
-            self.code.append(SIMPLIFY_ALL.format(**self.formatter))
+            self.code.append(SIMPLIFY_ALL.format(**formatter))
 
     def TryThis(self):
+        formatter = self._get_formatter()
         self.Comment('Something you can try')
-        self.code.append(TRYTHIS.format(**self.formatter))
+        self.code.append(TRYTHIS.format(**formatter))
 
     def get_code(self):
         return "\n".join(self.code)

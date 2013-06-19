@@ -1,4 +1,5 @@
 WILDCARD = '*'
+from cvl.util.anonobject import Object
 
 
 class Query(object):
@@ -19,9 +20,9 @@ class Query(object):
         self.other = ', '.join(other)
         self.rank_by = rank_by
         self.partition_by = partition_by
-        self.merge_partitions = merge_partitions
-        self.subject_to = subject_to
-        self.force_level = map(lambda x: (x[0], min(x[1], zoomlevels)), force_level)
+        self.merge_partitions = [Object(before=x[0], after=x[1]) for x in merge_partitions]
+        self.subject_to = [Object(name=x[0], params=list(x[1][1:])) for x in subject_to]
+        self.force_level = [Object(partition=x[0], min_level=min(x[1], zoomlevels)) for x in force_level]
         self.transform_by = transform_by
 
 		

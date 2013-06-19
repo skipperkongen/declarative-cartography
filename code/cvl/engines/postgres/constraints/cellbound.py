@@ -1,4 +1,4 @@
-FIND_CONFLICTS = \
+SET_UP = \
     """
     --------------------------
     -- cellbound constraint --
@@ -8,16 +8,19 @@ FIND_CONFLICTS = \
     CREATE TEMPORARY TABLE _cellbound_1 AS
     (
         SELECT
-            ST_PointHash(ST_WebMercatorCells({geometry}, {current_z})) || _partition AS cell_id,
+            ST_PointHash(ST_WebMercatorCells({geometry}, {z})) || cvl_partition AS cell_id,
             {fid},
-            _rank,
-            _partition
+            cvl_rank,
+            cvl_partition
         FROM
             {output}
         WHERE
-            _zoom = {current_z}
+            cvl_zoom = {z}
     );
+    """
 
+FIND_CONFLICTS = \
+    """
     --------------------------
     -- cellbound constraint --
     --------------------------
@@ -25,8 +28,8 @@ FIND_CONFLICTS = \
     SELECT
         cells.cell_id as conflict_id,
         cells.{fid},
-        cells._partition,
-        cells._rank,
+        cells.cvl_partition,
+        cells.cvl_rank,
         exceeded.min_hits
     FROM
         _cellbound_1 cells
@@ -44,7 +47,10 @@ FIND_CONFLICTS = \
             count(*) > {parameter_1}
     ) exceeded
     ON cells.cell_id = exceeded.cell_id
+    """
 
+CLEAN_UP = \
+    """
     --------------------------
     -- cellbound constraint --
     --------------------------

@@ -166,7 +166,7 @@ COPY_LEVEL = \
     WHERE _zoom = {copy_from};
     """
 
-INITIALIZE_LEVEL = \
+CREATE_TEMP_TABLES_FOR_LEVEL = \
     """
     CREATE TEMPORARY TABLE _deletions ({fid} integer, cvl_rank float);
     CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} integer, cvl_rank float, min_hits integer);
@@ -202,13 +202,13 @@ FIND_CONFLICTS_IGNORE = \
     WHERE s.cvl_partition NOT IN ({ignored_partitions});
     """
 
-FIND_DELETIONS = \
+COLLECT_DELETIONS = \
     """
     INSERT INTO _deletions
     SELECT sol.{fid}, sol.cvl_rank FROM ({solution}) sol;
     """
 
-APPLY_DELETIONS = \
+DO_DELETIONS = \
     """
     DELETE FROM {output}
     WHERE
@@ -245,7 +245,7 @@ SIMPLIFY = \
     UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({current_z}, 256)/2) WHERE _zoom={current_z};
     """
 
-CLEAN_LEVEL = \
+DROP_TEMP_TABLES_FOR_LEVEL = \
     """
     DROP TABLE _conflicts;
     DROP TABLE _deletions;

@@ -1,3 +1,7 @@
+SET_UP = \
+    """
+    """
+
 FIND_CONFLICTS = \
     """
     ---------------------------
@@ -8,8 +12,8 @@ FIND_CONFLICTS = \
     SELECT
         ROW_NUMBER() OVER (ORDER BY 1) AS conflict_id,
         Unnest(array[l.{fid}, r.{fid}]) AS {fid},
-        Unnest(array[l._rank, r._rank]) AS _rank,
-        Unnest(array[l._partition, r._partition]) AS _partition,
+        Unnest(array[l.cvl_rank, r.cvl_rank]) AS cvl_rank,
+        Unnest(array[l.cvl_partition, r.cvl_partition]) AS cvl_partition,
         1 as min_hits
     FROM
         {output} l
@@ -17,9 +21,13 @@ FIND_CONFLICTS = \
         {output} r
     ON
         l.{fid} < r.{fid}
-    AND	l._zoom = {current_z}
-    AND	r._zoom = {current_z}
-    -- AND l._partition = r._partition
-    AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({current_z}, 256) * {parameter_1})
+    AND	l.cvl_zoom = {z}
+    AND	r.cvl_zoom = {z}
+    -- AND l.cvl_partition = r.cvl_partition
+    AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({z}, 256) * {parameter_1})
+    """
+
+CLEAN_UP = \
+    """
     """
 

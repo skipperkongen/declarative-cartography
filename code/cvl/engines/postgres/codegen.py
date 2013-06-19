@@ -3,6 +3,7 @@ __author__ = 'kostas'
 import re
 import imp
 import os
+import pdb
 
 from cvl.framework.query import WILDCARD
 from cvl.engines.postgres.sql import *
@@ -23,16 +24,15 @@ class CodeGenerator(object):
 
     def _get_formatter(self, **kwargs):
         formatter = self.query.__dict__.copy()
-        for key, value in kwargs:
+        for key, value in kwargs.items():
             formatter[key] = value
         return formatter
 
     def _load_constraints(self):
         constraints = []
         constraints_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'constraints')
-
         for constraint in self.query.subject_to:
-            module_name = 'cvl.engines.postgres.constraints.%s' % constraint.names
+            module_name = 'cvl.engines.postgres.constraints.%s' % constraint.name
             module_file = '%s/%s.py' % (constraints_dir, constraint.name)
             #pdb.set_trace()
             mod = imp.load_source(module_name, module_file)
@@ -73,15 +73,15 @@ class CodeGenerator(object):
         code = []
         merged = []
         self.Info('Merging partitions')
-        for merge in filter(lambda clause: clause.before is not WILDCARD, self.query.merge_partitions):
-            formatter['before_merge'] = ', '.join(map(lambda m: "'{0:s}'".format(m), merge.before))
-            formatter['after_merge'] = merge.after
+        for merge_clause in filter(lambda clause: clause.before is not WILDCARD, self.query.merge_partitions):
+            formatter['before_merge'] = ', '.join(map(lambda m: "'{0:s}'".format(m), merge_clause.before))
+            formatter['after_merge'] = merge_clause.after
             code.append(MERGE_PARTITIONS.format(**formatter))
-            merged.append(merge[1])
+            merged.append(merge_clause.after)
 
-        for merge in filter(lambda clause: clause.before is WILDCARD, self.query.merge_partitions):
+        for merge_clause in filter(lambda clause: clause.before is WILDCARD, self.query.merge_partitions):
             formatter['merged'] = ', '.join(map(lambda m: "'{0:s}'".format(m), merged))
-            formatter['after_merge'] = merge.after
+            formatter['after_merge'] = merge_clause.after
             code.append(MERGE_PARTITIONS_REST.format(**formatter))
 
         self.code.extend(code)
@@ -91,27 +91,27 @@ class CodeGenerator(object):
         self.Info('Initialization for level {0:d}'.format(z))
         if copy_from is not None:
             formatter['copy_from'] = copy_from
-            self.Info('Copy data from level {0:d} to level {1:d}'.format(**formatter))
+            self.Info('Copy data from level {0:d} to level {1:d}'.format(copy_from, z))
             self.code.append(COPY_LEVEL.format(**formatter))
         self.code.append(CREATE_TEMP_TABLES_FOR_LEVEL.format(**formatter))
 
     def ForceLevel(self, z):
         formatter = self._get_formatter(z=z)
-        for force in filter(lambda clause: clause.min_level == z + 1, self.query.force_level):
+        for force_clause in filter(lambda clause: clause.min_level == z + 1, self.query.force_level):
             self.Info('Force delete records')
-            self.formatter['delete_partition'] = "'%s'" % force.partition
+            self.formatter['delete_partition'] = "'%s'" % force_clause.partition
             self.code.append(FORCE_LEVEL.format(**formatter))
 
     def FindConflicts(self, z):
-        ignored_partitions=', '.join(map(lambda x: ("'{0:s}'".format(x[0])), self.query.force_level))
+        ignored_partitions=', '.join(map(lambda x: ("'{0:s}'".format(x.partition)), self.query.force_level))
         formatter = self._get_formatter(
             z=z,
             ignored_partitions=ignored_partitions)
         self.Info('Find conflicts')
         has_ignored = ignored_partitions != ''
         for constraint in self.constraints:
-            self.code.append(constraint.SETUP.format(**formatter))
-            for i, param in enumerate(constraint.params):
+            self.code.append(constraint.SET_UP.format(**formatter))
+            for i, param in enumerate(constraint.params, start=1):
                 formatter['parameter_{0:d}'.format(i)] = param
             formatter['constraint_select'] = constraint.FIND_CONFLICTS.format(**formatter)
             if has_ignored:

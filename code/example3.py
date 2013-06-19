@@ -18,4 +18,4 @@ if __name__ == '__main__':
 	}
 	query = Query( **query_dict )
 	compiler = CvlCompiler()
-	print compiler.compile( query, target='postgres', drop_tables=True )
+	print compiler.compile(query, target='postgres')

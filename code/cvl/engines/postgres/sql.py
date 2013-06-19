@@ -175,7 +175,7 @@ CREATE_TEMP_TABLES_FOR_LEVEL = \
 FORCE_LEVEL = \
     """
     DELETE FROM {output}
-    WHERE cvl_zoom = {current_z}
+    WHERE cvl_zoom = {z}
     AND cvl_partition = {delete_partition};
     """
 
@@ -212,28 +212,28 @@ DO_DELETIONS = \
     """
     DELETE FROM {output}
     WHERE
-        cvl_zoom = {current_z}
+        cvl_zoom = {z}
     AND {fid} IN (SELECT {fid} FROM _deletions);
     """
 
 ALLORNOTHING = \
     """
     DELETE FROM {output}
-    WHERE cvl_zoom = {current_z}
+    WHERE cvl_zoom = {z}
     AND cvl_partition IN
     (
       SELECT low.cvl_partition FROM
       (
         SELECT cvl_partition, count(*) AS count
         FROM {output}
-        WHERE cvl_zoom= {current_z}
+        WHERE cvl_zoom= {z}
         GROUP BY cvl_partition
       ) low
       JOIN
       (
         SELECT cvl_partition, count(*) AS count
         FROM {output}
-        WHERE cvl_zoom = {current_z} + 1
+        WHERE cvl_zoom = {z} + 1
         GROUP BY cvl_partition
       ) high
       ON low.cvl_partition = high.cvl_partition
@@ -242,7 +242,7 @@ ALLORNOTHING = \
 
 SIMPLIFY = \
     """
-    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({current_z}, 256)/2) WHERE _zoom={current_z};
+    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({z}, 256)/2) WHERE _zoom={z};
     """
 
 DROP_TEMP_TABLES_FOR_LEVEL = \
@@ -255,7 +255,7 @@ DROP_TEMP_TABLES_FOR_LEVEL = \
 
 SIMPLIFY_ALL = \
     """
-    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(_zoom, 256)/2);
+    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ(cvl_zoom, 256)/2);
     """
 
 # COMMENTS

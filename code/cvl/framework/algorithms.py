@@ -14,7 +14,7 @@ class BottomUp(object):
 
         # GENERALIZATION PHASE
         for z in reversed(range(zoomlevels)):
-            code_generator.Info('Creating zoom-level %d' % z)
+            # INITIALIZE LEVEL
             code_generator.InitializeLevel(z, copy_from=z + 1)
             # FORCE LEVEL
             code_generator.ForceLevel(z)

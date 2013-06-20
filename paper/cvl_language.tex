@@ -1,21 +1,25 @@
 % !TEX root = ./cvl.tex
 \section{CVL language}
-\label{sec:language}
+\label{sec:cvl-language}
+CVL is a declarative language for generalizing a spatial dataset. It is designed to be very concise, typically no more than ten lines of code. CVL is an acronym for \emph{Cartographic Visualization Language} and the syntax and semantics of this language are defined in this section. The language has only two statements, the \emph{generalize} statement and the \emph{create constraint} statement. 
 
-As part of this work, we have designed the declarative language CVL, designed to enable a human cartographer to concisely state the decided properties of the output of a generalization process. CVL is an acronym for \emph{Cartographic Visualization Language} and the syntax and semantics of this language are defined in this section.
+The generalize statement is used to transform an input spatial dataset to a multi-scale output dataset, which is well-suited for display on a zoomable map such as the web maps that have gained immense popularity over the last ten years. 
 
-This declarative language has clauses, much like SQL, but is otherwise much simpler. There are two mandatory clauses, the first of which is a specification of the input source and fields and the name of the output dataset. CVL is designed to be compiled to SQL, so the input and output can be names of tables. The input dataset is assumed to exist at evaluation time, while the output dataset is created as part of executing the CVL script.
+The create constraint statement is use to augment CVL with new cartographic constraints.
+
+\subsection{Generalize statement}
+The generalize statement has several clauses, some of which are mandatory. The first mandatory clause is used to specify the names of the input and output datasets, and includes the names of fields holding the record ID and record geometry. This clause has the following syntax:
 
 \begin{lstlisting}
 GENERALIZE 
-   {source} TO {target}
+   {input} TO {output}
 WITH ID
    {field}
 WITH GEOMETRY 
    {field}
 \end{lstlisting}
 
-Optionally one can add a clause for other fields, which are simply copied from input to output:
+Optionally the names of additional fields that should be copied from input to output may be given:
 
 \begin{lstlisting}
 WITH OTHER {list of fields}

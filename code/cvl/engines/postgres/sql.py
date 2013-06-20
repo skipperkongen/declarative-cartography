@@ -32,7 +32,7 @@ ADD_FRAMEWORK = \
     ) RETURNS float AS
     $$
     SELECT 40075016.68 / power(2, $1)
-    $$ LANGUAGE postgres IMMUTABLE STRICT;
+    $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- ST_PointHash
 
@@ -51,7 +51,7 @@ ADD_FRAMEWORK = \
           4326
         )
       ) AS geohash;
-    $$ LANGUAGE postgres IMMUTABLE STRICT;
+    $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- ST_Cellify
 
@@ -88,7 +88,7 @@ ADD_FRAMEWORK = \
       $1 && ST_Envelope(ST_Buffer(PT.pt, $2/2))
     AND
       ST_Intersects($1, ST_Envelope(ST_Buffer(PT.pt, $2/2)));
-    $$ LANGUAGE postgres IMMUTABLE STRICT;
+    $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- web mercator cells
 
@@ -101,7 +101,7 @@ ADD_FRAMEWORK = \
     $$
     SELECT
       ST_Cellify($1, ST_CellSizeZ($2), -20037508.34, -20037508.34) as pt
-    $$ LANGUAGE postgres IMMUTABLE STRICT;
+    $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- ST_ResZ
 
@@ -113,7 +113,7 @@ ADD_FRAMEWORK = \
     ) RETURNS float AS
     $$
     SELECT (40075016.68 / power(2, $1)) / $2
-    $$ LANGUAGE postgres IMMUTABLE STRICT;
+    $$ LANGUAGE sql IMMUTABLE STRICT;
     """
 
 REMOVE_FRAMEWORK = \
@@ -148,12 +148,12 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
 
 MERGE_PARTITIONS = \
     """
-    UPDATE {output} SET cvl_partition = '{after_merge}' WHERE _partition IN ({before_merge});
+    UPDATE {output} SET cvl_partition = '{after_merge}' WHERE cvl_partition IN ({before_merge});
     """
 
 MERGE_PARTITIONS_REST = \
     """
-    UPDATE {output} SET cvl_partition = '{after_merge}' WHERE _partition NOT IN ({merged});
+    UPDATE {output} SET cvl_partition = '{after_merge}' WHERE cvl_partition NOT IN ({merged});
     """
 
 # Stage commands
@@ -163,7 +163,7 @@ COPY_LEVEL = \
     INSERT INTO {output}
     SELECT {fid}, {geometry}, {other}, cvl_rank, cvl_partition, {z} as cvl_zoom
     FROM {output}
-    WHERE _zoom = {copy_from};
+    WHERE cvl_zoom = {copy_from};
     """
 
 CREATE_TEMP_TABLES_FOR_LEVEL = \
@@ -242,7 +242,7 @@ ALLORNOTHING = \
 
 SIMPLIFY = \
     """
-    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({z}, 256)/2) WHERE _zoom={z};
+    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, ST_ResZ({z}, 256)/2) WHERE cvl_zoom={z};
     """
 
 DROP_TEMP_TABLES_FOR_LEVEL = \

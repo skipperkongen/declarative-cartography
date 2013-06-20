@@ -2,6 +2,7 @@ __author__ = 'kostas'
 
 import imp
 import os
+import pdb
 
 from cvl.framework.query import WILDCARD
 from cvl.engines.postgres.sql import *
@@ -132,9 +133,9 @@ class CodeGenerator(object):
                 formatter['parameter_{0:d}'.format(i)] = param
             formatter['constraint_select'] = constraint.FIND_CONFLICTS.format(**formatter)
             if has_ignored:
-                self.code.append(FIND_CONFLICTS.format(**formatter))
-            else:
                 self.code.append(FIND_CONFLICTS_IGNORE.format(**formatter))
+            else:
+                self.code.append(FIND_CONFLICTS.format(**formatter))
             self.code.append(constraint.CLEAN_UP.format(**formatter))
 
     def ResolveConflicts(self, z):

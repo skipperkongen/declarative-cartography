@@ -27,6 +27,11 @@ FIND_CONFLICTS = \
     AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({z}, 256) * {parameter_1})
     """
 
+RESOLVE_IF = \
+    """
+    1
+    """
+
 CLEAN_UP = \
     """
     """

@@ -15,6 +15,14 @@ While fully automatic generalization methods have been demonstrated to work on t
 We make the following contributions:
 
 \begin{itemize}
+\item A declarative language for generalizing spatial datasets called CVL, which is designed to be simple and efficient to use for non-cartographers.
+\item A mapping of the the cartographic generalization problem to the multi-set cover problem, which makes constraints fully pluggable and allows reuse of well-known algorithms.
+\item A compilation procedure of CVL to a relational database backend. This enables us to reuse basic database technology for data management and scalability.
+\end{itemize}
+
+We make the following contributions:
+
+\begin{itemize}
 \item The specification of a concise domain-specific language, CVL, for declaratively stating how automated generalization should be performed
 \item A formulation of the automated generalization problem as a hitting set problem.
 \item An extensible CVL compiler that compiles CVL to SQL for processing in a relational database

@@ -1,9 +1,9 @@
 SOLVER = \
 """
   -- N Hitting Set heuristic
-  SELECT {fid}, _rank
+  SELECT {fid}, cvl_rank
   FROM (
-    SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY _rank) AS r, {fid}, _rank, min_hits
+    SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY cvl_rank) AS r, {fid}, cvl_rank, min_hits
     FROM _conflicts
   ) h
   WHERE h.r <= h.min_hits

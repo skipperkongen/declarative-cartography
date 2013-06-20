@@ -8,7 +8,9 @@ The generalize statement is used to transform an input spatial dataset to a mult
 The create constraint statement is use to augment CVL with new cartographic constraints.
 
 \subsection{Generalize statement}
-The generalize statement has several clauses, some of which are mandatory. The first mandatory clause is used to specify the names of the input and output datasets, and includes the names of fields holding the record ID and record geometry. This clause has the following syntax:
+The generalize statement has several clauses, some of which are mandatory. 
+
+The generalize clause is mandatory. It is parameterized by the names of input and output datasets and the names of fields in the input holding record IDs and record geometries. The clause has the following syntax:
 
 \begin{lstlisting}
 GENERALIZE 
@@ -19,31 +21,36 @@ WITH GEOMETRY
    {field}
 \end{lstlisting}
 
-Optionally the names of additional fields that should be copied from input to output may be given:
+The \emph{with-other} clause is optional. It is parameterized by a list of field names that should be copied from input to output. If the clause is omitted, only the ID and geometry field are copied. The clause has the following syntax:
 
 \begin{lstlisting}
 WITH OTHER {list of fields}
 \end{lstlisting}
 
-The second mandatory clause specifies the number of zoom-levels to generalize for. Zoom-levels are assumed to run from 0 (lowest scale) to some $\mathcal{Z}$ (largest scale). As zoom-levels are zero-indexed, the number that is given in the clause is $\mathcal{Z}-1$:
+The \emph{zoom-levels} clause is mandatory. It is parameterized by a positive integer which is the number of zoom-levels that the input should be generalized for. Zoom-levels run from 1 (lowest scale) to some positive integer $\mathcal{Z}$ (largest scale) typically less than the number 20. The clause has the following syntax:
 
 \begin{lstlisting}
 AT {integer} ZOOM LEVELS
 \end{lstlisting}
 
-A ranking expression (e.g. a user defined function) is optionally given to guide the generalization process and give priority to "important" records. If the clause is left out, records are ranked by the constant $1$:
+The \emph{rank by} clause is optional. It is used to differentiate between "important" and "unimportant" records. It is parameterized by an expression that evaluates to a floating point number. The expression is anything that could occur in an SQL select clause. An example is a call to the \texttt{random()} function in SQL. If the clause is left out, records are ranked by the constant $1$. This clause has the following syntax:
 
 \begin{lstlisting}
 RANK BY {float expr}
 \end{lstlisting}
 
-A partitioning expression (e.g. the name of a record field) is optionally given to semantically split the input dataset into subpartitions. Subpartitions are treated separately by the CVL interpreter. If no clause is given, all records are partitioned by the constant $1$. Optionally, the merge clause can be used to recombine partitions into bigger ones:
+The \emph{partition by} clause is optional. It is used to split the input into partitions which are generalized separately by the CVL system. It is parameterized by a scalar expression, which can be any expression that could occur in an SQL select clause. An example is the name of a field in the input, which can be used to partition the data. Partitions are treated separately by the CVL interpreter. If no clause is given, all records are partitioned by the constant $1$. 
 
 \begin{lstlisting}
 PARTITION BY
    {scalar expr}
+\end{lstlisting}
+
+The \emph{merge-partitions} clause is optional, but requires the \emph{partition-by} clause to be also present. It is used to combine several partitions produced by the partition-by clause into a single partition. This is useful if some partitions contains very little data. It is parameterized by a list of tuples. The first element of each tuple is a list of partitions created using the partition-by clause. The second element is a scalar value to use as the new partition identifier. A special wild-card partition name can be used to group any remaining partitions into a single partition.
+
+\begin{lstlisting}
 MERGE PARTITIONS    
-    {partitons}
+    {partitions}
     AS {scalar expr}
 [AND 
    {partitions} 
@@ -53,7 +60,7 @@ MERGE PARTITIONS
    * AS {scalar expr}]
 \end{lstlisting}
 
-One of the most central clauses is actually optional. The subject-to clause states the cartographic constraints that must hold for each partition at each zoom-level. Constraint are parameterized by a single float-valued expression, typically a constant:
+The \emph{subject-to} clause is arguably the most important one, but is also optional. It is used to drive the selection of records at coarser zoom-levels. The subject-to clause states the cartographic constraints that must hold for each partition at each zoom-level. Constraint are parameterized by a constraint name and a list of float-values which have constraint specific semantics. The syntax allows for several constraints to be given:
 
 \begin{lstlisting}
 SUBJECT TO 
@@ -63,7 +70,7 @@ SUBJECT TO
 [...]
 \end{lstlisting}
 
-The user may optionally choose to manually set the minimum zoom-level (integer) for a partition (scalar). Constraints are not evaluated for these partitions:
+The user may optionally choose to manually override the constraint mechanism for selected partitions. Using the \emph{force-level} clause a minimum zoom-level can be set for a given partition. Constraints are not evaluated for these partitions:
 
 \begin{lstlisting}
 FORCE MIN LEVEL
@@ -73,10 +80,10 @@ FORCE MIN LEVEL
 [...]
 \end{lstlisting}
 
-The user may optionally name a set of finalizing steps to be performed at the end of the generalization process. CVL has support for two such steps: simplification and a novel "all-or-nothing" transformation. The all-or-nothing transformation ensures that either all records in a partition are visible at a given zoom-level or none of them are.
+Finally, the user may optionally give list of named transformations in the \emph{transform-by} clause. CVL has support for two such transformations: simplification and a novel "all-or-nothing" transformation. The all-or-nothing transformation ensures that either all records in a partition are visible at a given zoom-level or none of them are.
 
 \begin{lstlisting}
 TRANSFORM BY
-   {operator} [, {operators}]
+   {transformation} [, {transformation}]
 \end{lstlisting}
 

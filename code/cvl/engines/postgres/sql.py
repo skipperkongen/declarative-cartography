@@ -52,8 +52,7 @@ ADD_FRAMEWORK = \
     CREATE OR REPLACE FUNCTION CVL_TimerDump(path text) RETURNS void AS $$
         with open(path,'w') as f:
             f.write('LABEL,ELAPSED\n')
-            f.write('\n'.join( map (lambda x: '{0:s},{1:s}'.format(x[0], x[1]), GD['ts']) ))
-
+            f.write('\n'.join( map (lambda x: '{0:s},{1:f}'.format(x[0], x[1]), GD['ts']) ))
     $$ LANGUAGE plpythonu;
 
     -- CVL_TimerDestroy
@@ -160,9 +159,8 @@ REMOVE_FRAMEWORK = \
     """
     DROP FUNCTION CVL_TimerStart();
     DROP FUNCTION CVL_TimerLap(text);
-    DROP FUNCTION CVL_TimerDump();
+    DROP FUNCTION CVL_TimerDump(text);
     DROP FUNCTION CVL_TimerDestroy();
-    DROP TYPE CVL_TIMING;
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);

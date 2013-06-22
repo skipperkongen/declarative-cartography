@@ -6,11 +6,17 @@ class Query(object):
     """docstring for Query"""
 
     def __init__(self,
-                 zoomlevels=None, input=None, output=None, fid=None, geometry=None,
-                 other=[], rank_by='1', partition_by='1', merge_partitions=[],
-                 subject_to=[], force_level=[], transform_by=[]):
+                 zoomlevels, input, output, fid, geometry,
+                 other=None, rank_by='1', partition_by='1', merge_partitions=None,
+                 subject_to=None, force_level=None, transform_by=None):
         super(Query, self).__init__()
-        self.zoomlevels = zoomlevels
+        # optional stuff defaults
+        other = [] if other is None else other
+        merge_partitions = [] if merge_partitions is None else merge_partitions
+        subject_to = [] if subject_to is None else subject_to
+        force_level = [] if force_level is None else force_level
+        transform_by = [] if transform_by is None else transform_by
+        # set all options
         self.zoomlevels = zoomlevels
         self.input = input
         self.output = output

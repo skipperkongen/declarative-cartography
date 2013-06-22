@@ -274,7 +274,7 @@ COMMENT = "-- {comment}"
 
 LOG = \
     """
-    SELECT CVL_Log('{message}','{path_to_file}');
+    SELECT CVL_Log('{message}','{path}');
     """
 
 TIMER_START = \

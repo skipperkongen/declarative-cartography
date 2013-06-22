@@ -51,6 +51,12 @@ class CodeGenerator(object):
                 CLEAN_UP=module.CLEAN_UP)
             )
 
+    def TimeLap(self, label):
+        self.code.append(TIME_ADD_LAP.format(label=label))
+
+    def GetLaps(self):
+        self.code.append(TIME_GET_LAPS)
+
     def Info(self, *info):
         for comment in info:
             self.code.append(COMMENT.format(comment=comment))
@@ -82,6 +88,7 @@ class CodeGenerator(object):
         formatter = self._get_formatter()
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
+        self.code.append(TIME_GET_LAPS)
         self.code.append(COMMIT_TX)
         self.Info('Try this!')
         self.code.append(TRYTHIS.format(**formatter))

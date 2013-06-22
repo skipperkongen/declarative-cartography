@@ -33,18 +33,25 @@ ADD_FRAMEWORK = \
     elapsed double precision
     );
 
-    -- CVL_TimerLap
+    -- CVL_TimerStart
 
+    CREATE OR REPLACE FUNCTION CVL_TimerStart() RETURNS void AS $$
+        import time
+        GD['t_last'] = time.time()
+        GD['ts'] = []
+    $$ LANGUAGE plpythonu;
+
+
+    -- CVL_TimerLap
     CREATE OR REPLACE FUNCTION CVL_TimerLap(label text) RETURNS double precision AS $$
         import time
         now = time.time()
-        if not SD.has_key('t_last'):
-            SD['t_last'] = now
-            GD['ts'] = []
-        elapsed = now - SD['t_last']
-        SD['t_last'] = now
+        if not GD.has_key('t_last'): GD['t_last'] = now
+        if not GD.has_key('ts'): GD['ts'] = []
+        elapsed = now - GD['t_last']
+        GD['t_last'] = now
         GD['ts'].append((label, elapsed))
-        return elapsed
+        return elapsed;
     $$ LANGUAGE plpythonu;
 
     -- CVL_TimerDump
@@ -55,6 +62,12 @@ ADD_FRAMEWORK = \
                 yield lap
     $$ LANGUAGE plpythonu;
 
+    -- CVL_TimerDestroy
+
+    CREATE OR REPLACE FUNCTION CVL_TimerDestroy() RETURNS void AS $$
+	if GD.has_key('t_last'): del GD['t_last']
+	if GD.has_key('ts'): del GD['ts']
+    $$ LANGUAGE plpythonu;
 
     -- CVL_CellSizeZ
 
@@ -151,8 +164,10 @@ ADD_FRAMEWORK = \
 
 REMOVE_FRAMEWORK = \
     """
+    DROP FUNCTION CVL_TimerStart();
     DROP FUNCTION CVL_TimerLap(text);
     DROP FUNCTION CVL_TimerDump();
+    DROP FUNCTION CVL_TimerDestroy();
     DROP TYPE CVL_TIMING;
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
@@ -300,6 +315,16 @@ SIMPLIFY_ALL = \
 # COMMENTS
 
 COMMENT = "-- {comment}"
+
+TIME_ADD_LAP = \
+    """
+    SELECT CVL_TimerLap({label});
+    """
+
+TIME_GET_LAPS = \
+    """
+    SELECT label, elapsed from CVL_TimerDump();
+    """
 
 
 TRYTHIS = \

@@ -14,13 +14,13 @@ TMP = '/tmp/cvl'
 class CodeGenerator(object):
     """docstring for Transaction"""
 
-    def __init__(self, query, solver_name, **options):
+    def __init__(self, query, solver_name, log_file=None):
         super(CodeGenerator, self).__init__()
         self.query = query
         self._load_solver(solver_name)
         self._load_constraints()
-        self.options = options
-        self.timings_file_path = os.path.join(TMP, options['timings_file'])
+        if log_file: self.log_path = os.path.join(TMP, log_file)
+        else: self.log_path = None
         self.code = []
 
     def set_query(self, query):
@@ -54,17 +54,9 @@ class CodeGenerator(object):
                 CLEAN_UP=module.CLEAN_UP)
             )
 
-    def TimerStart(self):
-        self.code.append(TIMER_START)
-
-    def TimerLap(self, label):
-        self.code.append(TIMER_LAP.format(label=label))
-
-    def TimerDump(self):
-        self.code.append(TIMER_DUMP.format(path=self.timings_file_path))
-
-    def TimerDestroy(self):
-        self.code.append(TIMER_DESTROY)
+    def Log(self, message):
+        if self.log_path:
+            self.code.append(LOG.format(message=message,path=self.log_path))
 
     def Info(self, *info):
         for comment in info:
@@ -87,8 +79,7 @@ class CodeGenerator(object):
         self.Info('Adding CVL framework')
         self.code.append(ADD_FRAMEWORK)
 
-        self.Info('Start timer')
-        self.TimerStart()
+        self.Log('begin_transaction')
 
         self.Info('Dropping old version of output table')
         self.code.append(DROP_OUTPUT_TABLE.format(**formatter))
@@ -96,13 +87,11 @@ class CodeGenerator(object):
         self.Info('Creating new output table and index')
         self.code.append(CREATE_OUTPUT_TABLE_AND_INDEX.format(**formatter))
 
-        self.TimerLap('init')
+        self.Log('initialized')
 
     def Finalize(self):
         formatter = self._get_formatter()
-        self.Info('Report time')
-        self.TimerDump()
-        self.TimerDestroy()
+        self.Log('commit')
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
         self.code.append(COMMIT_TX)
@@ -126,7 +115,7 @@ class CodeGenerator(object):
             code.append(MERGE_PARTITIONS_REST.format(**formatter))
 
         self.code.extend(code)
-        self.TimerLap('merge_partitions')
+        self.Log('merged_partitions')
 
     def InitializeLevel(self, z, copy_from=None):
         formatter = self._get_formatter(z=z)
@@ -136,7 +125,7 @@ class CodeGenerator(object):
             self.Info('Copy data from level {0:d} to level {1:d}'.format(copy_from, z))
             self.code.append(COPY_LEVEL.format(**formatter))
         self.code.append(CREATE_TEMP_TABLES_FOR_LEVEL.format(**formatter))
-        self.TimerLap('init_level')
+        self.Log('initialized_level {0:d}'.format(z))
 
     def ForceLevel(self, z):
         formatter = self._get_formatter(z=z)
@@ -144,7 +133,7 @@ class CodeGenerator(object):
             self.Info('Force delete records')
             formatter['delete_partition'] = "'%s'" % force_clause.partition
             self.code.append(FORCE_LEVEL.format(**formatter))
-        self.TimerLap('force_level')
+        self.Log('forced_level {0:d}'.format(z))
 
     def FindConflicts(self, z):
         ignored_partitions = ', '.join(map(lambda x: ("'{0:s}'".format(x.partition)), self.query.force_level))
@@ -163,7 +152,7 @@ class CodeGenerator(object):
             else:
                 self.code.append(FIND_CONFLICTS.format(**formatter))
             self.code.append(constraint.CLEAN_UP.format(**formatter))
-        self.TimerLap('find_conflicts')
+        self.Log('found_conflicts {0:d}'.format(z))
 
     def ResolveConflicts(self, z):
         formatter = self._get_formatter(z=z)
@@ -172,7 +161,7 @@ class CodeGenerator(object):
         self.code.append(COLLECT_DELETIONS.format(**formatter))
         self.Info('Delete records')
         self.code.append(DO_DELETIONS.format(**formatter))
-        self.TimerLap('resolve_conflicts')
+        self.Log('resolved_conflicts {0:d}'.format(z))
 
     def TransformLevel(self, z):
         formatter = self._get_formatter(z=z)
@@ -182,20 +171,20 @@ class CodeGenerator(object):
         if 'simplify' in self.query.transform_by:
             self.Info('Simplifying level')
             self.code.append(SIMPLIFY.format(**formatter))
-        self.TimerLap('transform_level')
+        self.Log('transformed_level {0:d}'.format(z))
 
     def FinalizeLevel(self, z):
         formatter = self._get_formatter(z=z)
         self.Info('Clean-up for level %d' % z)
         self.code.append(DROP_TEMP_TABLES_FOR_LEVEL.format(**formatter))
-        self.TimerLap('finalize_level')
+        self.Log('finalized_level {0:d}'.format(z))
 
     def SimplifyAll(self):
         formatter = self._get_formatter()
         self.Info('Simplifying output')
         if 'simplify_once' in self.query.transform_by:
             self.code.append(SIMPLIFY_ALL.format(**formatter))
-        self.TimerLap('simplify_all')
+        self.Log('simplified_all')
 
     def TryThis(self):
         formatter = self._get_formatter()

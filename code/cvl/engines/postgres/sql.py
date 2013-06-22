@@ -26,40 +26,10 @@ ADD_FRAMEWORK = \
     r"""
     -- create extension plpythonu;
 
-    -- CVL_TimerStart
-
-    CREATE OR REPLACE FUNCTION CVL_TimerStart() RETURNS void AS $$
-        import time
-        GD['t_last'] = time.time()
-        GD['ts'] = []
-    $$ LANGUAGE plpythonu;
-
-
-    -- CVL_TimerLap
-    CREATE OR REPLACE FUNCTION CVL_TimerLap(label text) RETURNS double precision AS $$
-        import time
-        now = time.time()
-        if not GD.has_key('t_last'): GD['t_last'] = now
-        if not GD.has_key('ts'): GD['ts'] = []
-        elapsed = now - GD['t_last']
-        GD['t_last'] = now
-        GD['ts'].append((label, elapsed))
-        return elapsed;
-    $$ LANGUAGE plpythonu;
-
-    -- CVL_TimerDump
-
-    CREATE OR REPLACE FUNCTION CVL_TimerDump(path text) RETURNS void AS $$
-        with open(path,'w') as f:
-            f.write('LABEL,ELAPSED\n')
-            f.write('\n'.join( map (lambda x: '{0:s},{1:f}'.format(x[0], x[1]), GD['ts']) ))
-    $$ LANGUAGE plpythonu;
-
-    -- CVL_TimerDestroy
-
-    CREATE OR REPLACE FUNCTION CVL_TimerDestroy() RETURNS void AS $$
-	if GD.has_key('t_last'): del GD['t_last']
-	if GD.has_key('ts'): del GD['ts']
+    CREATE OR REPLACE FUNCTION CVL_Log(message text, path_to_log text) RETURNS void AS $$
+        from datetime import datetime
+        with open(path_to_log, 'a+') as f:
+            f.write('{0:s} {1:s}\n'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), message))
     $$ LANGUAGE plpythonu;
 
     -- CVL_CellSizeZ
@@ -157,10 +127,7 @@ ADD_FRAMEWORK = \
 
 REMOVE_FRAMEWORK = \
     """
-    DROP FUNCTION CVL_TimerStart();
-    DROP FUNCTION CVL_TimerLap(text);
-    DROP FUNCTION CVL_TimerDump(text);
-    DROP FUNCTION CVL_TimerDestroy();
+    DROP FUNCTION CVL_Log(text, text);
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
@@ -304,6 +271,11 @@ SIMPLIFY_ALL = \
 # COMMENTS
 
 COMMENT = "-- {comment}"
+
+LOG = \
+    """
+    SELECT CVL_Log('{message}','{path_to_file}');
+    """
 
 TIMER_START = \
     """

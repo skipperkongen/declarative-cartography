@@ -96,9 +96,10 @@ class CodeGenerator(object):
 
     def Finalize(self):
         formatter = self._get_formatter()
+        self.Info('Log num_recs and agg_rank for all zoom-levels')
+        self.LogStats()
         self.Log('commit')
         self.Info('Removing CVL framework')
-        self.LogStats()
         self.code.append(REMOVE_FRAMEWORK)
         self.code.append(COMMIT_TX)
         self.Info('Try this!')

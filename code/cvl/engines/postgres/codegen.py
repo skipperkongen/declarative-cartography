@@ -84,7 +84,7 @@ class CodeGenerator(object):
         self.Info('Adding CVL framework')
         self.code.append(ADD_FRAMEWORK.format(**formatter))
 
-        self.Log('begin_transaction')
+        self.Log('BEGIN_TRANSACTION')
 
         self.Info('Dropping old version of output table')
         self.code.append(DROP_OUTPUT_TABLE.format(**formatter))
@@ -98,7 +98,7 @@ class CodeGenerator(object):
         formatter = self._get_formatter()
         self.Info('Log num_recs and agg_rank for all zoom-levels')
         self.LogStats()
-        self.Log('commit')
+        self.Log('COMMIT')
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
         self.code.append(COMMIT_TX)

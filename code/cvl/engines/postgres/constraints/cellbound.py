@@ -15,7 +15,7 @@ SET_UP = \
         FROM
             {output}
         WHERE
-            cvl_zoom < {z}
+            cvl_zoom <= {z}
     );
     """
 

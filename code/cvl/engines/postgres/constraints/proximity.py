@@ -21,8 +21,8 @@ FIND_CONFLICTS = \
         {output} r
     ON
         l.{fid} < r.{fid}
-    AND	l.cvl_zoom < {z}
-    AND	r.cvl_zoom < {z}
+    AND	l.cvl_zoom <= {z}
+    AND	r.cvl_zoom <= {z}
     -- AND l.cvl_partition = r.cvl_partition
     AND	ST_DWithin(l.{geometry}, r.{geometry}, CVL_ResZ({z}, 256) * {parameter_1})
     """

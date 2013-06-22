@@ -18,7 +18,7 @@ SET_UP = \
     FROM
         {output}
     WHERE
-        cvl_zoom < {z};
+        cvl_zoom <= {z};
 
     CREATE TEMP TABLE _avg_density_sums AS
     SELECT

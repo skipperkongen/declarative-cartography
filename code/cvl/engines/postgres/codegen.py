@@ -8,6 +8,8 @@ from cvl.framework.query import WILDCARD
 from cvl.engines.postgres.sql import *
 from cvl.util.anonobject import Object
 
+TMP = '/tmp/cvl'
+
 
 class CodeGenerator(object):
     """docstring for Transaction"""
@@ -18,6 +20,7 @@ class CodeGenerator(object):
         self._load_solver(solver_name)
         self._load_constraints()
         self.options = options
+        self.timings_file_path = os.path.join(TMP, options['timings_file'])
         self.code = []
 
     def set_query(self, query):
@@ -58,7 +61,7 @@ class CodeGenerator(object):
         self.code.append(TIMER_LAP.format(label=label))
 
     def TimerDump(self):
-        self.code.append(TIMER_DUMP.format(path='/tmp/cvl_timings.txt'))
+        self.code.append(TIMER_DUMP.format(path=self.timings_file_path))
 
     def TimerDestroy(self):
         self.code.append(TIMER_DESTROY)

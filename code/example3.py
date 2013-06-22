@@ -7,7 +7,7 @@ from cvl.framework.query import Query
 
 if __name__ == '__main__':
     query_dict = {
-        'zoomlevels': 18,
+        'zoomlevels': 1,
         'input': 'openflights_airports',
         'output': 'openflights_airports_thinned_cb',
         'fid': 'ogc_fid',

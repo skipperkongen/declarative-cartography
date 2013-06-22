@@ -162,10 +162,11 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
       {fid}, {geometry}, {other},
       {rank_by}::float AS cvl_rank,
       {partition_by} AS cvl_partition,
-      {zoomlevels} as cvl_zoom
+      0 as cvl_zoom
     FROM
       {input};
 
+    CREATE INDEX {output}_zidx ON {output} (cvl_zoom);
     CREATE INDEX {output}_gist ON {output} USING GIST({geometry});
     """
 
@@ -183,25 +184,17 @@ MERGE_PARTITIONS_REST = \
 
 # Stage commands
 
-COPY_LEVEL = \
-    """
-    INSERT INTO {output}
-    SELECT {fid}, {geometry}, {other}, cvl_rank, cvl_partition, {z} as cvl_zoom
-    FROM {output}
-    WHERE cvl_zoom = {copy_from};
-    """
-
 CREATE_TEMP_TABLES_FOR_LEVEL = \
     """
-    CREATE TEMPORARY TABLE _deletions ({fid} integer, cvl_rank float);
     CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} integer, cvl_rank float, min_hits integer);
+    CREATE TEMPORARY TABLE _deletions ({fid} integer, cvl_rank float);
     """
 
 FORCE_LEVEL = \
     """
-    DELETE FROM {output}
-    WHERE cvl_zoom = {z}
-    AND cvl_partition = {delete_partition};
+    UPDATE {output}
+    SET cvl_zoom = {z} + 1
+    WHERE cvl_partition = {delete_partition};
     """
 
 FIND_CONFLICTS = \
@@ -215,19 +208,7 @@ FIND_CONFLICTS = \
     FROM ({constraint_select}) s;
     """
 
-FIND_CONFLICTS_IGNORE = \
-    """
-    INSERT INTO _conflicts
-    SELECT
-        s.conflict_id,
-        s.{fid},
-        s.cvl_rank,
-        s.min_hits
-    FROM ({constraint_select}) s
-    WHERE s.cvl_partition NOT IN ({ignored_partitions});
-    """
-
-COLLECT_DELETIONS = \
+SOLVE = \
     """
     INSERT INTO _deletions
     SELECT sol.{fid}, sol.cvl_rank FROM ({solution}) sol;
@@ -235,10 +216,9 @@ COLLECT_DELETIONS = \
 
 DO_DELETIONS = \
     """
-    DELETE FROM {output}
-    WHERE
-        cvl_zoom = {z}
-    AND {fid} IN (SELECT {fid} FROM _deletions);
+    UPDATE {output}
+    SET cvl_zoom = {z} + 1
+    WHERE {fid} IN (SELECT {fid} FROM _deletions);
     """
 
 ALLORNOTHING = \
@@ -265,22 +245,10 @@ ALLORNOTHING = \
       WHERE low.count < high.count);
     """
 
-SIMPLIFY = \
-    """
-    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, CVL_ResZ({z}, 256)/2) WHERE cvl_zoom={z};
-    """
-
 DROP_TEMP_TABLES_FOR_LEVEL = \
     """
     DROP TABLE _conflicts;
     DROP TABLE _deletions;
-    """
-
-# Finalizing
-
-SIMPLIFY_ALL = \
-    """
-    UPDATE {output} SET {geometry} = ST_Simplify({geometry}, CVL_ResZ(cvl_zoom, 256)/2);
     """
 
 # COMMENTS

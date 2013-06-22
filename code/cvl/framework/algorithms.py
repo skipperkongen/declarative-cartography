@@ -15,14 +15,15 @@ class BottomUp(object):
         # GENERALIZATION PHASE
         for z in reversed(range(zoomlevels)):
             # INITIALIZE LEVEL
-            code_generator.InitializeLevel(z, copy_from=z + 1)
+            #code_generator.InitializeLevel(z, copy_from=z + 1)
+            code_generator.InitializeLevel(z)
             # FORCE LEVEL
             code_generator.ForceLevel(z)
             # SUBJECT TO
             code_generator.FindConflicts(z)  # find conflicts
             code_generator.ResolveConflicts(z)  # find records to delete
             # TRANSFORM: allornothing, simplify_level
-            code_generator.TransformLevel(z)
+            code_generator.AllOrNothing(z)
             code_generator.FinalizeLevel(z)
 
         # FINALIZE PHASE

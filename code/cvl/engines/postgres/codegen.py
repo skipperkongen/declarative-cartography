@@ -102,8 +102,6 @@ class CodeGenerator(object):
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
         self.code.append(COMMIT_TX)
-        self.Info('Try this!')
-        self.code.append(TRYTHIS.format(**formatter))
 
     def MergePartitions(self):
         formatter = self._get_formatter()
@@ -124,13 +122,9 @@ class CodeGenerator(object):
         self.code.extend(code)
         self.Log('merged_partitions')
 
-    def InitializeLevel(self, z, copy_from=None):
+    def InitializeLevel(self, z):
         formatter = self._get_formatter(z=z)
         self.Info('Initialization for level {0:d}'.format(z))
-        if copy_from is not None:
-            formatter['copy_from'] = copy_from
-            self.Info('Copy data from level {0:d} to level {1:d}'.format(copy_from, z))
-            self.code.append(COPY_LEVEL.format(**formatter))
         self.code.append(CREATE_TEMP_TABLES_FOR_LEVEL.format(**formatter))
         self.Log('initialized_level {0:d}'.format(z))
 
@@ -143,41 +137,31 @@ class CodeGenerator(object):
         self.Log('forced_level {0:d}'.format(z))
 
     def FindConflicts(self, z):
-        ignored_partitions = ', '.join(map(lambda x: ("'{0:s}'".format(x.partition)), self.query.force_level))
-        formatter = self._get_formatter(
-            z=z,
-            ignored_partitions=ignored_partitions)
+        formatter = self._get_formatter(z=z)
         self.Info('Find conflicts')
-        has_ignored = ignored_partitions != ''
         for constraint in self.constraints:
             self.code.append(constraint.SET_UP.format(**formatter))
             for i, param in enumerate(constraint.params, start=1):
                 formatter['parameter_{0:d}'.format(i)] = param
             formatter['constraint_select'] = constraint.FIND_CONFLICTS.format(**formatter)
-            if has_ignored:
-                self.code.append(FIND_CONFLICTS_IGNORE.format(**formatter))
-            else:
-                self.code.append(FIND_CONFLICTS.format(**formatter))
+            self.code.append(FIND_CONFLICTS.format(**formatter))
             self.code.append(constraint.CLEAN_UP.format(**formatter))
         self.Log('found_conflicts {0:d}'.format(z))
 
     def ResolveConflicts(self, z):
         formatter = self._get_formatter(z=z)
         formatter['solution'] = self.SOLVER.format(**formatter)
-        self.Info('Insert records to delete in temp table')
-        self.code.append(COLLECT_DELETIONS.format(**formatter))
+        self.Info('Find records to delete and insert in temp table')
+        self.code.append(SOLVE.format(**formatter))
         self.Info('Delete records')
         self.code.append(DO_DELETIONS.format(**formatter))
         self.Log('resolved_conflicts {0:d}'.format(z))
 
-    def TransformLevel(self, z):
+    def AllOrNothing(self, z):
         formatter = self._get_formatter(z=z)
         if 'allornothing' in self.query.transform_by:
             self.Info('Apply all-or-nothing')
             self.code.append(ALLORNOTHING.format(**formatter))
-        if 'simplify' in self.query.transform_by:
-            self.Info('Simplifying level')
-            self.code.append(SIMPLIFY.format(**formatter))
         self.Log('transformed_level {0:d}'.format(z))
 
     def FinalizeLevel(self, z):
@@ -185,18 +169,6 @@ class CodeGenerator(object):
         self.Info('Clean-up for level %d' % z)
         self.code.append(DROP_TEMP_TABLES_FOR_LEVEL.format(**formatter))
         self.Log('finalized_level {0:d}'.format(z))
-
-    def SimplifyAll(self):
-        formatter = self._get_formatter()
-        self.Info('Simplifying output')
-        if 'simplify_once' in self.query.transform_by:
-            self.code.append(SIMPLIFY_ALL.format(**formatter))
-        self.Log('simplified_all')
-
-    def TryThis(self):
-        formatter = self._get_formatter()
-        self.Comment('Something you can try')
-        self.code.append(TRYTHIS.format(**formatter))
 
     def get_code(self):
         return "\n".join(self.code)

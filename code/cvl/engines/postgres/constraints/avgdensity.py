@@ -9,8 +9,8 @@ SET_UP = \
     SELECT
         ST_Envelope(
             ST_Buffer(
-                ST_WebMercatorCells({geometry}, {z})),
-                ST_CellSizeZ({z})/2
+                CVL_WebMercatorCells({geometry}, {z})),
+                CVL_CellSizeZ({z})/2
             )
         ) AS cell_box,
         {fid},
@@ -22,8 +22,8 @@ SET_UP = \
 
     CREATE TEMP TABLE _avg_density_sums AS
     SELECT
-        sum(ST_Area(ST_Intersection(cells.cell_box, ST_Buffer(output.{geometry}, st_ResZ({z}, 256))))) AS itx_area,
-        pow(ST_CellSizeZ({z}),2) AS cell_area,
+        sum(ST_Area(ST_Intersection(cells.cell_box, ST_Buffer(output.{geometry}, CVL_ResZ({z}, 256))))) AS itx_area,
+        pow(CVL_CellSizeZ({z}),2) AS cell_area,
         output.cvl_partition
     FROM
         {output} output JOIN _avg_density_cells cells
@@ -32,7 +32,7 @@ SET_UP = \
     AND
         output.cvl_partition = cells.cvl_partition
     GROUP BY
-        ST_PointHash(ST_Centroid(cells.cell_box)),
+        CVL_PointHash(ST_Centroid(cells.cell_box)),
         output.cvl_partition;
     """
 

@@ -24,7 +24,7 @@ FIND_CONFLICTS = \
     AND	l.cvl_zoom = {z}
     AND	r.cvl_zoom = {z}
     -- AND l.cvl_partition = r.cvl_partition
-    AND	ST_DWithin(l.{geometry}, r.{geometry}, ST_ResZ({z}, 256) * {parameter_1})
+    AND	ST_DWithin(l.{geometry}, r.{geometry}, CVL_ResZ({z}, 256) * {parameter_1})
     """
 
 RESOLVE_IF = \

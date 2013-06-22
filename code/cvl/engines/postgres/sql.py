@@ -26,22 +26,22 @@ ADD_FRAMEWORK = \
     r"""
     -- create extension plpythonu;
 
-    CREATE OR REPLACE FUNCTION CVL_LogStats() RETURNS void AS $$
+    CREATE OR REPLACE FUNCTION CVL_LogStats(job_name text) RETURNS void AS $$
         from datetime import datetime
-        sql = "SELECT cvl_zoom, cvl_partition, Count(*), Sum(cvl_rank) FROM {output} GROUP BY cvl_zoom ORDER BY cvl_zoom;"
+        sql = "SELECT cvl_zoom, cvl_partition, Count(*) AS num_recs, Sum(cvl_rank) AS aggrank \
+               FROM {output} GROUP BY cvl_zoom, cvl_partition ORDER BY cvl_zoom;"
         rows = plpy.execute(sql)
-        with open({path}, 'a+') as f:
+        with open('{path}', 'a+') as f:
             for row in rows:
-                message = "zoom:"+str(row[0])+" partition:"+str(row[1])+" records:"+str(row[1])+" aggrank:"+str(row[3])
-                to_write = " ".join[datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), message]
+                to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), job_name, "stats", str(row)])
                 f.write(to_write)
                 f.write('\n')
     $$ LANGUAGE plpythonu;
 
     CREATE OR REPLACE FUNCTION CVL_Log(message text) RETURNS void AS $$
         from datetime import datetime
-        with open({path}, 'a+') as f:
-            to_write = " ".join[datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), message]
+        with open('{path}', 'a+') as f:
+            to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), message])
             f.write(to_write)
             f.write('\n')
     $$ LANGUAGE plpythonu;
@@ -141,8 +141,8 @@ ADD_FRAMEWORK = \
 
 REMOVE_FRAMEWORK = \
     """
-    DROP FUNCTION CVL_Log(text, text);
-    DROP FUNCTION CVL_LogStats(text, text);
+    DROP FUNCTION CVL_Log(text);
+    DROP FUNCTION CVL_LogStats(text);
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
@@ -294,7 +294,7 @@ LOG = \
 
 LOG_STATS = \
     """
-    SELECT CVL_LogStats();
+    SELECT CVL_LogStats('{job_name}');
     """
 
 TRYTHIS = \

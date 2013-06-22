@@ -59,7 +59,8 @@ class CodeGenerator(object):
         self.code.append(LOG.format(message=message))
 
     def LogStats(self):
-        self.code.append(LOG_STATS)
+        job_name = "[{0:s}]".format(self.job_name)
+        self.code.append(LOG_STATS.format(job_name=job_name))
 
     def Info(self, *info):
         for comment in info:

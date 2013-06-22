@@ -277,26 +277,6 @@ LOG = \
     SELECT CVL_Log('{message}','{path}');
     """
 
-TIMER_START = \
-    """
-    SELECT CVL_TimerStart();
-    """
-
-TIMER_LAP = \
-    """
-    SELECT CVL_TimerLap('{label}');
-    """
-
-TIMER_DUMP = \
-    """
-    SELECT CVL_TimerDump('{path}');
-    """
-
-TIMER_DESTROY = \
-    """
-    SELECT CVL_TimerDestroy();
-    """
-
 TRYTHIS = \
     """
     -- Records per zoom-level:

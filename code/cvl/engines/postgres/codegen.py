@@ -14,13 +14,13 @@ TMP = '/tmp/cvl'
 class CodeGenerator(object):
     """docstring for Transaction"""
 
-    def __init__(self, query, solver_name, log_file=None):
+    def __init__(self, query, solver_name, log_file='cvl.log', job_name='noname_job'):
         super(CodeGenerator, self).__init__()
         self.query = query
         self._load_solver(solver_name)
         self._load_constraints()
-        if log_file: self.log_path = os.path.join(TMP, log_file)
-        else: self.log_path = None
+        self.log_path = os.path.join(TMP, log_file)
+        self.job_name = job_name
         self.code = []
 
     def set_query(self, query):
@@ -56,6 +56,7 @@ class CodeGenerator(object):
 
     def Log(self, message):
         if self.log_path:
+            message = "[{0:s}] {1:s}".format(self.job_name, message)
             self.code.append(LOG.format(message=message,path=self.log_path))
 
     def Info(self, *info):

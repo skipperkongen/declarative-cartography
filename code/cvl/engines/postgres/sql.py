@@ -23,15 +23,8 @@ COMMIT_TX = \
 # FRAMEWORK
 
 ADD_FRAMEWORK = \
-    """
-    create extension plpythonu;
-
-    -- CVL_TIMING TYPE
-
-    CREATE TYPE cvl_timing AS (
-    label text,
-    elapsed double precision
-    );
+    r"""
+    -- create extension plpythonu;
 
     -- CVL_TimerStart
 
@@ -56,10 +49,11 @@ ADD_FRAMEWORK = \
 
     -- CVL_TimerDump
 
-    CREATE OR REPLACE FUNCTION CVL_TimerDump() RETURNS SETOF cvl_timing AS $$
-        if GD.has_key('ts'):
-            for lap in GD['ts']:
-                yield lap
+    CREATE OR REPLACE FUNCTION CVL_TimerDump(path text) RETURNS void AS $$
+        with open(path,'w') as f:
+            f.write('LABEL,ELAPSED\n')
+            f.write('\n'.join( map (lambda x: '{0:s},{1:s}'.format(x[0], x[1]), GD['ts']) ))
+
     $$ LANGUAGE plpythonu;
 
     -- CVL_TimerDestroy
@@ -179,7 +173,6 @@ REMOVE_FRAMEWORK = \
 DROP_OUTPUT_TABLE = \
     """
     DROP TABLE IF EXISTS {output};
-    DROP TABLE IF EXISTS {output}_timings;
     """
 
 CREATE_OUTPUT_TABLE_AND_INDEX = \
@@ -192,8 +185,6 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
       {zoomlevels} as cvl_zoom
     FROM
       {input};
-
-    CREATE TABLE {}
 
     CREATE INDEX {output}_gist ON {output} USING GIST({geometry});
     """
@@ -316,16 +307,25 @@ SIMPLIFY_ALL = \
 
 COMMENT = "-- {comment}"
 
-TIME_ADD_LAP = \
+TIMER_START = \
     """
-    SELECT CVL_TimerLap({label});
-    """
-
-TIME_GET_LAPS = \
-    """
-    SELECT label, elapsed from CVL_TimerDump();
+    SELECT CVL_TimerStart();
     """
 
+TIMER_LAP = \
+    """
+    SELECT CVL_TimerLap('{label}');
+    """
+
+TIMER_DUMP = \
+    """
+    SELECT CVL_TimerDump('{path}');
+    """
+
+TIMER_DESTROY = \
+    """
+    SELECT CVL_TimerDestroy();
+    """
 
 TRYTHIS = \
     """

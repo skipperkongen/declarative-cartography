@@ -51,11 +51,17 @@ class CodeGenerator(object):
                 CLEAN_UP=module.CLEAN_UP)
             )
 
-    def TimeLap(self, label):
-        self.code.append(TIME_ADD_LAP.format(label=label))
+    def TimerStart(self):
+        self.code.append(TIMER_START)
 
-    def GetLaps(self):
-        self.code.append(TIME_GET_LAPS)
+    def TimerLap(self, label):
+        self.code.append(TIMER_LAP.format(label=label))
+
+    def TimerDump(self):
+        self.code.append(TIMER_DUMP.format(path='/tmp/cvl_timings.txt'))
+
+    def TimerDestroy(self):
+        self.code.append(TIMER_DESTROY)
 
     def Info(self, *info):
         for comment in info:
@@ -75,20 +81,27 @@ class CodeGenerator(object):
 
         self.code.append(BEGIN_TX)
 
+        self.Info('Adding CVL framework')
+        self.code.append(ADD_FRAMEWORK)
+
+        self.Info('Start timer')
+        self.TimerStart()
+
         self.Info('Dropping old version of output table')
         self.code.append(DROP_OUTPUT_TABLE.format(**formatter))
 
         self.Info('Creating new output table and index')
         self.code.append(CREATE_OUTPUT_TABLE_AND_INDEX.format(**formatter))
 
-        self.Info('Adding CVL framework')
-        self.code.append(ADD_FRAMEWORK)
+        self.TimerLap('init')
 
     def Finalize(self):
         formatter = self._get_formatter()
+        self.Info('Report time')
+        self.TimerDump()
+        self.TimerDestroy()
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
-        self.code.append(TIME_GET_LAPS)
         self.code.append(COMMIT_TX)
         self.Info('Try this!')
         self.code.append(TRYTHIS.format(**formatter))
@@ -110,6 +123,7 @@ class CodeGenerator(object):
             code.append(MERGE_PARTITIONS_REST.format(**formatter))
 
         self.code.extend(code)
+        self.TimerLap('merge_partitions')
 
     def InitializeLevel(self, z, copy_from=None):
         formatter = self._get_formatter(z=z)
@@ -119,6 +133,7 @@ class CodeGenerator(object):
             self.Info('Copy data from level {0:d} to level {1:d}'.format(copy_from, z))
             self.code.append(COPY_LEVEL.format(**formatter))
         self.code.append(CREATE_TEMP_TABLES_FOR_LEVEL.format(**formatter))
+        self.TimerLap('init_level')
 
     def ForceLevel(self, z):
         formatter = self._get_formatter(z=z)
@@ -126,6 +141,7 @@ class CodeGenerator(object):
             self.Info('Force delete records')
             formatter['delete_partition'] = "'%s'" % force_clause.partition
             self.code.append(FORCE_LEVEL.format(**formatter))
+        self.TimerLap('force_level')
 
     def FindConflicts(self, z):
         ignored_partitions = ', '.join(map(lambda x: ("'{0:s}'".format(x.partition)), self.query.force_level))
@@ -144,6 +160,7 @@ class CodeGenerator(object):
             else:
                 self.code.append(FIND_CONFLICTS.format(**formatter))
             self.code.append(constraint.CLEAN_UP.format(**formatter))
+        self.TimerLap('find_conflicts')
 
     def ResolveConflicts(self, z):
         formatter = self._get_formatter(z=z)
@@ -152,6 +169,7 @@ class CodeGenerator(object):
         self.code.append(COLLECT_DELETIONS.format(**formatter))
         self.Info('Delete records')
         self.code.append(DO_DELETIONS.format(**formatter))
+        self.TimerLap('resolve_conflicts')
 
     def TransformLevel(self, z):
         formatter = self._get_formatter(z=z)
@@ -161,17 +179,20 @@ class CodeGenerator(object):
         if 'simplify' in self.query.transform_by:
             self.Info('Simplifying level')
             self.code.append(SIMPLIFY.format(**formatter))
+        self.TimerLap('transform_level')
 
     def FinalizeLevel(self, z):
         formatter = self._get_formatter(z=z)
         self.Info('Clean-up for level %d' % z)
         self.code.append(DROP_TEMP_TABLES_FOR_LEVEL.format(**formatter))
+        self.TimerLap('finalize_level')
 
     def SimplifyAll(self):
         formatter = self._get_formatter()
         self.Info('Simplifying output')
         if 'simplify_once' in self.query.transform_by:
             self.code.append(SIMPLIFY_ALL.format(**formatter))
+        self.TimerLap('simplify_all')
 
     def TryThis(self):
         formatter = self._get_formatter()

@@ -9,10 +9,10 @@ if __name__ == '__main__':
     query_dict = {
         'zoomlevels': 18,
         'input': 'openflights_airports',
-        'output': 'openflights_airports_thinned_cb',
+        'output': 'airports_thin_cb',
         'fid': 'ogc_fid',
         'geometry': 'wkb_geometry',
-        'other': ['airport_id, name', 'city', 'country', 'num_routes'],
+        'other': ['airport_id', 'name', 'city', 'country', 'num_routes'],
         'rank_by': 'num_routes + random()',
         'subject_to': [('cellbound', 16)],
     }

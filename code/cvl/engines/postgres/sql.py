@@ -159,7 +159,7 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
     """
     CREATE TABLE {output} AS
     SELECT
-      {fid}, {geometry}, {other},
+      {fid}, {geometry}, {other}
       {rank_by}::float AS cvl_rank,
       {partition_by} AS cvl_partition,
       0 as cvl_zoom
@@ -223,26 +223,13 @@ DO_DELETIONS = \
 
 ALLORNOTHING = \
     """
-    DELETE FROM {output}
-    WHERE cvl_zoom = {z}
-    AND cvl_partition IN
+    UPDATE {output}
+    SET cvl_zoom = {z} + 1
+    WHERE cvl_partition IN
     (
-      SELECT low.cvl_partition FROM
-      (
-        SELECT cvl_partition, count(*) AS count
-        FROM {output}
-        WHERE cvl_zoom= {z}
-        GROUP BY cvl_partition
-      ) low
-      JOIN
-      (
-        SELECT cvl_partition, count(*) AS count
-        FROM {output}
-        WHERE cvl_zoom = {z} + 1
-        GROUP BY cvl_partition
-      ) high
-      ON low.cvl_partition = high.cvl_partition
-      WHERE low.count < high.count);
+      SELECT DISTINCT cvl_partition FROM {output}
+      WHERE cvl_zoom= {z} + 1
+    );
     """
 
 DROP_TEMP_TABLES_FOR_LEVEL = \

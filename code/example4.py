@@ -8,14 +8,13 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     query_dict = {
         'zoomlevels': 18,
-#        'input': 'openflights_airports',
         'input': 'osm_tourism_points',
         'output': 'tourism_thin_prox',
         'fid': 'osm_id',
         'geometry': 'wkb_geometry',
-#        'other': ['name', 'type'],
+        'other': ['name', 'type'],
         'rank_by': 'random()',
-        'subject_to': [('proximity', 5)],
+        'subject_to': [('proximity', 10)],
     }
     query = Query(**query_dict)
     compiler = CvlCompiler()

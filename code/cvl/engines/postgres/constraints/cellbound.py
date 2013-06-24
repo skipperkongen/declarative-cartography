@@ -9,7 +9,7 @@ SET_UP = \
     (
         SELECT
             CVL_PointHash(CVL_WebMercatorCells({geometry}, {z})) || cvl_partition AS cell_id,
-            {fid},
+            cvl_id,
             cvl_rank,
             cvl_partition
         FROM
@@ -25,7 +25,7 @@ FIND_CONFLICTS = \
     -- find conflicts
     SELECT
         exceeded_cells.cell_id as conflict_id,
-        all_cells.{fid},
+        all_cells.cvl_id,
         all_cells.cvl_partition,
         all_cells.cvl_rank,
         exceeded_cells.min_hits

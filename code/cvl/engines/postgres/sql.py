@@ -159,7 +159,7 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
     """
     CREATE TABLE {output} AS
     SELECT
-      {fid}::bigint as {fid}, {geometry}, {other}
+      {fid}::bigint as cvl_id, {geometry}, {other}
       {rank_by}::float AS cvl_rank,
       {partition_by} AS cvl_partition,
       0 as cvl_zoom
@@ -186,8 +186,8 @@ MERGE_PARTITIONS_REST = \
 
 CREATE_TEMP_TABLES_FOR_LEVEL = \
     """
-    CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} bigint, cvl_rank float, min_hits integer);
-    CREATE TEMPORARY TABLE _deletions ({fid} bigint, cvl_rank float);
+    CREATE TEMPORARY TABLE _conflicts (conflict_id text, cvl_id bigint, cvl_rank float, min_hits integer);
+    CREATE TEMPORARY TABLE _deletions (cvl_id bigint, cvl_rank float);
     CREATE TEMPORARY VIEW _level_view AS SELECT * FROM {output} WHERE cvl_zoom = 0;
     """
 
@@ -204,7 +204,7 @@ FIND_CONFLICTS = \
     INSERT INTO _conflicts
     SELECT
         s.conflict_id,
-        s.{fid},
+        s.cvl_id,
         s.cvl_rank,
         s.min_hits
     FROM ({constraint_select}) s;
@@ -213,14 +213,14 @@ FIND_CONFLICTS = \
 SOLVE = \
     """
     INSERT INTO _deletions
-    SELECT sol.{fid}, sol.cvl_rank FROM ({solution}) sol;
+    SELECT sol.cvl_id, sol.cvl_rank FROM ({solution}) sol;
     """
 
 DO_DELETIONS = \
     """
     UPDATE {output}
     SET cvl_zoom = {z} + 1
-    WHERE {fid} IN (SELECT {fid} FROM _deletions);
+    WHERE cvl_id IN (SELECT cvl_id FROM _deletions);
     """
 
 ALLORNOTHING = \

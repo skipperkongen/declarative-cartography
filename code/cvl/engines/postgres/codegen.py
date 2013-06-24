@@ -17,8 +17,17 @@ class CodeGenerator(object):
     def __init__(self, query, solver_name, log_file='cvl.log', job_name='noname_job'):
         super(CodeGenerator, self).__init__()
         self.query = query
-        self.solver = self._load_solver(solver_name)
-        self.constraints = self._load_constraints()
+        self.solver = self._load_module('solvers', solver_name)
+        self.constraints = []
+        for constraint in self.query.subject_to:
+            module = self._load_module('constraints', constraint.name)
+            self.constraints.append(Object(
+                name=constraint.name,
+                params=constraint.params,
+                SET_UP=module.SET_UP,
+                FIND_CONFLICTS=module.FIND_CONFLICTS,
+                CLEAN_UP=module.CLEAN_UP)
+            )
         self.log_path = os.path.join(TMP, log_file)
         self.job_name = job_name
         self.code = []
@@ -37,10 +46,6 @@ class CodeGenerator(object):
         module_file = os.path.join(root, module, '{0:s}.py'.format(submodule))
         module_name = 'cvl.engines.postgres.{module}.{submodule}'.format(module=module, submodule=submodule)
         return imp.load_source(module_name, module_file)
-
-    def _load_solver(self, solver_name):
-        module = self._load_module('solvers', solver_name)
-        return module
 
     def _load_constraints(self):
         constraints = []

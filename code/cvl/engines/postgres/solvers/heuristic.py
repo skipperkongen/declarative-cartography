@@ -2,7 +2,7 @@ INSTALL = \
     """
     """
 
-SOLVER = \
+SOLVE = \
     """
       -- N Hitting Set heuristic
       SELECT cvl_id

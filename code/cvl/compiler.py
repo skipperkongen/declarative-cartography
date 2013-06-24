@@ -13,10 +13,10 @@ class CvlCompiler(object):
     def __init__(self):
         super(CvlCompiler, self).__init__()
 
-    def compile(self, query, solver_name='heuristic', target='postgres', algorithm='bottomup', **options):
+    def compile(self, query, solver='heuristic', target='postgres', algorithm='bottomup', **options):
 
         if target == 'postgres':
-            code_generator = cvl.engines.postgres.CodeGenerator(query, solver_name, **options)
+            code_generator = cvl.engines.postgres.CodeGenerator(query, solver, **options)
         else:
             raise NotImplementedError("target not implemented: %s" % str(target))
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from optparse import OptionParser
-from math import ceil
+from math import ceil, floor
 import time
 
 from cvxopt import matrix, solvers
@@ -39,6 +39,7 @@ def main(options, input_file):
 		print " -",((time.clock()-t0) * 1000),"ms"
 		variables = zip( record_ids, sol['x'], record_ranks )
 		for x in filter(lambda x: snap(x[1])>0, variables):
+
 			results += ["{zoom},{variable},{variable_rank},{variable_value}".format(zoom=zoom, variable=x[0], variable_value=snap(x[1]), variable_rank=x[2])]
 	
 	f = open(options.output_file, "w")

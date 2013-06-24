@@ -23,9 +23,7 @@ WITH GEOMETRY
    {field}
 \end{lstlisting}
 
-\subsubsection{with-other clause}
-
-The \emph{with-other} clause is optional. It is parameterized by a list of field names that should be copied from input to output. If the clause is omitted, only the ID and geometry field are copied. The clause has the following syntax:
+Optionally the user may use the \emph{with-other} sub-clause to list additional fields that should be copied from input to output. If this part is omitted, only the ID and geometry field are copied to the output:
 
 \begin{lstlisting}
 WITH OTHER {list of fields}
@@ -72,7 +70,7 @@ AND
 
 \subsubsection{subject-to clause}
 
-The \emph{subject-to} clause is arguably the most important one, but is also optional. It is used to drive the selection of records at coarser zoom-levels. The subject-to clause states the cartographic constraints that must hold for each partition at each zoom-level. Constraint are parameterized by a constraint name and a list of float-values which have constraint specific semantics. The syntax allows for several constraints to be given:
+The \emph{subject-to} clause is arguably the most important one, but is also optional. A list of cartographic constraints (see Section~\ref{sec:cartographic-constraints}) are given to which the output must conform. The constraints must hold for each partition and for every zoom-level. Constraint are listed with a constraint name followed by a list of float-valued parameters. Constraints are created using the \emph{create-constraint} statement (see Section~\ref{sec:create-constraint-statement}).
 
 \begin{lstlisting}
 SUBJECT TO 
@@ -94,16 +92,51 @@ AND
 ...
 \end{lstlisting}
 
-\subsubsection{transform-by clause}
+\subsubsection{all-or-nothing clause}
 
-Finally, the user may optionally give list of named transformations in the \emph{transform-by} clause. CVL has support for two such transformations: simplification and a novel "all-or-nothing" transformation. The all-or-nothing transformation ensures that either all records in a partition are visible at a given zoom-level or none of them are.
+Finally, the user may optionally use the \emph{all-or-nothing} clause to ensure that either all records in a partition are visible at a given zoom-level or none of them are.
 
 \begin{lstlisting}
-TRANSFORM BY
-   [simplify], [all-or-nothing]
+ALLORNOTHING
 \end{lstlisting}
 
 \subsection{Create constraint statement}
+\label{sec:create-constraint-statement}
+
+The basic statement for creating cartographic constraints is:
+
+\begin{lstlisting}
+CREATE CONSTRAINT C1 AS
+SELECT cid, rid
+  {user-defined SQL}
+RESOLVE IF {exp}
+\end{lstlisting}
+
+For practical purposes this is extended with optional \emph{setup} and \emph{cleanup} sub-clauses. These are executed before and after the constraint is executed. The full syntax for the \emph{create-constraint} statement becomes:
+
+\begin{lstlisting}
+CREATE CONSTRAINT C1 AS
+SELECT cid, rid
+  {user-defined SQL}
+RESOLVE IF {exp}
+WITH SETUP
+  {user-defined SQL}
+WITH CLEANUP
+  {user-defined SQL}
+\end{lstlisting}
+
+\subsection{CVL framework functions}
+
+Some utility functions are given by the CVL framework. The aim of these functions is to make it easier to write constraints. The functions are:
+
+\begin{description}
+\item [CellSizeZ] yada yada
+\item [ResolutionZ] yada yada
+\item [PointHash] yada yada
+\item [WebMercatorCells:] Takes as input a geometry and a zoom-level. Produces a set of points that correspond to the centers of intersected cells in standard Web Mercator tile model~\cite{osm?} at the given zoom-level.
+\end{description}
+
+
+\subsection{Examples of CVL}
 
 TODO
-

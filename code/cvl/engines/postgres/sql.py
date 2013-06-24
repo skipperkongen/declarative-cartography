@@ -188,7 +188,9 @@ CREATE_TEMP_TABLES_FOR_LEVEL = \
     """
     CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} bigint, cvl_rank float, min_hits integer);
     CREATE TEMPORARY TABLE _deletions ({fid} bigint, cvl_rank float);
+    CREATE TEMPORARY VIEW _level_view AS SELECT * FROM {output} WHERE cvl_zoom = 0;
     """
+
 
 FORCE_LEVEL = \
     """
@@ -236,6 +238,7 @@ DROP_TEMP_TABLES_FOR_LEVEL = \
     """
     DROP TABLE _conflicts;
     DROP TABLE _deletions;
+    DROP VIEW _level_view;
     """
 
 # COMMENTS

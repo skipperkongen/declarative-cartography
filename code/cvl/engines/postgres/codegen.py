@@ -137,7 +137,7 @@ class CodeGenerator(object):
         self.Log('forced_level {0:d}'.format(z))
 
     def FindConflicts(self, z):
-        formatter = self._get_formatter(z=z)
+        formatter = self._get_formatter(z=z,level_view='_level_view')
         self.Info('Find conflicts')
         for constraint in self.constraints:
             self.code.append(constraint.SET_UP.format(**formatter))

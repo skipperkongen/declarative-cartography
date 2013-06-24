@@ -22,7 +22,7 @@ class Query(object):
         self.output = output
         self.fid = fid
         self.geometry = geometry
-        self.other = ', '.join(other)
+        self.other = ', '.join(other) + ', '
         self.rank_by = rank_by
         self.partition_by = partition_by
         self.merge_partitions = [Object(before=x[0], after=x[1]) for x in merge_partitions]

@@ -17,14 +17,12 @@ FIND_CONFLICTS = \
         Unnest(array[l.cvl_partition, r.cvl_partition]) AS cvl_partition,
         1 as min_hits
     FROM
-        {output} l
+        {level_view} l
     JOIN
-        {output} r
+        {level_view} r
     ON
         l.{fid} < r.{fid}
-    AND	l.cvl_zoom <= {z}
-    AND	r.cvl_zoom <= {z}
-    AND l.cvl_partition = r.cvl_partition
+    AND l.cvl_partition = r.partition
     AND	ST_DWithin(l.{geometry}, r.{geometry}, CVL_ResZ({z}, 256) * {parameter_1})
     """
 

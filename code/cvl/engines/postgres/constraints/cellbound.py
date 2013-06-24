@@ -5,7 +5,7 @@ SET_UP = \
     --------------------------
     -- set up
 
-    CREATE TEMPORARY TABLE _cellbound_1 AS
+    CREATE TEMPORARY TABLE _cellbound_cells AS
     (
         SELECT
             CVL_PointHash(CVL_WebMercatorCells({geometry}, {z})) || cvl_partition AS cell_id,
@@ -13,9 +13,7 @@ SET_UP = \
             cvl_rank,
             cvl_partition
         FROM
-            {output}
-        WHERE
-            cvl_zoom <= {z}
+            {level_view}
     );
     """
 
@@ -26,27 +24,27 @@ FIND_CONFLICTS = \
     --------------------------
     -- find conflicts
     SELECT
-        cells.cell_id as conflict_id,
-        cells.{fid},
-        cells.cvl_partition,
-        cells.cvl_rank,
-        exceeded.min_hits
+        exceeded_cells.cell_id as conflict_id,
+        all_cells.{fid},
+        all_cells.cvl_partition,
+        all_cells.cvl_rank,
+        exceeded_cells.min_hits
     FROM
-        _cellbound_1 cells
+        _cellbound_cells all_cells
     JOIN
     (
-        -- Find all cells with more than K records
+        -- Find all cells with more than K records belonging to the same partition
         SELECT
             cell_id,
             count(*) - {parameter_1} AS min_hits
         FROM
-            _cellbound_1
+            _cellbound_cells
         GROUP BY
             cell_id
         HAVING
             count(*) > {parameter_1}
-    ) exceeded
-    ON cells.cell_id = exceeded.cell_id
+    ) exceeded_cells
+    ON all_cells.cell_id = exceeded_cells.cell_id
     """
 
 CLEAN_UP = \
@@ -56,5 +54,5 @@ CLEAN_UP = \
     --------------------------
     -- clean up
 
-    DROP TABLE _cellbound_1;
+    DROP TABLE _cellbound_cells;
     """

@@ -1,3 +1,7 @@
+INSTALL = \
+    """
+    """
+
 SOLVER = \
     """
       -- N Hitting Set heuristic
@@ -7,4 +11,8 @@ SOLVER = \
         FROM _conflicts
       ) h
       WHERE h.r <= h.min_hits
+    """
+
+UNINSTALL = \
+    """
     """

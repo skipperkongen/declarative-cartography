@@ -17,8 +17,8 @@ class CodeGenerator(object):
     def __init__(self, query, solver_name, log_file='cvl.log', job_name='noname_job'):
         super(CodeGenerator, self).__init__()
         self.query = query
-        self._load_solver(solver_name)
-        self._load_constraints()
+        self.solver = self._load_solver(solver_name)
+        self.constraints = self._load_constraints()
         self.log_path = os.path.join(TMP, log_file)
         self.job_name = job_name
         self.code = []
@@ -40,19 +40,20 @@ class CodeGenerator(object):
 
     def _load_solver(self, solver_name):
         module = self._load_module('solvers', solver_name)
-        self.SOLVER = module.SOLVER
+        return module
 
     def _load_constraints(self):
-        self.constraints = []
+        constraints = []
         for constraint in self.query.subject_to:
             module = self._load_module('constraints', constraint.name)
-            self.constraints.append(Object(
+            constraints.append(Object(
                 name=constraint.name,
                 params=constraint.params,
                 SET_UP=module.SET_UP,
                 FIND_CONFLICTS=module.FIND_CONFLICTS,
                 CLEAN_UP=module.CLEAN_UP)
             )
+        return constraints
 
     def Log(self, message):
         message = "[{0:s}] {1:s}".format(self.job_name, message)
@@ -79,12 +80,15 @@ class CodeGenerator(object):
                   "Rank by:      {rank_by}".format(**formatter),
                   "-"*42)
 
+        self.Log('BEGIN_TRANSACTION')
+
         self.code.append(BEGIN_TX)
 
         self.Info('Adding CVL framework')
         self.code.append(ADD_FRAMEWORK.format(**formatter))
 
-        self.Log('BEGIN_TRANSACTION')
+        self.Info('Installing solver')
+        self.code.append(self.solver.INSTALL)
 
         self.Info('Dropping old version of output table')
         self.code.append(DROP_OUTPUT_TABLE.format(**formatter))
@@ -98,10 +102,15 @@ class CodeGenerator(object):
         formatter = self._get_formatter()
         self.Info('Log num_recs and agg_rank for all zoom-levels')
         self.LogStats()
-        self.Log('COMMIT')
+
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
+
+        self.Info('Uninstalling solver')
+        self.code.append(self.solver.UNINSTALL)
+
         self.code.append(COMMIT_TX)
+        self.Log('COMMIT')
 
     def MergePartitions(self):
         formatter = self._get_formatter()
@@ -150,7 +159,7 @@ class CodeGenerator(object):
 
     def ResolveConflicts(self, z):
         formatter = self._get_formatter(z=z)
-        formatter['solution'] = self.SOLVER.format(**formatter)
+        formatter['solution'] = self.solver.SOLVE.format(**formatter)
         self.Info('Find records to delete and insert in temp table')
         self.code.append(SOLVE.format(**formatter))
         self.Info('Delete records')

@@ -159,7 +159,7 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
     """
     CREATE TABLE {output} AS
     SELECT
-      {fid}, {geometry}, {other}
+      {fid}::bigint as {fid}, {geometry}, {other}
       {rank_by}::float AS cvl_rank,
       {partition_by} AS cvl_partition,
       0 as cvl_zoom
@@ -186,8 +186,8 @@ MERGE_PARTITIONS_REST = \
 
 CREATE_TEMP_TABLES_FOR_LEVEL = \
     """
-    CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} integer, cvl_rank float, min_hits integer);
-    CREATE TEMPORARY TABLE _deletions ({fid} integer, cvl_rank float);
+    CREATE TEMPORARY TABLE _conflicts (conflict_id text, {fid} bigint, cvl_rank float, min_hits integer);
+    CREATE TEMPORARY TABLE _deletions ({fid} bigint, cvl_rank float);
     """
 
 FORCE_LEVEL = \

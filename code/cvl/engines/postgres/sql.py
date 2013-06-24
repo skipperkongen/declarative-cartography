@@ -187,7 +187,7 @@ MERGE_PARTITIONS_REST = \
 CREATE_TEMP_TABLES_FOR_LEVEL = \
     """
     CREATE TEMPORARY TABLE _conflicts (conflict_id text, cvl_id bigint, cvl_rank float, min_hits integer);
-    CREATE TEMPORARY TABLE _deletions (cvl_id bigint, cvl_rank float);
+    CREATE TEMPORARY TABLE _deletions (cvl_id bigint);
     CREATE TEMPORARY VIEW _level_view AS SELECT * FROM {output} WHERE cvl_zoom = 0;
     """
 
@@ -203,17 +203,19 @@ FIND_CONFLICTS = \
     """
     INSERT INTO _conflicts
     SELECT
-        s.conflict_id,
-        s.cvl_id,
-        s.cvl_rank,
-        s.min_hits
-    FROM ({constraint_select}) s;
+        conflicts.conflict_id,
+        conflicts.cvl_id,
+        level.cvl_rank,
+        conflicts.min_hits
+    FROM ({constraint_select}) conflicts
+    JOIN _level_view level
+    ON conflicts.cvl_id = level.cvl_id;
     """
 
 SOLVE = \
     """
     INSERT INTO _deletions
-    SELECT sol.cvl_id, sol.cvl_rank FROM ({solution}) sol;
+    SELECT sol.cvl_id FROM ({solution}) sol;
     """
 
 DO_DELETIONS = \

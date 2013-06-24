@@ -1,7 +1,7 @@
 SOLVER = \
     """
       -- N Hitting Set heuristic
-      SELECT cvl_id, cvl_rank
+      SELECT cvl_id
       FROM (
         SELECT ROW_NUMBER() OVER (PARTITION BY conflict_id ORDER BY cvl_rank) AS r, cvl_id, cvl_rank, min_hits
         FROM _conflicts

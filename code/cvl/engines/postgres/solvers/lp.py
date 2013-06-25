@@ -72,7 +72,7 @@ INSTALL = \
 
 SOLVE = \
     """
-    SELECT * FROM CVL_LPSolver('_conflicts');
+    SELECT * FROM CVL_LPSolver('_conflicts', false);
     """
 
 UNINSTALL = \

@@ -25,7 +25,7 @@ class CvlCompiler(object):
 
 
 if __name__ == '__main__':
-    print 'try example1.py in the root directory'
+    print 'try ex1_bound.py in the root directory'
 
 
 

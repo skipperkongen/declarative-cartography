@@ -18,4 +18,4 @@ if __name__ == '__main__':
     }
     query = Query(**query_dict)
     compiler = CvlCompiler()
-    print compiler.compile(query, target='postgres', log_file='cvl.log', job_name='example3')
+    print compiler.compile(query, solver='lp', target='postgres', log_file='cvl.log', job_name='ex1_lp')

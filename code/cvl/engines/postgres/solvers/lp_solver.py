@@ -10,14 +10,14 @@ INSTALL = \
         _SELECT_CONFLICTS = \
             (
                 "SELECT"
-                "  conflict_id,"
-                "  array_agg(record_id) as record_ids,"
-                "  array_agg(record_rank) as record_ranks,"
-                "  (SELECT min_hits FROM {conflict_table} WHERE conflict_id = conflict_id LIMIT 1)"
-                "FROM"
-                "  {conflict_table}"
-                "GROUP BY"
-                "  conflict_id"
+                " conflict_id,"
+                " array_agg(record_id) as record_ids,"
+                " array_agg(record_rank) as record_ranks,"
+                " (SELECT min_hits FROM {conflict_table} WHERE conflict_id = conflict_id LIMIT 1)"
+                " FROM"
+                " {conflict_table}"
+                " GROUP BY"
+                " conflict_id"
             )
 
         sql = _SELECT_CONFLICTS.format(conflict_table=conflict_table)

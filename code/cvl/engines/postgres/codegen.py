@@ -85,12 +85,13 @@ class CodeGenerator(object):
                   "Rank by:      {rank_by}".format(**formatter),
                   "-"*42)
 
-        self.Log('BEGIN_TRANSACTION')
 
         self.code.append(BEGIN_TX)
 
         self.Info('Adding CVL framework')
         self.code.append(ADD_FRAMEWORK.format(**formatter))
+
+        self.Log('BEGIN_TRANSACTION')
 
         self.Info('Installing solver')
         self.code.append(self.solver.INSTALL)

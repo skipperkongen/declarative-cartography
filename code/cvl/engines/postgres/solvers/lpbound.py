@@ -1,11 +1,11 @@
 __author__ = 'kostas'
-from lp import INSTALL as LP_INSTALL
+from cvl.engines.postgres.solvers.lp import INSTALL as LP_INSTALL
 
 INSTALL = LP_INSTALL
 
 SOLVE = \
     """
-    SELECT * FROM CVL_LPSolver('_conflicts', true);
+    SELECT cvl_id FROM CVL_LPSolver('_conflicts', true)
     """
 
 UNINSTALL = \

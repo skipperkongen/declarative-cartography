@@ -2,7 +2,7 @@ __author__ = 'kostas'
 
 INSTALL = \
     """
-    CREATE OR REPLACE FUNCTION CVL_LPSolver(conflict_table text, lowerbound boolean) RETURNS SETOF bigint AS $$
+    CREATE OR REPLACE FUNCTION CVL_LPSolver(conflict_table text, lowerbound boolean) RETURNS SETOF cvl_id AS $$
         import cvxopt
         from math import ceil, floor
         from cvxopt import matrix, spmatrix, sparse, solvers
@@ -11,8 +11,8 @@ INSTALL = \
             (
                 "SELECT"
                 " conflict_id,"
-                " array_agg(record_id) as record_ids,"
-                " array_agg(record_rank) as record_ranks,"
+                " array_agg(cvl_id) as record_ids,"
+                " array_agg(cvl_rank) as record_ranks,"
                 " (SELECT min_hits FROM {conflict_table} WHERE conflict_id = conflict_id LIMIT 1)"
                 " FROM"
                 " {conflict_table}"
@@ -22,6 +22,9 @@ INSTALL = \
 
         sql = _SELECT_CONFLICTS.format(conflict_table=conflict_table)
         conflicts = plpy.execute(sql)
+        plpy.notice("NUM CONFLICTS: {0:d}".format(len(conflicts)))
+        if not conflicts:
+            return
 
         # make list of variables
         variables = set()
@@ -30,6 +33,8 @@ INSTALL = \
         for cflt in conflicts:
             variables = variables.union(zip(cflt['record_ids'], cflt['record_ranks']))
         variables = list(variables)
+        plpy.notice("NUM RECORDS: {0:d}".format(len(variables)))
+
 
         # create index of variables
         vindex = {}
@@ -55,7 +60,9 @@ INSTALL = \
         _A = sparse([non_neg, less_than_one, csets])
 
         solvers.options['show_progress'] = False
+        plpy.notice("Begin LP solver")
         sol = solvers.lp(_c, _A, _b)
+        plpy.notice("End LP solver. Status: {0:s}".format(sol['status']))
 
         EPSILON = 0.00001
         if lowerbound:
@@ -66,13 +73,13 @@ INSTALL = \
         if sol['status'] == 'optimal':
             for i, val in enumerate(sol['x']):
                 if snap(val) == 1.0:
-                    yield variables[i][RID]
+                    yield {'cvl_id': variables[i][RID]}
     $$ LANGUAGE plpythonu;
     """
 
 SOLVE = \
     """
-    SELECT * FROM CVL_LPSolver('_conflicts', false);
+    SELECT cvl_id FROM CVL_LPSolver('_conflicts', false)
     """
 
 UNINSTALL = \

@@ -26,6 +26,10 @@ ADD_FRAMEWORK = \
     r"""
     -- create extension plpythonu;
 
+    CREATE TYPE cvl_id AS (
+      cvl_id bigint
+    );
+
     CREATE OR REPLACE FUNCTION CVL_LogStats(job_name text) RETURNS void AS $$
         from datetime import datetime
         sql = "SELECT cvl_zoom, cvl_partition, Count(*) AS num_recs, Sum(cvl_rank) AS aggrank \
@@ -148,6 +152,7 @@ REMOVE_FRAMEWORK = \
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
     DROP FUNCTION CVL_ResZ(integer,integer);
     DROP FUNCTION CVL_CellSizeZ(integer);
+    DROP TYPE cvl_id;
     """
 
 DROP_OUTPUT_TABLE = \

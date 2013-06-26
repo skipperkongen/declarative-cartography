@@ -35,7 +35,7 @@ INSTALL = \
         RANK = 1
         for cflt in conflicts:
             if len(cflt['record_ids']) < cflt['min_hits']:
-                plpy.notice("Problem! recs: {0:s}, min_hits: {1:d}".format(str(cflt['record_ids']), cflt['min_hits']))
+                plpy.error("Infeasible LP instance! recs: {0:s}, min_hits: {1:d}".format(str(cflt['record_ids']), cflt['min_hits']))
             variables = variables.union(zip(cflt['record_ids'], cflt['record_ranks']))
         variables = list(variables)
 
@@ -63,9 +63,9 @@ INSTALL = \
         _A = sparse([non_neg, less_than_one, csets])
 
         solvers.options['show_progress'] = False
-        plpy.notice("Begin LP solver")
+        #plpy.notice("Begin LP solver")
         sol = solvers.lp(_c, _A, _b)
-        plpy.notice("End LP solver. Status: {0:s}".format(sol['status']))
+        #plpy.notice("End LP solver. Status: {0:s}".format(sol['status']))
 
         EPSILON = 0.00001
         if lowerbound:

@@ -26,9 +26,6 @@ ADD_FRAMEWORK = \
     r"""
     -- create extension plpythonu;
 
-    CREATE TYPE cvl_id AS (
-      cvl_id bigint
-    );
 
     CREATE OR REPLACE FUNCTION CVL_LogStats(job_name text) RETURNS void AS $$
         from datetime import datetime

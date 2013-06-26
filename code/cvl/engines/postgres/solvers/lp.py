@@ -2,6 +2,10 @@ __author__ = 'kostas'
 
 INSTALL = \
     """
+    CREATE TYPE cvl_id AS (
+      cvl_id bigint
+    );
+
     CREATE OR REPLACE FUNCTION CVL_LPSolver(conflict_table text, lowerbound boolean) RETURNS SETOF cvl_id AS $$
         import cvxopt
         from math import ceil, floor
@@ -13,16 +17,15 @@ INSTALL = \
                 " conflict_id,"
                 " array_agg(cvl_id) as record_ids,"
                 " array_agg(cvl_rank) as record_ranks,"
-                " (SELECT min_hits FROM {conflict_table} WHERE conflict_id = conflict_id LIMIT 1)"
+                " (SELECT min_hits FROM {conflict_table} t2 WHERE t1.conflict_id = t2.conflict_id LIMIT 1)"
                 " FROM"
-                " {conflict_table}"
+                " {conflict_table} t1"
                 " GROUP BY"
                 " conflict_id"
             )
 
         sql = _SELECT_CONFLICTS.format(conflict_table=conflict_table)
         conflicts = plpy.execute(sql)
-        plpy.notice("NUM CONFLICTS: {0:d}".format(len(conflicts)))
         if not conflicts:
             return
 
@@ -31,10 +34,10 @@ INSTALL = \
         RID = 0
         RANK = 1
         for cflt in conflicts:
+            if len(cflt['record_ids']) < cflt['min_hits']:
+                plpy.notice("Problem! recs: {0:s}, min_hits: {1:d}".format(str(cflt['record_ids']), cflt['min_hits']))
             variables = variables.union(zip(cflt['record_ids'], cflt['record_ranks']))
         variables = list(variables)
-        plpy.notice("NUM RECORDS: {0:d}".format(len(variables)))
-
 
         # create index of variables
         vindex = {}
@@ -85,4 +88,5 @@ SOLVE = \
 UNINSTALL = \
     """
     DROP FUNCTION CVL_LPSolver(text, boolean);
+    DROP TYPE cvl_id;
     """

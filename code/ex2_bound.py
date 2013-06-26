@@ -18,4 +18,4 @@ if __name__ == '__main__':
     }
     query = Query(**query_dict)
     compiler = CvlCompiler()
-    print compiler.compile(query, solver='heuristic', target='postgres', log_file='cvl.log', job_name='ex2_heuristic')
+    print compiler.compile(query, solver='lpbound', target='postgres', log_file='cvl.log', job_name='ex2_heuristic')

@@ -26,27 +26,6 @@ ADD_FRAMEWORK = \
     r"""
     -- create extension plpythonu;
 
-
-    CREATE OR REPLACE FUNCTION CVL_LogStats(job_name text) RETURNS void AS $$
-        from datetime import datetime
-        sql = "SELECT cvl_zoom, cvl_partition, Count(*) AS num_recs, Sum(cvl_rank) AS aggrank \
-               FROM {output} GROUP BY cvl_zoom, cvl_partition ORDER BY cvl_zoom;"
-        rows = plpy.execute(sql)
-        with open('{path}', 'a+') as f:
-            for row in rows:
-                to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), job_name, "stats", str(row)])
-                f.write(to_write)
-                f.write('\n')
-    $$ LANGUAGE plpythonu;
-
-    CREATE OR REPLACE FUNCTION CVL_Log(message text) RETURNS void AS $$
-        from datetime import datetime
-        with open('{path}', 'a+') as f:
-            to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), message])
-            f.write(to_write)
-            f.write('\n')
-    $$ LANGUAGE plpythonu;
-
     -- CVL_CellSizeZ
 
     CREATE OR REPLACE FUNCTION CVL_CellSizeZ
@@ -142,14 +121,11 @@ ADD_FRAMEWORK = \
 
 REMOVE_FRAMEWORK = \
     """
-    DROP FUNCTION CVL_Log(text);
-    DROP FUNCTION CVL_LogStats(text);
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
     DROP FUNCTION CVL_ResZ(integer,integer);
     DROP FUNCTION CVL_CellSizeZ(integer);
-    DROP TYPE cvl_id;
     """
 
 DROP_OUTPUT_TABLE = \
@@ -249,14 +225,31 @@ DROP_TEMP_TABLES_FOR_LEVEL = \
 
 COMMENT = "-- {comment}"
 
-LOG = \
-    """
-    SELECT CVL_Log('{message}');
+
+DO_LOG = \
+    r"""
+    DO $$
+        from datetime import datetime
+        with open('{log_path}', 'a+') as f:
+            to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), '{message}'])
+            f.write(to_write)
+            f.write('\n')
+    $$ LANGUAGE plpythonu;
     """
 
-LOG_STATS = \
-    """
-    SELECT CVL_LogStats('{job_name}');
+DO_LOG_STATS = \
+    r"""
+    DO $$
+        from datetime import datetime
+        sql = "SELECT cvl_zoom, cvl_partition, Count(*) AS num_recs, Sum(cvl_rank) AS aggrank \
+               FROM {output} GROUP BY cvl_zoom, cvl_partition ORDER BY cvl_zoom;"
+        rows = plpy.execute(sql)
+        with open('{log_path}', 'a+') as f:
+            for row in rows:
+                to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), '{job_name}', "stats", str(row)])
+                f.write(to_write)
+                f.write('\n')
+    $$ LANGUAGE plpythonu;
     """
 
 TRYTHIS = \

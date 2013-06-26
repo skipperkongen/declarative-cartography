@@ -29,7 +29,7 @@ class CodeGenerator(object):
                 CLEAN_UP=module.CLEAN_UP)
             )
         self.log_path = os.path.join(TMP, log_file)
-        self.job_name = job_name
+        self.job_name = '[{0:s}]'.format(job_name)
         self.code = []
 
     def set_query(self, query):
@@ -61,12 +61,12 @@ class CodeGenerator(object):
         return constraints
 
     def Log(self, message):
-        message = "[{0:s}] {1:s}".format(self.job_name, message)
-        self.code.append(LOG.format(message=message))
+        formatter = self._get_formatter(log_path=self.log_path, message="{0:s} {1:s}".format(self.job_name, message))
+        self.code.append(DO_LOG.format(**formatter))
 
     def LogStats(self):
-        job_name = "[{0:s}]".format(self.job_name)
-        self.code.append(LOG_STATS.format(job_name=job_name))
+        formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
+        self.code.append(DO_LOG_STATS.format(**formatter))
 
     def Info(self, *info):
         for comment in info:

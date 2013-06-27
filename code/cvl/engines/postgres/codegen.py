@@ -8,8 +8,6 @@ from cvl.framework.query import WILDCARD
 from cvl.engines.postgres.sql import *
 from cvl.util.anonobject import Object
 
-TMP = '/tmp/cvl'
-
 
 class CodeGenerator(object):
     """docstring for Transaction"""
@@ -28,7 +26,7 @@ class CodeGenerator(object):
                 FIND_CONFLICTS=module.FIND_CONFLICTS,
                 CLEAN_UP=module.CLEAN_UP)
             )
-        self.log_path = os.path.join(TMP, log_file)
+        self.log_path = log_file
         self.job_name = '[{0:s}]'.format(job_name)
         self.code = []
 

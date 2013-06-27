@@ -165,8 +165,10 @@ Add data to database:
 
 ```
 cd /var/lib/pgsql9/phd_cvl/data
+tar xjvf openflights_airports.tar.bz2
+tar xjvf osm_tourism_points.tar.bz2
 /usr/local/bin/ogr2ogr -f PostgreSQL PG:"host=localhost user=postgres password=postgres dbname=cvl_paper" -t_srs "epsg:3857" openflights_airports.shp
-/usr/local/bin/ogr2ogr -f PostgreSQL PG:"host=localhost user=postgres password=postgres dbname=cvl_paper" -t_srs "epsg:3857" openflights_airports.shp
+/usr/local/bin/ogr2ogr -f PostgreSQL PG:"host=localhost user=postgres password=postgres dbname=cvl_paper" -t_srs "epsg:3857" osm_tourism_points.shp
 ```
 
 Run experiments:

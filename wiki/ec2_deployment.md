@@ -1,8 +1,8 @@
 # Deploying on EC2
 
-## Setting up AMI
+## Create an AMI for CVL tests
 
-### Basic stuff
+### Launching the instance
 
 1. Launch Amazon Linux 64 bit, m2.xlarge
 2. Connect: `ssh -i phd.pem ec2-user@ec2-54-216-58-27.eu-west-1.compute.amazonaws.com`
@@ -49,27 +49,82 @@ sudo chkconfig postgresql on
 Install PostGIS with dependencies:
 
 ```
+# Install PG headers
 sudo yum install postgresql-devel
-```
 
-Create database and install extensions:
+# Install GEOS
+wget http://download.osgeo.org/geos/geos-3.3.8.tar.bz2
+tar xjvf geos-3.3.8.tar.bz2
+cd geos-3.3.8
+./configure && make && sudo make install
 
-```
-# PL/Python
+
+# Install Proj.4
+cd ..
+wget http://download.osgeo.org/proj/proj-4.8.0.tar.gz
+wget http://download.osgeo.org/proj/proj-datumgrid-1.5.tar.gz
+tar xzvf proj-4.8.0.tar.gz
+cd proj-4.8.0/nad
+tar xzvf ../../proj-datumgrid-1.5.tar.gz
+cd ..
+./configure && make & sudo make install
+
+# Install GDAL
+cd ..
+wget http://download.osgeo.org/gdal/gdal-1.9.2.tar.gz
+tar xzvf gdal-1.9.2.tar.gz
+cd gdal-1.9.2
+./configure && make && sudo make install
+
+# Install LibXML2
+cd ..
+wget ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz
+tar xzvf libxml2-2.9.1.tar.gz 
+cd libxml2-2.9.1
+./configure && make && sudo make install
+
+# Install JSON-C
+cd ..
+wget https://s3.amazonaws.com/json-c_releases/releases/json-c-0.9.tar.gz
+tar xzvf json-c-0.9.tar.gz 
+cd json-c-0.9
+./configure && make && sudo make install
+
+# Update library path
+sudo su
+echo '/usr/local/lib' >> /etc/ld.so.conf.d/geostuff.conf
+ldconfig -v | less # check that e.g. geos is in the list
+exit
+
+# Install PostGIS
+cd ..
+wget http://download.osgeo.org/postgis/source/postgis-2.0.3.tar.gz
+tar xzvf postgis-2.0.3.tar.gz
+cd postgis-2.0.3
+./configure && make && sudo make install
+
+# Install PL/Python
 sudo yum install postgresql-plpython.noarch
+```
 
+### Create database and install extensions:
+
+Now all the software needed is installed. Now create the database with proper extensions (PL/Python and PostGIS):
+
+```
 # Create database cvl_paper
 sudo su postgres  # postgres user automatically created by postgres package installer
 psql
 create database cvl_paper;
 # Hit ^D to exit pg client
 
-# Add PL/Python and PostGIS to cvl_paper database
+# Reconnect and add extensions
 psql -d cvl_paper # still as user postgres
 create extension plpythonu;
 create extension postgis;
 # Test that PL/Python and cvxopt works
 DO $$ import cvxopt $$ LANGUAGE plpythonu;  # should print "DO"
+# Test that PostGIS works (or at least is installed)
+SELECT ST_Intersects(null, null);
 # Hit ^D to exit pg client
 ```
-

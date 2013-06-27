@@ -130,7 +130,6 @@ create extension postgis;
 DO $$ import cvxopt $$ LANGUAGE plpythonu;  # should print "DO"
 # Test that PostGIS works (or at least is installed)
 SELECT ST_Intersects(null, null);
-
 ```
 
 Configure authentication and tuning:

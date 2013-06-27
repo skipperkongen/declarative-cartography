@@ -1,6 +1,10 @@
-# Deploying on EC2
+# Create an Amazon EC2 AMI for CVL tests
 
-## Create an AMI for CVL tests
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-snapshot-s3-linux.html
+
+## Step 1: Customizing an Amazon Linux AMI
+
+I've used a hi-mem instance with Amazon Linux as the baseline. It is configured with software and data to run tests for CVL.
 
 ### Launching the instance
 
@@ -127,4 +131,10 @@ DO $$ import cvxopt $$ LANGUAGE plpythonu;  # should print "DO"
 # Test that PostGIS works (or at least is installed)
 SELECT ST_Intersects(null, null);
 # Hit ^D to exit pg client
+```
+
+### Download CVL
+
+```
+git clone https://github.com/skipperkongen/phd_cvl.git
 ```

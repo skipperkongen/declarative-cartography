@@ -6,20 +6,9 @@ echo "Running experiments"
 touch /tmp/cvl.log
 cat /dev/null >| /tmp/cvl.log
 
-./ex1_bound.py > cvl.sql
-psql -q -d cvl_paper -f cvl.sql
-
-./ex1_lp.py > cvl.sql
-psql -q -d cvl_paper -f cvl.sql
-
-./ex1_heuristic.py > cvl.sql
-psql -q -d cvl_paper -f cvl.sql
-
-./ex2_bound.py > cvl.sql
-psql -q -d cvl_paper -f cvl.sql
-
-./ex2_lp.py > cvl.sql
-psql -q -d cvl_paper -f cvl.sql
-
-./ex2_heuristic.py > cvl.sql
-psql -q -d cvl_paper -f cvl.sql
+for experiment in *.py
+do
+    echo "Running $experiment"
+    "./$experiment" > cvl.sql
+    psql -q -d cvl_paper -f cvl.sql
+done

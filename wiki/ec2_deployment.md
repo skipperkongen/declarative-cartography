@@ -161,10 +161,30 @@ cd /var/lib/pgsql9  # homedir of postgres user
 git clone https://github.com/skipperkongen/phd_cvl.git
 ```
 
-Add data to database
+Add data to database:
 
 ```
-cd phd_cvl/data
+cd /var/lib/pgsql9/phd_cvl/data
 /usr/local/bin/ogr2ogr -f PostgreSQL PG:"host=localhost user=postgres password=postgres dbname=cvl_paper" -t_srs "epsg:3857" openflights_airports.shp
 /usr/local/bin/ogr2ogr -f PostgreSQL PG:"host=localhost user=postgres password=postgres dbname=cvl_paper" -t_srs "epsg:3857" openflights_airports.shp
+```
+
+Run experiments:
+
+```
+/var/lib/pgsql9/phd_cvl/code
+./run_experiments.sh
+```
+
+Collect experiments:
+
+```
+# Pick a descriptive INSTANCE-NAME, such as ec2-highmem, ec2-highcpu, ec2-micro
+mkdir /var/lib/pgsql9/phd_cvl/results/traces/INSTANCE-NAME
+cat > /proc/cpuinfo > /var/lib/pgsql9/phd_cvl/results/traces/INSTANCE-NAME/cpuinfo.txt
+cat > /proc/meminfo > /var/lib/pgsql9/phd_cvl/results/traces/INSTANCE-NAME/meminfo.txt
+mv /tmp/cvl.log /var/lib/pgsql9/phd_cvl/results/traces/INSTANCE-NAME/
+git add -f /var/lib/pgsql9/phd_cvl/results/raw/INSTANCE-NAME/*
+git commit -a -m 'added traces for INSTANCE-NAME'
+git push origin master
 ```

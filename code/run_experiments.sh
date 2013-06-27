@@ -14,3 +14,12 @@ psql -q -d cvl_paper -f cvl.sql
 
 ./ex1_heuristic.py > cvl.sql
 psql -q -d cvl_paper -f cvl.sql
+
+./ex2_bound.py > cvl.sql
+psql -q -d cvl_paper -f cvl.sql
+
+./ex2_lp.py > cvl.sql
+psql -q -d cvl_paper -f cvl.sql
+
+./ex2_heuristic.py > cvl.sql
+psql -q -d cvl_paper -f cvl.sql

@@ -130,11 +130,33 @@ create extension postgis;
 DO $$ import cvxopt $$ LANGUAGE plpythonu;  # should print "DO"
 # Test that PostGIS works (or at least is installed)
 SELECT ST_Intersects(null, null);
+
+```
+
+Configure authentication:
+
+```
+# Set a password for postgres (required for ogr2ogr)
+ALTER USER postgres WITH PASSWORD 'postgres';
 # Hit ^D to exit pg client
+
+# Configure authentication for local network connections
+vi /var/lib/pgsql9/data/pg_hba.conf
+# Set authentication to trust for local network connections
 ```
 
-### Download CVL
+### Install CVL
 
 ```
+# As user postgres, sudo su postgres...
+cd /var/lib/pgsql9  # homedir of postgres user
 git clone https://github.com/skipperkongen/phd_cvl.git
+```
+
+Add data to database
+
+```
+cd phd_cvl/data
+/usr/local/bin/ogr2ogr -f PostgreSQL PG:"host=localhost user=postgres password=postgres dbname=cvl_paper" -t_srs "epsg:3857" openflights_airports.shp
+/usr/local/bin/ogr2ogr -f PostgreSQL PG:"host=localhost user=postgres password=postgres dbname=cvl_paper" -t_srs "epsg:3857" openflights_airports.shp
 ```

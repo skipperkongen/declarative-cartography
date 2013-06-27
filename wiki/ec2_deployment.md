@@ -149,6 +149,9 @@ vi /var/lib/pgsql9/data/postgresql.conf
 # new settings:
 # shared_buffers = 10GB
 # work_mem = 500MB
+
+# Restart server
+pg_ctl -d /var/lib/pgsql9/data -l /var/log/postgres.log restart
 ```
 
 ### Install CVL

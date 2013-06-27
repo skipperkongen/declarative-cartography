@@ -133,7 +133,7 @@ SELECT ST_Intersects(null, null);
 
 ```
 
-Configure authentication:
+Configure authentication and tuning:
 
 ```
 # Set a password for postgres (required for ogr2ogr)
@@ -143,6 +143,12 @@ ALTER USER postgres WITH PASSWORD 'postgres';
 # Configure authentication for local network connections
 vi /var/lib/pgsql9/data/pg_hba.conf
 # Set authentication to trust for local network connections
+
+# High memory settings
+vi /var/lib/pgsql9/data/postgresql.conf
+# new settings:
+# shared_buffers = 10GB
+# work_mem = 500MB
 ```
 
 ### Install CVL

@@ -10,7 +10,7 @@ if __name__ == '__main__':
         'zoomlevels': 15,
         'input': 'osm_tourism_points',
         'output': 'tourism_thin_prox',
-        'fid': 'osm_id',
+        'fid': 'ogc_fid',
         'geometry': 'wkb_geometry',
         'other': ['name', 'type'],
         'rank_by': 'random()',

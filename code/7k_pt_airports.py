@@ -9,7 +9,7 @@ from os.path import basename
 # runs in ~1 minute, on MacBook Pro Dual Core.
 
 if __name__ == '__main__':
-    job_name = os.path.splitext(basename(__file__))[0]
+    compiler = CvlCompiler()
     query_dict = {
         'zoomlevels': 18,
         'input': 'openflights_airports',
@@ -19,6 +19,10 @@ if __name__ == '__main__':
         'rank_by': 'num_routes + random()',
         'subject_to': [('cellbound', 16)],
     }
-    query = Query(**query_dict)
-    compiler = CvlCompiler()
-    print compiler.compile(query, solver='lp', target='postgres', log_file='/tmp/cvl.log', job_name=job_name)
+    for solver in ['bound', 'lp', 'heuristic']:
+        for constraint in [[('cellbound', 16)], [('proximity', 10)]]:
+            fname = os.path.splitext(basename(__file__))[0]
+            job_name = "{0:s}_{1:s}{2:d}_{3:s}".format(fname, constraint[0][0], constraint[0][1], solver)
+            query_dict['subject_to'] = constraint
+            query = Query(**query_dict)
+            print compiler.compile(query, solver=solver, target='postgres', log_file='/tmp/cvl.log', job_name=job_name)

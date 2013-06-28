@@ -13,7 +13,6 @@ if __name__ == '__main__':
     query_dict = {
         'zoomlevels': 18,
         'input': 'openflights_airports',
-        'output': 'openflights_airports_thin',
         'fid': 'ogc_fid',
         'geometry': 'wkb_geometry',
         'other': ['airport_id', 'name', 'city', 'country', 'num_routes'],

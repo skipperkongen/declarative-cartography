@@ -6,8 +6,8 @@ class Query(object):
     """docstring for Query"""
 
     def __init__(self,
-                 zoomlevels, input, output, fid, geometry,
-                 other=None, rank_by='1', partition_by='1', merge_partitions=None,
+                 zoomlevels, input, fid, geometry,
+                 output='cvl_output', other=None, rank_by='1', partition_by='1', merge_partitions=None,
                  subject_to=None, force_level=None, transform_by=None):
         super(Query, self).__init__()
         # optional stuff defaults

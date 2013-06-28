@@ -66,6 +66,10 @@ class CodeGenerator(object):
         formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
         self.code.append(DO_LOG_STATS.format(**formatter))
 
+    def LogStats2(self):
+        formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
+        self.code.append(DO_LOG_STATS2.format(**formatter))
+
     def Info(self, *info):
         for comment in info:
             self.code.append(COMMENT.format(comment=comment))
@@ -105,7 +109,9 @@ class CodeGenerator(object):
     def Finalize(self):
         formatter = self._get_formatter()
         self.Info('Log num_recs and agg_rank for all zoom-levels')
+
         self.LogStats()
+        self.LogStats2()
 
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)

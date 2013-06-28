@@ -279,6 +279,21 @@ DO_LOG_STATS = \
     $$ LANGUAGE plpythonu;
     """
 
+DO_LOG_STATS2 = \
+    r"""
+    DO $$
+        from datetime import datetime
+        sql = "SELECT Sum(cvl_rank) AS aggrank \
+               FROM {output};"
+        rows = plpy.execute(sql)
+        with open('{log_path}', 'a+') as f:
+            for row in rows:
+                to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), '{job_name}', "stats2", str(row)])
+                f.write(to_write)
+                f.write('\n')
+    $$ LANGUAGE plpythonu;
+    """
+
 TRYTHIS = \
     """
     -- Records per zoom-level:

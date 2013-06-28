@@ -88,9 +88,7 @@ ADD_FRAMEWORK = \
       generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
       generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j) PT
     WHERE
-      $1 && ST_Envelope(ST_Buffer(PT.pt, $2/2))
-    AND
-      ST_Intersects($1, ST_Envelope(ST_Buffer(PT.pt, $2/2)));
+      ST_Distance($1, ST_Expand(PT.pt, $2/2)) = 0;
     $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- web mercator cells

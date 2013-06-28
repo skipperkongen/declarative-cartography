@@ -283,7 +283,7 @@ DO_LOG_STATS2 = \
     r"""
     DO $$
         from datetime import datetime
-        sql = "SELECT Sum(cvl_rank) AS aggrank \
+        sql = "SELECT Sum(cvl_rank) AS totalrank \
                FROM {output};"
         rows = plpy.execute(sql)
         with open('{log_path}', 'a+') as f:

@@ -2,13 +2,17 @@
 
 echo "Running experiments"
 
-# truncate log-file (BASH)
-touch /tmp/cvl.log
-cat /dev/null >| /tmp/cvl.log
+COMP_NAME="macbook"
+mkdir "../results/traces/$COMP_NAME"
 
-for experiment in *.py
+for exfile in *.py
 do
+    # truncate log-file (BASH)
+    touch /tmp/cvl.log
+    cat /dev/null >| /tmp/cvl.log
+
     echo "Running $experiment"
-    "./$experiment" > cvl.sql
+    "./$exfile" > cvl.sql
     psql -q -d cvl_paper -f cvl.sql
+    mv /tmp/cvl.log > "../results/traces/$COMP_NAME/$exfile.log"
 done

@@ -67,13 +67,17 @@ ADD_FRAMEWORK = \
       OUT pt geometry
     ) RETURNS SETOF geometry AS
     $$
-    SELECT *
+    SELECT
+    *
     FROM
     (
       SELECT
-        ST_SnapToGrid(
-          ST_SetSrid(
-            ST_Point(
+        ST_SnapToGrid
+        (
+          ST_SetSrid
+          (
+            ST_Point
+            (
               ST_XMin($1) + i*$2,
               ST_YMin($1) + j*$2
             ),
@@ -83,12 +87,32 @@ ADD_FRAMEWORK = \
           $4 + $2/2,
           $2,
           $2
-    ) AS pt
-    FROM
-      generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
-      generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j) PT
+        ) AS pt
+      FROM
+        generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
+        generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j
+    ) PT
     WHERE
       ST_Distance($1, ST_Expand(PT.pt, $2/2)) = 0;
+    $$ LANGUAGE sql IMMUTABLE STRICT;
+
+    CREATE OR REPLACE FUNCTION CVL_CellForPoint
+    (
+      geom geometry,
+      cell_size float8,
+      x0 float8 DEFAULT 0,
+      y0 float8 DEFAULT 0,
+      OUT pt geometry
+    ) RETURNS SETOF geometry AS
+    $$
+      SELECT ST_SnapToGrid
+      (
+        $1,
+        $3 + $2/2,
+        $4 + $2/2,
+        $2,
+        $2
+      );
     $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- web mercator cells
@@ -101,7 +125,11 @@ ADD_FRAMEWORK = \
     ) RETURNS SETOF geometry AS
     $$
     SELECT
-      CVL_Cellify($1, CVL_CellSizeZ($2), -20037508.34, -20037508.34) as pt
+      CASE
+        WHEN GeometryType($1)='POINT' THEN CVL_CellForPoint($1, CVL_CellSizeZ($2), -20037508.34, -20037508.34)
+        ELSE CVL_Cellify($1, CVL_CellSizeZ($2), -20037508.34, -20037508.34)
+      END AS pt
+
     $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- CVL_ResZ
@@ -122,6 +150,7 @@ REMOVE_FRAMEWORK = \
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
+    DROP FUNCTION CVL_CellForPoint(geometry, float8, float8, float8);
     DROP FUNCTION CVL_ResZ(integer,integer);
     DROP FUNCTION CVL_CellSizeZ(integer);
     """

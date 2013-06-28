@@ -13,7 +13,6 @@ if __name__ == '__main__':
     query_dict = {
         'zoomlevels': 15,
         'input': 'osm_tourism_points',
-        'output': 'tourism_thin_prox',
         'fid': 'ogc_fid',
         'geometry': 'wkb_geometry',
         'other': ['name', 'type'],

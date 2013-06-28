@@ -1,0 +1,695 @@
+28/06/2013 13:49:34.934704 [500k_pt_cells_bound] BEGIN_TRANSACTION
+28/06/2013 13:49:49.118633 [500k_pt_cells_bound] initialized
+28/06/2013 13:49:49.118974 [500k_pt_cells_bound] merged_partitions
+28/06/2013 13:49:49.163601 [500k_pt_cells_bound] initialized_level 14
+28/06/2013 13:49:49.164124 [500k_pt_cells_bound] forced_level 14
+28/06/2013 13:50:25.721325 [500k_pt_cells_bound] found_conflicts 14
+28/06/2013 13:51:05.895369 [500k_pt_cells_bound] resolved_conflicts 14
+28/06/2013 13:51:05.895782 [500k_pt_cells_bound] transformed_level 14
+28/06/2013 13:51:05.906175 [500k_pt_cells_bound] finalized_level 14
+28/06/2013 13:51:05.934796 [500k_pt_cells_bound] initialized_level 13
+28/06/2013 13:51:05.935238 [500k_pt_cells_bound] forced_level 13
+28/06/2013 13:51:41.829965 [500k_pt_cells_bound] found_conflicts 13
+28/06/2013 13:53:38.728609 [500k_pt_cells_bound] resolved_conflicts 13
+28/06/2013 13:53:38.729160 [500k_pt_cells_bound] transformed_level 13
+28/06/2013 13:53:38.772832 [500k_pt_cells_bound] finalized_level 13
+28/06/2013 13:53:38.814995 [500k_pt_cells_bound] initialized_level 12
+28/06/2013 13:53:38.815516 [500k_pt_cells_bound] forced_level 12
+28/06/2013 13:54:11.644194 [500k_pt_cells_bound] found_conflicts 12
+28/06/2013 13:59:16.526458 [500k_pt_cells_bound] resolved_conflicts 12
+28/06/2013 13:59:16.527398 [500k_pt_cells_bound] transformed_level 12
+28/06/2013 13:59:16.650627 [500k_pt_cells_bound] finalized_level 12
+28/06/2013 13:59:16.657442 [500k_pt_cells_bound] initialized_level 11
+28/06/2013 13:59:16.657807 [500k_pt_cells_bound] forced_level 11
+28/06/2013 13:59:44.180757 [500k_pt_cells_bound] found_conflicts 11
+28/06/2013 14:05:40.662548 [500k_pt_cells_bound] resolved_conflicts 11
+28/06/2013 14:05:40.663243 [500k_pt_cells_bound] transformed_level 11
+28/06/2013 14:05:40.665332 [500k_pt_cells_bound] finalized_level 11
+28/06/2013 14:05:40.705243 [500k_pt_cells_bound] initialized_level 10
+28/06/2013 14:05:40.705817 [500k_pt_cells_bound] forced_level 10
+28/06/2013 14:06:00.465065 [500k_pt_cells_bound] found_conflicts 10
+28/06/2013 14:09:56.644770 [500k_pt_cells_bound] resolved_conflicts 10
+28/06/2013 14:09:56.667325 [500k_pt_cells_bound] transformed_level 10
+28/06/2013 14:09:56.670382 [500k_pt_cells_bound] finalized_level 10
+28/06/2013 14:09:56.700166 [500k_pt_cells_bound] initialized_level 9
+28/06/2013 14:09:56.701744 [500k_pt_cells_bound] forced_level 9
+28/06/2013 14:10:10.093418 [500k_pt_cells_bound] found_conflicts 9
+28/06/2013 14:12:21.892859 [500k_pt_cells_bound] resolved_conflicts 9
+28/06/2013 14:12:21.893221 [500k_pt_cells_bound] transformed_level 9
+28/06/2013 14:12:21.895348 [500k_pt_cells_bound] finalized_level 9
+28/06/2013 14:12:21.946186 [500k_pt_cells_bound] initialized_level 8
+28/06/2013 14:12:21.947171 [500k_pt_cells_bound] forced_level 8
+28/06/2013 14:12:30.528895 [500k_pt_cells_bound] found_conflicts 8
+28/06/2013 14:13:33.522019 [500k_pt_cells_bound] resolved_conflicts 8
+28/06/2013 14:13:33.522408 [500k_pt_cells_bound] transformed_level 8
+28/06/2013 14:13:33.524903 [500k_pt_cells_bound] finalized_level 8
+28/06/2013 14:13:33.609033 [500k_pt_cells_bound] initialized_level 7
+28/06/2013 14:13:33.609442 [500k_pt_cells_bound] forced_level 7
+28/06/2013 14:13:37.754570 [500k_pt_cells_bound] found_conflicts 7
+28/06/2013 14:14:03.048879 [500k_pt_cells_bound] resolved_conflicts 7
+28/06/2013 14:14:03.049271 [500k_pt_cells_bound] transformed_level 7
+28/06/2013 14:14:03.051659 [500k_pt_cells_bound] finalized_level 7
+28/06/2013 14:14:03.107328 [500k_pt_cells_bound] initialized_level 6
+28/06/2013 14:14:03.107716 [500k_pt_cells_bound] forced_level 6
+28/06/2013 14:14:05.254064 [500k_pt_cells_bound] found_conflicts 6
+28/06/2013 14:14:17.995453 [500k_pt_cells_bound] resolved_conflicts 6
+28/06/2013 14:14:17.995843 [500k_pt_cells_bound] transformed_level 6
+28/06/2013 14:14:17.997842 [500k_pt_cells_bound] finalized_level 6
+28/06/2013 14:14:18.029618 [500k_pt_cells_bound] initialized_level 5
+28/06/2013 14:14:18.030023 [500k_pt_cells_bound] forced_level 5
+28/06/2013 14:14:19.125416 [500k_pt_cells_bound] found_conflicts 5
+28/06/2013 14:14:22.351423 [500k_pt_cells_bound] resolved_conflicts 5
+28/06/2013 14:14:22.352018 [500k_pt_cells_bound] transformed_level 5
+28/06/2013 14:14:22.353994 [500k_pt_cells_bound] finalized_level 5
+28/06/2013 14:14:22.413287 [500k_pt_cells_bound] initialized_level 4
+28/06/2013 14:14:22.413816 [500k_pt_cells_bound] forced_level 4
+28/06/2013 14:14:23.062014 [500k_pt_cells_bound] found_conflicts 4
+28/06/2013 14:14:24.172149 [500k_pt_cells_bound] resolved_conflicts 4
+28/06/2013 14:14:24.173003 [500k_pt_cells_bound] transformed_level 4
+28/06/2013 14:14:24.175035 [500k_pt_cells_bound] finalized_level 4
+28/06/2013 14:14:24.179130 [500k_pt_cells_bound] initialized_level 3
+28/06/2013 14:14:24.179506 [500k_pt_cells_bound] forced_level 3
+28/06/2013 14:14:24.680990 [500k_pt_cells_bound] found_conflicts 3
+28/06/2013 14:14:25.420219 [500k_pt_cells_bound] resolved_conflicts 3
+28/06/2013 14:14:25.420631 [500k_pt_cells_bound] transformed_level 3
+28/06/2013 14:14:25.422418 [500k_pt_cells_bound] finalized_level 3
+28/06/2013 14:14:25.426517 [500k_pt_cells_bound] initialized_level 2
+28/06/2013 14:14:25.426894 [500k_pt_cells_bound] forced_level 2
+28/06/2013 14:14:25.861152 [500k_pt_cells_bound] found_conflicts 2
+28/06/2013 14:14:26.670712 [500k_pt_cells_bound] resolved_conflicts 2
+28/06/2013 14:14:26.671110 [500k_pt_cells_bound] transformed_level 2
+28/06/2013 14:14:26.673044 [500k_pt_cells_bound] finalized_level 2
+28/06/2013 14:14:26.688305 [500k_pt_cells_bound] initialized_level 1
+28/06/2013 14:14:26.688733 [500k_pt_cells_bound] forced_level 1
+28/06/2013 14:14:27.096713 [500k_pt_cells_bound] found_conflicts 1
+28/06/2013 14:14:28.062147 [500k_pt_cells_bound] resolved_conflicts 1
+28/06/2013 14:14:28.062549 [500k_pt_cells_bound] transformed_level 1
+28/06/2013 14:14:28.064402 [500k_pt_cells_bound] finalized_level 1
+28/06/2013 14:14:28.102240 [500k_pt_cells_bound] initialized_level 0
+28/06/2013 14:14:28.102835 [500k_pt_cells_bound] forced_level 0
+28/06/2013 14:14:28.500910 [500k_pt_cells_bound] found_conflicts 0
+28/06/2013 14:14:31.386558 [500k_pt_cells_bound] resolved_conflicts 0
+28/06/2013 14:14:31.387027 [500k_pt_cells_bound] transformed_level 0
+28/06/2013 14:14:31.390012 [500k_pt_cells_bound] finalized_level 0
+28/06/2013 14:14:31.879101 [500k_pt_cells_bound] stats {'num_recs': 851L, 'cvl_partition': 1, 'cvl_zoom': 0, 'aggrank': 849.022945233155}
+28/06/2013 14:14:31.879190 [500k_pt_cells_bound] stats {'num_recs': 80L, 'cvl_partition': 1, 'cvl_zoom': 2, 'aggrank': 59.88001072499901}
+28/06/2013 14:14:31.879214 [500k_pt_cells_bound] stats {'num_recs': 303L, 'cvl_partition': 1, 'cvl_zoom': 3, 'aggrank': 278.50312624080107}
+28/06/2013 14:14:31.879235 [500k_pt_cells_bound] stats {'num_recs': 773L, 'cvl_partition': 1, 'cvl_zoom': 4, 'aggrank': 667.2763368263841}
+28/06/2013 14:14:31.879255 [500k_pt_cells_bound] stats {'num_recs': 2162L, 'cvl_partition': 1, 'cvl_zoom': 5, 'aggrank': 1891.5702064586803}
+28/06/2013 14:14:31.894727 [500k_pt_cells_bound] stats {'num_recs': 6590L, 'cvl_partition': 1, 'cvl_zoom': 6, 'aggrank': 5423.9725653408095}
+28/06/2013 14:14:31.894818 [500k_pt_cells_bound] stats {'num_recs': 15609L, 'cvl_partition': 1, 'cvl_zoom': 7, 'aggrank': 11692.757997780573}
+28/06/2013 14:14:31.894855 [500k_pt_cells_bound] stats {'num_recs': 29809L, 'cvl_partition': 1, 'cvl_zoom': 8, 'aggrank': 20088.764608581085}
+28/06/2013 14:14:31.894890 [500k_pt_cells_bound] stats {'num_recs': 49160L, 'cvl_partition': 1, 'cvl_zoom': 9, 'aggrank': 29856.87685307581}
+28/06/2013 14:14:31.894924 [500k_pt_cells_bound] stats {'num_recs': 69747L, 'cvl_partition': 1, 'cvl_zoom': 10, 'aggrank': 40172.60640549613}
+28/06/2013 14:14:31.894958 [500k_pt_cells_bound] stats {'num_recs': 92531L, 'cvl_partition': 1, 'cvl_zoom': 11, 'aggrank': 49219.87809843011}
+28/06/2013 14:14:31.894991 [500k_pt_cells_bound] stats {'num_recs': 105042L, 'cvl_partition': 1, 'cvl_zoom': 12, 'aggrank': 48431.30779091222}
+28/06/2013 14:14:31.895025 [500k_pt_cells_bound] stats {'num_recs': 79847L, 'cvl_partition': 1, 'cvl_zoom': 13, 'aggrank': 30779.605356611777}
+28/06/2013 14:14:31.895059 [500k_pt_cells_bound] stats {'num_recs': 42156L, 'cvl_partition': 1, 'cvl_zoom': 14, 'aggrank': 13722.67456036387}
+28/06/2013 14:14:31.895092 [500k_pt_cells_bound] stats {'num_recs': 28436L, 'cvl_partition': 1, 'cvl_zoom': 15, 'aggrank': 8355.501456429716}
+28/06/2013 14:14:32.221245 [500k_pt_cells_bound] COMMIT
+28/06/2013 14:14:33.920952 [500k_pt_cells_heuristic] BEGIN_TRANSACTION
+28/06/2013 14:14:52.206859 [500k_pt_cells_heuristic] initialized
+28/06/2013 14:14:52.207222 [500k_pt_cells_heuristic] merged_partitions
+28/06/2013 14:14:52.259207 [500k_pt_cells_heuristic] initialized_level 14
+28/06/2013 14:14:52.260008 [500k_pt_cells_heuristic] forced_level 14
+28/06/2013 14:15:29.428681 [500k_pt_cells_heuristic] found_conflicts 14
+28/06/2013 14:15:34.179848 [500k_pt_cells_heuristic] resolved_conflicts 14
+28/06/2013 14:15:34.180222 [500k_pt_cells_heuristic] transformed_level 14
+28/06/2013 14:15:34.305449 [500k_pt_cells_heuristic] finalized_level 14
+28/06/2013 14:15:34.322149 [500k_pt_cells_heuristic] initialized_level 13
+28/06/2013 14:15:34.322448 [500k_pt_cells_heuristic] forced_level 13
+28/06/2013 14:16:09.894572 [500k_pt_cells_heuristic] found_conflicts 13
+28/06/2013 14:16:18.147266 [500k_pt_cells_heuristic] resolved_conflicts 13
+28/06/2013 14:16:18.147636 [500k_pt_cells_heuristic] transformed_level 13
+28/06/2013 14:16:18.261963 [500k_pt_cells_heuristic] finalized_level 13
+28/06/2013 14:16:18.266176 [500k_pt_cells_heuristic] initialized_level 12
+28/06/2013 14:16:18.266544 [500k_pt_cells_heuristic] forced_level 12
+28/06/2013 14:16:51.160800 [500k_pt_cells_heuristic] found_conflicts 12
+28/06/2013 14:17:04.234846 [500k_pt_cells_heuristic] resolved_conflicts 12
+28/06/2013 14:17:04.235244 [500k_pt_cells_heuristic] transformed_level 12
+28/06/2013 14:17:04.290043 [500k_pt_cells_heuristic] finalized_level 12
+28/06/2013 14:17:04.377572 [500k_pt_cells_heuristic] initialized_level 11
+28/06/2013 14:17:04.378079 [500k_pt_cells_heuristic] forced_level 11
+28/06/2013 14:17:31.842181 [500k_pt_cells_heuristic] found_conflicts 11
+28/06/2013 14:17:47.393293 [500k_pt_cells_heuristic] resolved_conflicts 11
+28/06/2013 14:17:47.393677 [500k_pt_cells_heuristic] transformed_level 11
+28/06/2013 14:17:47.609390 [500k_pt_cells_heuristic] finalized_level 11
+28/06/2013 14:17:47.614368 [500k_pt_cells_heuristic] initialized_level 10
+28/06/2013 14:17:47.614783 [500k_pt_cells_heuristic] forced_level 10
+28/06/2013 14:18:07.693639 [500k_pt_cells_heuristic] found_conflicts 10
+28/06/2013 14:18:22.036518 [500k_pt_cells_heuristic] resolved_conflicts 10
+28/06/2013 14:18:22.036888 [500k_pt_cells_heuristic] transformed_level 10
+28/06/2013 14:18:22.205996 [500k_pt_cells_heuristic] finalized_level 10
+28/06/2013 14:18:22.211527 [500k_pt_cells_heuristic] initialized_level 9
+28/06/2013 14:18:22.211938 [500k_pt_cells_heuristic] forced_level 9
+28/06/2013 14:18:36.033236 [500k_pt_cells_heuristic] found_conflicts 9
+28/06/2013 14:18:47.702138 [500k_pt_cells_heuristic] resolved_conflicts 9
+28/06/2013 14:18:47.702510 [500k_pt_cells_heuristic] transformed_level 9
+28/06/2013 14:18:47.845453 [500k_pt_cells_heuristic] finalized_level 9
+28/06/2013 14:18:47.849909 [500k_pt_cells_heuristic] initialized_level 8
+28/06/2013 14:18:47.850255 [500k_pt_cells_heuristic] forced_level 8
+28/06/2013 14:18:56.301206 [500k_pt_cells_heuristic] found_conflicts 8
+28/06/2013 14:19:05.850879 [500k_pt_cells_heuristic] resolved_conflicts 8
+28/06/2013 14:19:05.851248 [500k_pt_cells_heuristic] transformed_level 8
+28/06/2013 14:19:05.923375 [500k_pt_cells_heuristic] finalized_level 8
+28/06/2013 14:19:06.005061 [500k_pt_cells_heuristic] initialized_level 7
+28/06/2013 14:19:06.005530 [500k_pt_cells_heuristic] forced_level 7
+28/06/2013 14:19:10.019157 [500k_pt_cells_heuristic] found_conflicts 7
+28/06/2013 14:19:17.084924 [500k_pt_cells_heuristic] resolved_conflicts 7
+28/06/2013 14:19:17.085309 [500k_pt_cells_heuristic] transformed_level 7
+28/06/2013 14:19:17.115981 [500k_pt_cells_heuristic] finalized_level 7
+28/06/2013 14:19:17.122776 [500k_pt_cells_heuristic] initialized_level 6
+28/06/2013 14:19:17.123364 [500k_pt_cells_heuristic] forced_level 6
+28/06/2013 14:19:19.191761 [500k_pt_cells_heuristic] found_conflicts 6
+28/06/2013 14:19:24.528013 [500k_pt_cells_heuristic] resolved_conflicts 6
+28/06/2013 14:19:24.528397 [500k_pt_cells_heuristic] transformed_level 6
+28/06/2013 14:19:24.530854 [500k_pt_cells_heuristic] finalized_level 6
+28/06/2013 14:19:24.587849 [500k_pt_cells_heuristic] initialized_level 5
+28/06/2013 14:19:24.588264 [500k_pt_cells_heuristic] forced_level 5
+28/06/2013 14:19:25.647723 [500k_pt_cells_heuristic] found_conflicts 5
+28/06/2013 14:19:28.633274 [500k_pt_cells_heuristic] resolved_conflicts 5
+28/06/2013 14:19:28.633646 [500k_pt_cells_heuristic] transformed_level 5
+28/06/2013 14:19:28.635604 [500k_pt_cells_heuristic] finalized_level 5
+28/06/2013 14:19:28.639585 [500k_pt_cells_heuristic] initialized_level 4
+28/06/2013 14:19:28.639931 [500k_pt_cells_heuristic] forced_level 4
+28/06/2013 14:19:29.303696 [500k_pt_cells_heuristic] found_conflicts 4
+28/06/2013 14:19:29.781278 [500k_pt_cells_heuristic] resolved_conflicts 4
+28/06/2013 14:19:29.781648 [500k_pt_cells_heuristic] transformed_level 4
+28/06/2013 14:19:29.783496 [500k_pt_cells_heuristic] finalized_level 4
+28/06/2013 14:19:29.809727 [500k_pt_cells_heuristic] initialized_level 3
+28/06/2013 14:19:29.810368 [500k_pt_cells_heuristic] forced_level 3
+28/06/2013 14:19:30.276276 [500k_pt_cells_heuristic] found_conflicts 3
+28/06/2013 14:19:30.606150 [500k_pt_cells_heuristic] resolved_conflicts 3
+28/06/2013 14:19:30.606547 [500k_pt_cells_heuristic] transformed_level 3
+28/06/2013 14:19:30.608327 [500k_pt_cells_heuristic] finalized_level 3
+28/06/2013 14:19:30.612502 [500k_pt_cells_heuristic] initialized_level 2
+28/06/2013 14:19:30.612879 [500k_pt_cells_heuristic] forced_level 2
+28/06/2013 14:19:30.995403 [500k_pt_cells_heuristic] found_conflicts 2
+28/06/2013 14:19:31.267650 [500k_pt_cells_heuristic] resolved_conflicts 2
+28/06/2013 14:19:31.268082 [500k_pt_cells_heuristic] transformed_level 2
+28/06/2013 14:19:31.270127 [500k_pt_cells_heuristic] finalized_level 2
+28/06/2013 14:19:31.274345 [500k_pt_cells_heuristic] initialized_level 1
+28/06/2013 14:19:31.274715 [500k_pt_cells_heuristic] forced_level 1
+28/06/2013 14:19:31.641083 [500k_pt_cells_heuristic] found_conflicts 1
+28/06/2013 14:19:31.901030 [500k_pt_cells_heuristic] resolved_conflicts 1
+28/06/2013 14:19:31.901407 [500k_pt_cells_heuristic] transformed_level 1
+28/06/2013 14:19:31.903413 [500k_pt_cells_heuristic] finalized_level 1
+28/06/2013 14:19:31.907840 [500k_pt_cells_heuristic] initialized_level 0
+28/06/2013 14:19:31.908211 [500k_pt_cells_heuristic] forced_level 0
+28/06/2013 14:19:32.250012 [500k_pt_cells_heuristic] found_conflicts 0
+28/06/2013 14:19:32.519756 [500k_pt_cells_heuristic] resolved_conflicts 0
+28/06/2013 14:19:32.520161 [500k_pt_cells_heuristic] transformed_level 0
+28/06/2013 14:19:32.521886 [500k_pt_cells_heuristic] finalized_level 0
+28/06/2013 14:19:32.914438 [500k_pt_cells_heuristic] stats {'num_recs': 17L, 'cvl_partition': 1, 'cvl_zoom': 0, 'aggrank': 16.894607162568718}
+28/06/2013 14:19:32.914529 [500k_pt_cells_heuristic] stats {'num_recs': 48L, 'cvl_partition': 1, 'cvl_zoom': 1, 'aggrank': 47.980776970274746}
+28/06/2013 14:19:32.914552 [500k_pt_cells_heuristic] stats {'num_recs': 128L, 'cvl_partition': 1, 'cvl_zoom': 2, 'aggrank': 108.6314796009101}
+28/06/2013 14:19:32.914572 [500k_pt_cells_heuristic] stats {'num_recs': 335L, 'cvl_partition': 1, 'cvl_zoom': 3, 'aggrank': 309.60566783696413}
+28/06/2013 14:19:32.914591 [500k_pt_cells_heuristic] stats {'num_recs': 974L, 'cvl_partition': 1, 'cvl_zoom': 4, 'aggrank': 870.832655989565}
+28/06/2013 14:19:32.914610 [500k_pt_cells_heuristic] stats {'num_recs': 2414L, 'cvl_partition': 1, 'cvl_zoom': 5, 'aggrank': 2157.6930756201036}
+28/06/2013 14:19:32.914629 [500k_pt_cells_heuristic] stats {'num_recs': 6360L, 'cvl_partition': 1, 'cvl_zoom': 6, 'aggrank': 5219.207878874615}
+28/06/2013 14:19:32.914648 [500k_pt_cells_heuristic] stats {'num_recs': 14902L, 'cvl_partition': 1, 'cvl_zoom': 7, 'aggrank': 11039.688354461454}
+28/06/2013 14:19:32.914667 [500k_pt_cells_heuristic] stats {'num_recs': 29369L, 'cvl_partition': 1, 'cvl_zoom': 8, 'aggrank': 19756.462968662847}
+28/06/2013 14:19:32.914686 [500k_pt_cells_heuristic] stats {'num_recs': 49492L, 'cvl_partition': 1, 'cvl_zoom': 9, 'aggrank': 30330.218320864253}
+28/06/2013 14:19:32.914705 [500k_pt_cells_heuristic] stats {'num_recs': 69296L, 'cvl_partition': 1, 'cvl_zoom': 10, 'aggrank': 39893.57103643613}
+28/06/2013 14:19:32.914723 [500k_pt_cells_heuristic] stats {'num_recs': 94238L, 'cvl_partition': 1, 'cvl_zoom': 11, 'aggrank': 50654.304808881134}
+28/06/2013 14:19:32.914742 [500k_pt_cells_heuristic] stats {'num_recs': 104282L, 'cvl_partition': 1, 'cvl_zoom': 12, 'aggrank': 47976.22017895477}
+28/06/2013 14:19:32.914761 [500k_pt_cells_heuristic] stats {'num_recs': 80096L, 'cvl_partition': 1, 'cvl_zoom': 13, 'aggrank': 30921.12749746116}
+28/06/2013 14:19:32.914779 [500k_pt_cells_heuristic] stats {'num_recs': 42507L, 'cvl_partition': 1, 'cvl_zoom': 14, 'aggrank': 13814.105294664856}
+28/06/2013 14:19:32.914798 [500k_pt_cells_heuristic] stats {'num_recs': 28638L, 'cvl_partition': 1, 'cvl_zoom': 15, 'aggrank': 8444.714291517157}
+28/06/2013 14:19:33.016100 [500k_pt_cells_heuristic] COMMIT
+28/06/2013 14:19:33.166690 [500k_pt_cells_lp] BEGIN_TRANSACTION
+28/06/2013 14:19:48.930694 [500k_pt_cells_lp] initialized
+28/06/2013 14:19:48.931045 [500k_pt_cells_lp] merged_partitions
+28/06/2013 14:19:48.936326 [500k_pt_cells_lp] initialized_level 14
+28/06/2013 14:19:48.936672 [500k_pt_cells_lp] forced_level 14
+28/06/2013 14:20:25.390735 [500k_pt_cells_lp] found_conflicts 14
+28/06/2013 14:21:04.836554 [500k_pt_cells_lp] resolved_conflicts 14
+28/06/2013 14:21:04.836961 [500k_pt_cells_lp] transformed_level 14
+28/06/2013 14:21:04.870503 [500k_pt_cells_lp] finalized_level 14
+28/06/2013 14:21:04.906453 [500k_pt_cells_lp] initialized_level 13
+28/06/2013 14:21:04.906893 [500k_pt_cells_lp] forced_level 13
+28/06/2013 14:21:41.071878 [500k_pt_cells_lp] found_conflicts 13
+28/06/2013 14:23:39.394765 [500k_pt_cells_lp] resolved_conflicts 13
+28/06/2013 14:23:39.395153 [500k_pt_cells_lp] transformed_level 13
+28/06/2013 14:23:39.401943 [500k_pt_cells_lp] finalized_level 13
+28/06/2013 14:23:39.413622 [500k_pt_cells_lp] initialized_level 12
+28/06/2013 14:23:39.413985 [500k_pt_cells_lp] forced_level 12
+28/06/2013 14:24:12.601294 [500k_pt_cells_lp] found_conflicts 12
+28/06/2013 14:29:08.980418 [500k_pt_cells_lp] resolved_conflicts 12
+28/06/2013 14:29:08.981378 [500k_pt_cells_lp] transformed_level 12
+28/06/2013 14:29:09.009994 [500k_pt_cells_lp] finalized_level 12
+28/06/2013 14:29:09.015361 [500k_pt_cells_lp] initialized_level 11
+28/06/2013 14:29:09.015761 [500k_pt_cells_lp] forced_level 11
+28/06/2013 14:29:35.944381 [500k_pt_cells_lp] found_conflicts 11
+28/06/2013 14:35:15.165630 [500k_pt_cells_lp] resolved_conflicts 11
+28/06/2013 14:35:15.166023 [500k_pt_cells_lp] transformed_level 11
+28/06/2013 14:35:15.168170 [500k_pt_cells_lp] finalized_level 11
+28/06/2013 14:35:15.201061 [500k_pt_cells_lp] initialized_level 10
+28/06/2013 14:35:15.201879 [500k_pt_cells_lp] forced_level 10
+28/06/2013 14:35:35.214527 [500k_pt_cells_lp] found_conflicts 10
+28/06/2013 14:39:27.258023 [500k_pt_cells_lp] resolved_conflicts 10
+28/06/2013 14:39:27.258417 [500k_pt_cells_lp] transformed_level 10
+28/06/2013 14:39:27.260488 [500k_pt_cells_lp] finalized_level 10
+28/06/2013 14:39:27.310834 [500k_pt_cells_lp] initialized_level 9
+28/06/2013 14:39:27.311361 [500k_pt_cells_lp] forced_level 9
+28/06/2013 14:39:40.356362 [500k_pt_cells_lp] found_conflicts 9
+28/06/2013 14:41:43.564657 [500k_pt_cells_lp] resolved_conflicts 9
+28/06/2013 14:41:43.565056 [500k_pt_cells_lp] transformed_level 9
+28/06/2013 14:41:43.567681 [500k_pt_cells_lp] finalized_level 9
+28/06/2013 14:41:43.662539 [500k_pt_cells_lp] initialized_level 8
+28/06/2013 14:41:43.662932 [500k_pt_cells_lp] forced_level 8
+28/06/2013 14:41:52.450329 [500k_pt_cells_lp] found_conflicts 8
+28/06/2013 14:42:53.505758 [500k_pt_cells_lp] resolved_conflicts 8
+28/06/2013 14:42:53.506153 [500k_pt_cells_lp] transformed_level 8
+28/06/2013 14:42:53.508224 [500k_pt_cells_lp] finalized_level 8
+28/06/2013 14:42:53.554333 [500k_pt_cells_lp] initialized_level 7
+28/06/2013 14:42:53.554725 [500k_pt_cells_lp] forced_level 7
+28/06/2013 14:42:57.602722 [500k_pt_cells_lp] found_conflicts 7
+28/06/2013 14:43:21.986638 [500k_pt_cells_lp] resolved_conflicts 7
+28/06/2013 14:43:21.987161 [500k_pt_cells_lp] transformed_level 7
+28/06/2013 14:43:21.989192 [500k_pt_cells_lp] finalized_level 7
+28/06/2013 14:43:21.999019 [500k_pt_cells_lp] initialized_level 6
+28/06/2013 14:43:21.999409 [500k_pt_cells_lp] forced_level 6
+28/06/2013 14:43:23.968699 [500k_pt_cells_lp] found_conflicts 6
+28/06/2013 14:43:33.059404 [500k_pt_cells_lp] resolved_conflicts 6
+28/06/2013 14:43:33.059799 [500k_pt_cells_lp] transformed_level 6
+28/06/2013 14:43:33.062242 [500k_pt_cells_lp] finalized_level 6
+28/06/2013 14:43:33.158444 [500k_pt_cells_lp] initialized_level 5
+28/06/2013 14:43:33.158862 [500k_pt_cells_lp] forced_level 5
+28/06/2013 14:43:34.132877 [500k_pt_cells_lp] found_conflicts 5
+28/06/2013 14:43:36.152064 [500k_pt_cells_lp] resolved_conflicts 5
+28/06/2013 14:43:36.152460 [500k_pt_cells_lp] transformed_level 5
+28/06/2013 14:43:36.154340 [500k_pt_cells_lp] finalized_level 5
+28/06/2013 14:43:36.158428 [500k_pt_cells_lp] initialized_level 4
+28/06/2013 14:43:36.158804 [500k_pt_cells_lp] forced_level 4
+28/06/2013 14:43:36.783918 [500k_pt_cells_lp] found_conflicts 4
+28/06/2013 14:43:37.730405 [500k_pt_cells_lp] resolved_conflicts 4
+28/06/2013 14:43:37.730805 [500k_pt_cells_lp] transformed_level 4
+28/06/2013 14:43:37.732617 [500k_pt_cells_lp] finalized_level 4
+28/06/2013 14:43:37.736689 [500k_pt_cells_lp] initialized_level 3
+28/06/2013 14:43:37.737061 [500k_pt_cells_lp] forced_level 3
+28/06/2013 14:43:38.198791 [500k_pt_cells_lp] found_conflicts 3
+28/06/2013 14:43:38.726369 [500k_pt_cells_lp] resolved_conflicts 3
+28/06/2013 14:43:38.726769 [500k_pt_cells_lp] transformed_level 3
+28/06/2013 14:43:38.728574 [500k_pt_cells_lp] finalized_level 3
+28/06/2013 14:43:38.732773 [500k_pt_cells_lp] initialized_level 2
+28/06/2013 14:43:38.733149 [500k_pt_cells_lp] forced_level 2
+28/06/2013 14:43:39.099846 [500k_pt_cells_lp] found_conflicts 2
+28/06/2013 14:43:39.402186 [500k_pt_cells_lp] resolved_conflicts 2
+28/06/2013 14:43:39.402585 [500k_pt_cells_lp] transformed_level 2
+28/06/2013 14:43:39.404360 [500k_pt_cells_lp] finalized_level 2
+28/06/2013 14:43:39.408544 [500k_pt_cells_lp] initialized_level 1
+28/06/2013 14:43:39.408925 [500k_pt_cells_lp] forced_level 1
+28/06/2013 14:43:39.757301 [500k_pt_cells_lp] found_conflicts 1
+28/06/2013 14:43:40.052495 [500k_pt_cells_lp] resolved_conflicts 1
+28/06/2013 14:43:40.052900 [500k_pt_cells_lp] transformed_level 1
+28/06/2013 14:43:40.054651 [500k_pt_cells_lp] finalized_level 1
+28/06/2013 14:43:40.058833 [500k_pt_cells_lp] initialized_level 0
+28/06/2013 14:43:40.059215 [500k_pt_cells_lp] forced_level 0
+28/06/2013 14:43:40.398427 [500k_pt_cells_lp] found_conflicts 0
+28/06/2013 14:43:40.666917 [500k_pt_cells_lp] resolved_conflicts 0
+28/06/2013 14:43:40.667254 [500k_pt_cells_lp] transformed_level 0
+28/06/2013 14:43:40.668878 [500k_pt_cells_lp] finalized_level 0
+28/06/2013 14:43:41.079082 [500k_pt_cells_lp] stats {'num_recs': 14L, 'cvl_partition': 1, 'cvl_zoom': 0, 'aggrank': 13.523380208294839}
+28/06/2013 14:43:41.079172 [500k_pt_cells_lp] stats {'num_recs': 41L, 'cvl_partition': 1, 'cvl_zoom': 1, 'aggrank': 40.95374733628705}
+28/06/2013 14:43:41.079196 [500k_pt_cells_lp] stats {'num_recs': 114L, 'cvl_partition': 1, 'cvl_zoom': 2, 'aggrank': 96.5581432604231}
+28/06/2013 14:43:41.079216 [500k_pt_cells_lp] stats {'num_recs': 142L, 'cvl_partition': 1, 'cvl_zoom': 3, 'aggrank': 119.52482908964157}
+28/06/2013 14:43:41.079237 [500k_pt_cells_lp] stats {'num_recs': 1160L, 'cvl_partition': 1, 'cvl_zoom': 4, 'aggrank': 1059.2222665213048}
+28/06/2013 14:43:41.079257 [500k_pt_cells_lp] stats {'num_recs': 2401L, 'cvl_partition': 1, 'cvl_zoom': 5, 'aggrank': 2130.2022136994638}
+28/06/2013 14:43:41.079277 [500k_pt_cells_lp] stats {'num_recs': 5188L, 'cvl_partition': 1, 'cvl_zoom': 6, 'aggrank': 4080.6640712362714}
+28/06/2013 14:43:41.079297 [500k_pt_cells_lp] stats {'num_recs': 14818L, 'cvl_partition': 1, 'cvl_zoom': 7, 'aggrank': 10956.462241810746}
+28/06/2013 14:43:41.079317 [500k_pt_cells_lp] stats {'num_recs': 29734L, 'cvl_partition': 1, 'cvl_zoom': 8, 'aggrank': 20136.14728813665}
+28/06/2013 14:43:41.079337 [500k_pt_cells_lp] stats {'num_recs': 50186L, 'cvl_partition': 1, 'cvl_zoom': 9, 'aggrank': 30923.46825743653}
+28/06/2013 14:43:41.079357 [500k_pt_cells_lp] stats {'num_recs': 67545L, 'cvl_partition': 1, 'cvl_zoom': 10, 'aggrank': 38467.07334882673}
+28/06/2013 14:43:41.079376 [500k_pt_cells_lp] stats {'num_recs': 96150L, 'cvl_partition': 1, 'cvl_zoom': 11, 'aggrank': 52102.64287195634}
+28/06/2013 14:43:41.079396 [500k_pt_cells_lp] stats {'num_recs': 103946L, 'cvl_partition': 1, 'cvl_zoom': 12, 'aggrank': 47843.74496966647}
+28/06/2013 14:43:41.079416 [500k_pt_cells_lp] stats {'num_recs': 79740L, 'cvl_partition': 1, 'cvl_zoom': 13, 'aggrank': 30782.020576035604}
+28/06/2013 14:43:41.079436 [500k_pt_cells_lp] stats {'num_recs': 43260L, 'cvl_partition': 1, 'cvl_zoom': 14, 'aggrank': 14178.124708702788}
+28/06/2013 14:43:41.079455 [500k_pt_cells_lp] stats {'num_recs': 28657L, 'cvl_partition': 1, 'cvl_zoom': 15, 'aggrank': 8453.416077040136}
+28/06/2013 14:43:41.764412 [500k_pt_cells_lp] COMMIT
+28/06/2013 14:43:42.600348 [7k_pt_cells_bound] BEGIN_TRANSACTION
+28/06/2013 14:43:43.021588 [7k_pt_cells_bound] initialized
+28/06/2013 14:43:43.021994 [7k_pt_cells_bound] merged_partitions
+28/06/2013 14:43:43.026350 [7k_pt_cells_bound] initialized_level 17
+28/06/2013 14:43:43.026698 [7k_pt_cells_bound] forced_level 17
+28/06/2013 14:43:43.545417 [7k_pt_cells_bound] found_conflicts 17
+28/06/2013 14:43:43.660804 [7k_pt_cells_bound] resolved_conflicts 17
+28/06/2013 14:43:43.661248 [7k_pt_cells_bound] transformed_level 17
+28/06/2013 14:43:43.663000 [7k_pt_cells_bound] finalized_level 17
+28/06/2013 14:43:43.667352 [7k_pt_cells_bound] initialized_level 16
+28/06/2013 14:43:43.668112 [7k_pt_cells_bound] forced_level 16
+28/06/2013 14:43:44.156909 [7k_pt_cells_bound] found_conflicts 16
+28/06/2013 14:43:44.158301 [7k_pt_cells_bound] resolved_conflicts 16
+28/06/2013 14:43:44.158673 [7k_pt_cells_bound] transformed_level 16
+28/06/2013 14:43:44.160000 [7k_pt_cells_bound] finalized_level 16
+28/06/2013 14:43:44.163707 [7k_pt_cells_bound] initialized_level 15
+28/06/2013 14:43:44.164223 [7k_pt_cells_bound] forced_level 15
+28/06/2013 14:43:44.652650 [7k_pt_cells_bound] found_conflicts 15
+28/06/2013 14:43:44.654161 [7k_pt_cells_bound] resolved_conflicts 15
+28/06/2013 14:43:44.654488 [7k_pt_cells_bound] transformed_level 15
+28/06/2013 14:43:44.655812 [7k_pt_cells_bound] finalized_level 15
+28/06/2013 14:43:44.659415 [7k_pt_cells_bound] initialized_level 14
+28/06/2013 14:43:44.659752 [7k_pt_cells_bound] forced_level 14
+28/06/2013 14:43:45.192801 [7k_pt_cells_bound] found_conflicts 14
+28/06/2013 14:43:45.194246 [7k_pt_cells_bound] resolved_conflicts 14
+28/06/2013 14:43:45.194577 [7k_pt_cells_bound] transformed_level 14
+28/06/2013 14:43:45.195949 [7k_pt_cells_bound] finalized_level 14
+28/06/2013 14:43:45.199640 [7k_pt_cells_bound] initialized_level 13
+28/06/2013 14:43:45.199972 [7k_pt_cells_bound] forced_level 13
+28/06/2013 14:43:45.688481 [7k_pt_cells_bound] found_conflicts 13
+28/06/2013 14:43:45.689888 [7k_pt_cells_bound] resolved_conflicts 13
+28/06/2013 14:43:45.690216 [7k_pt_cells_bound] transformed_level 13
+28/06/2013 14:43:45.691608 [7k_pt_cells_bound] finalized_level 13
+28/06/2013 14:43:45.695355 [7k_pt_cells_bound] initialized_level 12
+28/06/2013 14:43:45.695701 [7k_pt_cells_bound] forced_level 12
+28/06/2013 14:43:46.184566 [7k_pt_cells_bound] found_conflicts 12
+28/06/2013 14:43:46.185992 [7k_pt_cells_bound] resolved_conflicts 12
+28/06/2013 14:43:46.186411 [7k_pt_cells_bound] transformed_level 12
+28/06/2013 14:43:46.187771 [7k_pt_cells_bound] finalized_level 12
+28/06/2013 14:43:46.191378 [7k_pt_cells_bound] initialized_level 11
+28/06/2013 14:43:46.191744 [7k_pt_cells_bound] forced_level 11
+28/06/2013 14:43:46.679567 [7k_pt_cells_bound] found_conflicts 11
+28/06/2013 14:43:46.681106 [7k_pt_cells_bound] resolved_conflicts 11
+28/06/2013 14:43:46.681565 [7k_pt_cells_bound] transformed_level 11
+28/06/2013 14:43:46.682974 [7k_pt_cells_bound] finalized_level 11
+28/06/2013 14:43:46.686853 [7k_pt_cells_bound] initialized_level 10
+28/06/2013 14:43:46.687201 [7k_pt_cells_bound] forced_level 10
+28/06/2013 14:43:47.174819 [7k_pt_cells_bound] found_conflicts 10
+28/06/2013 14:43:47.176355 [7k_pt_cells_bound] resolved_conflicts 10
+28/06/2013 14:43:47.176766 [7k_pt_cells_bound] transformed_level 10
+28/06/2013 14:43:47.178109 [7k_pt_cells_bound] finalized_level 10
+28/06/2013 14:43:47.182001 [7k_pt_cells_bound] initialized_level 9
+28/06/2013 14:43:47.182359 [7k_pt_cells_bound] forced_level 9
+28/06/2013 14:43:47.670956 [7k_pt_cells_bound] found_conflicts 9
+28/06/2013 14:43:47.672618 [7k_pt_cells_bound] resolved_conflicts 9
+28/06/2013 14:43:47.673023 [7k_pt_cells_bound] transformed_level 9
+28/06/2013 14:43:47.674524 [7k_pt_cells_bound] finalized_level 9
+28/06/2013 14:43:47.678226 [7k_pt_cells_bound] initialized_level 8
+28/06/2013 14:43:47.678521 [7k_pt_cells_bound] forced_level 8
+28/06/2013 14:43:48.170131 [7k_pt_cells_bound] found_conflicts 8
+28/06/2013 14:43:48.237388 [7k_pt_cells_bound] resolved_conflicts 8
+28/06/2013 14:43:48.237756 [7k_pt_cells_bound] transformed_level 8
+28/06/2013 14:43:48.239402 [7k_pt_cells_bound] finalized_level 8
+28/06/2013 14:43:48.243126 [7k_pt_cells_bound] initialized_level 7
+28/06/2013 14:43:48.243455 [7k_pt_cells_bound] forced_level 7
+28/06/2013 14:43:48.735715 [7k_pt_cells_bound] found_conflicts 7
+28/06/2013 14:43:48.843252 [7k_pt_cells_bound] resolved_conflicts 7
+28/06/2013 14:43:48.843633 [7k_pt_cells_bound] transformed_level 7
+28/06/2013 14:43:48.848457 [7k_pt_cells_bound] finalized_level 7
+28/06/2013 14:43:48.854699 [7k_pt_cells_bound] initialized_level 6
+28/06/2013 14:43:48.855068 [7k_pt_cells_bound] forced_level 6
+28/06/2013 14:43:49.323644 [7k_pt_cells_bound] found_conflicts 6
+28/06/2013 14:43:49.729680 [7k_pt_cells_bound] resolved_conflicts 6
+28/06/2013 14:43:49.730057 [7k_pt_cells_bound] transformed_level 6
+28/06/2013 14:43:49.736056 [7k_pt_cells_bound] finalized_level 6
+28/06/2013 14:43:49.741863 [7k_pt_cells_bound] initialized_level 5
+28/06/2013 14:43:49.742231 [7k_pt_cells_bound] forced_level 5
+28/06/2013 14:43:50.119531 [7k_pt_cells_bound] found_conflicts 5
+28/06/2013 14:43:51.160418 [7k_pt_cells_bound] resolved_conflicts 5
+28/06/2013 14:43:51.160807 [7k_pt_cells_bound] transformed_level 5
+28/06/2013 14:43:51.162489 [7k_pt_cells_bound] finalized_level 5
+28/06/2013 14:43:51.166889 [7k_pt_cells_bound] initialized_level 4
+28/06/2013 14:43:51.167234 [7k_pt_cells_bound] forced_level 4
+28/06/2013 14:43:51.383523 [7k_pt_cells_bound] found_conflicts 4
+28/06/2013 14:43:52.071162 [7k_pt_cells_bound] resolved_conflicts 4
+28/06/2013 14:43:52.071633 [7k_pt_cells_bound] transformed_level 4
+28/06/2013 14:43:52.075959 [7k_pt_cells_bound] finalized_level 4
+28/06/2013 14:43:52.128303 [7k_pt_cells_bound] initialized_level 3
+28/06/2013 14:43:52.128776 [7k_pt_cells_bound] forced_level 3
+28/06/2013 14:43:52.924776 [7k_pt_cells_bound] found_conflicts 3
+28/06/2013 14:43:53.100246 [7k_pt_cells_bound] resolved_conflicts 3
+28/06/2013 14:43:53.100626 [7k_pt_cells_bound] transformed_level 3
+28/06/2013 14:43:53.102396 [7k_pt_cells_bound] finalized_level 3
+28/06/2013 14:43:53.106369 [7k_pt_cells_bound] initialized_level 2
+28/06/2013 14:43:53.106730 [7k_pt_cells_bound] forced_level 2
+28/06/2013 14:43:53.149033 [7k_pt_cells_bound] found_conflicts 2
+28/06/2013 14:43:53.203179 [7k_pt_cells_bound] resolved_conflicts 2
+28/06/2013 14:43:53.203632 [7k_pt_cells_bound] transformed_level 2
+28/06/2013 14:43:53.205486 [7k_pt_cells_bound] finalized_level 2
+28/06/2013 14:43:53.209538 [7k_pt_cells_bound] initialized_level 1
+28/06/2013 14:43:53.209883 [7k_pt_cells_bound] forced_level 1
+28/06/2013 14:43:53.231866 [7k_pt_cells_bound] found_conflicts 1
+28/06/2013 14:43:53.255713 [7k_pt_cells_bound] resolved_conflicts 1
+28/06/2013 14:43:53.256096 [7k_pt_cells_bound] transformed_level 1
+28/06/2013 14:43:53.257896 [7k_pt_cells_bound] finalized_level 1
+28/06/2013 14:43:53.263688 [7k_pt_cells_bound] initialized_level 0
+28/06/2013 14:43:53.264455 [7k_pt_cells_bound] forced_level 0
+28/06/2013 14:43:53.277366 [7k_pt_cells_bound] found_conflicts 0
+28/06/2013 14:43:53.291641 [7k_pt_cells_bound] resolved_conflicts 0
+28/06/2013 14:43:53.292028 [7k_pt_cells_bound] transformed_level 0
+28/06/2013 14:43:53.293716 [7k_pt_cells_bound] finalized_level 0
+28/06/2013 14:43:53.300021 [7k_pt_cells_bound] stats {'num_recs': 17L, 'cvl_partition': 1, 'cvl_zoom': 0, 'aggrank': 6533.107816318981}
+28/06/2013 14:43:53.300113 [7k_pt_cells_bound] stats {'num_recs': 48L, 'cvl_partition': 1, 'cvl_zoom': 1, 'aggrank': 7334.530483896844}
+28/06/2013 14:43:53.300135 [7k_pt_cells_bound] stats {'num_recs': 142L, 'cvl_partition': 1, 'cvl_zoom': 2, 'aggrank': 7913.603778626304}
+28/06/2013 14:43:53.300155 [7k_pt_cells_bound] stats {'num_recs': 310L, 'cvl_partition': 1, 'cvl_zoom': 3, 'aggrank': 12581.688473534305}
+28/06/2013 14:43:53.300175 [7k_pt_cells_bound] stats {'num_recs': 892L, 'cvl_partition': 1, 'cvl_zoom': 4, 'aggrank': 13183.479398886673}
+28/06/2013 14:43:53.300195 [7k_pt_cells_bound] stats {'num_recs': 1698L, 'cvl_partition': 1, 'cvl_zoom': 5, 'aggrank': 11556.273397577927}
+28/06/2013 14:43:53.300214 [7k_pt_cells_bound] stats {'num_recs': 2462L, 'cvl_partition': 1, 'cvl_zoom': 6, 'aggrank': 4773.88840134209}
+28/06/2013 14:43:53.300233 [7k_pt_cells_bound] stats {'num_recs': 1394L, 'cvl_partition': 1, 'cvl_zoom': 7, 'aggrank': 706.9578999453224}
+28/06/2013 14:43:53.300252 [7k_pt_cells_bound] stats {'num_recs': 428L, 'cvl_partition': 1, 'cvl_zoom': 8, 'aggrank': 121.55073228571564}
+28/06/2013 14:43:53.300271 [7k_pt_cells_bound] stats {'num_recs': 20L, 'cvl_partition': 1, 'cvl_zoom': 9, 'aggrank': 2.735058563761413}
+28/06/2013 14:43:53.340161 [7k_pt_cells_bound] COMMIT
+28/06/2013 14:43:53.513822 [7k_pt_cells_heuristic] BEGIN_TRANSACTION
+28/06/2013 14:43:53.654027 [7k_pt_cells_heuristic] initialized
+28/06/2013 14:43:53.654392 [7k_pt_cells_heuristic] merged_partitions
+28/06/2013 14:43:53.665700 [7k_pt_cells_heuristic] initialized_level 17
+28/06/2013 14:43:53.666198 [7k_pt_cells_heuristic] forced_level 17
+28/06/2013 14:43:54.282074 [7k_pt_cells_heuristic] found_conflicts 17
+28/06/2013 14:43:54.314816 [7k_pt_cells_heuristic] resolved_conflicts 17
+28/06/2013 14:43:54.315252 [7k_pt_cells_heuristic] transformed_level 17
+28/06/2013 14:43:54.316995 [7k_pt_cells_heuristic] finalized_level 17
+28/06/2013 14:43:54.320872 [7k_pt_cells_heuristic] initialized_level 16
+28/06/2013 14:43:54.321361 [7k_pt_cells_heuristic] forced_level 16
+28/06/2013 14:43:54.975113 [7k_pt_cells_heuristic] found_conflicts 16
+28/06/2013 14:43:54.976337 [7k_pt_cells_heuristic] resolved_conflicts 16
+28/06/2013 14:43:54.976688 [7k_pt_cells_heuristic] transformed_level 16
+28/06/2013 14:43:54.978046 [7k_pt_cells_heuristic] finalized_level 16
+28/06/2013 14:43:54.981588 [7k_pt_cells_heuristic] initialized_level 15
+28/06/2013 14:43:54.981926 [7k_pt_cells_heuristic] forced_level 15
+28/06/2013 14:43:56.911942 [7k_pt_cells_heuristic] found_conflicts 15
+28/06/2013 14:43:56.913842 [7k_pt_cells_heuristic] resolved_conflicts 15
+28/06/2013 14:43:56.914382 [7k_pt_cells_heuristic] transformed_level 15
+28/06/2013 14:43:56.916124 [7k_pt_cells_heuristic] finalized_level 15
+28/06/2013 14:43:56.920579 [7k_pt_cells_heuristic] initialized_level 14
+28/06/2013 14:43:56.921012 [7k_pt_cells_heuristic] forced_level 14
+28/06/2013 14:43:57.410714 [7k_pt_cells_heuristic] found_conflicts 14
+28/06/2013 14:43:57.412271 [7k_pt_cells_heuristic] resolved_conflicts 14
+28/06/2013 14:43:57.412911 [7k_pt_cells_heuristic] transformed_level 14
+28/06/2013 14:43:57.414449 [7k_pt_cells_heuristic] finalized_level 14
+28/06/2013 14:43:57.418640 [7k_pt_cells_heuristic] initialized_level 13
+28/06/2013 14:43:57.419132 [7k_pt_cells_heuristic] forced_level 13
+28/06/2013 14:43:57.952280 [7k_pt_cells_heuristic] found_conflicts 13
+28/06/2013 14:43:57.954287 [7k_pt_cells_heuristic] resolved_conflicts 13
+28/06/2013 14:43:57.954822 [7k_pt_cells_heuristic] transformed_level 13
+28/06/2013 14:43:57.957927 [7k_pt_cells_heuristic] finalized_level 13
+28/06/2013 14:43:57.962990 [7k_pt_cells_heuristic] initialized_level 12
+28/06/2013 14:43:57.963512 [7k_pt_cells_heuristic] forced_level 12
+28/06/2013 14:43:58.883126 [7k_pt_cells_heuristic] found_conflicts 12
+28/06/2013 14:43:58.884410 [7k_pt_cells_heuristic] resolved_conflicts 12
+28/06/2013 14:43:58.884811 [7k_pt_cells_heuristic] transformed_level 12
+28/06/2013 14:43:58.886180 [7k_pt_cells_heuristic] finalized_level 12
+28/06/2013 14:43:58.889769 [7k_pt_cells_heuristic] initialized_level 11
+28/06/2013 14:43:58.890100 [7k_pt_cells_heuristic] forced_level 11
+28/06/2013 14:43:59.509406 [7k_pt_cells_heuristic] found_conflicts 11
+28/06/2013 14:43:59.510873 [7k_pt_cells_heuristic] resolved_conflicts 11
+28/06/2013 14:43:59.511230 [7k_pt_cells_heuristic] transformed_level 11
+28/06/2013 14:43:59.512762 [7k_pt_cells_heuristic] finalized_level 11
+28/06/2013 14:43:59.529434 [7k_pt_cells_heuristic] initialized_level 10
+28/06/2013 14:43:59.530246 [7k_pt_cells_heuristic] forced_level 10
+28/06/2013 14:44:00.517887 [7k_pt_cells_heuristic] found_conflicts 10
+28/06/2013 14:44:00.520048 [7k_pt_cells_heuristic] resolved_conflicts 10
+28/06/2013 14:44:00.520490 [7k_pt_cells_heuristic] transformed_level 10
+28/06/2013 14:44:00.523179 [7k_pt_cells_heuristic] finalized_level 10
+28/06/2013 14:44:00.528752 [7k_pt_cells_heuristic] initialized_level 9
+28/06/2013 14:44:00.529222 [7k_pt_cells_heuristic] forced_level 9
+28/06/2013 14:44:01.116377 [7k_pt_cells_heuristic] found_conflicts 9
+28/06/2013 14:44:01.117629 [7k_pt_cells_heuristic] resolved_conflicts 9
+28/06/2013 14:44:01.117968 [7k_pt_cells_heuristic] transformed_level 9
+28/06/2013 14:44:01.119331 [7k_pt_cells_heuristic] finalized_level 9
+28/06/2013 14:44:01.123148 [7k_pt_cells_heuristic] initialized_level 8
+28/06/2013 14:44:01.123501 [7k_pt_cells_heuristic] forced_level 8
+28/06/2013 14:44:01.615996 [7k_pt_cells_heuristic] found_conflicts 8
+28/06/2013 14:44:01.621281 [7k_pt_cells_heuristic] resolved_conflicts 8
+28/06/2013 14:44:01.621636 [7k_pt_cells_heuristic] transformed_level 8
+28/06/2013 14:44:01.623220 [7k_pt_cells_heuristic] finalized_level 8
+28/06/2013 14:44:01.628081 [7k_pt_cells_heuristic] initialized_level 7
+28/06/2013 14:44:01.629041 [7k_pt_cells_heuristic] forced_level 7
+28/06/2013 14:44:02.201540 [7k_pt_cells_heuristic] found_conflicts 7
+28/06/2013 14:44:02.229019 [7k_pt_cells_heuristic] resolved_conflicts 7
+28/06/2013 14:44:02.229390 [7k_pt_cells_heuristic] transformed_level 7
+28/06/2013 14:44:02.231117 [7k_pt_cells_heuristic] finalized_level 7
+28/06/2013 14:44:02.236894 [7k_pt_cells_heuristic] initialized_level 6
+28/06/2013 14:44:02.237249 [7k_pt_cells_heuristic] forced_level 6
+28/06/2013 14:44:02.703085 [7k_pt_cells_heuristic] found_conflicts 6
+28/06/2013 14:44:02.758958 [7k_pt_cells_heuristic] resolved_conflicts 6
+28/06/2013 14:44:02.759324 [7k_pt_cells_heuristic] transformed_level 6
+28/06/2013 14:44:02.761593 [7k_pt_cells_heuristic] finalized_level 6
+28/06/2013 14:44:02.770014 [7k_pt_cells_heuristic] initialized_level 5
+28/06/2013 14:44:02.770582 [7k_pt_cells_heuristic] forced_level 5
+28/06/2013 14:44:03.146586 [7k_pt_cells_heuristic] found_conflicts 5
+28/06/2013 14:44:03.337358 [7k_pt_cells_heuristic] resolved_conflicts 5
+28/06/2013 14:44:03.337751 [7k_pt_cells_heuristic] transformed_level 5
+28/06/2013 14:44:03.346638 [7k_pt_cells_heuristic] finalized_level 5
+28/06/2013 14:44:03.361984 [7k_pt_cells_heuristic] initialized_level 4
+28/06/2013 14:44:03.362378 [7k_pt_cells_heuristic] forced_level 4
+28/06/2013 14:44:03.575966 [7k_pt_cells_heuristic] found_conflicts 4
+28/06/2013 14:44:03.635299 [7k_pt_cells_heuristic] resolved_conflicts 4
+28/06/2013 14:44:03.635702 [7k_pt_cells_heuristic] transformed_level 4
+28/06/2013 14:44:03.641256 [7k_pt_cells_heuristic] finalized_level 4
+28/06/2013 14:44:03.647594 [7k_pt_cells_heuristic] initialized_level 3
+28/06/2013 14:44:03.648101 [7k_pt_cells_heuristic] forced_level 3
+28/06/2013 14:44:03.746007 [7k_pt_cells_heuristic] found_conflicts 3
+28/06/2013 14:44:03.775061 [7k_pt_cells_heuristic] resolved_conflicts 3
+28/06/2013 14:44:03.775481 [7k_pt_cells_heuristic] transformed_level 3
+28/06/2013 14:44:03.777714 [7k_pt_cells_heuristic] finalized_level 3
+28/06/2013 14:44:03.784459 [7k_pt_cells_heuristic] initialized_level 2
+28/06/2013 14:44:03.784879 [7k_pt_cells_heuristic] forced_level 2
+28/06/2013 14:44:03.829030 [7k_pt_cells_heuristic] found_conflicts 2
+28/06/2013 14:44:03.849357 [7k_pt_cells_heuristic] resolved_conflicts 2
+28/06/2013 14:44:03.849753 [7k_pt_cells_heuristic] transformed_level 2
+28/06/2013 14:44:03.851439 [7k_pt_cells_heuristic] finalized_level 2
+28/06/2013 14:44:03.855420 [7k_pt_cells_heuristic] initialized_level 1
+28/06/2013 14:44:03.855774 [7k_pt_cells_heuristic] forced_level 1
+28/06/2013 14:44:03.881126 [7k_pt_cells_heuristic] found_conflicts 1
+28/06/2013 14:44:03.888248 [7k_pt_cells_heuristic] resolved_conflicts 1
+28/06/2013 14:44:03.888610 [7k_pt_cells_heuristic] transformed_level 1
+28/06/2013 14:44:03.890688 [7k_pt_cells_heuristic] finalized_level 1
+28/06/2013 14:44:03.895817 [7k_pt_cells_heuristic] initialized_level 0
+28/06/2013 14:44:03.896531 [7k_pt_cells_heuristic] forced_level 0
+28/06/2013 14:44:03.910271 [7k_pt_cells_heuristic] found_conflicts 0
+28/06/2013 14:44:03.916090 [7k_pt_cells_heuristic] resolved_conflicts 0
+28/06/2013 14:44:03.916471 [7k_pt_cells_heuristic] transformed_level 0
+28/06/2013 14:44:03.918178 [7k_pt_cells_heuristic] finalized_level 0
+28/06/2013 14:44:03.924939 [7k_pt_cells_heuristic] stats {'num_recs': 17L, 'cvl_partition': 1, 'cvl_zoom': 0, 'aggrank': 6535.783503578976}
+28/06/2013 14:44:03.925035 [7k_pt_cells_heuristic] stats {'num_recs': 48L, 'cvl_partition': 1, 'cvl_zoom': 1, 'aggrank': 7333.424337995239}
+28/06/2013 14:44:03.925058 [7k_pt_cells_heuristic] stats {'num_recs': 126L, 'cvl_partition': 1, 'cvl_zoom': 2, 'aggrank': 7589.236620908603}
+28/06/2013 14:44:03.925078 [7k_pt_cells_heuristic] stats {'num_recs': 312L, 'cvl_partition': 1, 'cvl_zoom': 3, 'aggrank': 12873.156916445587}
+28/06/2013 14:44:03.925098 [7k_pt_cells_heuristic] stats {'num_recs': 830L, 'cvl_partition': 1, 'cvl_zoom': 4, 'aggrank': 12960.821795275435}
+28/06/2013 14:44:03.925118 [7k_pt_cells_heuristic] stats {'num_recs': 1755L, 'cvl_partition': 1, 'cvl_zoom': 5, 'aggrank': 11814.10182835441}
+28/06/2013 14:44:03.925137 [7k_pt_cells_heuristic] stats {'num_recs': 2460L, 'cvl_partition': 1, 'cvl_zoom': 6, 'aggrank': 4754.517699411605}
+28/06/2013 14:44:03.925156 [7k_pt_cells_heuristic] stats {'num_recs': 1411L, 'cvl_partition': 1, 'cvl_zoom': 7, 'aggrank': 721.5262769712135}
+28/06/2013 14:44:03.925175 [7k_pt_cells_heuristic] stats {'num_recs': 432L, 'cvl_partition': 1, 'cvl_zoom': 8, 'aggrank': 129.72350702341646}
+28/06/2013 14:44:03.925201 [7k_pt_cells_heuristic] stats {'num_recs': 20L, 'cvl_partition': 1, 'cvl_zoom': 9, 'aggrank': 2.6523788440972567}
+28/06/2013 14:44:03.950466 [7k_pt_cells_heuristic] COMMIT
+28/06/2013 14:44:04.121878 [7k_pt_cells_lp] BEGIN_TRANSACTION
+28/06/2013 14:44:04.256616 [7k_pt_cells_lp] initialized
+28/06/2013 14:44:04.257092 [7k_pt_cells_lp] merged_partitions
+28/06/2013 14:44:04.262008 [7k_pt_cells_lp] initialized_level 17
+28/06/2013 14:44:04.262385 [7k_pt_cells_lp] forced_level 17
+28/06/2013 14:44:04.756234 [7k_pt_cells_lp] found_conflicts 17
+28/06/2013 14:44:04.760553 [7k_pt_cells_lp] resolved_conflicts 17
+28/06/2013 14:44:04.760899 [7k_pt_cells_lp] transformed_level 17
+28/06/2013 14:44:04.762325 [7k_pt_cells_lp] finalized_level 17
+28/06/2013 14:44:04.766443 [7k_pt_cells_lp] initialized_level 16
+28/06/2013 14:44:04.767019 [7k_pt_cells_lp] forced_level 16
+28/06/2013 14:44:05.259234 [7k_pt_cells_lp] found_conflicts 16
+28/06/2013 14:44:05.260690 [7k_pt_cells_lp] resolved_conflicts 16
+28/06/2013 14:44:05.261026 [7k_pt_cells_lp] transformed_level 16
+28/06/2013 14:44:05.262374 [7k_pt_cells_lp] finalized_level 16
+28/06/2013 14:44:05.266390 [7k_pt_cells_lp] initialized_level 15
+28/06/2013 14:44:05.266757 [7k_pt_cells_lp] forced_level 15
+28/06/2013 14:44:05.756560 [7k_pt_cells_lp] found_conflicts 15
+28/06/2013 14:44:05.757970 [7k_pt_cells_lp] resolved_conflicts 15
+28/06/2013 14:44:05.758310 [7k_pt_cells_lp] transformed_level 15
+28/06/2013 14:44:05.759684 [7k_pt_cells_lp] finalized_level 15
+28/06/2013 14:44:05.763386 [7k_pt_cells_lp] initialized_level 14
+28/06/2013 14:44:05.764110 [7k_pt_cells_lp] forced_level 14
+28/06/2013 14:44:06.253707 [7k_pt_cells_lp] found_conflicts 14
+28/06/2013 14:44:06.255148 [7k_pt_cells_lp] resolved_conflicts 14
+28/06/2013 14:44:06.255477 [7k_pt_cells_lp] transformed_level 14
+28/06/2013 14:44:06.256929 [7k_pt_cells_lp] finalized_level 14
+28/06/2013 14:44:06.260569 [7k_pt_cells_lp] initialized_level 13
+28/06/2013 14:44:06.260904 [7k_pt_cells_lp] forced_level 13
+28/06/2013 14:44:06.752102 [7k_pt_cells_lp] found_conflicts 13
+28/06/2013 14:44:06.753533 [7k_pt_cells_lp] resolved_conflicts 13
+28/06/2013 14:44:06.753855 [7k_pt_cells_lp] transformed_level 13
+28/06/2013 14:44:06.755254 [7k_pt_cells_lp] finalized_level 13
+28/06/2013 14:44:06.758806 [7k_pt_cells_lp] initialized_level 12
+28/06/2013 14:44:06.759142 [7k_pt_cells_lp] forced_level 12
+28/06/2013 14:44:07.249114 [7k_pt_cells_lp] found_conflicts 12
+28/06/2013 14:44:07.250541 [7k_pt_cells_lp] resolved_conflicts 12
+28/06/2013 14:44:07.250868 [7k_pt_cells_lp] transformed_level 12
+28/06/2013 14:44:07.252287 [7k_pt_cells_lp] finalized_level 12
+28/06/2013 14:44:07.256166 [7k_pt_cells_lp] initialized_level 11
+28/06/2013 14:44:07.256517 [7k_pt_cells_lp] forced_level 11
+28/06/2013 14:44:07.746261 [7k_pt_cells_lp] found_conflicts 11
+28/06/2013 14:44:07.747667 [7k_pt_cells_lp] resolved_conflicts 11
+28/06/2013 14:44:07.748022 [7k_pt_cells_lp] transformed_level 11
+28/06/2013 14:44:07.749402 [7k_pt_cells_lp] finalized_level 11
+28/06/2013 14:44:07.753114 [7k_pt_cells_lp] initialized_level 10
+28/06/2013 14:44:07.753496 [7k_pt_cells_lp] forced_level 10
+28/06/2013 14:44:08.242263 [7k_pt_cells_lp] found_conflicts 10
+28/06/2013 14:44:08.243761 [7k_pt_cells_lp] resolved_conflicts 10
+28/06/2013 14:44:08.244131 [7k_pt_cells_lp] transformed_level 10
+28/06/2013 14:44:08.245523 [7k_pt_cells_lp] finalized_level 10
+28/06/2013 14:44:08.249316 [7k_pt_cells_lp] initialized_level 9
+28/06/2013 14:44:08.249673 [7k_pt_cells_lp] forced_level 9
+28/06/2013 14:44:08.740434 [7k_pt_cells_lp] found_conflicts 9
+28/06/2013 14:44:08.741953 [7k_pt_cells_lp] resolved_conflicts 9
+28/06/2013 14:44:08.742288 [7k_pt_cells_lp] transformed_level 9
+28/06/2013 14:44:08.743710 [7k_pt_cells_lp] finalized_level 9
+28/06/2013 14:44:08.747430 [7k_pt_cells_lp] initialized_level 8
+28/06/2013 14:44:08.747770 [7k_pt_cells_lp] forced_level 8
+28/06/2013 14:44:09.245147 [7k_pt_cells_lp] found_conflicts 8
+28/06/2013 14:44:09.261289 [7k_pt_cells_lp] resolved_conflicts 8
+28/06/2013 14:44:09.261661 [7k_pt_cells_lp] transformed_level 8
+28/06/2013 14:44:09.263321 [7k_pt_cells_lp] finalized_level 8
+28/06/2013 14:44:09.267445 [7k_pt_cells_lp] initialized_level 7
+28/06/2013 14:44:09.267792 [7k_pt_cells_lp] forced_level 7
+28/06/2013 14:44:09.758925 [7k_pt_cells_lp] found_conflicts 7
+28/06/2013 14:44:09.871905 [7k_pt_cells_lp] resolved_conflicts 7
+28/06/2013 14:44:09.872527 [7k_pt_cells_lp] transformed_level 7
+28/06/2013 14:44:09.874384 [7k_pt_cells_lp] finalized_level 7
+28/06/2013 14:44:09.880535 [7k_pt_cells_lp] initialized_level 6
+28/06/2013 14:44:09.880899 [7k_pt_cells_lp] forced_level 6
+28/06/2013 14:44:10.348771 [7k_pt_cells_lp] found_conflicts 6
+28/06/2013 14:44:10.757853 [7k_pt_cells_lp] resolved_conflicts 6
+28/06/2013 14:44:10.758222 [7k_pt_cells_lp] transformed_level 6
+28/06/2013 14:44:10.764078 [7k_pt_cells_lp] finalized_level 6
+28/06/2013 14:44:10.769870 [7k_pt_cells_lp] initialized_level 5
+28/06/2013 14:44:10.770242 [7k_pt_cells_lp] forced_level 5
+28/06/2013 14:44:11.148575 [7k_pt_cells_lp] found_conflicts 5
+28/06/2013 14:44:11.722261 [7k_pt_cells_lp] resolved_conflicts 5
+28/06/2013 14:44:11.722637 [7k_pt_cells_lp] transformed_level 5
+28/06/2013 14:44:11.729055 [7k_pt_cells_lp] finalized_level 5
+28/06/2013 14:44:11.734943 [7k_pt_cells_lp] initialized_level 4
+28/06/2013 14:44:11.735319 [7k_pt_cells_lp] forced_level 4
+28/06/2013 14:44:11.944856 [7k_pt_cells_lp] found_conflicts 4
+28/06/2013 14:44:12.296147 [7k_pt_cells_lp] resolved_conflicts 4
+28/06/2013 14:44:12.296537 [7k_pt_cells_lp] transformed_level 4
+28/06/2013 14:44:12.301270 [7k_pt_cells_lp] finalized_level 4
+28/06/2013 14:44:12.306879 [7k_pt_cells_lp] initialized_level 3
+28/06/2013 14:44:12.307508 [7k_pt_cells_lp] forced_level 3
+28/06/2013 14:44:12.403878 [7k_pt_cells_lp] found_conflicts 3
+28/06/2013 14:44:12.550549 [7k_pt_cells_lp] resolved_conflicts 3
+28/06/2013 14:44:12.550973 [7k_pt_cells_lp] transformed_level 3
+28/06/2013 14:44:12.552766 [7k_pt_cells_lp] finalized_level 3
+28/06/2013 14:44:12.556688 [7k_pt_cells_lp] initialized_level 2
+28/06/2013 14:44:12.557049 [7k_pt_cells_lp] forced_level 2
+28/06/2013 14:44:12.598626 [7k_pt_cells_lp] found_conflicts 2
+28/06/2013 14:44:12.651540 [7k_pt_cells_lp] resolved_conflicts 2
+28/06/2013 14:44:12.652002 [7k_pt_cells_lp] transformed_level 2
+28/06/2013 14:44:12.653955 [7k_pt_cells_lp] finalized_level 2
+28/06/2013 14:44:12.659426 [7k_pt_cells_lp] initialized_level 1
+28/06/2013 14:44:12.659793 [7k_pt_cells_lp] forced_level 1
+28/06/2013 14:44:12.682483 [7k_pt_cells_lp] found_conflicts 1
+28/06/2013 14:44:12.707255 [7k_pt_cells_lp] resolved_conflicts 1
+28/06/2013 14:44:12.707653 [7k_pt_cells_lp] transformed_level 1
+28/06/2013 14:44:12.710051 [7k_pt_cells_lp] finalized_level 1
+28/06/2013 14:44:12.716007 [7k_pt_cells_lp] initialized_level 0
+28/06/2013 14:44:12.716386 [7k_pt_cells_lp] forced_level 0
+28/06/2013 14:44:12.729467 [7k_pt_cells_lp] found_conflicts 0
+28/06/2013 14:44:12.743428 [7k_pt_cells_lp] resolved_conflicts 0
+28/06/2013 14:44:12.743800 [7k_pt_cells_lp] transformed_level 0
+28/06/2013 14:44:12.745486 [7k_pt_cells_lp] finalized_level 0
+28/06/2013 14:44:12.751815 [7k_pt_cells_lp] stats {'num_recs': 17L, 'cvl_partition': 1, 'cvl_zoom': 0, 'aggrank': 6535.183896648698}
+28/06/2013 14:44:12.751908 [7k_pt_cells_lp] stats {'num_recs': 48L, 'cvl_partition': 1, 'cvl_zoom': 1, 'aggrank': 7335.253830198199}
+28/06/2013 14:44:12.751931 [7k_pt_cells_lp] stats {'num_recs': 124L, 'cvl_partition': 1, 'cvl_zoom': 2, 'aggrank': 7583.596049030311}
+28/06/2013 14:44:12.751950 [7k_pt_cells_lp] stats {'num_recs': 311L, 'cvl_partition': 1, 'cvl_zoom': 3, 'aggrank': 12876.070335367229}
+28/06/2013 14:44:12.751970 [7k_pt_cells_lp] stats {'num_recs': 827L, 'cvl_partition': 1, 'cvl_zoom': 4, 'aggrank': 12938.469999168068}
+28/06/2013 14:44:12.751990 [7k_pt_cells_lp] stats {'num_recs': 1696L, 'cvl_partition': 1, 'cvl_zoom': 5, 'aggrank': 11735.668458136264}
+28/06/2013 14:44:12.752009 [7k_pt_cells_lp] stats {'num_recs': 2509L, 'cvl_partition': 1, 'cvl_zoom': 6, 'aggrank': 4824.266826695763}
+28/06/2013 14:44:12.752028 [7k_pt_cells_lp] stats {'num_recs': 1427L, 'cvl_partition': 1, 'cvl_zoom': 7, 'aggrank': 742.006678646896}
+28/06/2013 14:44:12.752047 [7k_pt_cells_lp] stats {'num_recs': 432L, 'cvl_partition': 1, 'cvl_zoom': 8, 'aggrank': 133.88444005977362}
+28/06/2013 14:44:12.752066 [7k_pt_cells_lp] stats {'num_recs': 20L, 'cvl_partition': 1, 'cvl_zoom': 9, 'aggrank': 3.0651422822847962}
+28/06/2013 14:44:12.779835 [7k_pt_cells_lp] COMMIT

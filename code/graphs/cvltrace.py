@@ -1,5 +1,6 @@
 __author__ = 'kostas'
 from datetime import datetime
+import re
 
 
 class TraceReader(object):
@@ -10,22 +11,27 @@ class TraceReader(object):
             current_trace = None
             for line in f:
                 line = line.strip()
-                event = self.parse_line(line)
+                event = self._parse_line(line)
                 if event['event'] == 'BEGIN_TRANSACTION':
                     current_trace = Trace(ts_begin=event['timestamp'], trace_name=event['jobname'])
-                elif event['event'] == 'END_TRANSACTION':
+                elif event['event'] == 'COMMIT':
                     current_trace.end(event['timestamp'])
                     traces.append(current_trace)
+                    current_trace = None
                 else:
                     current_trace.add_event(event)
+        self._traces = traces
 
-    def parse_line(self, line):
+    def get_traces(self):
+        return self._traces
+
+    def _parse_line(self, line):
         # example:
         # 01/07/2013 11:11:54.207973 [7k_pt_airports_cellbound16_bound] found_conflicts 12
         # fields[0]  fields[1]       fields[2]                          fields[3]       fields[4:]
 
         # strftime("%d/%m/%Y %H:%M:%S.%f")
-        fields =  line.split(" ")
+        fields = line.split(" ")
         date_str = "{0:s} {1:s}".format(fields[0], fields[1])
         value = None if len(fields) <= 4 else eval(" ".join(fields[4:]))
         return {
@@ -40,29 +46,69 @@ class Trace(object):
 
     def __init__(self, ts_begin=None, trace_name=None):
         self.ts_begin = ts_begin
-        self.last_event_ts = ts_begin
+        self._last_ts = ts_begin
         self.ts_end = None
+        # extract solver and constraint from jobname
         self.name = trace_name
-        self.total_rank = -1
-        self.total_recs = -1
-        self.initialize = []
-        self.levels = []
+        match = re.search('(bound|lp|heuristic)', trace_name)
+        self.solver = match.group(1) if match else None
+        match = re.search('(proximity[0-9]+|cellbound[0-9]+)', trace_name)
+        self.constraints = match.group(1) if match else None
+        # private stuff
+        self._init_info = {'operations': {}}
+        self._levels = {}
 
     def add_event(self, event):
-        self.events.append(event)
+
+        time_passed = event['timestamp'] - self._last_ts
+
+        if event['event'] == 'INITIALIZED':
+            self._init_info['operations']['initialize'] = time_passed
+
+        elif event['event'] == 'MERGED_PARTITIONS':
+            self._init_info['operations']['merge_partitions'] = time_passed
+
+        elif event['event'] == 'INITIALIZED_LEVEL':
+            # begin new level
+            self._current_level = {
+                'begin': self._last_ts,
+                'recs_deleted': 0,
+                'rank_lost': 0,
+                'operations': {}
+            }
+            self._current_level['operations']['initialize_level'] = time_passed
+            zoom = event['value']
+            self._levels[zoom] = self._current_level
+
+        elif event['event'] == 'FINALIZED_LEVEL':
+            self._current_level['duration'] = event['timestamp'] - self._current_level['begin']
+            del self._current_level['begin']
+            self._current_level['operations']['finalize_level'] = time_passed
+
+        elif event['event'] == 'FORCED_LEVEL':
+            self._current_level['operations']['force_level'] = time_passed
+
+        elif event['event'] == 'FOUND_CONFLICTS':
+            self._current_level['operations']['find_conflicts'] = time_passed
+
+        elif event['event'] == 'RESOLVED_CONFLICTS':
+            self._current_level['operations']['resolve_conflicts'] = time_passed
+
+        elif event['event'] == 'TRANSFORMED_LEVEL':
+            self._current_level['operations']['transform_level'] = time_passed
+
+        elif event['event'] == 'STATS':
+            pass
+
+        elif event['event'] == 'STATS2':
+            pass
+
+        else:
+            raise Exception('unhandled event: {0:s}'.format(event['event']))
+
+        self._last_ts = event['timestamp']
 
     def end(self, ts_end):
         self.ts_end = ts_end
-
-    def duration(self):
-        return self.ts_end - self.ts_begin
-
-ex = {
-    'initialize': {
-        'operations': []
-    },
-    'levels': [
-        {'total_time': 42, 'rank_remaining': 42, 'records_remaining': 42, 'operations': []}
-    ]
-}
+        self.total_duration = self.ts_end - self.ts_begin
 

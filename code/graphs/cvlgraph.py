@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 __author__ = 'kostas'
 from optparse import OptionParser
 from cvltrace import TraceReader
@@ -15,5 +17,9 @@ if __name__ == '__main__':
         parser.print_usage()
         sys.exit(1)
 
+    tr = TraceReader(args[0])
+    traces = tr.get_traces()
+    for trace in traces:
+        print 'Heppa!'
 
 

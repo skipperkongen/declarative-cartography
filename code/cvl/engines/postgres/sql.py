@@ -268,7 +268,7 @@ DO_LOG_STATS = \
     r"""
     DO $$
         from datetime import datetime
-        sql = "SELECT cvl_zoom, cvl_partition, Count(*) AS num_recs, Sum(cvl_rank) AS aggrank \
+        sql = "SELECT cvl_zoom, cvl_partition, Count(*) AS num_recs, Sum(cvl_rank) AS agg_rank \
                FROM {output} GROUP BY cvl_zoom, cvl_partition ORDER BY cvl_zoom;"
         rows = plpy.execute(sql)
         with open('{log_path}', 'a+') as f:
@@ -283,7 +283,7 @@ DO_LOG_STATS2 = \
     r"""
     DO $$
         from datetime import datetime
-        sql = "SELECT Sum(cvl_rank) AS totalrank \
+        sql = "SELECT Count(*) as total_recs, Sum(cvl_rank) AS total_rank  \
                FROM {output};"
         rows = plpy.execute(sql)
         with open('{log_path}', 'a+') as f:

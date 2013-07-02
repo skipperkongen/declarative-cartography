@@ -340,30 +340,32 @@ DO_LOG_LEVELSTATS = \
 
         sql = "SELECT sum(cvl_rank) as rank_lost, count(*) recs_lost FROM {output} WHERE cvl_zoom = {z} + 1;"
         rows = plpy.execute(sql)
-        stats['rank_lost'] = rows[0]['rank_lost']
-        stats['recs_lost'] = rows[0]['recs_lost']
+        stats['rank_lost'] = rows[0]['rank_lost'] or 0.0
+        stats['recs_lost'] = rows[0]['recs_lost'] or 0.0
 
         sql = (
-            "SELECT min(t.cnt) as cmin, max(t.cnt) as cmax, avg(t.cnt) as cavg"
+            "SELECT count(t.cnt) as num_rec_in_c, min(t.cnt) as cmin, max(t.cnt) as cmax, avg(t.cnt) as cavg"
             " FROM (SELECT count(*) AS cnt FROM _conflicts GROUP BY cvl_id) t;"
         )
         rows = plpy.execute(sql)
-        stats['c_per_rec_min'] = rows[0]['cmin']
-        stats['c_per_rec_max'] = rows[0]['cmax']
-        stats['c_per_rec_avg'] = rows[0]['cavg']
+        stats['num_rec_in_c'] = rows[0]['num_rec_in_c'] or 0.0
+        stats['c_per_rec_min'] = rows[0]['cmin'] or 0.0
+        stats['c_per_rec_max'] = rows[0]['cmax'] or 0.0
+        stats['c_per_rec_avg'] = rows[0]['cavg'] or 0.0
 
         sql = (
-            "SELECT min(t.cnt) as rmin, max(t.cnt) as rmax, avg(t.cnt) as ravg"
+            "SELECT count(t.cnt) as num_c, min(t.cnt) as rmin, max(t.cnt) as rmax, avg(t.cnt) as ravg"
             " FROM (SELECT count(*) AS cnt FROM _conflicts GROUP BY conflict_id) t;"
         )
         rows = plpy.execute(sql)
-        stats['rec_per_c_min'] = rows[0]['rmin']
-        stats['rec_per_c_max'] = rows[0]['rmax']
-        stats['rec_per_c_avg'] = rows[0]['ravg']
+        stats['num_c'] = rows[0]['num_c'] or 0.0
+        stats['rec_per_c_min'] = rows[0]['rmin'] or 0.0
+        stats['rec_per_c_max'] = rows[0]['rmax'] or 0.0
+        stats['rec_per_c_avg'] = rows[0]['ravg'] or 0.0
 
         sql = "SELECT CVL_LPBound('_conflicts') as lowerbound;"
         rows = plpy.execute(sql)
-        stats['lp_bound'] = rows[0]['lowerbound']
+        stats['lp_bound'] = rows[0]['lowerbound'] or 0.0
 
         with open('{log_path}', 'a+') as f:
             for row in rows:
@@ -382,15 +384,24 @@ DO_LOG_INPUTSTATS = \
     r"""
     DO $$
         from datetime import datetime
+
         sql = "SELECT Count(*) as total_recs, Sum(cvl_rank) AS total_rank  \
                FROM {output};"
         rows = plpy.execute(sql)
+        stats = dict([])
+        stats['total_recs'] = rows[0]['total_recs']
+        stats['total_rank'] = rows[0]['total_rank']
+
+        sql = "SELECT array_agg(DISTINCT GeometryType({geometry})) as geometry_types FROM {output};"
+        rows = plpy.execute(sql)
+        stats['geometry_types'] = rows[0]['geometry_types']
+
         with open('{log_path}', 'a+') as f:
             for row in rows:
                 to_write = " ".join([
                     datetime.now().strftime('%d/%m/%Y %H:%M:%S.%f'),
                     '{job_name}', 'inputstats',
-                    str(row)
+                    str(stats)
                 ])
                 f.write(to_write)
                 f.write('\n')

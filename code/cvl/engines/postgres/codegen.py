@@ -110,8 +110,9 @@ class CodeGenerator(object):
 
         self.Log('initialized')
 
-        self.Log('solver {0:s}'.format(self.solver_name))
-        self.Log('constraints {0:s}'.format(self.query.subject_to))
+        self.Log('solver "{0:s}"'.format(self.solver_name))
+        constraints = ", ".join(map(lambda x: "{0:s}{1:s}".format(x.name, str(x.params)), self.query.subject_to))
+        self.Log('constraints "{0:s}"'.format(constraints))
         self.LogInputStats()
 
     def Finalize(self):

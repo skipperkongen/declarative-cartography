@@ -6,7 +6,7 @@ INSTALL = \
       cvl_id bigint
     );
 
-    CREATE OR REPLACE FUNCTION CVL_LPSolver(conflict_table text, lowerbound boolean) RETURNS SETOF cvl_id AS $$
+    CREATE OR REPLACE FUNCTION CVL_LPSolver(conflict_table text) RETURNS SETOF cvl_id AS $$
         import cvxopt
         from math import ceil, floor
         from cvxopt import matrix, spmatrix, sparse, solvers
@@ -68,10 +68,7 @@ INSTALL = \
         #plpy.notice("End LP solver. Status: {0:s}".format(sol['status']))
 
         EPSILON = 0.00001
-        if lowerbound:
-            snap = lambda x: (1.0 if x > (1.0 - EPSILON) else 0.0)
-        else:
-            snap = lambda x: (1.0 if x > EPSILON else 0.0)
+        snap = lambda x: (1.0 if x > EPSILON else 0.0)
 
         if sol['status'] == 'optimal':
             for i, val in enumerate(sol['x']):
@@ -82,11 +79,11 @@ INSTALL = \
 
 SOLVE = \
     """
-    SELECT cvl_id FROM CVL_LPSolver('_conflicts', false)
+    SELECT cvl_id FROM CVL_LPSolver('_conflicts')
     """
 
 UNINSTALL = \
     """
-    DROP FUNCTION CVL_LPSolver(text, boolean);
+    DROP FUNCTION CVL_LPSolver(text);
     DROP TYPE cvl_id;
     """

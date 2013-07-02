@@ -62,13 +62,17 @@ class CodeGenerator(object):
         formatter = self._get_formatter(log_path=self.log_path, message="{0:s} {1:s}".format(self.job_name, message))
         self.code.append(DO_LOG.format(**formatter))
 
-    def LogStats(self):
-        formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
-        self.code.append(DO_LOG_STATS.format(**formatter))
+    def LogLevelStats(self, z):
+        """
+        Log the following information: LP-bound solution, size of constraints, constraints per record, rank-lost, recs-lost,
+        :param z: zoom-level
+        """
+        formatter = self._get_formatter(log_path=self.log_path, job_name=self.job_name, z=z)
+        self.code.append(DO_LOG_LEVELSTATS.format(**formatter))
 
-    def LogStats2(self):
+    def LogInputStats(self):
         formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
-        self.code.append(DO_LOG_STATS2.format(**formatter))
+        self.code.append(DO_LOG_INPUTSTATS.format(**formatter))
 
     def Info(self, *info):
         for comment in info:
@@ -87,11 +91,10 @@ class CodeGenerator(object):
                   "Rank by:      {rank_by}".format(**formatter),
                   "-"*42)
 
-
         self.code.append(BEGIN_TX)
 
         self.Info('Adding CVL framework')
-        self.code.append(ADD_FRAMEWORK.format(**formatter))
+        self.code.append(ADD_FRAMEWORK)
 
         self.Log('BEGIN_TRANSACTION')
 
@@ -106,12 +109,11 @@ class CodeGenerator(object):
 
         self.Log('initialized')
 
+        self.LogInputStats()
+
     def Finalize(self):
         formatter = self._get_formatter()
         self.Info('Log num_recs and agg_rank for all zoom-levels')
-
-        self.LogStats()
-        self.LogStats2()
 
         self.Info('Removing CVL framework')
         self.code.append(REMOVE_FRAMEWORK)
@@ -185,6 +187,7 @@ class CodeGenerator(object):
 
     def FinalizeLevel(self, z):
         formatter = self._get_formatter(z=z)
+        self.LogLevelStats(z)
         self.Info('Clean-up for level %d' % z)
         self.code.append(DROP_TEMP_TABLES_FOR_LEVEL.format(**formatter))
         self.Log('finalized_level {0:d}'.format(z))

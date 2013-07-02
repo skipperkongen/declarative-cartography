@@ -344,11 +344,11 @@ DO_LOG_LEVELSTATS = \
         stats['recs_lost'] = rows[0]['recs_lost'] or 0.0
 
         sql = (
-            "SELECT count(t.cnt) as num_rec_in_c, min(t.cnt) as cmin, max(t.cnt) as cmax, avg(t.cnt) as cavg"
+            "SELECT count(t.cnt) as num_recs_having_c, min(t.cnt) as cmin, max(t.cnt) as cmax, avg(t.cnt) as cavg"
             " FROM (SELECT count(*) AS cnt FROM _conflicts GROUP BY cvl_id) t;"
         )
         rows = plpy.execute(sql)
-        stats['num_rec_in_c'] = rows[0]['num_rec_in_c'] or 0.0
+        stats['num_recs_having_c'] = rows[0]['num_recs_having_c'] or 0.0
         stats['c_per_rec_min'] = rows[0]['cmin'] or 0.0
         stats['c_per_rec_max'] = rows[0]['cmax'] or 0.0
         stats['c_per_rec_avg'] = rows[0]['cavg'] or 0.0

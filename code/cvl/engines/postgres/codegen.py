@@ -15,6 +15,7 @@ class CodeGenerator(object):
     def __init__(self, query, solver_name, log_file='cvl.log', job_name='noname_job'):
         super(CodeGenerator, self).__init__()
         self.query = query
+        self.solver_name = solver_name
         self.solver = self._load_module('solvers', solver_name)
         self.constraints = []
         for constraint in self.query.subject_to:
@@ -109,6 +110,8 @@ class CodeGenerator(object):
 
         self.Log('initialized')
 
+        self.Log('solver {0:s}'.format(self.solver_name))
+        self.Log('constraints {0:s}'.format(self.query.subject_to))
         self.LogInputStats()
 
     def Finalize(self):

@@ -1,0 +1,27 @@
+% !TEX root = ./cvl.tex
+\section{Optimization model}
+\label{sec:optimizationmodel}
+
+The optimization problem that we consider in this paper is the following. Let $R$ be the set of records in the dataset; each record $r \in R$ has an associated weight $w_r > 0$, where records with a high weight are more important (or have a higher rank) than records with a low weight. 
+
+Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the generalization problem considered in this paper is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. One of the primary constraints is the \emph{zoom-consistency} constraint~\cite{fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all \emph{lower} scales. 
+
+In addition to the zoom-consistency scale there are a number of additional constraints that are modelled using CVL. Let $C$ be the set of constraints for all zoom levels (that is, each constraint is associated with a given zoom level). A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. Similarly, for each record $r \in R$, let $C_r \subseteq C$ be the set of constraints that contain record $r$.
+
+The optimization problem can be modelled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The goal is to minimize the total weight of all records that are filtered out across all zoom levels:
+\begin{eqnarray}
+  \label{eq:objective}
+  \mbox{$\min \sum_{r \in R} \sum_{z=1}^Z w_r x_{rz}$}  & & \\
+  \label{eq:zoom-consistency}
+  \mbox{s.t.}~~~~~~~~x_{rz} & \geq & x_{rz'}, ~~~r \in R, z > z' \\
+  \label{eq:secs}
+  \sum_{e \in E: |e \cap S| \geq 1}
+                 (|e \cap S|-1) x_e & \leq & |S| - 1,~~
+  \forall S \subset V, ~|S| \geq 2
+\end{eqnarray}
+
+The objective (\ref{eq:objective}) is to minimize the total length of the chosen hyperedges subject to two types of constraints: Firstly, equation
+
+
+  
+

@@ -53,10 +53,11 @@ class Trace(object):
         match = re.search('(bound|lp|heuristic)', trace_name)
         self.solver = match.group(1) if match else None
         match = re.search('(proximity[0-9]+|cellbound[0-9]+)', trace_name)
-        self.constraints = match.group(1) if match else None
+        self.constraint = match.groups() if match else None
         # private stuff
         self._init_info = {'operations': {}}
         self._levels = {}
+        self._stats = {}
 
     def add_event(self, event):
 
@@ -72,8 +73,8 @@ class Trace(object):
             # begin new level
             self._current_level = {
                 'begin': self._last_ts,
-                'recs_deleted': 0,
-                'rank_lost': 0,
+                'num_records': 0,
+                'agg_rank': 0,
                 'operations': {}
             }
             self._current_level['operations']['initialize_level'] = time_passed
@@ -98,10 +99,11 @@ class Trace(object):
             self._current_level['operations']['transform_level'] = time_passed
 
         elif event['event'] == 'STATS':
-            pass
+            self._stats[event['value']['cvl_zoom']] = event['value']
 
         elif event['event'] == 'STATS2':
-            pass
+            self.num_records = event['value']['total_recs']
+            self.total_rank = event['value']['total_rank']
 
         else:
             raise Exception('unhandled event: {0:s}'.format(event['event']))
@@ -110,5 +112,11 @@ class Trace(object):
 
     def end(self, ts_end):
         self.ts_end = ts_end
-        self.total_duration = self.ts_end - self.ts_begin
+        self.duration = self.ts_end - self.ts_begin
+        # update levels
+        records_remain = self.num_records
+        rank_remain = self.total_rank
+        for foo in bar:
+            records_remain -= self._stats[i]
+            pass
 

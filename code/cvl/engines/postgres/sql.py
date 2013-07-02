@@ -19,12 +19,78 @@ COMMIT_TX = \
 
 # INIT
 
-
 # FRAMEWORK
 
 ADD_FRAMEWORK = \
     r"""
     -- create extension plpythonu;
+
+    CREATE OR REPLACE FUNCTION CVL_LPBound
+    (
+      conflict_table text
+    ) RETURNS double precision AS
+    $$
+    import cvxopt
+    from cvxopt import matrix, spmatrix, sparse, solvers
+
+    SELECT_CONFLICTS = \
+        (
+        "SELECT"
+        " conflict_id,"
+        " array_agg(cvl_id) as record_ids,"
+        " array_agg(cvl_rank) as record_ranks,"
+        " (SELECT min_hits FROM {conflict_table} t2 WHERE t1.conflict_id = t2.conflict_id LIMIT 1)"
+        " FROM"
+        " {conflict_table} t1"
+        " GROUP BY"
+        " conflict_id"
+        )
+
+    sql = SELECT_CONFLICTS.format(conflict_table=conflict_table)
+    conflicts = plpy.execute(sql)
+    if not conflicts:
+        return
+
+    # make list of variables
+    variables = set()
+    RID = 0
+    RANK = 1
+    for cflt in conflicts:
+        if len(cflt['record_ids']) < cflt['min_hits']:
+            plpy.error("Infeasible LP instance! recs: {0:s}, min_hits: {1:d}".format(str(cflt['record_ids']), cflt['min_hits']))
+        variables = variables.union(zip(cflt['record_ids'], cflt['record_ranks']))
+    variables = list(variables)
+
+    # create index of variables
+    vindex = {}
+    for i, var in enumerate(variables):
+        vindex[var[RID]] = i
+
+    # b: non-neg, less-than-one, min_hits
+    _b = matrix([0.0] * len(variables) + [1.0] * len(variables) + [-c['min_hits'] for c in conflicts])
+    # c: ranks
+    _c = matrix([var[RANK] for var in variables])
+
+    # A:
+    non_neg = spmatrix(-1.0, range(len(variables)), range(len(variables)))
+    less_than_one = spmatrix(1.0, range(len(variables)), range(len(variables)))
+    I = []
+    J = []
+    for i, cflt in enumerate(conflicts):
+        for v in cflt['record_ids']:
+            I.append(i)
+            J.append(vindex[v])
+    csets = spmatrix(-1.0, I, J)
+
+    _A = sparse([non_neg, less_than_one, csets])
+
+    solvers.options['show_progress'] = False
+
+    sol = solvers.lp(_c, _A, _b)
+    return sol['primal objective']
+
+    $$ LANGUAGE plpythonu;
+
 
     -- CVL_CellSizeZ
 
@@ -147,6 +213,7 @@ ADD_FRAMEWORK = \
 
 REMOVE_FRAMEWORK = \
     """
+    DROP FUNCTION CVL_LPBound(text);
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
@@ -264,22 +331,54 @@ DO_LOG = \
     $$ LANGUAGE plpythonu;
     """
 
-DO_LOG_STATS = \
+DO_LOG_LEVELSTATS = \
     r"""
     DO $$
         from datetime import datetime
-        sql = "SELECT cvl_zoom, cvl_partition, Count(*) AS num_recs, Sum(cvl_rank) AS agg_rank \
-               FROM {output} GROUP BY cvl_zoom, cvl_partition ORDER BY cvl_zoom;"
+
+        stats = dict([])
+
+        sql = "SELECT sum(cvl_rank) as rank_lost, count(*) recs_lost FROM {output} WHERE cvl_zoom = {z} + 1;"
         rows = plpy.execute(sql)
+        stats['rank_lost'] = rows[0]['rank_lost']
+        stats['recs_lost'] = rows[0]['recs_lost']
+
+        sql = (
+            "SELECT min(t.cnt) as cmin, max(t.cnt) as cmax, avg(t.cnt) as cavg"
+            " FROM (SELECT count(*) AS cnt FROM _conflicts GROUP BY cvl_id) t;"
+        )
+        rows = plpy.execute(sql)
+        stats['c_per_rec_min'] = rows[0]['cmin']
+        stats['c_per_rec_max'] = rows[0]['cmax']
+        stats['c_per_rec_avg'] = rows[0]['cavg']
+
+        sql = (
+            "SELECT min(t.cnt) as rmin, max(t.cnt) as rmax, avg(t.cnt) as ravg"
+            " FROM (SELECT count(*) AS cnt FROM _conflicts GROUP BY conflict_id) t;"
+        )
+        rows = plpy.execute(sql)
+        stats['rec_per_c_min'] = rows[0]['rmin']
+        stats['rec_per_c_max'] = rows[0]['rmax']
+        stats['rec_per_c_avg'] = rows[0]['ravg']
+
+        sql = "SELECT CVL_LPBound('_conflicts') as lowerbound;"
+        rows = plpy.execute(sql)
+        stats['lp_bound'] = rows[0]['lowerbound']
+
         with open('{log_path}', 'a+') as f:
             for row in rows:
-                to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), '{job_name}', "stats", str(row)])
+                to_write = " ".join([
+                    datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"),
+                    '{job_name}',
+                    'levelstats',
+                    str(stats)
+                ])
                 f.write(to_write)
                 f.write('\n')
     $$ LANGUAGE plpythonu;
     """
 
-DO_LOG_STATS2 = \
+DO_LOG_INPUTSTATS = \
     r"""
     DO $$
         from datetime import datetime
@@ -288,7 +387,11 @@ DO_LOG_STATS2 = \
         rows = plpy.execute(sql)
         with open('{log_path}', 'a+') as f:
             for row in rows:
-                to_write = " ".join([datetime.now().strftime("%d/%m/%Y %H:%M:%S.%f"), '{job_name}', "stats2", str(row)])
+                to_write = " ".join([
+                    datetime.now().strftime('%d/%m/%Y %H:%M:%S.%f'),
+                    '{job_name}', 'inputstats',
+                    str(row)
+                ])
                 f.write(to_write)
                 f.write('\n')
     $$ LANGUAGE plpythonu;

@@ -30,64 +30,62 @@ ADD_FRAMEWORK = \
       conflict_table text
     ) RETURNS double precision AS
     $$
-    import cvxopt
-    from cvxopt import matrix, spmatrix, sparse, solvers
+        import cvxopt
+        from math import ceil, floor
+        from cvxopt import matrix, spmatrix, sparse, solvers
 
-    SELECT_CONFLICTS = \
-        (
-        "SELECT"
-        " conflict_id,"
-        " array_agg(cvl_id) as record_ids,"
-        " array_agg(cvl_rank) as record_ranks,"
-        " (SELECT min_hits FROM {conflict_table} t2 WHERE t1.conflict_id = t2.conflict_id LIMIT 1)"
-        " FROM"
-        " {conflict_table} t1"
-        " GROUP BY"
-        " conflict_id"
-        )
+        SELECT_CONFLICTS = \
+            (
+                "SELECT"
+                " array_agg(cvl_id) as cvl_ids,"
+                " (SELECT min_hits FROM {conflict_table} t2 WHERE t1.conflict_id = t2.conflict_id LIMIT 1)"
+                " FROM"
+                " {conflict_table} t1"
+                " GROUP BY"
+                " conflict_id"
+            )
 
-    sql = SELECT_CONFLICTS.format(conflict_table=conflict_table)
-    conflicts = plpy.execute(sql)
-    if not conflicts:
-        return
+        # get conflicts
+        sql = SELECT_CONFLICTS.format(conflict_table=conflict_table)
+        conflicts = plpy.execute(sql)
+        if not conflicts:
+            return
 
-    # make list of variables
-    variables = set()
-    RID = 0
-    RANK = 1
-    for cflt in conflicts:
-        if len(cflt['record_ids']) < cflt['min_hits']:
-            plpy.error("Infeasible LP instance! recs: {0:s}, min_hits: {1:d}".format(str(cflt['record_ids']), cflt['min_hits']))
-        variables = variables.union(zip(cflt['record_ids'], cflt['record_ranks']))
-    variables = list(variables)
+        # get variables
+        sql = "SELECT cvl_id, min(cvl_rank) as cvl_rank FROM {conflict_table} GROUP BY cvl_id".format(conflict_table=conflict_table)
+        variables = plpy.execute(sql)
+        variables = dict(map(
+            lambda (pos,x): (x['cvl_id'], {'cvl_rank': x['cvl_rank'], 'pos': pos}),
+            enumerate(variables)
+        ))
+        i_to_var = dict([(value['pos'], key) for (key,value) in variables.items()])
 
-    # create index of variables
-    vindex = {}
-    for i, var in enumerate(variables):
-        vindex[var[RID]] = i
+        # b: non-neg, less-than-one, min_hits
+        _b = matrix([0.0] * len(variables) + [1.0] * len(variables) + [-c['min_hits'] for c in conflicts])
 
-    # b: non-neg, less-than-one, min_hits
-    _b = matrix([0.0] * len(variables) + [1.0] * len(variables) + [-c['min_hits'] for c in conflicts])
-    # c: ranks
-    _c = matrix([var[RANK] for var in variables])
+        # c: ranks
+        _c = matrix([variables[v]['cvl_rank'] for v in variables])
 
-    # A:
-    non_neg = spmatrix(-1.0, range(len(variables)), range(len(variables)))
-    less_than_one = spmatrix(1.0, range(len(variables)), range(len(variables)))
-    I = []
-    J = []
-    for i, cflt in enumerate(conflicts):
-        for v in cflt['record_ids']:
-            I.append(i)
-            J.append(vindex[v])
-    csets = spmatrix(-1.0, I, J)
+        # A:
+        non_neg = spmatrix(-1.0, range(len(variables)), range(len(variables)))
+        less_than_one = spmatrix(1.0, range(len(variables)), range(len(variables)))
+        I = []
+        J = []
+        for i, cflt in enumerate(conflicts):
+            for v in cflt['cvl_ids']:
+                I.append(i)
+                J.append(variables[v]['pos'])
+        csets = spmatrix(-1.0, I, J)
 
-    _A = sparse([non_neg, less_than_one, csets])
+        _A = sparse([non_neg, less_than_one, csets])
 
-    solvers.options['show_progress'] = False
+        solvers.options['show_progress'] = False
+        sol = solvers.lp(_c, _A, _b)
 
-    sol = solvers.lp(_c, _A, _b)
-    return sol['primal objective']
+        if sol['status'] == 'optimal':
+            return sol['primal objective']
+        else:
+            plpy.error("Infeasible LP instance detected by solver!")
 
     $$ LANGUAGE plpythonu;
 

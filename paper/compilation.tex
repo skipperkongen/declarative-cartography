@@ -1,40 +1,7 @@
 % !TEX root = ./cvl.tex
-\section{Compiling CVL}
-\label{sec:compilation}
+\section{CVL Implementation}
+\label{sec:implementation}
 
-The clauses of the CVL language were introduced in Section~\ref{sec:language}. In this section we describe how the various clauses of CVL can be compiled into an \emph{execution plan} to be run on a compatible engine. There are in principle many types of plans. In this work we consider only one type of plan, namely the \emph{bottom-up} plan. 
+\subsection{Compilation}
 
-\subsection{Bottom-up plan}
-
-A high-level view of compiling CVL to a bottom-up plan is shown in Figure~\ref{fig:compilation}.
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[scale=.7]{figs/cvl_compilation.pdf}
-\caption{Compiling CVL to a bottom-up plan}
-\label{fig:compilation}
-\end{center}
-\end{figure}
-
-The bottom-up plan consists of three overall phases. A \emph{initialization} phase, a \emph{generalization} phase, and an \emph{finalization} stage. During the initializes phase the elements of the input are ranked and partitioned according to the CVL clauses for ranking and partitioning. During the generalization phase the constraints, transformations and forced levels are applied to the data. During the finalization stage the result set is assembled.
-
-The generalization phase consists a $\mathcal{Z}$ stages, which are named after the zoom-levels. The generaliztion stage is executed separately for each partition computed during the initialization phase. In other words there is a separate pipeline for generalizing each partition. The bottom-up plan gets its name because it generalizes partitions starting with the highest scale (called Stage $\mathcal{Z}$), and ending with the lowest scale (called Stage $1$).
-
-Let's consider the generalization phase for a single partition. The objective at each stage is to generalize the data in the partition for some zoom-level. Intuitively, the records that make it to the next stage, are the one that survived the generalization process at the previous stage. This implies that the records being processed a given stage are a subset of the records that were processed during the previous stage.
-
-\subsubsection{Sub-stages}
-In general, each stage in the generalization phase is broken down into a set of \emph{sub-stages}. The cartographic generalization is performed by these sub-stages. 
-
-There are many algorithms that could be used to compute a stage. In this work we consider only one type of algorithm, namely an algorithm for the \emph{multi-hitting set problem}, which consists of five sub-stages. These sub-stages are shown in Figure~\ref{fig:stages}. 
-
-As with the main stages, the output of a sub-stage is used as input to the next sub-stage, which implies that the sub-stages must be also be computed sequentially. Internally a sub-stage may be implemented by using any method of computation that produces the right output. As most of the work is done in the sub-stages labelled \emph{Find conflicts} and \emph{Find hitting set}, there is an opportunity to gain a lot of performance by parallelizing these sub-stages.
-
-The details of the algorithms used to implement these sub-stages are covered in Section~\ref{sec:algorithms}. 
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[scale=.7]{figs/cvl_stages.pdf}
-\caption{Sub-stages for the multi-hitting set mapping}
-\label{fig:stages}
-\end{center}
-\end{figure}
+\subsection{Implementation}

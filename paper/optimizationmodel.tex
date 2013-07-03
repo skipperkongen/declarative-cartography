@@ -9,6 +9,8 @@ As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest s
 In addition to the zoom-consistency constraint there are a number of additional constraints that are modeled using CVL. Let $C$ be the set of additional constraints for all zoom levels; each constraint $c \in C$ is associated with a given zoom level $z_c$. A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
 % Similarly, for each record $r \in R$, let $C_r \subseteq C$ be the set of constraints that contain record $r$.
 
+\subsection{Global formulation}
+
 The optimization problem can now be modelled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The mathematical optimization problem is:
 \begin{align}
   \label{eq:objective}
@@ -21,6 +23,8 @@ The optimization problem can now be modelled as a 0-1 integer program. We have a
 \end{align}
 
 The goal (\ref{eq:objective}) is to minimize the total weight of the records that are filtered out across all zoom levels. Inequalities~(\ref{eq:zoom-consistency}) enforce the zoom-consistency constraint, while inequalities~(\ref{eq:general-constraints}) enforce the remaining constraints $c \in C$; note that a given constraint $c \in C$ is only active at its zoom level $z_c$, which means that it only involves decisions variables $x_{rz}$ where $z = z_c$.
+
+\subsection{Per-level formulation}
 
 Although this model is conceptually simple, it is not practical. The problem is that on low scales the number of records involved in each constraint can be huge (in the order of thousands or millions) --- making the problem infeasible to solve in practice. Thus we will solve the problem in a greedy fashion by solving the problem at the largest scale first, corresponding to zoom level $\mathcal{Z}$. The surviving records at zoom level $\mathcal{Z}$ then form the input to the problem at zoom level $\mathcal{Z}-1$ etc. In this manner, the zoom-consistency constraint is automatically fulfilled. However, even if we solve the problem in this iterative manner, we will compare the overall objective (\ref{eq:objective}) for the suggested single-level algorithms. 
 

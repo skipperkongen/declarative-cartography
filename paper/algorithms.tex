@@ -2,38 +2,28 @@
 \section{Algorithms}
 \label{sec:algorithms}
 
+\subsection{Algorithmic framework}
 
-Each record $r \in O$ correponds to a record $r' \in I$, and for each record $r' \in I$ there may be up to $\mathcal{Z}$ records in $O$ representing it at different scales. To make things easier to explain we consider these records to be logically the same record.
+The algorithmic framework is illustrated in Figure~\ref{fig:algorithmic-framework}
 
-For each record $r \in I$, the record is either represented at zoom-level $z$ or it has been deleted at a higher zoom-level $z': z < z' < \mathcal{Z}$.
-
-A property of the algorithm is that the records stored for a zoom-level $z$ are a subset of the records stored at zoom-level $z+1$. This means that the \emph{zoom-consistency} constraint~\cite{fusiontables} is automatically enforced by the algorithm.
-
-The CVL algorithm computes the zoom-levels in reverse order, i.e. by $z = \mathcal{Z}-1, \dots, 0$. At each zoom-level there are two main task performed by the CVL algorithm: \emph{finding conflicts} and \emph{resolving conflicts}. Before we can talk about conflicts, we need to define cartographic constraints in the context of CVL, as the notion of a conflict depends upon this definition.
-
-\subsection{Cartographic constraints in CVL}
-
-In CVL a cartographic constraint is a condition that must hold for all record subsets of a given size. Constraints are evaluated separately for different partitions and repeatedly at each zoom-level.
-
-We formally consider the following two constraints in our work, but note that with our implementation of CVL it is easy to define new constraints. 
-
-\begin{description}
-\item [Proximity] Any two records must separated by at least $d$ pixels
-\item [Visibility] Given a uniform grid of cells at most $K$ records may intersect any given cell
-\end{description}
-
-\subsection{Conflicts and hitting sets}
-
-Given this brief introduction to constraints, we can now introduce the notion of a conflict. 
-A conflict is a record subset for which a given constraint does not hold. As constraints are formulated for record subsets of a given size, it follows that a conflict can be resolved by deleting some of the records in the conflict from the current zoom-level.
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=.7]{figs/cvl_stages.pdf}
+\caption{The algorithmic framework}
+\label{fig:algorithmic-framework}
+\end{center}
+\end{figure}
 
 
-\subsection{Cartographic constraints and conflicts}
+\subsection{Greedy algorithm}
+Sorting based. Optimal for point datasets together with visibility constraint. @Martin: Recall that this algorithm is optimal when the subsets are disjoint (I have not proved this). 
 
-We use two related terms to deal with selection of records at multiple zoom-levels: Constraints and conflicts. A \emph{constraint} states a condition that must hold over a set of records. A \emph{conflict} represents a subset of records that together violate a constraint. A conflict can always be resolved by deleting some of the records, indicated by the \emph{degree} of the conflict.
+\subsection{LP-rounding}
 
-\subsubsection{Example}
-Consider a proximity constraint that states that every pair of records must be separated by some minimum distance. Evaluating this constraint over a set of records produces a conflict for each a pair of records that are too close together. For each conflict, one of the records must be deleted in order to respect the constraint.
+Described in Vazirani 14.1. @Martin: Please write here.
 
-\subsection{Constraints}
+\subsection{Dual Fitting}
+
+Described in Vazirani 13.2.1. @Martin: Please write here.
+
 

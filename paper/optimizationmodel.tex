@@ -2,26 +2,35 @@
 \section{Optimization model}
 \label{sec:optimizationmodel}
 
-The optimization problem that we consider in this paper is the following. Let $R$ be the set of records in the dataset; each record $r \in R$ has an associated weight $w_r > 0$, where records with a high weight are more important (or have a higher rank) than records with a low weight. 
+In this section we introduce the optimization model considered in this paper. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record; an important (or highly ranked) record has a higher weight than a less important record.
 
-Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the generalization problem considered in this paper is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. One of the primary constraints is the \emph{zoom-consistency} constraint~\cite{fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all \emph{lower} scales. 
+As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the cartographic generalization problem is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. A primary constraint is the \emph{zoom-consistency} constraint~\cite{fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all \emph{lower} scales. 
 
-In addition to the zoom-consistency scale there are a number of additional constraints that are modelled using CVL. Let $C$ be the set of constraints for all zoom levels (that is, each constraint is associated with a given zoom level). A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. Similarly, for each record $r \in R$, let $C_r \subseteq C$ be the set of constraints that contain record $r$.
+In addition to the zoom-consistency constraint there are a number of additional constraints that are modeled using CVL. Let $C$ be the set of additional constraints for all zoom levels; each constraint $c \in C$ is associated with a given zoom level $z_c$. A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
+% Similarly, for each record $r \in R$, let $C_r \subseteq C$ be the set of constraints that contain record $r$.
 
-The optimization problem can be modelled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The goal is to minimize the total weight of all records that are filtered out across all zoom levels:
-\begin{eqnarray}
+The optimization problem can now be modelled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The mathematical optimization problem is:
+\begin{align}
   \label{eq:objective}
-  \mbox{$\min \sum_{r \in R} \sum_{z=1}^Z w_r x_{rz}$}  & & \\
+  \min ~\sum_{r \in R} \sum_{z=1}^Z &w_r x_{rz} \\
   \label{eq:zoom-consistency}
-  \mbox{s.t.}~~~~~~~~x_{rz} & \geq & x_{rz'}, ~~~r \in R, z > z' \\
-  \label{eq:secs}
-  \sum_{e \in E: |e \cap S| \geq 1}
-                 (|e \cap S|-1) x_e & \leq & |S| - 1,~~
-  \forall S \subset V, ~|S| \geq 2
-\end{eqnarray}
+  \mbox{s.t.}~~~~~~~x_{rz} &\geq x_{rz'}, ~~~~r \in R, ~~1 \leq z < z' \leq Z \\
+  \label{eq:general-constraints}
+  \sum_{r \in R_c, ~z = z_c} x_{rz} &\geq \lambda_c, ~~~~~~ c \in C \\
+  x_{rz} & \in \{0, 1\}, ~~ r \in R, ~c \in C
+\end{align}
 
-The objective (\ref{eq:objective}) is to minimize the total length of the chosen hyperedges subject to two types of constraints: Firstly, equation
+The goal (\ref{eq:objective}) is to minimize the total weight of the records that are filtered out across all zoom levels. Inequalities~(\ref{eq:zoom-consistency}) enforce the zoom-consistency constraint, while inequalities~(\ref{eq:general-constraints}) enforce the remaining constraints $c \in C$; note that a given constraint $c \in C$ is only active at its zoom level $z_c$, which means that it only involves decisions variables $x_{rz}$ where $z = z_c$.
 
+Although this model is conceptually simple, it is not practical. The problem is that on low scales the number of records involved in each constraint can be huge (in the order of thousands or millions) --- making the problem infeasible to solve in practice. Thus we will solve the problem in a greedy fashion by solving the problem at the largest scale first, corresponding to zoom level $\mathcal{Z}$. The surviving records at zoom level $\mathcal{Z}$ then form the input to the problem at zoom level $\mathcal{Z}-1$ etc. In this manner, the zoom-consistency constraint is automatically fulfilled. However, even if we solve the problem in this iterative manner, we will compare the overall objective (\ref{eq:objective}) for the suggested single-level algorithms. 
 
-  
+Let $\bar{R} \subseteq R$ be the set of records that have survived up to the given zoom-level, and let $\bar{C}$ be the set of active constraints at this zoom level. As before, $\bar{R}_c \subseteq \bar{R}$ denotes the set of records associated with constraint $c \in \bar{C}$. Let $x_r$ be a 0-1 decision for each record $r \in \bar{R}$ that is 1 if record $r$ is filtered out, and 0 otherwise. Then the single-level problem can be stated as follows:
+\begin{align}
+  \label{eq:objective-single}
+  \min ~\sum_{r \in \bar{R}} &w_r x_r \\
+  \label{eq:general-constraints-single}
+  \sum_{r \in \bar{R}_c} x_r &\geq \lambda_c, ~~~~ c \in \bar{C} \\
+  x_r & \in \{0, 1\}, ~~ r \in \bar{R}, ~c \in \bar{C}
+\end{align}
 
+This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element/constraint $c \in C$ needs to be covered $\lambda_c \geq 1$ times by the sets/records $r \in R$; each set/record can be chosen at most once~\cite{RajogopalanVazirani98}. In the next section we discuss algorithmic approaches for solving this problem.

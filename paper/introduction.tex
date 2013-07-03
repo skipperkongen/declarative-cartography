@@ -2,7 +2,7 @@
 \section{Introduction}
 In recent year, two major cross-cutting trends in data management have been  big data and crowd-sourcing. These general trends have been changing a lot of fields, and the field of automated cartographic generalization is no exception. This field is concerned with the production of multi-scale maps from geographical datasets, where the main concern is the selection and presentation of data at different zoom-levels.
 
-In this work we present CVL (pronounced \emph{civil}), a language and implementation for cartographic generalization, which is a reaction to these trends.
+In this work we present CVL (pronounced \emph{civil}), a language and implementation for cartographic generalization, which is a reaction to these trends. The heart of CVL is a generalization procedure that runs entirely in the database.
 
 As a product of the big data phenomenon, data volumes are now growing significantly faster than our ability to move data around, leading to \emph{diminishing relative bandwidth}. This condition has lead to a practice of moving code to data~\cite{mapreduce} instead of vice versa~\cite{fusiontables}. Our approach to automated cartographic generalization is a reaction to diminishing relative bandwidth. CVL is designed to compile to other languages that can run where the data is stored, e.g. SQL or MapReduce.
 

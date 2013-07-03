@@ -119,11 +119,11 @@ class CodeGenerator(object):
         formatter = self._get_formatter()
         self.Info('Log num_recs and agg_rank for all zoom-levels')
 
-        self.Info('Removing CVL framework')
-        self.code.append(REMOVE_FRAMEWORK)
-
         self.Info('Uninstalling solver')
         self.code.append(self.solver.UNINSTALL)
+
+        self.Info('Removing CVL framework')
+        self.code.append(REMOVE_FRAMEWORK)
 
         self.code.append(COMMIT_TX)
         self.Log('COMMIT')

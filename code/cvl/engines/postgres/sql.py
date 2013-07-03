@@ -25,10 +25,16 @@ ADD_FRAMEWORK = \
     r"""
     -- create extension plpythonu;
 
-    CREATE OR REPLACE FUNCTION CVL_LPBound
+    CREATE TYPE lp_result AS (
+        cvl_id bigint,
+        cvl_rank double precision,
+        lp_value double precision
+    );
+
+    CREATE OR REPLACE FUNCTION CVL_LP
     (
       conflict_table text
-    ) RETURNS double precision AS
+    ) RETURNS SETOF lp_result AS
     $$
         import cvxopt
         from math import ceil, floor
@@ -83,11 +89,22 @@ ADD_FRAMEWORK = \
         sol = solvers.lp(_c, _A, _b)
 
         if sol['status'] == 'optimal':
-            return sol['primal objective']
+            for i, lp_value in enumerate(sol['x']):
+                cvl_id = i_to_var[i]
+                cvl_rank = variables[cvl_id]['cvl_rank']
+                yield {'cvl_id': cvl_id, 'cvl_rank': cvl_rank, 'lp_value': lp_value}
         else:
             plpy.error("Infeasible LP instance detected by solver!")
 
     $$ LANGUAGE plpythonu;
+
+    CREATE OR REPLACE FUNCTION CVL_LPBOUND
+    (
+        conflict_table text
+    ) RETURNS double precision AS
+    $$
+        SELECT sum(lp_value * cvl_rank) FROM CVL_LP('_conflicts');
+    $$ LANGUAGE sql VOLATILE;
 
 
     -- CVL_CellSizeZ
@@ -211,7 +228,9 @@ ADD_FRAMEWORK = \
 
 REMOVE_FRAMEWORK = \
     """
+    DROP FUNCTION CVL_LP(text);
     DROP FUNCTION CVL_LPBound(text);
+    DROP TYPE lp_result;
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
     DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
@@ -285,7 +304,7 @@ FIND_CONFLICTS = \
 SOLVE = \
     """
     INSERT INTO _deletions
-    SELECT sol.cvl_id FROM ({solution}) sol;
+    SELECT sol.* FROM ({solution}) sol;
     """
 
 DO_DELETIONS = \
@@ -340,6 +359,11 @@ DO_LOG_LEVELSTATS = \
         rows = plpy.execute(sql)
         stats['rank_lost'] = rows[0]['rank_lost'] or 0.0
         stats['recs_lost'] = rows[0]['recs_lost'] or 0.0
+
+        sql = "SELECT sum(cvl_rank) AS rank_remaining, count(*) AS recs_remaining FROM {output} WHERE cvl_zoom = 0"
+        rows = plpy.execute(sql)
+        stats['rank_remaining'] = rows[0]['rank_remaining'] or 0.0
+        stats['recs_remaining'] = rows[0]['recs_remaining'] or 0.0
 
         sql = (
             "SELECT count(t.cnt) as num_recs_having_c, min(t.cnt) as cmin, max(t.cnt) as cmax, avg(t.cnt) as cavg"

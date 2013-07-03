@@ -4,7 +4,7 @@ In recent year, two major cross-cutting trends in data management have been  big
 
 In this work we present CVL (pronounced \emph{civil}), a language and implementation for cartographic generalization, which is a reaction to these trends. The heart of CVL is a generalization procedure that runs entirely in the database.
 
-As a product of the big data phenomenon, data volumes are now growing significantly faster than our ability to move data around, leading to \emph{diminishing relative bandwidth}. This condition has lead to a practice of moving code to data~\cite{mapreduce} instead of vice versa~\cite{fusiontables}. Our approach to automated cartographic generalization is a reaction to diminishing relative bandwidth. CVL is designed to compile to other languages that can run where the data is stored, e.g. SQL or MapReduce.
+As a product of the big data phenomenon, data volumes are now growing significantly faster than our ability to move data around, leading to \emph{diminishing relative bandwidth}. This condition has lead to a practice of moving code to data~\cite{mapreduce} instead of vice versa~\cite{fusiontables}. CVL is designed to compile to other languages that can run where the data is stored, e.g. SQL or MapReduce.
 
 Humans are increasingly collaborating and sharing online, a phenomenon known as crowd-sourcing. In recent years this has produced monumental value in many areas. An effect of crowd-sourcing is that a multitude of general purpose background maps of the world can now be downloaded for free~\cite{openstreetmap,googlemaps,bingmaps}. As a consequence of this, we consider the application of automated cartographic generalization to general background maps to be no longer relevant, at least for a very large class of important use cases of maps.
 
@@ -16,7 +16,7 @@ We make the following contributions:
 
 \begin{itemize}
 \item A declarative language for generalizing spatial datasets called CVL, which is designed to be simple and efficient to use for non-cartographers. 
-\item A mapping of the the cartographic generalization problem to the multi-set cover problem, which makes constraints fully pluggable and allows reuse of well-known algorithms.
+\item A mapping of the the cartographic generalization problem to the \emph{set multicover problem}, which makes constraints fully pluggable and allows reuse of well-known algorithms.
 \item A compilation procedure of CVL to a relational database backend. This enables us to reuse basic database technology for data management and scalability.
 \end{itemize}
 

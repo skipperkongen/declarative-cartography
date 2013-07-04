@@ -256,8 +256,6 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
 
     --CREATE INDEX {output}_zidx ON {output} (cvl_zoom);
     CREATE INDEX {output}_gist ON {output} USING GIST({geometry});
-
-    ANALYZE;
     """
 
 # CVL
@@ -400,4 +398,9 @@ DO_LOG_INPUTSTATS = \
                 f.write(to_write)
                 f.write('\n')
     $$ LANGUAGE plpythonu;
+    """
+
+ANALYZE = \
+    r"""
+    ANALYZE;
     """

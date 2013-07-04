@@ -8,7 +8,6 @@ from cvl.framework.query import WILDCARD
 from cvl.engines.postgres.sql import *
 from cvl.util.anonobject import Object
 
-
 class CodeGenerator(object):
     """docstring for Transaction"""
 
@@ -58,6 +57,8 @@ class CodeGenerator(object):
 
         self.Info('Creating new output table and index')
         self.code.append(CREATE_OUTPUT_TABLE_AND_INDEX.format(**formatter))
+
+        self.code.append(ANALYZE)
 
         self.Log('initialized')
 

@@ -1,17 +1,16 @@
 % !TEX root = ./cvl.tex
-\section{Optimization model}
+\section{Optimization models}
 \label{sec:optimizationmodel}
 
-In this section we introduce the optimization model considered in this paper. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record; an important (or highly ranked) record has a higher weight than a less important record.
+In this section we introduce the optimization models considered in this paper. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record; an important (or highly ranked) record has a higher weight than a less important record.
 
 As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the cartographic generalization problem is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. A primary constraint is the \emph{zoom-consistency} constraint~\cite{fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all \emph{lower} scales. 
 
 In addition to the zoom-consistency constraint there are a number of additional constraints that are modeled using CVL. Let $C$ be the set of additional constraints for all zoom levels; each constraint $c \in C$ is associated with a given zoom level $z_c$. A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
-% Similarly, for each record $r \in R$, let $C_r \subseteq C$ be the set of constraints that contain record $r$.
 
-\subsection{Global formulation}
+\subsection{Multi-scale optimization probem}
 
-The optimization problem can now be modelled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The mathematical optimization problem is:
+The multi-scale optimization problem can now be modeled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The mathematical optimization problem is:
 \begin{align}
   \label{eq:objective}
   \min ~\sum_{r \in R} \sum_{z=1}^Z &w_r x_{rz} \\
@@ -19,16 +18,16 @@ The optimization problem can now be modelled as a 0-1 integer program. We have a
   \mbox{s.t.}~~~~~~~x_{rz} &\geq x_{rz'}, ~~~~r \in R, ~~1 \leq z < z' \leq Z \\
   \label{eq:general-constraints}
   \sum_{r \in R_c, ~z = z_c} x_{rz} &\geq \lambda_c, ~~~~~~ c \in C \\
-  x_{rz} & \in \{0, 1\}, ~~ r \in R, ~c \in C
+  x_{rz} & \in \{0, 1\}, ~~ r \in R, ~~1 \leq z \leq Z
 \end{align}
 
 The goal (\ref{eq:objective}) is to minimize the total weight of the records that are filtered out across all zoom levels. Inequalities~(\ref{eq:zoom-consistency}) enforce the zoom-consistency constraint, while inequalities~(\ref{eq:general-constraints}) enforce the remaining constraints $c \in C$; note that a given constraint $c \in C$ is only active at its zoom level $z_c$, which means that it only involves decisions variables $x_{rz}$ where $z = z_c$.
 
-\subsection{Per-level formulation}
+\subsection{Single-scale optimization problem}
 
-Although this model is conceptually simple, it is not practical. The problem is that on low scales the number of records involved in each constraint can be huge (in the order of thousands or millions) --- making the problem infeasible to solve in practice. Thus we will solve the problem in a greedy fashion by solving the problem at the largest scale first, corresponding to zoom level $\mathcal{Z}$. The surviving records at zoom level $\mathcal{Z}$ then form the input to the problem at zoom level $\mathcal{Z}-1$ etc. In this manner, the zoom-consistency constraint is automatically fulfilled. However, even if we solve the problem in this iterative manner, we will compare the overall objective (\ref{eq:objective}) for the suggested single-level algorithms. 
+Although the multi-scale optimization problem is conceptually simple, it is not practical. On low scales the number of records involved in each constraint can be huge --- in the order of thousands or millions --- making the problem infeasible to solve in practice. Thus we will solve the problem in a greedy fashion by solving the problem at the largest scale first (corresponding to zoom level $\mathcal{Z}$). The surviving records at zoom level $\mathcal{Z}$ then form the input to the problem at zoom level $\mathcal{Z}-1$ etc. In this manner, the zoom-consistency constraint is automatically fulfilled. Thus the multi-scale problem is broken down into $\mathcal{Z}$ single-scale problems.
 
-Let $\bar{R} \subseteq R$ be the set of records that have survived up to the given zoom-level, and let $\bar{C}$ be the set of active constraints at this zoom level. As before, $\bar{R}_c \subseteq \bar{R}$ denotes the set of records associated with constraint $c \in \bar{C}$. Let $x_r$ be a 0-1 decision for each record $r \in \bar{R}$ that is 1 if record $r$ is filtered out, and 0 otherwise. Then the single-level problem can be stated as follows:
+Let $\bar{R} \subseteq R$ be the set of records that have survived up to the given zoom-level, and let $\bar{C}$ be the set of active constraints at this zoom level. As before, $\bar{R}_c \subseteq \bar{R}$ denotes the set of records associated with constraint $c \in \bar{C}$. Let $x_r$ be a 0-1 decision for each record $r \in \bar{R}$ that is 1 if record $r$ is filtered out, and 0 otherwise. Then the single-scale problem can be stated as follows:
 \begin{align}
   \label{eq:objective-single}
   \min ~\sum_{r \in \bar{R}} &w_r x_r \\
@@ -37,4 +36,6 @@ Let $\bar{R} \subseteq R$ be the set of records that have survived up to the giv
   x_r & \in \{0, 1\}, ~~ r \in \bar{R}, ~c \in \bar{C}
 \end{align}
 
-This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element/constraint $c \in C$ needs to be covered $\lambda_c \geq 1$ times by the sets/records $r \in R$; each set/record can be chosen at most once~\cite{RajogopalanVazirani98}. In the next section we discuss algorithmic approaches for solving this problem.
+This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element/constraint $c \in C$ needs to be covered $\lambda_c \geq 1$ times by the sets/records $r \in R$; each set/record can be chosen at most once~\cite{RajogopalanVazirani98}. 
+
+In the next section we discuss algorithmic approaches for solving the single-scale problem. Note that although we solve the multi-scale problem as a series of single-scale problems, in the experimental evaluation of our approach we focus our attention on the objective value (\ref{eq:objective}) of the \emph{multi-scale} problem. 

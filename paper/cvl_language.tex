@@ -1,5 +1,5 @@
 % !TEX root = ./cvl.tex
-\section{CVL: Cartographic Visualization Language}
+\section{Cartographic Visualization Language (CVL)}
 \label{sec:cvl-language}
 Cartographic Visualization Language (CVL) is a declarative language for generalizing or thinning a spatial dataset for a set of zoom-levels. CVL is designed to be very concise, typically no more than ten lines of code, and to be usable by people with intermediate geographical and programming skills.
 
@@ -11,13 +11,11 @@ The language has only two statements, the \emph{generalize} statement and the \e
 
 % Add: explain how constraints in the subject-to clause expand into constraint on each level. Also explain 
 
-In CVL all records are assigned a weight, and conditions are formulated that must hold for subsets of records. If a condition does not hold, it must be made to hold by deleting some of the records. This implies the following optimization problem: At every zoom level a possibly empty subset of records is deleted such that all conditions are made to hold and the sum of weights of records that are deleted records is minimized.
+In CVL all records are assigned a weight, and conditions are formulated that must hold for subsets of records. If a condition does not hold, it must be made to hold by deleting some of the records. This implies the following optimization problem: At every zoom level a possibly empty subset of records is deleted such that all conditions are made to hold and the sum of weights of records that are deleted is minimized.
 
-The principle of constant information density~\cite{toepfer} states that the amount of information presented to a user browsing a map must remain equal at all zoom levels. The goal of CVL is to enable the user to enforce this principle in user-defined way. The principle implies that subsets of records are removed from the map at lower scales. In automated cartographic generalization in general, the removal of records is guided by cartographic constraints~\cite{something}.
+The principle of constant information density~\cite{toepfer} states that the amount of information presented to a user browsing a map must remain equal at all zoom levels. The goal of CVL is to enable the user to enforce this principle in a user-defined way. The principle implies that subsets of records are removed from the map at lower scales. In automated cartographic generalization, the removal of records is guided by cartographic constraints~\cite{something}.
 
 Other guiding principles for cartographic generalization exist~\cite{something}, but the principle of constant density is arguably the most important one. CVL therefore covers a large number of use cases for generalizing datasets.
-
-
 
 \subsubsection{Cartographic constraints in CVL}
 
@@ -26,7 +24,7 @@ A cartographic constraint in CVL is a condition that must hold for any $K$-sized
 The situation where a constraint is violated can always be resolved by deleting a subset of the records at a given zoom level.
 
 \subsubsection{Weighting records}
-Instead of deleting records willy-nilly the deletion of records at the different zoom levels is guided by assigning a weight to each record. Higher weights imply more important records or records that we would rather not delete. Weights are assigned by evaluating a user defined expression over the set of records, which induces a partial order over the records with ties broken arbitrarily. Examples of assigning weights to records incluce using the output of a random number generator or the constant $1$. A more useful example is using a record attribute to partially order the records. For example in a restaurant dataset a star-rating may be used to partially order the records.
+Instead of deleting records willy-nilly the deletion of records at the different zoom levels is guided by assigning a weight to each record. Higher weights imply more important records or records that we would rather not delete. Weights are assigned by evaluating a user defined expression over the set of records, which induces a partial order over the records with ties broken arbitrarily. Examples of assigning weights to records include using the output of a random number generator or the constant $1$. A more useful example is using a record attribute to partially order the records. For example in a restaurant dataset a star-rating may be used to partially order the records.
 
 % Make statement section, make one big syntax box (one for each statement), get rid of clause subsubsections.  
 
@@ -69,7 +67,7 @@ If the clause is left out, records are ranked by the constant $1$
 
 \subsubsection{subject-to clause}
 
-The \emph{subject-to} clause is a list of cartographic constraints that should be enforced. Each element in the list is tuple containing the name of a constraint as the first element followed by a set of floating point parameters. Constraints are created by using the \emph{create-constraint} statement (see Section~\ref{sec:create-constraint-statement}).
+The \emph{subject-to} clause is a list of cartographic constraints that should be enforced. Each element in the list is a tuple containing the name of a constraint as the first element followed by a set of floating point parameters. Constraints are created by using the \emph{create-constraint} statement (see Section~\ref{sec:create-constraint-statement}).
 
 \begin{lstlisting}
 SUBJECT TO 

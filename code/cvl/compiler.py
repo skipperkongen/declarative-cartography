@@ -4,7 +4,7 @@ The compiler uses algorithms in framework.algorithms together with engine specif
 
 import sys
 
-import cvl.framework.algorithms as algorithms
+import cvl.framework.generalize as algorithms
 import cvl.engines
 
 

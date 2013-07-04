@@ -8,7 +8,7 @@ SET_UP = \
     CREATE TEMPORARY TABLE _cellbound_cells AS
     (
         SELECT
-            CVL_PointHash(CVL_WebMercatorCells({geometry}, {z})) || cvl_partition AS cell_id,
+            CVL_PointHash(CVL_WebMercatorCells({geometry}, {z})) AS cell_id,
             cvl_id
         FROM
             {level_view}

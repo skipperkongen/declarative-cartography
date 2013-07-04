@@ -31,54 +31,6 @@ class CodeGenerator(object):
         self.job_name = '[{0:s}]'.format(job_name)
         self.code = []
 
-    def set_query(self, query):
-        self.query = query
-
-    def _get_formatter(self, **kwargs):
-        formatter = self.query.__dict__.copy()
-        for key, value in kwargs.items():
-            formatter[key] = value
-        return formatter
-
-    def _load_module(self, module, submodule):
-        root = os.path.dirname(os.path.realpath(__file__))
-        module_file = os.path.join(root, module, '{0:s}.py'.format(submodule))
-        module_name = 'cvl.engines.postgres.{module}.{submodule}'.format(module=module, submodule=submodule)
-        return imp.load_source(module_name, module_file)
-
-    def _load_constraints(self):
-        constraints = []
-        for constraint in self.query.subject_to:
-            module = self._load_module('constraints', constraint.name)
-            constraints.append(Object(
-                name=constraint.name,
-                params=constraint.params,
-                SET_UP=module.SET_UP,
-                FIND_CONFLICTS=module.FIND_CONFLICTS,
-                CLEAN_UP=module.CLEAN_UP)
-            )
-        return constraints
-
-    def Log(self, message):
-        formatter = self._get_formatter(log_path=self.log_path, message="{0:s} {1:s}".format(self.job_name, message))
-        self.code.append(DO_LOG.format(**formatter))
-
-    def LogLevelStats(self, z):
-        """
-        Log the following information: LP-bound solution, size of constraints, constraints per record, rank-lost, recs-lost,
-        :param z: zoom-level
-        """
-        formatter = self._get_formatter(log_path=self.log_path, job_name=self.job_name, z=z)
-        self.code.append(DO_LOG_LEVELSTATS.format(**formatter))
-
-    def LogInputStats(self):
-        formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
-        self.code.append(DO_LOG_INPUTSTATS.format(**formatter))
-
-    def Info(self, *info):
-        for comment in info:
-            self.code.append(COMMENT.format(comment=comment))
-
     def Initialize(self):
         formatter = self._get_formatter()
         formatter['path'] = self.log_path
@@ -88,7 +40,6 @@ class CodeGenerator(object):
                   "Input:        {input}".format(**formatter),
                   "Output:       {output}".format(**formatter),
                   "Zoom-levels:  {zoomlevels}".format(**formatter),
-                  "Partition by: {partition_by}".format(**formatter),
                   "Rank by:      {rank_by}".format(**formatter),
                   "-"*42)
 
@@ -128,38 +79,11 @@ class CodeGenerator(object):
         self.code.append(COMMIT_TX)
         self.Log('COMMIT')
 
-    def MergePartitions(self):
-        formatter = self._get_formatter()
-        code = []
-        merged = []
-        self.Info('Merging partitions')
-        for merge_clause in filter(lambda clause: clause.before is not WILDCARD, self.query.merge_partitions):
-            formatter['before_merge'] = ', '.join(map(lambda m: "'{0:s}'".format(m), merge_clause.before))
-            formatter['after_merge'] = merge_clause.after
-            code.append(MERGE_PARTITIONS.format(**formatter))
-            merged.append(merge_clause.after)
-
-        for merge_clause in filter(lambda clause: clause.before is WILDCARD, self.query.merge_partitions):
-            formatter['merged'] = ', '.join(map(lambda m: "'{0:s}'".format(m), merged))
-            formatter['after_merge'] = merge_clause.after
-            code.append(MERGE_PARTITIONS_REST.format(**formatter))
-
-        self.code.extend(code)
-        self.Log('merged_partitions')
-
     def InitializeLevel(self, z):
         formatter = self._get_formatter(z=z)
         self.Info('Initialization for level {0:d}'.format(z))
-        self.code.append(CREATE_TEMP_TABLES_FOR_LEVEL.format(**formatter))
+        self.code.append(CREATE_TEMPORARY.format(**formatter))
         self.Log('initialized_level {0:d}'.format(z))
-
-    def ForceLevel(self, z):
-        formatter = self._get_formatter(z=z)
-        for force_clause in filter(lambda clause: clause.min_level == z + 1, self.query.force_level):
-            self.Info('Force delete records')
-            formatter['delete_partition'] = "'%s'" % force_clause.partition
-            self.code.append(FORCE_LEVEL.format(**formatter))
-        self.Log('forced_level {0:d}'.format(z))
 
     def FindConflicts(self, z):
         formatter = self._get_formatter(z=z,level_view='_level_view')
@@ -182,19 +106,57 @@ class CodeGenerator(object):
         self.code.append(DO_DELETIONS.format(**formatter))
         self.Log('resolved_conflicts {0:d}'.format(z))
 
-    def AllOrNothing(self, z):
-        formatter = self._get_formatter(z=z)
-        if 'allornothing' in self.query.transform_by:
-            self.Info('Apply all-or-nothing')
-            self.code.append(ALLORNOTHING.format(**formatter))
-        self.Log('transformed_level {0:d}'.format(z))
-
     def FinalizeLevel(self, z):
         formatter = self._get_formatter(z=z)
         self.LogLevelStats(z)
         self.Info('Clean-up for level %d' % z)
-        self.code.append(DROP_TEMP_TABLES_FOR_LEVEL.format(**formatter))
+        self.code.append(DROP_TEMPORARY.format(**formatter))
         self.Log('finalized_level {0:d}'.format(z))
+
+    def Log(self, message):
+        formatter = self._get_formatter(log_path=self.log_path, message="{0:s} {1:s}".format(self.job_name, message))
+        self.code.append(DO_LOG.format(**formatter))
+
+    def LogLevelStats(self, z):
+        """
+        Log the following information: LP-bound solution, size of constraints, constraints per record, rank-lost, recs-lost,
+        :param z: zoom-level
+        """
+        formatter = self._get_formatter(log_path=self.log_path, job_name=self.job_name, z=z)
+        self.code.append(DO_LOG_LEVELSTATS.format(**formatter))
+
+    def LogInputStats(self):
+        formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
+        self.code.append(DO_LOG_INPUTSTATS.format(**formatter))
+
+    def Info(self, *info):
+        for comment in info:
+            self.code.append(COMMENT.format(comment=comment))
 
     def get_code(self):
         return "\n".join(self.code)
+
+    def _get_formatter(self, **kwargs):
+        formatter = self.query.__dict__.copy()
+        for key, value in kwargs.items():
+            formatter[key] = value
+        return formatter
+
+    def _load_module(self, module, submodule):
+        root = os.path.dirname(os.path.realpath(__file__))
+        module_file = os.path.join(root, module, '{0:s}.py'.format(submodule))
+        module_name = 'cvl.engines.postgres.{module}.{submodule}'.format(module=module, submodule=submodule)
+        return imp.load_source(module_name, module_file)
+
+    def _load_constraints(self):
+        constraints = []
+        for constraint in self.query.subject_to:
+            module = self._load_module('constraints', constraint.name)
+            constraints.append(Object(
+                name=constraint.name,
+                params=constraint.params,
+                SET_UP=module.SET_UP,
+                FIND_CONFLICTS=module.FIND_CONFLICTS,
+                CLEAN_UP=module.CLEAN_UP)
+            )
+        return constraints

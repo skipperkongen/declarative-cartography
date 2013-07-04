@@ -8,4 +8,18 @@
 
 \subsection{Extensions}
 
-Partition by, merge partitions, force level and all-or-nothing.
+Partition by, merge partitions, force level and all-or-nothing. Clean-up and set-up for create constraints
+
+For practical purposes the syntax is extended with optional \emph{setup} and \emph{cleanup} sub-clauses. These are evaluated before and after the constraint SELECT statement is evaluated, and may consist of arbitrary SQL statements. The full syntax for the \emph{create-constraint} statement becomes:
+
+\begin{lstlisting}
+CREATE CONSTRAINT C1 
+AS NOT EXISTS
+  (SELECT cid, rid, minhits
+   FROM {more SQL})
+WITH SETUP
+  {user-defined SQL}
+WITH CLEANUP
+  {user-defined SQL}
+\end{lstlisting}
+

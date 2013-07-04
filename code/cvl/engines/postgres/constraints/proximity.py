@@ -20,7 +20,6 @@ FIND_CONFLICTS = \
         {level_view} r
     ON
         l.cvl_id < r.cvl_id
-    AND l.cvl_partition = r.cvl_partition
     AND	ST_DWithin(l.{geometry}, r.{geometry}, CVL_ResZ({z}, 256) * {parameter_1})
     """
 

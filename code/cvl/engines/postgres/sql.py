@@ -250,42 +250,25 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
     SELECT
       {fid}::bigint as cvl_id, {geometry}, {other}
       {rank_by}::float AS cvl_rank,
-      {partition_by} AS cvl_partition,
       0 as cvl_zoom
     FROM
       {input};
 
     --CREATE INDEX {output}_zidx ON {output} (cvl_zoom);
     CREATE INDEX {output}_gist ON {output} USING GIST({geometry});
+
+    ANALYZE;
     """
 
 # CVL
 
-MERGE_PARTITIONS = \
-    """
-    UPDATE {output} SET cvl_partition = '{after_merge}' WHERE cvl_partition IN ({before_merge});
-    """
-
-MERGE_PARTITIONS_REST = \
-    """
-    UPDATE {output} SET cvl_partition = '{after_merge}' WHERE cvl_partition NOT IN ({merged});
-    """
-
 # Stage commands
 
-CREATE_TEMP_TABLES_FOR_LEVEL = \
+CREATE_TEMPORARY = \
     """
     CREATE TEMPORARY TABLE _conflicts (conflict_id text, cvl_id bigint, cvl_rank float, min_hits integer);
     CREATE TEMPORARY TABLE _deletions (cvl_id bigint);
     CREATE TEMPORARY VIEW _level_view AS SELECT * FROM {output} WHERE cvl_zoom = 0;
-    """
-
-
-FORCE_LEVEL = \
-    """
-    UPDATE {output}
-    SET cvl_zoom = {z} + 1
-    WHERE cvl_partition = {delete_partition};
     """
 
 FIND_CONFLICTS = \
@@ -314,18 +297,7 @@ DO_DELETIONS = \
     WHERE cvl_id IN (SELECT cvl_id FROM _deletions);
     """
 
-ALLORNOTHING = \
-    """
-    UPDATE {output}
-    SET cvl_zoom = {z} + 1
-    WHERE cvl_partition IN
-    (
-      SELECT DISTINCT cvl_partition FROM {output}
-      WHERE cvl_zoom= {z} + 1
-    );
-    """
-
-DROP_TEMP_TABLES_FOR_LEVEL = \
+DROP_TEMPORARY = \
     """
     DROP TABLE _conflicts;
     DROP TABLE _deletions;
@@ -428,14 +400,4 @@ DO_LOG_INPUTSTATS = \
                 f.write(to_write)
                 f.write('\n')
     $$ LANGUAGE plpythonu;
-    """
-
-TRYTHIS = \
-    """
-    -- Records per zoom-level:
-    -- SELECT cvl_zoom, cvl_partition, Count(*)
-    -- FROM {output} GROUP BY cvl_zoom, cvl_partition ORDER BY cvl_zoom, cvl_partition;
-
-    -- Aggregated rank per zoom-level:
-    -- SELECT cvl_zoom, Sum(cvl_rank) FROM {output} GROUP BY cvl_zoom ORDER BY cvl_zoom
     """

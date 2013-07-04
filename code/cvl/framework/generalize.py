@@ -8,24 +8,13 @@ These are recipes of *what* to do, not *how* to do it.
 class BottomUp(object):
     def get_code(self, zoomlevels, code_generator):
 
-        # INITIALIZATION PHASE
-        code_generator.Initialize()  # output table, index on output table
-        code_generator.MergePartitions()  # combine partitions
+        code_generator.Initialize()  # output table, index on output table, analyze!
 
-        # GENERALIZATION PHASE
         for z in reversed(range(zoomlevels)):
-            # INITIALIZE LEVEL
-            #code_generator.InitializeLevel(z, copy_from=z + 1)
             code_generator.InitializeLevel(z)
-            # FORCE LEVEL
-            code_generator.ForceLevel(z)
-            # SUBJECT TO
             code_generator.FindConflicts(z)  # find conflicts
             code_generator.ResolveConflicts(z)  # find records to delete
-            # TRANSFORM: allornothing, simplify_level
-            code_generator.AllOrNothing(z)
             code_generator.FinalizeLevel(z)
 
-        # FINALIZE PHASE
         code_generator.Finalize()
         return code_generator.get_code()

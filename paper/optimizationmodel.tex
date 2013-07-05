@@ -21,7 +21,7 @@ The multi-scale optimization problem can now be modeled as a 0-1 integer program
   x_{rz} & \in \{0, 1\}, ~~ r \in R, ~~1 \leq z \leq Z
 \end{align}
 
-The goal (\ref{eq:objective}) is to minimize the total weight of the records that are filtered out across all zoom levels. Inequalities~(\ref{eq:zoom-consistency}) enforce the zoom-consistency constraint, while inequalities~(\ref{eq:general-constraints}) enforce the remaining constraints $c \in C$; note that a given constraint $c \in C$ is only active at its zoom level $z_c$, which means that it only involves decisions variables $x_{rz}$ where $z = z_c$.
+The goal (\ref{eq:objective}) is to minimize the total weight of the records that are filtered out across all zoom levels. Constraints~(\ref{eq:zoom-consistency}) enforce the zoom-consistency constraint, while constraints~(\ref{eq:general-constraints}) enforce the remaining constraints $c \in C$; note that a given constraint $c \in C$ is only active at its zoom level $z_c$, which means that it only involves decisions variables $x_{rz}$ where $z = z_c$.
 
 \subsection{Single-scale optimization problem}
 

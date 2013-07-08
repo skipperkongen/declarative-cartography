@@ -9,7 +9,7 @@ The algorithmic framework is illustrated in Figure~\ref{fig:algorithmic-framewor
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[scale=.7]{figs/cvl_stages.pdf}
-\caption{The algorithmic framework @Kostas: Rename "Find hitting set" to "Find set multicover".}
+\caption{The algorithmic framework: At stage $i$ the single-scale optimization problem is solved for the $i'th$ zoom level.}
 \label{fig:algorithmic-framework}
 \end{center}
 \end{figure}
@@ -18,7 +18,7 @@ Below we describe three different heuristic algorithms for solving the single-sc
 
 \subsection{Static greedy algorithm (SGA)}
 
-In this algorithm we consider each constraint $c \in C$ in turn, and simply choose the $\lambda_c$ records with minimum weight from constraint $R_c$ --- independet of what has been chosen earlier. If the sets $R_c$ are disjoint, the algorithm is clearly optimal. However, in general no approximation guarantee can be provided. The algorithm runs in $O(n f \log f)$ time, as we just need to sort the records by weight for each constraint; alternatively we can sort all records by weight in $O(m \log m)$ time and pick the minimum weight records from the constraints in linear time in the total number of records in all constraints.
+In this algorithm we consider each constraint $c \in C$ in turn, and simply choose the $\lambda_c$ records with minimum weight from constraint $R_c$ --- independently of what has been chosen earlier. If the sets $R_c$ are disjoint, the algorithm is clearly optimal. However, in general no approximation guarantee can be provided. The algorithm runs in $O(n f \log f)$ time, as we just need to sort the records by weight for each constraint; alternatively we can sort all records by weight in $O(m \log m)$ time and pick the minimum weight records from the constraints in linear time in the total number of records in all constraints.
 
 \subsection{LP-based greedy algorithm (LPGA)}
 

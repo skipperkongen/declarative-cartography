@@ -58,7 +58,7 @@ class CodeGenerator(object):
         self.Info('Creating new output table and index')
         self.code.append(CREATE_OUTPUT_TABLE_AND_INDEX.format(**formatter))
 
-        self.code.append(ANALYZE)
+        self.code.append(VACUUM_ANALYZE.format(**formatter))
 
         self.Log('initialized')
 

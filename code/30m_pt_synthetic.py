@@ -13,10 +13,10 @@ if __name__ == '__main__':
     compiler = CvlCompiler()
     query_dict = {
         'zoomlevels': 15,
-        'input': 'synthetic_points_30m',
+        'input': 'synthetic_pt_30m',
         'fid': 'ogc_fid',
         'geometry': 'wkb_geometry',
-        'other': ['name'],
+        'other': ['type'],
         'rank_by': 'random()'
     }
 

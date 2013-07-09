@@ -1,25 +1,64 @@
 % !TEX root = ./cvl.tex
-\section{CVL Implementation}
+
+\section{Implementation}
 \label{sec:implementation}
 
-\subsection{Compilation}
+In this section, we present relevant implementation details of our compiler and runtime (Sections~\ref{sec:implementation:compiler} and~\ref{sec:implementation:runtime}, respectively). In addition, we discuss a number of extensions to CVL that we found to be useful for practical applications (Section~\ref{sec:implementation:extensions}). 
 
-\subsection{Implementation}
+\subsection{Compiler}
+\label{sec:implementation:compiler}
+
+
+
+\subsection{Runtime}
+\label{sec:implementation:runtime}
+
+
 
 \subsection{Extensions}
+\label{sec:implementation:extensions}
 
-Partition by, merge partitions, force level and all-or-nothing. Clean-up and set-up for create constraints
+When designing CVL, we discussed a number of our decisions with geospatial map developers at GST. These discussions, along with our implementation experience of CVL use cases, led us to a set of extensions over the core language targeted at improving convenience of use. We present these extensions below.
 
-For practical purposes the syntax is extended with optional \emph{setup} and \emph{cleanup} sub-clauses. These are evaluated before and after the constraint SELECT statement is evaluated, and may consist of arbitrary SQL statements. The full syntax for the \emph{create-constraint} statement becomes:
+\minisec{Partitioning and Merging Datasets} 
+A single input table may contain geospatial objects of different classes, e.g., roads and points of interest. When this is the case, users often wish to generalize some of these classes of objects independently, but obtain a single result map. While this can be done by merging the results of multiple GENERALIZE statements, we found it useful to add syntactic sugar to support this case. We extend the GENERALIZE statement with PARTITION BY and MERGE PARTITIONS clauses. PARTITION BY allows us to effectively segregate the input into multiple independent sets. MERGE PARTITIONS combines a few of these sets before providing them as input to generalization. For example, assume a \emph{geo\_objects} table contains highways, roads, restaurants, and hotels, tagged by a \emph{type} attribute. We could then generalize \emph{geo\_objects} as follows:
 
 \begin{lstlisting}
-CREATE CONSTRAINT C1 
-AS NOT EXISTS
-  (SELECT cid, rid, minhits
-   FROM {more SQL})
-WITH SETUP
-  {user-defined SQL}
-WITH CLEANUP
-  {user-defined SQL}
+GENERALIZE  geo_objects
+TO network_and_poi_map
+...
+PARTITION BY type
+MERGE PARTITIONS 'restaurant', 'hotel' AS 'poi'
+... 
 \end{lstlisting}
+
+In the example, we overlay independent generalizations of highways, roads, and points of interest into a single map. However, restaurants and hotels are generalized as a single input set.  
+
+\minisec{Forced and All-or-Nothing Visualization}
+Intuitively, constraints let users specify what is \emph{not} allowed in a given map, by forbidding the existence of conflicts. However, users also find helpful to control certain behaviors that \emph{must} occur in their map. We extended the GENERALIZE statement with support for two types of behaviors: (1)~the ability to mandate a minimum zoom level for a particular partition of the input, and (2)~the ability to force that either all or none of the objects of a given partition be displayed. For example, a user may wish to specify that highways must only appear at zoom level 10 or lower in their map. In addition, for consistency, either the whole highway skeleton is displayed or no highways should show up. To achieve this goal, we extend the GENERALIZE statement by a FORCE clause with MIN LEVEL and ALLORNOTHING specifiers. Continuing the example above:
+
+\begin{lstlisting}
+...
+FORCE MIN LEVEL 10 ALLORNOTHING FOR 'highway'
+... 
+\end{lstlisting}
+
+In the evaluation of CVL, the minimum level specifier controls what data is given as input for a zoom level. The all-or-nothing specifier, on the other hand, controls filtering of the output of the level generalization process. If the specifier is present, all records of a partition are eliminated if any record from the partition input is not present in the output. By filtering output, we ensure that the result also respects all other constraints specified by the user. 
+
+\minisec{Set up and Tear Down for Constraints}   
+Cartographical constraints can exhibit significant complexity. Since a constraint is expressed as a single SELECT statement, it is often helpful to be able to refer to temporary tables in its formulation. We have thus extended the CREATE CONSTRAINT statement to include two additional clauses: WITH SETUP and WITH TEARDOWN. The former allows a user-defined SQL statement to be executed in advance of the constraint evaluation, creating any supporting tables for the evaluation of the constraint. The latter specifies user-defined cleanup code. Note that since constraints are evaluated independently at each zoom level, the set-up and tear-down clauses are evaluated before and after the constraint SQL at each zoom level.       
+
+%
+% MVS: We can probably get away with not showing the syntax below. 
+%
+%\begin{lstlisting}
+%CREATE CONSTRAINT C1 
+%AS NOT EXISTS
+% (SELECT cid, rid, minhits
+%  FROM {more SQL})
+%WITH SETUP
+% {user-defined SQL}
+%WITH CLEANUP
+% {user-defined SQL}
+%\end{lstlisting}
 

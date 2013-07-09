@@ -120,52 +120,12 @@ ADD_RUNTIME = \
       ) AS geohash;
     $$ LANGUAGE sql IMMUTABLE STRICT;
 
-    -- CVL_Cellify
-
-    CREATE OR REPLACE FUNCTION CVL_Cellify
-    (
-      geom geometry,
-      cell_size float8,
-      x0 float8 DEFAULT 0,
-      y0 float8 DEFAULT 0,
-      OUT pt geometry
-    ) RETURNS SETOF geometry AS
-    $$
-    SELECT
-    *
-    FROM
-    (
-      SELECT
-        ST_SnapToGrid
-        (
-          ST_SetSrid
-          (
-            ST_Point
-            (
-              ST_XMin($1) + i*$2,
-              ST_YMin($1) + j*$2
-            ),
-            ST_Srid($1)
-          ),
-          $3 + $2/2,
-          $4 + $2/2,
-          $2,
-          $2
-        ) AS pt
-      FROM
-        generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
-        generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j
-    ) PT
-    WHERE
-      ST_Distance($1, ST_Expand(PT.pt, $2/2)) = 0;
-    $$ LANGUAGE sql IMMUTABLE STRICT;
-
     CREATE OR REPLACE FUNCTION CVL_CellForPoint
     (
       geom geometry,
       cell_size float8,
-      x0 float8 DEFAULT 0,
-      y0 float8 DEFAULT 0,
+      x0 float8 DEFAULT -20037508.34,
+      y0 float8 DEFAULT -20037508.34,
       OUT pt geometry
     ) RETURNS SETOF geometry AS
     $$
@@ -183,8 +143,8 @@ ADD_RUNTIME = \
     (
       geom geometry,
       cell_size float8,
-      x0 float8 DEFAULT 0,
-      y0 float8 DEFAULT 0,
+      x0 float8 DEFAULT -20037508.34,
+      y0 float8 DEFAULT -20037508.34,
       OUT pt geometry
     ) RETURNS SETOF geometry AS
     $$
@@ -213,8 +173,8 @@ ADD_RUNTIME = \
     $$
     SELECT
       CASE
-        WHEN GeometryType($1)='POINT' THEN CVL_CellForPoint($1, CVL_CellSizeZ($2), -20037508.34, -20037508.34)
-        ELSE CVL_CellsForPolygon($1, CVL_CellSizeZ($2), -20037508.34, -20037508.34)
+        WHEN GeometryType($1)='POINT' THEN CVL_CellForPoint($1, CVL_CellSizeZ($2))
+        ELSE CVL_CellsForPolygon($1, CVL_CellSizeZ($2))
       END AS pt
 
     $$ LANGUAGE sql IMMUTABLE STRICT;
@@ -239,8 +199,7 @@ REMOVE_RUNTIME = \
     DROP TYPE lp_result;
     DROP FUNCTION CVL_PointHash(geometry);
     DROP FUNCTION CVL_WebMercatorCells(geometry, integer);
-    DROP FUNCTION CVL_Cellify(geometry, float8, float8, float8);
-    DROP FUNCTION CVL_CellsForPolygon(geometry, float8, float8, float8)
+    DROP FUNCTION CVL_CellsForPolygon(geometry, float8, float8, float8);
     DROP FUNCTION CVL_CellForPoint(geometry, float8, float8, float8);
     DROP FUNCTION CVL_ResZ(integer,integer);
     DROP FUNCTION CVL_CellSizeZ(integer);

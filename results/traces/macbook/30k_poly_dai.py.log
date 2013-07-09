@@ -1,32 +1,6 @@
-02/07/2013 23:23:11.621167 [30k_poly_dai_cellbound16_lp] BEGIN_TRANSACTION
-02/07/2013 23:23:19.473077 [30k_poly_dai_cellbound16_lp] initialized
-02/07/2013 23:23:19.473423 [30k_poly_dai_cellbound16_lp] solver "lp"
-02/07/2013 23:23:19.473775 [30k_poly_dai_cellbound16_lp] constraints "cellbound(16,)"
-02/07/2013 23:23:19.820116 [30k_poly_dai_cellbound16_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'total_rank': 603942.0665152698, 'total_recs': 30181L}
-02/07/2013 23:23:19.820774 [30k_poly_dai_cellbound16_lp] merged_partitions
-02/07/2013 23:23:19.825920 [30k_poly_dai_cellbound16_lp] initialized_level 14
-02/07/2013 23:23:19.826260 [30k_poly_dai_cellbound16_lp] forced_level 14
-02/07/2013 23:28:06.107796 [30k_poly_dai_cellbound16_lp] found_conflicts 14
-02/07/2013 23:28:30.294253 [30k_poly_dai_cellbound16_lp] resolved_conflicts 14
-02/07/2013 23:28:30.296620 [30k_poly_dai_cellbound16_lp] transformed_level 14
-02/07/2013 23:28:49.023569 [30k_poly_dai_cellbound16_lp] levelstats {'c_per_rec_avg': 3.0725061922990315, 'rec_per_c_avg': 31.56737998843262, 'rank_lost': 48946.08086361237, 'recs_lost': 14030L, 'rec_per_c_min': 17L, 'num_c': 1729L, 'c_per_rec_min': 1L, 'rec_per_c_max': 325L, 'c_per_rec_max': 93L, 'lp_bound': 35492.2311481, 'num_recs_having_c': 17764L}
-02/07/2013 23:28:49.025973 [30k_poly_dai_cellbound16_lp] finalized_level 14
-02/07/2013 23:28:49.030198 [30k_poly_dai_cellbound16_lp] initialized_level 13
-02/07/2013 23:28:49.030567 [30k_poly_dai_cellbound16_lp] forced_level 13
-02/07/2013 23:30:03.166244 [30k_poly_dai_cellbound16_lp] found_conflicts 13
-02/07/2013 23:30:05.447321 [30k_poly_dai_cellbound16_lp] resolved_conflicts 13
-02/07/2013 23:30:05.447742 [30k_poly_dai_cellbound16_lp] transformed_level 13
-02/07/2013 23:30:06.504072 [30k_poly_dai_cellbound16_lp] levelstats {'c_per_rec_avg': 1.5335892514395393, 'rec_per_c_avg': 20.382653061224488, 'rank_lost': 4810.648079902578, 'recs_lost': 2155L, 'rec_per_c_min': 17L, 'num_c': 392L, 'c_per_rec_min': 1L, 'rec_per_c_max': 37L, 'c_per_rec_max': 17L, 'lp_bound': 3269.68440817, 'num_recs_having_c': 5210L}
-02/07/2013 23:30:06.506861 [30k_poly_dai_cellbound16_lp] finalized_level 13
-02/07/2013 23:30:06.512166 [30k_poly_dai_cellbound16_lp] initialized_level 12
-02/07/2013 23:30:06.512541 [30k_poly_dai_cellbound16_lp] forced_level 12
-02/07/2013 23:30:33.394609 [30k_poly_dai_cellbound16_lp] found_conflicts 12
-02/07/2013 23:30:35.368814 [30k_poly_dai_cellbound16_lp] COMMIT
-02/07/2013 23:30:35.373628 [30k_poly_dai_cellbound16_heuristic] BEGIN_TRANSACTION
-02/07/2013 23:30:44.166394 [30k_poly_dai_cellbound16_heuristic] initialized
-02/07/2013 23:30:44.166764 [30k_poly_dai_cellbound16_heuristic] solver "heuristic"
-02/07/2013 23:30:44.167088 [30k_poly_dai_cellbound16_heuristic] constraints "cellbound(16,)"
-02/07/2013 23:30:44.537470 [30k_poly_dai_cellbound16_heuristic] inputstats {'geometry_types': ['MULTIPOLYGON'], 'total_rank': 603942.0665152698, 'total_recs': 30181L}
-02/07/2013 23:30:44.538067 [30k_poly_dai_cellbound16_heuristic] merged_partitions
-02/07/2013 23:30:44.543107 [30k_poly_dai_cellbound16_heuristic] initialized_level 14
-02/07/2013 23:30:44.543509 [30k_poly_dai_cellbound16_heuristic] forced_level 14
+09/07/2013 21:36:07.735661 [30k_poly_dai_proximity10_lp] BEGIN_TRANSACTION
+09/07/2013 21:36:17.521365 [30k_poly_dai_proximity10_lp] initialized
+09/07/2013 21:36:17.521738 [30k_poly_dai_proximity10_lp] solver "lp"
+09/07/2013 21:36:17.522054 [30k_poly_dai_proximity10_lp] constraints "proximity(10,)"
+09/07/2013 21:36:17.907092 [30k_poly_dai_proximity10_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'total_rank': 603942.0665152684, 'total_recs': 30181L}
+09/07/2013 21:36:17.961662 [30k_poly_dai_proximity10_lp] initialized_level 14

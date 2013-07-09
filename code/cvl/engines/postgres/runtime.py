@@ -171,7 +171,7 @@ ADD_RUNTIME = \
                 true
             ) as raster) RASTER
     WHERE
-        ST_Value(RASTER.raster, PT.pt) = 1
+        ST_Value(RASTER.raster, PT.pt, false) = 1
     $$ LANGUAGE sql IMMUTABLE STRICT;
 
     -- web mercator cells

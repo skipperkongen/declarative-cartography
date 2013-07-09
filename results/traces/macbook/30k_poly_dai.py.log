@@ -1,6 +1,6 @@
-09/07/2013 21:36:07.735661 [30k_poly_dai_proximity10_lp] BEGIN_TRANSACTION
-09/07/2013 21:36:17.521365 [30k_poly_dai_proximity10_lp] initialized
-09/07/2013 21:36:17.521738 [30k_poly_dai_proximity10_lp] solver "lp"
-09/07/2013 21:36:17.522054 [30k_poly_dai_proximity10_lp] constraints "proximity(10,)"
-09/07/2013 21:36:17.907092 [30k_poly_dai_proximity10_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'total_rank': 603942.0665152684, 'total_recs': 30181L}
-09/07/2013 21:36:17.961662 [30k_poly_dai_proximity10_lp] initialized_level 14
+09/07/2013 23:20:38.990331 [30k_poly_dai_cellbound16_lp] BEGIN_TRANSACTION
+09/07/2013 23:20:47.791646 [30k_poly_dai_cellbound16_lp] initialized
+09/07/2013 23:20:47.792009 [30k_poly_dai_cellbound16_lp] solver "lp"
+09/07/2013 23:20:47.792385 [30k_poly_dai_cellbound16_lp] constraints "cellbound(16,)"
+09/07/2013 23:20:48.147119 [30k_poly_dai_cellbound16_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'total_rank': 603942.0665152741, 'total_recs': 30181L}
+09/07/2013 23:20:48.193986 [30k_poly_dai_cellbound16_lp] initialized_level 14

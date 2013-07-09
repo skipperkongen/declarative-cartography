@@ -157,7 +157,19 @@ ADD_RUNTIME = \
         FROM
             generate_series(0, (ceil(ST_XMax( $1 ) - ST_Xmin( $1 )) / $2)::integer) AS i,
             generate_series(0, (ceil(ST_YMax( $1 ) - ST_Ymin( $1 )) / $2)::integer) AS j
-    ) PT, (SELECT ST_AsRaster($1, $2, $2, $3, $4, '1BB') as raster) RASTER
+    ) PT, (SELECT ST_AsRaster(
+                $1,
+                $2,
+                $2,
+                $3,
+                $4,
+                '1BB',
+                1::double precision,
+                0::double precision,
+                0::double precision,
+                0::double precision,
+                true
+            ) as raster) RASTER
     WHERE
         ST_Value(RASTER.raster, PT.pt) = 1
     $$ LANGUAGE sql IMMUTABLE STRICT;

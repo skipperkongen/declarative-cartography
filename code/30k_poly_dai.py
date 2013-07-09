@@ -20,7 +20,7 @@ if __name__ == '__main__':
         'rank_by': 'st_area(wkb_geometry)/1000000'
     }
     for solver in ['lp', 'heuristic']:
-        for constraint in [[('proximity', 10)], [('cellbound', 16)]]:
+        for constraint in [[('cellbound', 16)], [('proximity', 10)]]:
             fname = os.path.splitext(basename(__file__))[0]
             job_name = "{0:s}_{1:s}{2:d}_{3:s}".format(fname, constraint[0][0], constraint[0][1], solver)
             query_dict['subject_to'] = constraint

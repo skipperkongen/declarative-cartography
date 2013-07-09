@@ -7,6 +7,7 @@ from cvl.engines.postgres.runtime import *
 from cvl.engines.postgres.sql import *
 from cvl.util.anonobject import Object
 
+
 class CodeGenerator(object):
     """docstring for Transaction"""
 
@@ -39,6 +40,8 @@ class CodeGenerator(object):
                   "Output:       {output}".format(**formatter),
                   "Zoom-levels:  {zoomlevels}".format(**formatter),
                   "Rank by:      {rank_by}".format(**formatter),
+                  "Solver:       {solver}".format(solver=self.solver_name),
+                  "Subject to:   {subject_to}".format(**formatter),
                   "-"*42)
 
         self.code.append(BEGIN_TX)

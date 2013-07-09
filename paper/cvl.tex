@@ -4,22 +4,52 @@
 \usepackage{color}
 \usepackage{url}
 
+\sloppy
+
+\newcommand{\marcos}[1]{\ \\ \fbox{\parbox{1.0\linewidth}{{\sc Marcos}:\\ #1}}}
+
+\newcommand{\minisec}[1]{\noindent\textbf{#1.}}
+
+
+%%%%%%%%%%%%
+% MVS: Language definitions
+%
+\renewcommand{\ttdefault}{pcr}
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true
+}
+\lstdefinelanguage{cvl}{
+  morekeywords={generalize,to, with, id, geometry, other, at, zoom, levels, rank, by, subject, and, create, constraint, as, not, exists, resolve, if, delete, select, from, where, in, partition, merge, partitions, setup, teardown,force,min,level,for,allornothing},
+  sensitive=false,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+}
+\lstset{
+  language=cvl
+}
+%%%%%%%%%%%%
+
+
 \begin{document}
 
-\title{CVL}
+\title{Declarative Cartography: In-Database Map Generalization of Geospatial Datasets}
 
 \numberofauthors{1}
 
+
 \author{
 \alignauthor
-Pimin Konstantin Kefaloukos, Marcos Vaz Salles \& Martin Zachariasen\\
-       \affaddr{Department of Computer Science}\\
-       \affaddr{University of Copenhagen}\\
-       \email{\{kostas,vmarcos,martinz\}@diku.dk}
+Pimin Konstantin Kefaloukos\footnotemark[2] \footnotemark[3] \footnotemark[4], Marcos Vaz Salles\footnotemark[2] , Martin Zachariasen\footnotemark[2]\\\vspace{1ex}
+       \affaddr{\footnotemark[2] University of Copenhagen \hspace{6ex} \footnotemark[3] Grontmij A/S \hspace{6ex} \footnotemark[4] National Survey \& Cadastre}\\
+       \affaddr{Copenhagen, Denmark \hspace{5ex} Glostrup, Denmark \hspace{6ex} Copenhagen, Denmark}\\\vspace{1ex}
+       \email{\{kostas, vmarcos, martinz\}@diku.dk}
 }
-\date{30 July 1999}
+
 
 \maketitle
+
 
 \begin{abstract}
 \end{abstract}

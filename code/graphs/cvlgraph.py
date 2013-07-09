@@ -10,18 +10,17 @@ import pdb
 if __name__ == '__main__':
     usage = "usage: %prog [options] tracefile"
     parser = OptionParser(usage=usage)
-    parser.add_option("-g", "--graph",
-                      help="Type of graph to produce: stack")
+    parser.add_option("-g", "--graph", default="stack",
+                      help="Type of graph to produce: stack(default), scalability")
 
     (options, args) = parser.parse_args()
     if len(args) == 0:
-        parser.print_usage()
+        parser.print_help()
         sys.exit(1)
 
     tr = TraceReader(args[0])
     traces = tr.get_traces()
     for trace in traces:
-        pdb.set_trace()
         print 'Heppa!'
 
 

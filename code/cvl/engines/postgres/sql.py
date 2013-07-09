@@ -400,7 +400,7 @@ DO_LOG_INPUTSTATS = \
     $$ LANGUAGE plpythonu;
     """
 
-VACUUM_ANALYZE = \
+ANALYZE = \
     r"""
-    VACUUM ANALYZE {output};
+    ANALYZE {output};
     """

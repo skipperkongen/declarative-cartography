@@ -2,9 +2,8 @@ __author__ = 'kostas'
 
 import imp
 import os
-import pdb
 
-from cvl.framework.query import WILDCARD
+from cvl.engines.postgres.runtime import *
 from cvl.engines.postgres.sql import *
 from cvl.util.anonobject import Object
 
@@ -44,8 +43,9 @@ class CodeGenerator(object):
 
         self.code.append(BEGIN_TX)
 
-        self.Info('Adding CVL framework')
-        self.code.append(ADD_FRAMEWORK)
+        self.Info('Adding CVL runtime')
+        self.code.append(ADD_RUNTIME)
+        self.code.append(OPTIMIZE_RUNTIME)
 
         self.Log('BEGIN_TRANSACTION')
 
@@ -74,8 +74,8 @@ class CodeGenerator(object):
         self.Info('Uninstalling solver')
         self.code.append(self.solver.UNINSTALL)
 
-        self.Info('Removing CVL framework')
-        self.code.append(REMOVE_FRAMEWORK)
+        self.Info('Removing CVL runtime')
+        self.code.append(REMOVE_RUNTIME)
 
         self.code.append(COMMIT_TX)
         self.Log('COMMIT')

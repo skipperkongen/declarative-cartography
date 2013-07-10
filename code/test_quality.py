@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     for solver in SOLVERS:
         for constraint in CONSTRAINTS:
-            for dataset in DATASETS:
+            for dataset in DATASETS[0:4]:
                     job_name = "qual_{0:s}_{1:d}_{2:s}_{3:s}".format(
                         dataset['name'],
                         dataset['size'],

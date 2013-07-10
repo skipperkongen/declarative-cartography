@@ -1,6 +1,6 @@
-09/07/2013 23:20:38.990331 [30k_poly_dai_cellbound16_lp] BEGIN_TRANSACTION
-09/07/2013 23:20:47.791646 [30k_poly_dai_cellbound16_lp] initialized
-09/07/2013 23:20:47.792009 [30k_poly_dai_cellbound16_lp] solver "lp"
-09/07/2013 23:20:47.792385 [30k_poly_dai_cellbound16_lp] constraints "cellbound(16,)"
-09/07/2013 23:20:48.147119 [30k_poly_dai_cellbound16_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'total_rank': 603942.0665152741, 'total_recs': 30181L}
-09/07/2013 23:20:48.193986 [30k_poly_dai_cellbound16_lp] initialized_level 14
+10/07/2013 07:20:20.923826 [30k_poly_dai_cellbound16_lp] BEGIN_TRANSACTION
+10/07/2013 07:20:30.796018 [30k_poly_dai_cellbound16_lp] initialized
+10/07/2013 07:20:30.796410 [30k_poly_dai_cellbound16_lp] solver "lp"
+10/07/2013 07:20:30.796706 [30k_poly_dai_cellbound16_lp] constraints "cellbound(16,)"
+10/07/2013 07:20:31.116453 [30k_poly_dai_cellbound16_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'total_rank': 605194.8371925857, 'total_recs': 30181L}
+10/07/2013 07:20:31.191633 [30k_poly_dai_cellbound16_lp] initialized_level 17

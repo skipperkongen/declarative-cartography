@@ -15,7 +15,7 @@ if __name__ == '__main__':
         'input': 'dai_polygons',
         'fid': 'ogc_fid',
         'geometry': 'wkb_geometry',
-        #'other': ['temanavn'],
+        'other': ['temanavn'],
         #'other': ['airport_id', 'name', 'city', 'country', 'num_routes'],
         'rank_by': 'st_area(wkb_geometry)/1000000'
     }

@@ -23,7 +23,7 @@ if __name__ == '__main__':
         }
 
         for solver in ['lp', 'heuristic']:
-            for constraint in [[('cellbound', 16)] ]: #, [('proximity', 10)]]:
+            for constraint in [[('cellbound', 16)], [('proximity', 10)]]:
                 fname = os.path.splitext(basename(__file__))[0]
                 job_name = "{0:s}_{1:d}k_{2:s}{3:d}_{4:s}".format(
                     fname,

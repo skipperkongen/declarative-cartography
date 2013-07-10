@@ -2,6 +2,7 @@ __author__ = 'kostas'
 
 import imp
 import os
+import pdb
 
 from cvl.engines.postgres.runtime import *
 from cvl.engines.postgres.sql import *
@@ -46,22 +47,23 @@ class CodeGenerator(object):
 
         self.code.append(BEGIN_TX)
 
-        self.Info('Adding CVL runtime')
-        self.code.append(ADD_RUNTIME)
-        self.code.append(OPTIMIZE_RUNTIME)
-
         self.Log('BEGIN_TRANSACTION')
-
-        self.Info('Installing solver')
-        self.code.append(self.solver.INSTALL)
 
         self.Info('Dropping old version of output table')
         self.code.append(DROP_OUTPUT_TABLE.format(**formatter))
 
         self.Info('Creating new output table and index')
+
         self.code.append(CREATE_OUTPUT_TABLE_AND_INDEX.format(**formatter))
 
         self.code.append(ANALYZE.format(**formatter))
+
+        self.Info('Adding CVL runtime')
+        self.code.append(ADD_RUNTIME)
+        self.code.append(OPTIMIZE_RUNTIME)
+
+        self.Info('Installing solver')
+        self.code.append(self.solver.INSTALL)
 
         self.Log('initialized')
 

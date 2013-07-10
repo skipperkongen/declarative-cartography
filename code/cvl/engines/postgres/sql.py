@@ -36,7 +36,7 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
       {input};
 
     --CREATE INDEX {output}_zidx ON {output} (cvl_zoom);
-    CREATE INDEX {output}_gist ON {output} USING GIST({geometry});
+    CREATE INDEX {output}_geom_idx ON {output} USING GIST({geometry});
     """
 
 # CVL

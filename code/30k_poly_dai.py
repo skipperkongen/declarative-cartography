@@ -11,16 +11,16 @@ from os.path import basename
 if __name__ == '__main__':
     compiler = CvlCompiler()
     query_dict = {
-        'zoomlevels': 15,
+        'zoomlevels': 18,
         'input': 'dai_polygons',
         'fid': 'ogc_fid',
         'geometry': 'wkb_geometry',
-        'other': ['temanavn'],
+        #'other': ['temanavn'],
         #'other': ['airport_id', 'name', 'city', 'country', 'num_routes'],
         'rank_by': 'st_area(wkb_geometry)/1000000'
     }
     for solver in ['lp', 'heuristic']:
-        for constraint in [[('cellbound', 16)], [('proximity', 10)]]:
+        for constraint in [[('cellbound', 16)]]:  # , [('proximity', 10)]]:
             fname = os.path.splitext(basename(__file__))[0]
             job_name = "{0:s}_{1:s}{2:d}_{3:s}".format(fname, constraint[0][0], constraint[0][1], solver)
             query_dict['subject_to'] = constraint

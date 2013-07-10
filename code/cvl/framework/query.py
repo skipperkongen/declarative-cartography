@@ -19,6 +19,9 @@ class Query(object):
         self.output = output
         self.fid = fid
         self.geometry = geometry
-        self.other = ', '.join(other) + ', '
+        if any(other):
+            self.other = ', '.join(other) + ', '
+        else:
+            self.other = ''
         self.rank_by = rank_by
         self.subject_to = [Object(name=x[0],params=x[1:]) for x in subject_to]

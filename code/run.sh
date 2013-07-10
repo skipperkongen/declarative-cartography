@@ -1,6 +1,7 @@
 #!/bin/sh
 
-COMP_NAME="macbook"
+COMP_NAME="highmem"
+
 DIRECTORY="../results/traces/$COMP_NAME"
 if [ ! -d "$DIRECTORY" ]; then
   mkdir "$DIRECTORY"

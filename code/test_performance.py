@@ -8,18 +8,18 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     compiler = CvlCompiler()
 
-    SIZE = 30000
+    # SIZE = 30000
 
     for solver in SOLVERS:
         for constraint in CONSTRAINTS:
-            for dataset in DATASETS[0:3]:
+            for dataset in DATASETS[0:4]:
                     job_name = "perf_{0:s}_{1:d}_{2:s}_{3:s}".format(
                         dataset['name'],
-                        SIZE,
+                        dataset['size'],
                         constraint[0][0],
                         solver
                     )
-                    QUERY_DICT['input'] = dataset['input'].format(SIZE)
+                    QUERY_DICT['input'] = dataset['input'].format(dataset['size'])
                     QUERY_DICT['subject_to'] = constraint
                     QUERY_DICT['rank_by'] = dataset['rank_by']
                     query = Query(**QUERY_DICT)

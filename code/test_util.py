@@ -24,10 +24,10 @@ DATASETS = [
         'rank_by': 'random()',
         'size': 523096},
     {
-        'name': 'waterways',
-        'input': '(select * from lin_???k_waterways where x_order <= {0:d}) t',
+        'name': 'usrivers',
+        'input': '(select * from lin_100k_usrivers where x_order <= {0:d}) t',
         'rank_by': 'st_length(wkb_geometry)/1000',
-        'size': 1024000},
+        'size': 102486},
     {
         'name': 'dai',
         'input': '(select * from pol_30m_dai where x_order <= {0:d}) t',
@@ -39,9 +39,8 @@ DATASETS = [
         'rank_by': 'num_routes',
         'size': 7411},
     {
-        'name': 'synthetic',
-        'input': '(select * from pnt_30m_synthetic where x_order <= {0:d}) t',
-        'rank_by': 'random()',
-        'size': 523096}
-
+        'name': 'usriversplus',
+        'input': '(select * from lin_3m_usriversplus where x_order <= {0:d}) t',
+        'rank_by': '',
+        'size': 3055237}
 ]

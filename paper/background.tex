@@ -8,11 +8,11 @@ Cartography has a long tradition spanning hundreds of years, and has rightly bee
 
 A typical architecture used for map services consists of a rendering process and a database process. In this architecture each section of the map is visualized by following these three steps:
 
-\begin{description}
-\item[Scale-oblivious spatial filtering] The rendering process fetches data from the database using a spatial predicate such as \emph{intersects-boundingbox} to fetch data that overlaps the section of the map being rendered. The filtering is computed by the database and is made fast by the use of spatial indexes.
-\item[Scale-aware attribute filtering] The rendering process applies \emph{post-filtering} to the data that was retrieved, using range and equality predicates according to scale. The predicates come from \emph{cartographic filtering rules} that make statements of what sets of records should be omitted/included at what scales, such as "omit individual buildings on a map of the world" or "include restaurants on a map of a city".
-\item[Rendering] After the data has been filtered, it is rendered using \emph{cartographic visualization rules} such as "color lakes blue".
-\end{description}
+\minisec{Scale-oblivious spatial filtering} The rendering process fetches data from the database using a spatial predicate such as \emph{intersects-boundingbox} to fetch data that overlaps the section of the map being rendered. The filtering is computed by the database and is made fast by the use of spatial indexes.
+
+\minisec{Scale-aware attribute filtering} The rendering process applies \emph{post-filtering} to the data that was retrieved, using range and equality predicates according to scale. The predicates come from \emph{cartographic filtering rules} that make statements of what sets of records should be omitted/included at what scales, such as "omit individual buildings on a map of the world" or "include restaurants on a map of a city".
+
+\minisec{Rendering} After the data has been filtered, it is rendered using \emph{cartographic visualization rules} such as "color lakes blue".
 
 Different steps are certainly possible, but these step represent the most typical case. In this work we realize an opportunity for making the rendering process more efficient. 
 

@@ -100,21 +100,24 @@ RESOLVE cid IF DELETE (
 
 Some utility functions and variables are given by the CVL framework. These can be used when writing constraint statements. The aim of these functions is to make it easier to write constraints. The functions are:
 
-\begin{description}
-\item [CellSizeZ] yada yada
-\item [ResolutionZ] yada yada
-\item [PointHash] yada yada
-\item [WebMercatorCells:] Takes as input a geometry and a zoom-level. Produces a set of points that correspond to the centers of intersected cells in standard Web Mercator tile model~\cite{osm?} at the given zoom-level.
-\end{description}
+\minisec{CellSizeZ} yada yada
+
+\minisec{ResolutionZ} yada yada
+
+\minisec{PointHash} yada yada
+
+\minisec{WebMercatorCells}
+Takes as input a geometry and a zoom-level. Produces a set of points that correspond to the centers of intersected cells in standard Web Mercator tile model~\cite{osm?} at the given zoom-level.
 
 A number of variables can be referenced inside the query:
 
-\begin{description}
-\item[level-view] A view containing only the records that part of the currently active zoom level
-\item[z] The currently active zoom level as an integer
-\item[geometry] The name of the geometry field in the input
-\item[parameter 1, ..., n] The values of the floating point parameters given in the subject-to clause.
-\end{description}
+\minisec{level-view} A view containing only the records that part of the currently active zoom level
+
+\minisec{z} The currently active zoom level as an integer
+
+\minisec{geometry} The name of the geometry field in the input
+
+\minisec{parameter 1, ..., n} The values of the floating point parameters given in the subject-to clause.
 
 Apart from these variables, CVL automatically creates the following fields in the output table: \emph{cvl-id}, \emph{cvl-rank} and \emph{cvl-zoom} which may additionally be used in the query.
 

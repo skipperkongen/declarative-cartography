@@ -168,6 +168,7 @@ DO_LOG_INPUTSTATS = \
         sql = "SELECT array_agg(DISTINCT GeometryType({geometry})) as geometry_types FROM {output};"
         rows = plpy.execute(sql)
         stats['geometry_types'] = rows[0]['geometry_types']
+        stats['input'] = '{input}'
 
         with open('{log_path}', 'a+') as f:
             for row in rows:

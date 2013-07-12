@@ -70,7 +70,8 @@ class CodeGenerator(object):
         self.Log('solver "{0:s}"'.format(self.solver_name))
         constraints = ", ".join(map(lambda x: "{0:s}{1:s}".format(x.name, str(x.params)), self.query.subject_to))
         self.Log('constraints "{0:s}"'.format(constraints))
-        self.LogInputStats()
+        formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
+        self.code.append(DO_LOG_INPUTSTATS.format(**formatter))
 
     def Finalize(self):
         formatter = self._get_formatter()
@@ -131,10 +132,6 @@ class CodeGenerator(object):
         """
         formatter = self._get_formatter(log_path=self.log_path, job_name=self.job_name, z=z)
         self.code.append(DO_LOG_LEVELSTATS.format(**formatter))
-
-    def LogInputStats(self):
-        formatter = self._get_formatter(log_path=self.log_path,job_name=self.job_name)
-        self.code.append(DO_LOG_INPUTSTATS.format(**formatter))
 
     def Info(self, *info):
         for comment in info:

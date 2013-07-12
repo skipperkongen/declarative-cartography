@@ -51,9 +51,12 @@ ADD_RUNTIME = \
 
         # b: non-neg, less-than-one, min_hits
         _b = matrix([0.0] * len(variables) + [1.0] * len(variables) + [-c['min_hits'] for c in conflicts])
+        plpy.notice("b:" + str(_b))
 
         # c: ranks
-        _c = matrix([variables[v]['cvl_rank'] for v in variables])
+        EPSILON = 0.0000001
+        _c = matrix([max(variables[v]['cvl_rank'], EPSILON) for v in variables])
+        plpy.notice("c:" + str(_c))
 
         # A:
         non_neg = spmatrix(-1.0, range(len(variables)), range(len(variables)))
@@ -67,6 +70,7 @@ ADD_RUNTIME = \
         csets = spmatrix(-1.0, I, J)
 
         _A = sparse([non_neg, less_than_one, csets])
+        plpy.notice("A:" + str(_A))
 
         solvers.options['show_progress'] = False
         sol = solvers.lp(_c, _A, _b)
@@ -79,7 +83,7 @@ ADD_RUNTIME = \
         else:
             plpy.error("Infeasible LP instance detected by solver!")
 
-    $$ LANGUAGE plpythonu;
+    $$ LANGUAGE plpythonu VOLATILE;
 
     CREATE OR REPLACE FUNCTION CVL_LPBOUND
     (

@@ -181,6 +181,29 @@ DO_LOG_INPUTSTATS = \
     $$ LANGUAGE plpythonu;
     """
 
+DO_CHECK = \
+    r"""
+    DO $$
+        EPSILON = 0.00001
+        sql_1 = (
+            "select sum(t.min_hits) as ub from "
+            " (select row_number() over (partition by conflict_id) as rn, * from _conflicts) t "
+            "where t.rn = 1;"
+        )
+
+        sql_2 = "select sum(lp_value) as lb from CVL_LP('_conflicts');"
+
+        ub = plpy.execute(sql_1)[0]['ub']
+        lb = plpy.execute(sql_2)[0]['lb']
+        if ub and lb and lb > ub + EPSILON:
+            plpy.notice('bad bounds: {0:f} > {1:f}'.format(lb, ub))
+        elif ub is None:
+            plpy.notice('no conflicts')
+        else:
+            plpy.notice('bounds ok: {0:f} <= {1:f}'.format(lb, ub))
+    $$ LANGUAGE plpythonu;
+    """
+
 ANALYZE = \
     r"""
     ANALYZE {output};

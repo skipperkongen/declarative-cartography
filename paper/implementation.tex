@@ -15,7 +15,7 @@ Since CVL is declarative, and CVL constraints are already expressed in SQL, it i
 
 \item Since all code is pushed down and both input and output reside in the database, we do not need to transfer any data outside of the database engine. This co-location of code and data is a significant advantage for large datasets.
 
-\item By expressing as much as possible of the generated code in SQL, we can reuse decades of optimizations built into database engines, especially for geospatial data~\cite{Guttman1984:RTree,gist}. This opens up many opportunities, such as automatic optimization, parallelism, and selection of specialized algorithms and indexes.  
+\item By expressing as much as possible of the generated code in SQL, we can reuse decades of optimizations built into database engines, especially for geospatial data~\cite{Guttman1984:RTree,Hellerstein1995:GiST}. This opens up many opportunities, such as automatic optimization, parallelism, and selection of specialized algorithms and indexes.  
 
 \end{enumerate} 
 

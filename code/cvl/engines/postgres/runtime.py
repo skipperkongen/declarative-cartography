@@ -142,9 +142,9 @@ ADD_RUNTIME = \
     CREATE OR REPLACE FUNCTION CVL_CellsForPolygon
     (
       geom geometry,
-      cell_size float8,
-      x0 float8 DEFAULT -20037508.34,
-      y0 float8 DEFAULT -20037508.34,
+      cell_size double precision,
+      x0 double precision DEFAULT -20037508.34,
+      y0 double precision DEFAULT -20037508.34,
       OUT pt geometry
     ) RETURNS SETOF geometry AS
     $$
@@ -173,6 +173,64 @@ ADD_RUNTIME = \
     WHERE
         ST_Value(RASTER.raster, PT.pt, false) = 1
     $$ LANGUAGE sql IMMUTABLE STRICT;
+
+
+    CREATE OR REPLACE FUNCTION CVL_RasterToPoints
+    (
+        the_raster raster,
+        OUT pt geometry
+    ) RETURNS SETOF geometry AS
+    $$
+    SELECT
+        ST_Translate(
+            PT.pt,
+            (IDX.i - 1) * ST_PixelWidth($1),
+            (IDX.j - 1) * ST_PixelHeight($1)
+        )
+    FROM
+        (SELECT
+            generate_series(1, ST_Width($1)) AS i,
+            generate_series(1, ST_Height($1)) AS j
+        ) IDX,
+        (SELECT
+        ST_SetSrid(
+                ST_Point(
+                    ST_UpperLeftX($1) + (ST_PixelWidth($1) / 2),
+                    ST_UpperLeftY($1) + (ST_PixelHeight($1) / 2)
+                ),
+                ST_SRID($1)
+            ) as pt
+        ) PT
+    WHERE
+        ST_Value($1,IDX.i,IDX.j) = 1
+    $$ LANGUAGE sql IMMUTABLE STRICT;
+
+
+    CREATE OR REPLACE FUNCTION CVL_CellsForPolygon2
+    (
+      geom geometry,
+      cell_size double precision,
+      x0 double precision DEFAULT -20037508.34,
+      y0 double precision DEFAULT -20037508.34,
+      OUT pt geometry
+    ) RETURNS SETOF geometry AS
+    $$
+    SELECT
+        CVL_RasterToPoints(
+            ST_AsRaster(
+                $1,
+                $2,
+                $2,
+                $3,
+                $4,
+                '1BB',
+                1::double precision,
+                0::double precision,
+                0::double precision,
+                0::double precision,
+                true)) pt
+    $$ LANGUAGE sql IMMUTABLE STRICT;
+
 
     -- web mercator cells
 

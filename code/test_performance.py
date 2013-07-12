@@ -16,7 +16,7 @@ if __name__ == '__main__':
                     job_name = "perf_{0:s}_{1:d}_{2:s}_{3:s}".format(
                         dataset['name'],
                         dataset['size'],
-                        constraint[0][0],
+                        '-'.join(map(lambda x: x[0], constraint)),
                         solver
                     )
                     QUERY_DICT['input'] = dataset['input'].format(dataset['size'])

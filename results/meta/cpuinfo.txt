@@ -12,7 +12,7 @@ siblings	: 2
 core id		: 0
 cpu cores	: 1
 apicid		: 0
-initial apicid	: 0
+initial apicid	: 12
 fpu		: yes
 fpu_exception	: yes
 cpuid level	: 13
@@ -38,7 +38,7 @@ siblings	: 2
 core id		: 0
 cpu cores	: 1
 apicid		: 0
-initial apicid	: 0
+initial apicid	: 12
 fpu		: yes
 fpu_exception	: yes
 cpuid level	: 13

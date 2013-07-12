@@ -139,25 +139,23 @@ ADD_RUNTIME = \
     $$ LANGUAGE sql IMMUTABLE STRICT;
 
 
-    CREATE OR REPLACE FUNCTION CVL_RasterToPoints
+    CREATE OR REPLACE FUNCTION CVL_PixelAsCentroids
     (
         the_raster raster,
         OUT pt geometry
     ) RETURNS SETOF geometry AS
     $$
     SELECT
-        ST_Translate(
+    ST_Translate(
             PT.pt,
-            (IDX.i - 1) * ST_PixelWidth($1),
-            (IDX.j - 1) * ST_PixelHeight($1)
+            (i - 1) * ST_PixelWidth($1),
+            (j - 1) * ST_PixelHeight($1)
         )
     FROM
+        generate_series(1, ST_Width($1)) AS i CROSS JOIN
+        generate_series(1, ST_Height($1)) AS j CROSS JOIN
         (SELECT
-            generate_series(1, ST_Width($1)) AS i,
-            generate_series(1, ST_Height($1)) AS j
-        ) IDX,
-        (SELECT
-        ST_SetSrid(
+            ST_SetSrid(
                 ST_Point(
                     ST_UpperLeftX($1) + (ST_PixelWidth($1) / 2),
                     ST_UpperLeftY($1) + (ST_PixelHeight($1) / 2)
@@ -165,8 +163,7 @@ ADD_RUNTIME = \
                 ST_SRID($1)
             ) as pt
         ) PT
-    WHERE
-        ST_Value($1,IDX.i,IDX.j) = 1
+    WHERE st_value($1, i, j) is not null
     $$ LANGUAGE sql IMMUTABLE STRICT;
 
 
@@ -180,7 +177,7 @@ ADD_RUNTIME = \
     ) RETURNS SETOF geometry AS
     $$
     SELECT
-        CVL_RasterToPoints(
+        CVL_PixelAsCentroids(
             ST_AsRaster(
                 $1,
                 $2,

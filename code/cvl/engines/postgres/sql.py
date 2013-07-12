@@ -192,8 +192,8 @@ DO_CHECK = \
         lb_rv = plpy.execute(lb_sql)
         if any(ub_rv) and any(lb_rv) and lb_rv[0]['lb'] > ub_rv[0]['ub'] + EPSILON:
             plpy.notice('bad bounds: {0:f} > {1:f}'.format(lb_rv[0]['lb'], ub_rv[0]['ub']))
-            rv = plpy.execute("select cvl_id, cvl_rank, lp_value from CVL_LP('_conflicts');")
-            plpy.notice("\n".join([str(row) for row in rv]))
+            #rv = plpy.execute("select cvl_id, cvl_rank, lp_value from CVL_LP('_conflicts');")
+            #plpy.notice("\n".join([str(row) for row in rv]))
         elif not any(ub_rv):
             plpy.notice('no conflicts')
         else:

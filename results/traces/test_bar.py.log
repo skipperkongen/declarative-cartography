@@ -1,56 +1,51 @@
-12/07/2013 15:27:08.855562 [investigating_bound] BEGIN_TRANSACTION
-12/07/2013 15:27:09.215159 [investigating_bound] initialized
-12/07/2013 15:27:09.215583 [investigating_bound] solver "heuristic"
-12/07/2013 15:27:09.215972 [investigating_bound] constraints "cellbound(16,)"
-12/07/2013 15:27:09.223498 [investigating_bound] inputstats {'geometry_types': ['POINT'], 'total_rank': 61022.0, 'total_recs': 7411L}
-12/07/2013 15:27:09.286094 [investigating_bound] initialized_level 9
-12/07/2013 15:27:09.847090 [investigating_bound] found_conflicts 9
-12/07/2013 15:27:09.848484 [investigating_bound] resolved_conflicts 9
-12/07/2013 15:27:10.095590 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
-12/07/2013 15:27:10.098220 [investigating_bound] finalized_level 9
-12/07/2013 15:27:10.111408 [investigating_bound] initialized_level 8
-12/07/2013 15:27:10.616497 [investigating_bound] found_conflicts 8
-12/07/2013 15:27:10.628073 [investigating_bound] resolved_conflicts 8
-12/07/2013 15:27:10.885742 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 20L, 'rec_per_c_min': 18L, 'num_c': 5L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7391L, 'rec_per_c_max': 22L, 'lp_bound': 423.25473656729173, 'num_recs_having_c': 100L, 'rec_per_c_avg': 20.0}
-12/07/2013 15:27:10.889371 [investigating_bound] finalized_level 8
-12/07/2013 15:27:10.910195 [investigating_bound] initialized_level 7
-12/07/2013 15:27:11.393761 [investigating_bound] found_conflicts 7
-12/07/2013 15:27:11.427002 [investigating_bound] resolved_conflicts 7
-12/07/2013 15:27:11.570777 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 432L, 'rec_per_c_min': 17L, 'num_c': 51L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 6959L, 'rec_per_c_max': 47L, 'lp_bound': 6031.788927198404, 'num_recs_having_c': 1248L, 'rec_per_c_avg': 24.470588235294116}
-12/07/2013 15:27:11.575359 [investigating_bound] finalized_level 7
-12/07/2013 15:27:11.610664 [investigating_bound] initialized_level 6
-12/07/2013 15:27:12.069109 [investigating_bound] found_conflicts 6
-12/07/2013 15:27:12.145441 [investigating_bound] resolved_conflicts 6
-12/07/2013 15:27:12.494659 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 60970.0, 'rank_lost': 52.0, 'recs_lost': 1411L, 'rec_per_c_min': 17L, 'num_c': 116L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 5548L, 'rec_per_c_max': 64L, 'lp_bound': 17099.478547239236, 'num_recs_having_c': 3267L, 'rec_per_c_avg': 28.163793103448278}
-12/07/2013 15:27:12.500464 [investigating_bound] finalized_level 6
-12/07/2013 15:27:12.529794 [investigating_bound] initialized_level 5
-12/07/2013 15:27:12.913422 [investigating_bound] found_conflicts 5
-12/07/2013 15:27:12.961005 [investigating_bound] resolved_conflicts 5
-12/07/2013 15:27:13.474549 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 57478.0, 'rank_lost': 3492.0, 'recs_lost': 2460L, 'rec_per_c_min': 17L, 'num_c': 131L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 3088L, 'rec_per_c_max': 64L, 'lp_bound': 33881.43574584235, 'num_recs_having_c': 4556L, 'rec_per_c_avg': 34.778625954198475}
-12/07/2013 15:27:13.476707 [investigating_bound] finalized_level 5
-12/07/2013 15:27:13.479735 [investigating_bound] initialized_level 4
-12/07/2013 15:27:13.690837 [investigating_bound] found_conflicts 4
-12/07/2013 15:27:13.720521 [investigating_bound] resolved_conflicts 4
-12/07/2013 15:27:14.039086 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 46594.0, 'rank_lost': 10884.0, 'recs_lost': 1755L, 'rec_per_c_min': 18L, 'num_c': 67L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 1333L, 'rec_per_c_max': 64L, 'lp_bound': 39522.24529205433, 'num_recs_having_c': 2827L, 'rec_per_c_avg': 42.19402985074627}
-12/07/2013 15:27:14.040999 [investigating_bound] finalized_level 4
-12/07/2013 15:27:14.044144 [investigating_bound] initialized_level 3
-12/07/2013 15:27:14.182800 [investigating_bound] found_conflicts 3
-12/07/2013 15:27:14.199857 [investigating_bound] resolved_conflicts 3
-12/07/2013 15:27:14.327395 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 34072.0, 'rank_lost': 12522.0, 'recs_lost': 830L, 'rec_per_c_min': 21L, 'num_c': 28L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 503L, 'rec_per_c_max': 64L, 'lp_bound': 34068.49995165054, 'num_recs_having_c': 1278L, 'rec_per_c_avg': 45.642857142857146}
-12/07/2013 15:27:14.329298 [investigating_bound] finalized_level 3
-12/07/2013 15:27:14.333059 [investigating_bound] initialized_level 2
-12/07/2013 15:27:14.405539 [investigating_bound] found_conflicts 2
-12/07/2013 15:27:14.414187 [investigating_bound] resolved_conflicts 2
-12/07/2013 15:27:14.457202 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 21363.0, 'rank_lost': 12709.0, 'recs_lost': 312L, 'rec_per_c_min': 22L, 'num_c': 11L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 191L, 'rec_per_c_max': 64L, 'lp_bound': 24242.00029748003, 'num_recs_having_c': 488L, 'rec_per_c_avg': 44.36363636363637}
-12/07/2013 15:27:14.459072 [investigating_bound] finalized_level 2
-12/07/2013 15:27:14.462390 [investigating_bound] initialized_level 1
-12/07/2013 15:27:14.482896 [investigating_bound] found_conflicts 1
-12/07/2013 15:27:14.489431 [investigating_bound] resolved_conflicts 1
-12/07/2013 15:27:14.510012 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 13836.0, 'rank_lost': 7527.0, 'recs_lost': 126L, 'rec_per_c_min': 33L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 65L, 'rec_per_c_max': 64L, 'lp_bound': 14419.999975047742, 'num_recs_having_c': 190L, 'rec_per_c_avg': 47.5}
-12/07/2013 15:27:14.511808 [investigating_bound] finalized_level 1
-12/07/2013 15:27:14.550070 [investigating_bound] initialized_level 0
-12/07/2013 15:27:14.565309 [investigating_bound] found_conflicts 0
-12/07/2013 15:27:14.569538 [investigating_bound] resolved_conflicts 0
-12/07/2013 15:27:14.582993 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 6525.0, 'rank_lost': 7311.0, 'recs_lost': 48L, 'rec_per_c_min': 64L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 17L, 'rec_per_c_max': 64L, 'lp_bound': 9970.999978332206, 'num_recs_having_c': 64L, 'rec_per_c_avg': 64.0}
-12/07/2013 15:27:14.584739 [investigating_bound] finalized_level 0
-12/07/2013 15:27:14.641277 [investigating_bound] COMMIT
+12/07/2013 20:30:54.274173 [investigating_bound] BEGIN_TRANSACTION
+12/07/2013 20:30:56.168642 [investigating_bound] initialized
+12/07/2013 20:30:56.168983 [investigating_bound] solver "lp"
+12/07/2013 20:30:56.169492 [investigating_bound] constraints "cellbound(16,)"
+12/07/2013 20:30:56.185257 [investigating_bound] inputstats {'geometry_types': ['LINESTRING'], 'total_rank': 10297.616793028814, 'total_recs': 7411L}
+12/07/2013 20:30:56.193390 [investigating_bound] initialized_level 9
+12/07/2013 20:31:36.604562 [investigating_bound] found_conflicts 9
+12/07/2013 20:31:36.608842 [investigating_bound] resolved_conflicts 9
+12/07/2013 20:31:36.616186 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10297.616793028814, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:31:36.619505 [investigating_bound] finalized_level 9
+12/07/2013 20:31:36.622919 [investigating_bound] initialized_level 8
+12/07/2013 20:32:17.168172 [investigating_bound] found_conflicts 8
+12/07/2013 20:32:17.169565 [investigating_bound] resolved_conflicts 8
+12/07/2013 20:32:17.175928 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10297.616793028814, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:32:17.178635 [investigating_bound] finalized_level 8
+12/07/2013 20:32:17.181839 [investigating_bound] initialized_level 7
+12/07/2013 20:32:57.469119 [investigating_bound] found_conflicts 7
+12/07/2013 20:32:57.470432 [investigating_bound] resolved_conflicts 7
+12/07/2013 20:32:57.476927 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10297.616793028814, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:32:57.479935 [investigating_bound] finalized_level 7
+12/07/2013 20:32:57.483113 [investigating_bound] initialized_level 6
+12/07/2013 20:33:39.243923 [investigating_bound] found_conflicts 6
+12/07/2013 20:33:39.245428 [investigating_bound] resolved_conflicts 6
+12/07/2013 20:33:39.252853 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10297.616793028814, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:33:39.257155 [investigating_bound] finalized_level 6
+12/07/2013 20:33:39.261054 [investigating_bound] initialized_level 5
+12/07/2013 20:34:22.608297 [investigating_bound] found_conflicts 5
+12/07/2013 20:34:22.623079 [investigating_bound] resolved_conflicts 5
+12/07/2013 20:34:22.634519 [investigating_bound] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 10274.561715036441, 'rank_lost': 23.055077992373715, 'recs_lost': 9L, 'rec_per_c_min': 25L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7402L, 'rec_per_c_max': 25L, 'lp_bound': 23.05508657230548, 'num_recs_having_c': 25L, 'rec_per_c_avg': 25.0}
+12/07/2013 20:34:22.641399 [investigating_bound] finalized_level 5
+12/07/2013 20:34:22.655752 [investigating_bound] initialized_level 4
+12/07/2013 20:35:04.366713 [investigating_bound] found_conflicts 4
+12/07/2013 20:35:04.368063 [investigating_bound] resolved_conflicts 4
+12/07/2013 20:35:04.374551 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10274.561715036441, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7402L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:35:04.377350 [investigating_bound] finalized_level 4
+12/07/2013 20:35:04.381042 [investigating_bound] initialized_level 3
+12/07/2013 20:35:44.865649 [investigating_bound] found_conflicts 3
+12/07/2013 20:35:44.866982 [investigating_bound] resolved_conflicts 3
+12/07/2013 20:35:44.873473 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10274.561715036441, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7402L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:35:44.876435 [investigating_bound] finalized_level 3
+12/07/2013 20:35:44.880008 [investigating_bound] initialized_level 2
+12/07/2013 20:36:25.314309 [investigating_bound] found_conflicts 2
+12/07/2013 20:36:25.315674 [investigating_bound] resolved_conflicts 2
+12/07/2013 20:36:25.322204 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10274.561715036441, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7402L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:36:25.324725 [investigating_bound] finalized_level 2
+12/07/2013 20:36:25.328534 [investigating_bound] initialized_level 1
+12/07/2013 20:37:05.700596 [investigating_bound] found_conflicts 1
+12/07/2013 20:37:05.701944 [investigating_bound] resolved_conflicts 1
+12/07/2013 20:37:05.708454 [investigating_bound] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 10274.561715036441, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7402L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+12/07/2013 20:37:05.711042 [investigating_bound] finalized_level 1
+12/07/2013 20:37:05.714694 [investigating_bound] initialized_level 0

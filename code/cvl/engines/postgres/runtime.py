@@ -26,7 +26,7 @@ ADD_RUNTIME = \
         SELECT_CONFLICTS = \
             (
                 "SELECT"
-                " array_agg(cvl_id) as cvl_ids,"
+                " array_agg(cvl_id) as rids,"
                 " (SELECT min_hits FROM {conflict_table} t2 WHERE t1.conflict_id = t2.conflict_id LIMIT 1)"
                 " FROM"
                 " {conflict_table} t1"
@@ -41,44 +41,39 @@ ADD_RUNTIME = \
             return
 
         # get variables
-        sql = "SELECT cvl_id, min(cvl_rank) as cvl_rank FROM {conflict_table} GROUP BY cvl_id".format(conflict_table=conflict_table)
-        variables = plpy.execute(sql)
-        variables = dict(map(
-            lambda (pos,x): (x['cvl_id'], {'cvl_rank': x['cvl_rank'], 'pos': pos}),
-            enumerate(variables)
-        ))
-        i_to_var = dict([(value['pos'], key) for (key,value) in variables.items()])
+        sql = "SELECT cvl_id as rid, min(cvl_rank) as rank FROM {conflict_table} GROUP BY cvl_id".format(
+            conflict_table=conflict_table)
+        rids_and_ranks = plpy.execute(sql)
+        rid_lookup = {}
+        for i, row in enumerate(rids_and_ranks):
+            rid_lookup[row['rid']] = {'rank': row['rank'], 'pos': i}
 
         # b: non-neg, less-than-one, min_hits
-        _b = matrix([0.0] * len(variables) + [1.0] * len(variables) + [-c['min_hits'] for c in conflicts])
-        plpy.notice("b:" + str(_b))
+        _b = matrix([0.0] * len(rids_and_ranks) + [1.0] * len(rids_and_ranks) + [-c['min_hits'] for c in conflicts])
 
         # c: ranks
-        EPSILON = 0.0000001
-        _c = matrix([max(variables[v]['cvl_rank'], EPSILON) for v in variables])
-        plpy.notice("c:" + str(_c))
+        _c = matrix([row['rank'] for row in rids_and_ranks])
 
         # A:
-        non_neg = spmatrix(-1.0, range(len(variables)), range(len(variables)))
-        less_than_one = spmatrix(1.0, range(len(variables)), range(len(variables)))
+        non_neg = spmatrix(-1.0, range(len(rids_and_ranks)), range(len(rids_and_ranks)))
+        less_than_one = spmatrix(1.0, range(len(rids_and_ranks)), range(len(rids_and_ranks)))
         I = []
         J = []
         for i, cflt in enumerate(conflicts):
-            for v in cflt['cvl_ids']:
+            for rid in cflt['rids']:
                 I.append(i)
-                J.append(variables[v]['pos'])
+                J.append(rid_lookup[rid]['pos'])
         csets = spmatrix(-1.0, I, J)
 
         _A = sparse([non_neg, less_than_one, csets])
-        plpy.notice("A:" + str(_A))
 
         solvers.options['show_progress'] = False
         sol = solvers.lp(_c, _A, _b)
 
         if sol['status'] == 'optimal':
             for i, lp_value in enumerate(sol['x']):
-                cvl_id = i_to_var[i]
-                cvl_rank = variables[cvl_id]['cvl_rank']
+                cvl_id = rids_and_ranks[i]['rid']
+                cvl_rank = rids_and_ranks[i]['rank']
                 yield {'cvl_id': cvl_id, 'cvl_rank': cvl_rank, 'lp_value': lp_value}
         else:
             plpy.error("Infeasible LP instance detected by solver!")

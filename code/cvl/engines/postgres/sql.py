@@ -185,22 +185,19 @@ DO_CHECK = \
     r"""
     DO $$
         EPSILON = 0.00001
-        sql_1 = (
-            "select sum(t.min_hits) as ub from "
-            " (select row_number() over (partition by conflict_id) as rn, * from _conflicts) t "
-            "where t.rn = 1;"
-        )
+        ub_sql = "select min(min_hits) as ub from _conflicts group by conflict_id;"
+        lb_sql = "select sum(lp_value) as lb from CVL_LP('_conflicts');"
 
-        sql_2 = "select sum(lp_value) as lb from CVL_LP('_conflicts');"
-
-        ub = plpy.execute(sql_1)[0]['ub']
-        lb = plpy.execute(sql_2)[0]['lb']
-        if ub and lb and lb > ub + EPSILON:
-            plpy.notice('bad bounds: {0:f} > {1:f}'.format(lb, ub))
-        elif ub is None:
+        ub_rv = plpy.execute(ub_sql)
+        lb_rv = plpy.execute(lb_sql)
+        if any(ub_rv) and any(lb_rv) and lb_rv[0]['lb'] > ub_rv[0]['ub'] + EPSILON:
+            plpy.notice('bad bounds: {0:f} > {1:f}'.format(lb_rv[0]['lb'], ub_rv[0]['ub']))
+            rv = plpy.execute("select cvl_id, cvl_rank, lp_value from CVL_LP('_conflicts');")
+            plpy.notice("\n".join([str(row) for row in rv]))
+        elif not any(ub_rv):
             plpy.notice('no conflicts')
         else:
-            plpy.notice('bounds ok: {0:f} <= {1:f}'.format(lb, ub))
+            plpy.notice('bounds ok: {0:f} <= {1:f}'.format(lb_rv[0]['lb'], ub_rv[0]['ub']))
     $$ LANGUAGE plpythonu;
     """
 

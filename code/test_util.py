@@ -30,7 +30,7 @@ DATASETS = [
         'size': 102486},
     {
         'name': 'dai',
-        'input': '(select * from pol_30m_dai where x_order <= {0:d}) t',
+        'input': '(select * from pol_30k_dai where x_order <= {0:d}) t',
         'rank_by': 'st_area(wkb_geometry)/1000000',
         'size': 30181},
     {

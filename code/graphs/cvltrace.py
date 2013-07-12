@@ -64,7 +64,6 @@ class Trace(object):
 
         time_passed = event['timestamp'] - self._last_ts
         event_type = event['event']
-        print type(event['value']), event_type
 
         if event_type == 'INITIALIZED':
             self.initialization = time_passed

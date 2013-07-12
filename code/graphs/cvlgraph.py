@@ -21,7 +21,14 @@ if __name__ == '__main__':
     tr = TraceReader(args[0])
     traces = tr.get_traces()
     for trace in traces:
-        print 'Heppa!'
+        solution = sum([level['stats']['rank_lost'] for level in trace.levels])
+        optimum = sum([level['stats']['lp_bound'] for level in trace.levels])
+
+        print trace.name, \
+            ' ' * (45 - len(trace.name)), \
+            trace.duration, \
+            '\topt ratio:', \
+            solution / optimum if optimum > 0 else 'unknown'
 
 
 

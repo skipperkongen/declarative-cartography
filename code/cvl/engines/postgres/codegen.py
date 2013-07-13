@@ -116,7 +116,7 @@ class CodeGenerator(object):
     def FinalizeLevel(self, z):
         formatter = self._get_formatter(z=z)
         self.LogLevelStats(z)
-        self.code.append(DO_CHECK)
+        # self.code.append(DO_CHECK)
         self.Info('Clean-up for level %d' % z)
         self.code.append(DROP_TEMPORARY.format(**formatter))
         self.Log('finalized_level {0:d}'.format(z))

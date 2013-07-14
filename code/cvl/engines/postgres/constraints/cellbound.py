@@ -5,14 +5,25 @@ SET_UP = \
     --------------------------
     -- set up
 
-    CREATE TEMPORARY TABLE _cellbound_cells AS
+    CREATE TEMPORARY TABLE _busted_cells AS
     (
+        SELECT
+            t.cell_id,
+            Unnest(array_agg(t.cvl_id)) as cvl_id
+        FROM
+        (
         SELECT
             CVL_PointHash(CVL_WebMercatorCells({geometry}, {z})) AS cell_id,
             cvl_id
         FROM
             {level_view}
+        ) t
+        GROUP BY t.cell_id
+        HAVING count(*) > {parameter_1}
     );
+
+    CREATE INDEX _busted_cells_id_idx ON _busted_cells (cell_id);
+    --ANALYZE;
     """
 
 FIND_CONFLICTS = \
@@ -22,25 +33,17 @@ FIND_CONFLICTS = \
     --------------------------
     -- find conflicts
     SELECT
-        exceeded_cells.cell_id as conflict_id,
-        all_cells.cvl_id,
-        exceeded_cells.min_hits
+        _busted_cells.cell_id as conflict_id,
+        _busted_cells.cvl_id
     FROM
-        _cellbound_cells all_cells
-    JOIN
-    (
-        -- Find all cells with more than K records belonging to the same partition
-        SELECT
-            cell_id,
-            count(*) - {parameter_1} AS min_hits
-        FROM
-            _cellbound_cells
-        GROUP BY
-            cell_id
-        HAVING
-            count(*) > {parameter_1}
-    ) exceeded_cells
-    ON all_cells.cell_id = exceeded_cells.cell_id
+        _busted_cells
+    """
+
+RESOLVE_IF_DELETE = \
+    """
+    SELECT count(*) - {parameter_1}
+    FROM   _busted_cells c
+    WHERE  c.cell_id = conflict_id
     """
 
 CLEAN_UP = \
@@ -50,5 +53,5 @@ CLEAN_UP = \
     --------------------------
     -- clean up
 
-    DROP TABLE _cellbound_cells;
+    DROP TABLE _busted_cells;
     """

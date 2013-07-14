@@ -7,8 +7,8 @@ QUERY_DICT = {
 }
 
 SOLVERS = [
-    'lp',
-    'heuristic'
+    'heuristic',
+    'lp'
 ]
 
 CONSTRAINTS = [
@@ -18,6 +18,11 @@ CONSTRAINTS = [
 ]
 
 DATASETS = [
+    {
+        'name': 'airports',
+        'input': '(select * from pnt_7k_airports where x_order <= {0:d}) t',
+        'rank_by': 'num_routes',
+        'size': 7411},
     {
         'name': 'tourism',
         'input': '(select * from pnt_500k_tourism where x_order <= {0:d}) t',
@@ -33,11 +38,6 @@ DATASETS = [
         'input': '(select * from pol_30k_dai where x_order <= {0:d}) t',
         'rank_by': 'st_area(wkb_geometry)/1000000',
         'size': 30181},
-    {
-        'name': 'airports',
-        'input': '(select * from pnt_7k_airports where x_order <= {0:d}) t',
-        'rank_by': 'num_routes',
-        'size': 7411},
     {
         'name': 'usriversplus',
         'input': '(select * from lin_3m_usriversplus where x_order <= {0:d}) t',

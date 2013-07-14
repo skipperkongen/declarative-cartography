@@ -8,10 +8,10 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     compiler = CvlCompiler()
 
-    for solver in SOLVERS:
+    for dataset in DATASETS[0:4]:
         for constraint in CONSTRAINTS:
-            for dataset in DATASETS[0:4]:
-                    job_name = "{0:s}_{1:d}_{2:s}_{3:s}".format(
+            for solver in SOLVERS:
+                    job_name = "basic_{0:s}_{1:d}_{2:s}_{3:s}".format(
                         dataset['name'],
                         dataset['size'],
                         '-'.join(map(lambda x: x[0], constraint)),

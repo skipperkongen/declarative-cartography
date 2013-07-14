@@ -24,6 +24,7 @@ class CodeGenerator(object):
                 name=constraint.name,
                 params=constraint.params,
                 SET_UP=module.SET_UP,
+                RESOLVE_IF_DELETE=module.RESOLVE_IF_DELETE,
                 FIND_CONFLICTS=module.FIND_CONFLICTS,
                 CLEAN_UP=module.CLEAN_UP)
             )
@@ -96,9 +97,11 @@ class CodeGenerator(object):
         formatter = self._get_formatter(z=z,level_view='_level_view')
         self.Info('Find conflicts')
         for constraint in self.constraints:
-            self.code.append(constraint.SET_UP.format(**formatter))
+            #pdb.set_trace()
             for i, param in enumerate(constraint.params, start=1):
                 formatter['parameter_{0:d}'.format(i)] = param
+            self.code.append(constraint.SET_UP.format(**formatter))
+            formatter['resolve_if_delete'] = constraint.RESOLVE_IF_DELETE.format(**formatter)
             formatter['constraint_select'] = constraint.FIND_CONFLICTS.format(**formatter)
             self.code.append(FIND_CONFLICTS.format(**formatter))
             self.code.append(constraint.CLEAN_UP.format(**formatter))

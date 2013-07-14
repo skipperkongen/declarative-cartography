@@ -35,6 +35,8 @@ CREATE_OUTPUT_TABLE_AND_INDEX = \
     FROM
       {input};
 
+    CREATE INDEX {output}_idandrank ON {output} (cvl_id, cvl_rank);
+    ALTER TABLE {output} ADD CONSTRAINT {output}_pk PRIMARY KEY (cvl_id);
     --CREATE INDEX {output}_zidx ON {output} (cvl_zoom);
     CREATE INDEX {output}_geom_idx ON {output} USING GIST({geometry});
     """
@@ -57,7 +59,7 @@ FIND_CONFLICTS = \
         conflicts.conflict_id,
         conflicts.cvl_id,
         level.cvl_rank,
-        conflicts.min_hits
+        ({resolve_if_delete}) as min_hits
     FROM ({constraint_select}) conflicts
     JOIN _level_view level
     ON conflicts.cvl_id = level.cvl_id;

@@ -1,0 +1,967 @@
+13/07/2013 08:04:58.230597 [perf_tourism_523096_cellbound_lp] BEGIN_TRANSACTION
+13/07/2013 08:05:10.068625 [perf_tourism_523096_cellbound_lp] initialized
+13/07/2013 08:05:10.068999 [perf_tourism_523096_cellbound_lp] solver "lp"
+13/07/2013 08:05:10.069324 [perf_tourism_523096_cellbound_lp] constraints "cellbound(16,)"
+13/07/2013 08:05:10.664207 [perf_tourism_523096_cellbound_lp] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_500k_tourism where x_order <= 523096) t', 'total_rank': 261262.69425523421, 'total_recs': 523096L}
+13/07/2013 08:05:10.668175 [perf_tourism_523096_cellbound_lp] initialized_level 17
+13/07/2013 08:05:44.576154 [perf_tourism_523096_cellbound_lp] found_conflicts 17
+13/07/2013 08:05:44.965373 [perf_tourism_523096_cellbound_lp] resolved_conflicts 17
+13/07/2013 08:05:45.382501 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 260850.02327455953, 'rank_lost': 412.67098067468032, 'recs_lost': 1533L, 'rec_per_c_min': 17L, 'num_c': 152L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 521563L, 'rec_per_c_max': 84L, 'lp_bound': 411.4792066072452, 'num_recs_having_c': 3963L, 'rec_per_c_avg': 26.07236842105263}
+13/07/2013 08:05:45.384116 [perf_tourism_523096_cellbound_lp] finalized_level 17
+13/07/2013 08:05:45.386751 [perf_tourism_523096_cellbound_lp] initialized_level 16
+13/07/2013 08:06:19.559030 [perf_tourism_523096_cellbound_lp] found_conflicts 16
+13/07/2013 08:06:20.311278 [perf_tourism_523096_cellbound_lp] resolved_conflicts 16
+13/07/2013 08:06:21.074776 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 260031.10160008492, 'rank_lost': 818.92167447460815, 'recs_lost': 2686L, 'rec_per_c_min': 17L, 'num_c': 321L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 518877L, 'rec_per_c_max': 60L, 'lp_bound': 818.92167620626287, 'num_recs_having_c': 7822L, 'rec_per_c_avg': 24.36760124610592}
+13/07/2013 08:06:21.076423 [perf_tourism_523096_cellbound_lp] finalized_level 16
+13/07/2013 08:06:21.079218 [perf_tourism_523096_cellbound_lp] initialized_level 15
+13/07/2013 08:06:54.687562 [perf_tourism_523096_cellbound_lp] found_conflicts 15
+13/07/2013 08:06:57.556365 [perf_tourism_523096_cellbound_lp] resolved_conflicts 15
+13/07/2013 08:07:00.253840 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 257879.19308055658, 'rank_lost': 2151.9085195283405, 'recs_lost': 7175L, 'rec_per_c_min': 17L, 'num_c': 912L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 511702L, 'rec_per_c_max': 64L, 'lp_bound': 2094.9635111240482, 'num_recs_having_c': 21623L, 'rec_per_c_avg': 23.709429824561404}
+13/07/2013 08:07:00.255615 [perf_tourism_523096_cellbound_lp] finalized_level 15
+13/07/2013 08:07:00.258308 [perf_tourism_523096_cellbound_lp] initialized_level 14
+13/07/2013 08:07:33.152304 [perf_tourism_523096_cellbound_lp] found_conflicts 14
+13/07/2013 08:07:44.888811 [perf_tourism_523096_cellbound_lp] resolved_conflicts 14
+13/07/2013 08:07:56.118816 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 252906.73356045038, 'rank_lost': 4972.4595201062039, 'recs_lost': 16761L, 'rec_per_c_min': 17L, 'num_c': 2147L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 494941L, 'rec_per_c_max': 64L, 'lp_bound': 4969.7682229085367, 'num_recs_having_c': 51106L, 'rec_per_c_avg': 23.803446669771773}
+13/07/2013 08:07:56.120571 [perf_tourism_523096_cellbound_lp] finalized_level 14
+13/07/2013 08:07:56.123442 [perf_tourism_523096_cellbound_lp] initialized_level 13
+13/07/2013 08:08:28.943104 [perf_tourism_523096_cellbound_lp] found_conflicts 13
+13/07/2013 08:09:14.359146 [perf_tourism_523096_cellbound_lp] resolved_conflicts 13
+13/07/2013 08:09:57.749809 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 239115.88228719262, 'rank_lost': 13790.851273257751, 'recs_lost': 42570L, 'rec_per_c_min': 17L, 'num_c': 4408L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 452371L, 'rec_per_c_max': 64L, 'lp_bound': 13681.022273037284, 'num_recs_having_c': 112881L, 'rec_per_c_avg': 25.608212341197824}
+13/07/2013 08:09:57.751810 [perf_tourism_523096_cellbound_lp] finalized_level 13
+13/07/2013 08:09:57.754967 [perf_tourism_523096_cellbound_lp] initialized_level 12
+13/07/2013 08:10:27.717053 [perf_tourism_523096_cellbound_lp] found_conflicts 12
+13/07/2013 08:12:18.407951 [perf_tourism_523096_cellbound_lp] resolved_conflicts 12
+13/07/2013 08:14:04.967096 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 207750.43053024542, 'rank_lost': 31365.451756947208, 'recs_lost': 80973L, 'rec_per_c_min': 17L, 'num_c': 6356L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 371398L, 'rec_per_c_max': 64L, 'lp_bound': 31071.350618395099, 'num_recs_having_c': 182177L, 'rec_per_c_avg': 28.662208936438013}
+13/07/2013 08:14:04.969103 [perf_tourism_523096_cellbound_lp] finalized_level 12
+13/07/2013 08:14:04.972498 [perf_tourism_523096_cellbound_lp] initialized_level 11
+13/07/2013 08:14:31.580553 [perf_tourism_523096_cellbound_lp] found_conflicts 11
+13/07/2013 08:16:42.400620 [perf_tourism_523096_cellbound_lp] resolved_conflicts 11
+13/07/2013 08:18:47.931092 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 159949.63717567967, 'rank_lost': 47800.793354565743, 'recs_lost': 103568L, 'rec_per_c_min': 17L, 'num_c': 6311L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 267830L, 'rec_per_c_max': 64L, 'lp_bound': 47688.453123647232, 'num_recs_having_c': 204385L, 'rec_per_c_avg': 32.38551735065758}
+13/07/2013 08:18:47.933208 [perf_tourism_523096_cellbound_lp] finalized_level 11
+13/07/2013 08:18:47.936475 [perf_tourism_523096_cellbound_lp] initialized_level 10
+13/07/2013 08:19:05.511181 [perf_tourism_523096_cellbound_lp] found_conflicts 10
+13/07/2013 08:20:38.134318 [perf_tourism_523096_cellbound_lp] resolved_conflicts 10
+13/07/2013 08:22:05.819314 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 108746.21404497279, 'rank_lost': 51203.423130706884, 'recs_lost': 95204L, 'rec_per_c_min': 17L, 'num_c': 4975L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 172626L, 'rec_per_c_max': 64L, 'lp_bound': 50173.391892715808, 'num_recs_having_c': 173507L, 'rec_per_c_avg': 34.875778894472361}
+13/07/2013 08:22:05.821384 [perf_tourism_523096_cellbound_lp] finalized_level 10
+13/07/2013 08:22:05.824745 [perf_tourism_523096_cellbound_lp] initialized_level 9
+13/07/2013 08:22:17.832375 [perf_tourism_523096_cellbound_lp] found_conflicts 9
+13/07/2013 08:23:08.543603 [perf_tourism_523096_cellbound_lp] resolved_conflicts 9
+13/07/2013 08:23:55.074881 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 69583.561863647308, 'rank_lost': 39162.65218132548, 'recs_lost': 68660L, 'rec_per_c_min': 17L, 'num_c': 3563L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 103966L, 'rec_per_c_max': 64L, 'lp_bound': 39094.417391220646, 'num_recs_having_c': 125591L, 'rec_per_c_avg': 35.248666853774907}
+13/07/2013 08:23:55.077021 [perf_tourism_523096_cellbound_lp] finalized_level 9
+13/07/2013 08:23:55.080356 [perf_tourism_523096_cellbound_lp] initialized_level 8
+13/07/2013 08:24:02.499974 [perf_tourism_523096_cellbound_lp] found_conflicts 8
+13/07/2013 08:24:28.407872 [perf_tourism_523096_cellbound_lp] resolved_conflicts 8
+13/07/2013 08:24:50.813732 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 39456.184006036259, 'rank_lost': 30127.377857611049, 'recs_lost': 49390L, 'rec_per_c_min': 17L, 'num_c': 2235L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 54576L, 'rec_per_c_max': 64L, 'lp_bound': 30025.279682936041, 'num_recs_having_c': 85040L, 'rec_per_c_avg': 38.049217002237135}
+13/07/2013 08:24:50.815736 [perf_tourism_523096_cellbound_lp] finalized_level 8
+13/07/2013 08:24:50.819073 [perf_tourism_523096_cellbound_lp] initialized_level 7
+13/07/2013 08:24:54.730522 [perf_tourism_523096_cellbound_lp] found_conflicts 7
+13/07/2013 08:25:06.872449 [perf_tourism_523096_cellbound_lp] resolved_conflicts 7
+13/07/2013 08:25:15.982782 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 18788.860320634209, 'rank_lost': 20667.323685402051, 'recs_lost': 30428L, 'rec_per_c_min': 17L, 'num_c': 1173L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 24148L, 'rec_per_c_max': 65L, 'lp_bound': 19640.803183838867, 'num_recs_having_c': 48109L, 'rec_per_c_avg': 41.013640238704177}
+13/07/2013 08:25:15.984743 [perf_tourism_523096_cellbound_lp] finalized_level 7
+13/07/2013 08:25:15.988078 [perf_tourism_523096_cellbound_lp] initialized_level 6
+13/07/2013 08:25:17.782003 [perf_tourism_523096_cellbound_lp] found_conflicts 6
+13/07/2013 08:25:21.657162 [perf_tourism_523096_cellbound_lp] resolved_conflicts 6
+13/07/2013 08:25:24.622616 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 8360.868699720595, 'rank_lost': 10427.991620913614, 'recs_lost': 14225L, 'rec_per_c_min': 17L, 'num_c': 511L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 9923L, 'rec_per_c_max': 64L, 'lp_bound': 10084.637443094261, 'num_recs_having_c': 22043L, 'rec_per_c_avg': 43.136986301369866}
+13/07/2013 08:25:24.624597 [perf_tourism_523096_cellbound_lp] finalized_level 6
+13/07/2013 08:25:24.627565 [perf_tourism_523096_cellbound_lp] initialized_level 5
+13/07/2013 08:25:25.498919 [perf_tourism_523096_cellbound_lp] found_conflicts 5
+13/07/2013 08:25:26.780625 [perf_tourism_523096_cellbound_lp] resolved_conflicts 5
+13/07/2013 08:25:27.910887 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 3508.545952483546, 'rank_lost': 4852.322747237049, 'recs_lost': 5999L, 'rec_per_c_min': 17L, 'num_c': 193L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 3924L, 'rec_per_c_max': 64L, 'lp_bound': 4825.8972805881594, 'num_recs_having_c': 9060L, 'rec_per_c_avg': 46.943005181347154}
+13/07/2013 08:25:27.912731 [perf_tourism_523096_cellbound_lp] finalized_level 5
+13/07/2013 08:25:27.915604 [perf_tourism_523096_cellbound_lp] initialized_level 4
+13/07/2013 08:25:28.372080 [perf_tourism_523096_cellbound_lp] found_conflicts 4
+13/07/2013 08:25:28.891355 [perf_tourism_523096_cellbound_lp] resolved_conflicts 4
+13/07/2013 08:25:29.388165 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 1316.1985294516198, 'rank_lost': 2192.3474230319262, 'recs_lost': 2456L, 'rec_per_c_min': 17L, 'num_c': 73L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 1468L, 'rec_per_c_max': 64L, 'lp_bound': 2137.4987625256354, 'num_recs_having_c': 3569L, 'rec_per_c_avg': 48.890410958904113}
+13/07/2013 08:25:29.390054 [perf_tourism_523096_cellbound_lp] finalized_level 4
+13/07/2013 08:25:29.419277 [perf_tourism_523096_cellbound_lp] initialized_level 3
+13/07/2013 08:25:29.706568 [perf_tourism_523096_cellbound_lp] found_conflicts 3
+13/07/2013 08:25:29.979271 [perf_tourism_523096_cellbound_lp] resolved_conflicts 3
+13/07/2013 08:25:30.283387 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 467.88094921829179, 'rank_lost': 848.31758023332804, 'recs_lost': 959L, 'rec_per_c_min': 17L, 'num_c': 30L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 509L, 'rec_per_c_max': 64L, 'lp_bound': 820.51254176337966, 'num_recs_having_c': 1411L, 'rec_per_c_avg': 47.033333333333331}
+13/07/2013 08:25:30.285457 [perf_tourism_523096_cellbound_lp] finalized_level 3
+13/07/2013 08:25:30.288897 [perf_tourism_523096_cellbound_lp] initialized_level 2
+13/07/2013 08:25:30.510689 [perf_tourism_523096_cellbound_lp] found_conflicts 2
+13/07/2013 08:25:30.705668 [perf_tourism_523096_cellbound_lp] resolved_conflicts 2
+13/07/2013 08:25:30.937509 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 161.3125851363875, 'rank_lost': 306.56836408190429, 'recs_lost': 332L, 'rec_per_c_min': 20L, 'num_c': 11L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 177L, 'rec_per_c_max': 62L, 'lp_bound': 290.57622820378941, 'num_recs_having_c': 492L, 'rec_per_c_avg': 44.727272727272727}
+13/07/2013 08:25:30.939218 [perf_tourism_523096_cellbound_lp] finalized_level 2
+13/07/2013 08:25:30.942159 [perf_tourism_523096_cellbound_lp] initialized_level 1
+13/07/2013 08:25:31.138209 [perf_tourism_523096_cellbound_lp] found_conflicts 1
+13/07/2013 08:25:31.289860 [perf_tourism_523096_cellbound_lp] resolved_conflicts 1
+13/07/2013 08:25:31.497118 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 16.371759107336402, 'rank_lost': 144.9408260290511, 'recs_lost': 160L, 'rec_per_c_min': 33L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 17L, 'rec_per_c_max': 56L, 'lp_bound': 96.949296218660123, 'num_recs_having_c': 176L, 'rec_per_c_avg': 44.0}
+13/07/2013 08:25:31.498871 [perf_tourism_523096_cellbound_lp] finalized_level 1
+13/07/2013 08:25:31.502129 [perf_tourism_523096_cellbound_lp] initialized_level 0
+13/07/2013 08:25:31.598674 [perf_tourism_523096_cellbound_lp] found_conflicts 0
+13/07/2013 08:25:31.600088 [perf_tourism_523096_cellbound_lp] resolved_conflicts 0
+13/07/2013 08:25:31.787544 [perf_tourism_523096_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 16.371759107336402, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 17L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 08:25:31.789323 [perf_tourism_523096_cellbound_lp] finalized_level 0
+13/07/2013 08:25:31.896015 [perf_tourism_523096_cellbound_lp] COMMIT
+13/07/2013 08:25:31.896557 [perf_usrivers_102486_cellbound_lp] BEGIN_TRANSACTION
+13/07/2013 08:25:37.422462 [perf_usrivers_102486_cellbound_lp] initialized
+13/07/2013 08:25:37.422882 [perf_usrivers_102486_cellbound_lp] solver "lp"
+13/07/2013 08:25:37.423226 [perf_usrivers_102486_cellbound_lp] constraints "cellbound(16,)"
+13/07/2013 08:25:37.822752 [perf_usrivers_102486_cellbound_lp] inputstats {'geometry_types': ['LINESTRING'], 'input': '(select * from lin_100k_usrivers where x_order <= 102486) t', 'total_rank': 308191.76648920408, 'total_recs': 102486L}
+13/07/2013 08:25:37.826069 [perf_usrivers_102486_cellbound_lp] initialized_level 17
+13/07/2013 08:33:13.503853 [perf_usrivers_102486_cellbound_lp] found_conflicts 17
+13/07/2013 08:33:13.547001 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 17
+13/07/2013 08:33:13.619567 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 308191.71663759678, 'rank_lost': 0.049851607291541963, 'recs_lost': 3L, 'rec_per_c_min': 18L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 102483L, 'rec_per_c_max': 18L, 'lp_bound': 0.033234407864176863, 'num_recs_having_c': 18L, 'rec_per_c_avg': 18.0}
+13/07/2013 08:33:13.621185 [perf_usrivers_102486_cellbound_lp] finalized_level 17
+13/07/2013 08:33:13.624534 [perf_usrivers_102486_cellbound_lp] initialized_level 16
+13/07/2013 08:40:23.104838 [perf_usrivers_102486_cellbound_lp] found_conflicts 16
+13/07/2013 08:40:23.106357 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 16
+13/07/2013 08:40:23.172436 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 308191.71663759678, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 102483L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 08:40:23.174315 [perf_usrivers_102486_cellbound_lp] finalized_level 16
+13/07/2013 08:40:23.177257 [perf_usrivers_102486_cellbound_lp] initialized_level 15
+13/07/2013 08:47:22.127970 [perf_usrivers_102486_cellbound_lp] found_conflicts 15
+13/07/2013 08:47:22.259851 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 15
+13/07/2013 08:47:22.411596 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0094683175528041, 'rank_remaining': 308186.24023810192, 'rank_lost': 5.4763994949219112, 'recs_lost': 247L, 'rec_per_c_min': 17L, 'num_c': 71L, 'c_per_rec_min': 1L, 'c_per_rec_max': 2L, 'recs_remaining': 102236L, 'rec_per_c_max': 28L, 'lp_bound': 5.4763996254969785, 'num_recs_having_c': 1373L, 'rec_per_c_avg': 19.52112676056338}
+13/07/2013 08:47:22.413318 [perf_usrivers_102486_cellbound_lp] finalized_level 15
+13/07/2013 08:47:22.416249 [perf_usrivers_102486_cellbound_lp] initialized_level 14
+13/07/2013 08:54:13.620428 [perf_usrivers_102486_cellbound_lp] found_conflicts 14
+13/07/2013 08:54:14.423060 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 14
+13/07/2013 08:54:15.194297 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.017243533674872, 'rank_remaining': 308066.92609990935, 'rank_lost': 119.31413819252747, 'recs_lost': 2210L, 'rec_per_c_min': 17L, 'num_c': 370L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 100026L, 'rec_per_c_max': 42L, 'lp_bound': 118.13612322067969, 'num_recs_having_c': 8003L, 'rec_per_c_avg': 22.002702702702702}
+13/07/2013 08:54:15.196023 [perf_usrivers_102486_cellbound_lp] finalized_level 14
+13/07/2013 08:54:15.199064 [perf_usrivers_102486_cellbound_lp] initialized_level 13
+13/07/2013 09:00:56.655059 [perf_usrivers_102486_cellbound_lp] found_conflicts 13
+13/07/2013 09:00:59.986934 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 13
+13/07/2013 09:01:03.049742 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0200270131805691, 'rank_remaining': 307370.50133846671, 'rank_lost': 696.42476144276986, 'recs_lost': 6848L, 'rec_per_c_min': 17L, 'num_c': 935L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 93178L, 'rec_per_c_max': 62L, 'lp_bound': 691.97014798981581, 'num_recs_having_c': 21471L, 'rec_per_c_avg': 23.423529411764704}
+13/07/2013 09:01:03.051515 [perf_usrivers_102486_cellbound_lp] finalized_level 13
+13/07/2013 09:01:03.054608 [perf_usrivers_102486_cellbound_lp] initialized_level 12
+13/07/2013 09:07:14.370713 [perf_usrivers_102486_cellbound_lp] found_conflicts 12
+13/07/2013 09:07:25.144742 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 12
+13/07/2013 09:07:34.918185 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.028655153901217, 'rank_remaining': 303723.40077241766, 'rank_lost': 3647.1005660454798, 'recs_lost': 16537L, 'rec_per_c_min': 17L, 'num_c': 1817L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 76641L, 'rec_per_c_max': 62L, 'lp_bound': 3644.1540181915138, 'num_recs_having_c': 44704L, 'rec_per_c_avg': 25.308200330214639}
+13/07/2013 09:07:34.920447 [perf_usrivers_102486_cellbound_lp] finalized_level 12
+13/07/2013 09:07:34.923492 [perf_usrivers_102486_cellbound_lp] initialized_level 11
+13/07/2013 09:12:41.941866 [perf_usrivers_102486_cellbound_lp] found_conflicts 11
+13/07/2013 09:12:58.544527 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 11
+13/07/2013 09:13:12.085918 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0460865406755344, 'rank_remaining': 289926.27850190742, 'rank_lost': 13797.122270509928, 'recs_lost': 27208L, 'rec_per_c_min': 17L, 'num_c': 1933L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 49433L, 'rec_per_c_max': 64L, 'lp_bound': 13733.42747490665, 'num_recs_having_c': 56459L, 'rec_per_c_avg': 30.55406104500776}
+13/07/2013 09:13:12.087874 [perf_usrivers_102486_cellbound_lp] finalized_level 11
+13/07/2013 09:13:12.091018 [perf_usrivers_102486_cellbound_lp] initialized_level 10
+13/07/2013 09:16:33.635963 [perf_usrivers_102486_cellbound_lp] found_conflicts 10
+13/07/2013 09:16:45.240442 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 10
+13/07/2013 09:16:52.781294 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0424433831458944, 'rank_remaining': 260671.90451198461, 'rank_lost': 29254.373989924439, 'recs_lost': 23360L, 'rec_per_c_min': 17L, 'num_c': 1049L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 26073L, 'rec_per_c_max': 64L, 'lp_bound': 28713.682169024483, 'num_recs_having_c': 38946L, 'rec_per_c_avg': 38.702573879885605}
+13/07/2013 09:16:52.783206 [perf_usrivers_102486_cellbound_lp] finalized_level 10
+13/07/2013 09:16:52.786335 [perf_usrivers_102486_cellbound_lp] initialized_level 9
+13/07/2013 09:18:43.422827 [perf_usrivers_102486_cellbound_lp] found_conflicts 9
+13/07/2013 09:18:49.350754 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 9
+13/07/2013 09:18:52.322465 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.034412464204242, 'rank_remaining': 228074.05773351528, 'rank_lost': 32597.84677846844, 'recs_lost': 12196L, 'rec_per_c_min': 17L, 'num_c': 553L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 13877L, 'rec_per_c_max': 64L, 'lp_bound': 32526.192727371563, 'num_recs_having_c': 20603L, 'rec_per_c_avg': 38.538878842676311}
+13/07/2013 09:18:52.324634 [perf_usrivers_102486_cellbound_lp] finalized_level 9
+13/07/2013 09:18:52.327758 [perf_usrivers_102486_cellbound_lp] initialized_level 8
+13/07/2013 09:19:51.098556 [perf_usrivers_102486_cellbound_lp] found_conflicts 8
+13/07/2013 09:19:53.921428 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 8
+13/07/2013 09:19:55.539905 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.050681635926223, 'rank_remaining': 189090.1729150872, 'rank_lost': 38983.88481842749, 'recs_lost': 7357L, 'rec_per_c_min': 17L, 'num_c': 346L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 6520L, 'rec_per_c_max': 66L, 'lp_bound': 38957.699765760095, 'num_recs_having_c': 12470L, 'rec_per_c_avg': 37.867052023121389}
+13/07/2013 09:19:55.541984 [perf_usrivers_102486_cellbound_lp] finalized_level 8
+13/07/2013 09:19:55.545230 [perf_usrivers_102486_cellbound_lp] initialized_level 7
+13/07/2013 09:20:24.389930 [perf_usrivers_102486_cellbound_lp] found_conflicts 7
+13/07/2013 09:20:25.917836 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 7
+13/07/2013 09:20:26.623310 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.068061990733344, 'rank_remaining': 122935.62795445262, 'rank_lost': 66154.544960634972, 'recs_lost': 4171L, 'rec_per_c_min': 17L, 'num_c': 147L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 2349L, 'rec_per_c_max': 66L, 'lp_bound': 64449.77231879055, 'num_recs_having_c': 6259L, 'rec_per_c_avg': 45.476190476190474}
+13/07/2013 09:20:26.625134 [perf_usrivers_102486_cellbound_lp] finalized_level 7
+13/07/2013 09:20:26.627897 [perf_usrivers_102486_cellbound_lp] initialized_level 6
+13/07/2013 09:20:37.597419 [perf_usrivers_102486_cellbound_lp] found_conflicts 6
+13/07/2013 09:20:37.988802 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 6
+13/07/2013 09:20:38.272510 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0401943462897527, 'rank_remaining': 49517.052644312731, 'rank_lost': 73418.575310139771, 'recs_lost': 1600L, 'rec_per_c_min': 17L, 'num_c': 49L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 749L, 'rec_per_c_max': 63L, 'lp_bound': 63195.041778935149, 'num_recs_having_c': 2264L, 'rec_per_c_avg': 48.061224489795919}
+13/07/2013 09:20:38.274186 [perf_usrivers_102486_cellbound_lp] finalized_level 6
+13/07/2013 09:20:38.276945 [perf_usrivers_102486_cellbound_lp] initialized_level 5
+13/07/2013 09:20:41.868514 [perf_usrivers_102486_cellbound_lp] found_conflicts 5
+13/07/2013 09:20:42.026128 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 5
+13/07/2013 09:20:42.179895 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0097087378640777, 'rank_remaining': 23091.063948679403, 'rank_lost': 26425.988695633288, 'recs_lost': 456L, 'rec_per_c_min': 19L, 'num_c': 17L, 'c_per_rec_min': 1L, 'c_per_rec_max': 2L, 'recs_remaining': 293L, 'rec_per_c_max': 63L, 'lp_bound': 25723.093088710182, 'num_recs_having_c': 721L, 'rec_per_c_avg': 42.823529411764703}
+13/07/2013 09:20:42.181554 [perf_usrivers_102486_cellbound_lp] finalized_level 5
+13/07/2013 09:20:42.184313 [perf_usrivers_102486_cellbound_lp] initialized_level 4
+13/07/2013 09:20:43.631841 [perf_usrivers_102486_cellbound_lp] found_conflicts 4
+13/07/2013 09:20:43.739601 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 4
+13/07/2013 09:20:43.858659 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0034129692832765, 'rank_remaining': 6814.5240177555988, 'rank_lost': 16276.539930923816, 'recs_lost': 226L, 'rec_per_c_min': 30L, 'num_c': 6L, 'c_per_rec_min': 1L, 'c_per_rec_max': 2L, 'recs_remaining': 67L, 'rec_per_c_max': 63L, 'lp_bound': 13358.696596222597, 'num_recs_having_c': 293L, 'rec_per_c_avg': 49.0}
+13/07/2013 09:20:43.860447 [perf_usrivers_102486_cellbound_lp] finalized_level 4
+13/07/2013 09:20:43.863648 [perf_usrivers_102486_cellbound_lp] initialized_level 3
+13/07/2013 09:20:44.241592 [perf_usrivers_102486_cellbound_lp] found_conflicts 3
+13/07/2013 09:20:44.302659 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 3
+13/07/2013 09:20:44.398872 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 4498.9745312672394, 'rank_lost': 2315.5494864883576, 'recs_lost': 23L, 'rec_per_c_min': 23L, 'num_c': 2L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 44L, 'rec_per_c_max': 26L, 'lp_bound': 1712.0359664341663, 'num_recs_having_c': 49L, 'rec_per_c_avg': 24.5}
+13/07/2013 09:20:44.400515 [perf_usrivers_102486_cellbound_lp] finalized_level 3
+13/07/2013 09:20:44.403410 [perf_usrivers_102486_cellbound_lp] initialized_level 2
+13/07/2013 09:20:44.675002 [perf_usrivers_102486_cellbound_lp] found_conflicts 2
+13/07/2013 09:20:44.734266 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 2
+13/07/2013 09:20:44.829736 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 3080.4816369565942, 'rank_lost': 1418.4928943106465, 'recs_lost': 14L, 'rec_per_c_min': 18L, 'num_c': 2L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 30L, 'rec_per_c_max': 26L, 'lp_bound': 1214.9263335806531, 'num_recs_having_c': 44L, 'rec_per_c_avg': 22.0}
+13/07/2013 09:20:44.831358 [perf_usrivers_102486_cellbound_lp] finalized_level 2
+13/07/2013 09:20:44.834126 [perf_usrivers_102486_cellbound_lp] initialized_level 1
+13/07/2013 09:20:45.044987 [perf_usrivers_102486_cellbound_lp] found_conflicts 1
+13/07/2013 09:20:45.104725 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 1
+13/07/2013 09:20:45.200364 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 1658.3631998445951, 'rank_lost': 1422.1184371119982, 'recs_lost': 14L, 'rec_per_c_min': 30L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 16L, 'rec_per_c_max': 30L, 'lp_bound': 1422.1184386614352, 'num_recs_having_c': 30L, 'rec_per_c_avg': 30.0}
+13/07/2013 09:20:45.202048 [perf_usrivers_102486_cellbound_lp] finalized_level 1
+13/07/2013 09:20:45.204905 [perf_usrivers_102486_cellbound_lp] initialized_level 0
+13/07/2013 09:20:45.315832 [perf_usrivers_102486_cellbound_lp] found_conflicts 0
+13/07/2013 09:20:45.317212 [perf_usrivers_102486_cellbound_lp] resolved_conflicts 0
+13/07/2013 09:20:45.405917 [perf_usrivers_102486_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 1658.3631998445951, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 16L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 09:20:45.407621 [perf_usrivers_102486_cellbound_lp] finalized_level 0
+13/07/2013 09:20:45.525459 [perf_usrivers_102486_cellbound_lp] COMMIT
+13/07/2013 09:20:45.527785 [perf_dai_30181_cellbound_lp] BEGIN_TRANSACTION
+13/07/2013 09:20:55.318881 [perf_dai_30181_cellbound_lp] initialized
+13/07/2013 09:20:55.319281 [perf_dai_30181_cellbound_lp] solver "lp"
+13/07/2013 09:20:55.319607 [perf_dai_30181_cellbound_lp] constraints "cellbound(16,)"
+13/07/2013 09:20:55.453746 [perf_dai_30181_cellbound_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'input': '(select * from pol_30k_dai where x_order <= 30181) t', 'total_rank': 606438.5909525489, 'total_recs': 30181L}
+13/07/2013 09:20:55.457152 [perf_dai_30181_cellbound_lp] initialized_level 17
+13/07/2013 09:25:45.628953 [perf_dai_30181_cellbound_lp] found_conflicts 17
+13/07/2013 09:43:35.536129 [perf_dai_30181_cellbound_lp] resolved_conflicts 17
+13/07/2013 10:01:22.826493 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 47.103903330948405, 'rank_remaining': 564435.67304213869, 'rank_lost': 42002.917910413016, 'recs_lost': 9017L, 'rec_per_c_min': 17L, 'num_c': 20667L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3288L, 'recs_remaining': 21164L, 'rec_per_c_max': 213L, 'lp_bound': 29008.715037019221, 'num_recs_having_c': 12579L, 'rec_per_c_avg': 28.669860163545749}
+13/07/2013 10:01:22.828489 [perf_dai_30181_cellbound_lp] finalized_level 17
+13/07/2013 10:01:22.831652 [perf_dai_30181_cellbound_lp] initialized_level 16
+13/07/2013 10:03:25.325074 [perf_dai_30181_cellbound_lp] found_conflicts 16
+13/07/2013 10:03:25.670445 [perf_dai_30181_cellbound_lp] resolved_conflicts 16
+13/07/2013 10:03:25.954225 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.6658227848101266, 'rank_remaining': 563591.18322446512, 'rank_lost': 844.48981767298562, 'recs_lost': 1114L, 'rec_per_c_min': 17L, 'num_c': 207L, 'c_per_rec_min': 1L, 'c_per_rec_max': 12L, 'recs_remaining': 20050L, 'rec_per_c_max': 36L, 'lp_bound': 598.6724938499799, 'num_recs_having_c': 2370L, 'rec_per_c_avg': 19.072463768115941}
+13/07/2013 10:03:25.955882 [perf_dai_30181_cellbound_lp] finalized_level 16
+13/07/2013 10:03:25.958524 [perf_dai_30181_cellbound_lp] initialized_level 15
+13/07/2013 10:04:56.187335 [perf_dai_30181_cellbound_lp] found_conflicts 15
+13/07/2013 10:04:56.664424 [perf_dai_30181_cellbound_lp] resolved_conflicts 15
+13/07/2013 10:04:57.062644 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.6655854686993188, 'rank_remaining': 562464.71113649081, 'rank_lost': 1126.4720879758847, 'recs_lost': 1326L, 'rec_per_c_min': 17L, 'num_c': 270L, 'c_per_rec_min': 1L, 'c_per_rec_max': 12L, 'recs_remaining': 18724L, 'rec_per_c_max': 35L, 'lp_bound': 659.91405374199837, 'num_recs_having_c': 3083L, 'rec_per_c_avg': 19.018518518518519}
+13/07/2013 10:04:57.064277 [perf_dai_30181_cellbound_lp] finalized_level 15
+13/07/2013 10:04:57.066997 [perf_dai_30181_cellbound_lp] initialized_level 14
+13/07/2013 10:06:13.409070 [perf_dai_30181_cellbound_lp] found_conflicts 14
+13/07/2013 10:06:14.320115 [perf_dai_30181_cellbound_lp] resolved_conflicts 14
+13/07/2013 10:06:15.110857 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.7529780564263322, 'rank_remaining': 559537.32834610634, 'rank_lost': 2927.3827903856522, 'recs_lost': 2019L, 'rec_per_c_min': 17L, 'num_c': 424L, 'c_per_rec_min': 1L, 'c_per_rec_max': 27L, 'recs_remaining': 16705L, 'rec_per_c_max': 40L, 'lp_bound': 1917.2296292204132, 'num_recs_having_c': 4785L, 'rec_per_c_avg': 19.783018867924529}
+13/07/2013 10:06:15.112610 [perf_dai_30181_cellbound_lp] finalized_level 14
+13/07/2013 10:06:15.115750 [perf_dai_30181_cellbound_lp] initialized_level 13
+13/07/2013 10:07:21.248241 [perf_dai_30181_cellbound_lp] found_conflicts 13
+13/07/2013 10:07:22.798530 [perf_dai_30181_cellbound_lp] resolved_conflicts 13
+13/07/2013 10:07:24.185979 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.7591564927857937, 'rank_remaining': 554373.47961973445, 'rank_lost': 5163.8487263710176, 'recs_lost': 3017L, 'rec_per_c_min': 17L, 'num_c': 617L, 'c_per_rec_min': 1L, 'c_per_rec_max': 29L, 'recs_remaining': 13688L, 'rec_per_c_max': 43L, 'lp_bound': 3667.685311689097, 'num_recs_having_c': 7208L, 'rec_per_c_avg': 20.551053484602917}
+13/07/2013 10:07:24.187757 [perf_dai_30181_cellbound_lp] finalized_level 13
+13/07/2013 10:07:24.190605 [perf_dai_30181_cellbound_lp] initialized_level 12
+13/07/2013 10:08:17.683197 [perf_dai_30181_cellbound_lp] found_conflicts 12
+13/07/2013 10:08:20.073589 [perf_dai_30181_cellbound_lp] resolved_conflicts 12
+13/07/2013 10:08:22.197519 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.7170193378556242, 'rank_remaining': 543991.49412489589, 'rank_lost': 10381.985494842327, 'recs_lost': 4672L, 'rec_per_c_min': 17L, 'num_c': 725L, 'c_per_rec_min': 1L, 'c_per_rec_max': 36L, 'recs_remaining': 9016L, 'rec_per_c_max': 51L, 'lp_bound': 8515.563380422398, 'num_recs_having_c': 9877L, 'rec_per_c_avg': 23.391724137931035}
+13/07/2013 10:08:22.199380 [perf_dai_30181_cellbound_lp] finalized_level 12
+13/07/2013 10:08:22.207393 [perf_dai_30181_cellbound_lp] initialized_level 11
+13/07/2013 10:08:57.531636 [perf_dai_30181_cellbound_lp] found_conflicts 11
+13/07/2013 10:08:59.602490 [perf_dai_30181_cellbound_lp] resolved_conflicts 11
+13/07/2013 10:09:01.361606 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.570072650574174, 'rank_remaining': 513579.39527113509, 'rank_lost': 30412.098853760144, 'recs_lost': 5443L, 'rec_per_c_min': 17L, 'num_c': 430L, 'c_per_rec_min': 1L, 'c_per_rec_max': 18L, 'recs_remaining': 3573L, 'rec_per_c_max': 58L, 'lp_bound': 23418.810309684588, 'num_recs_having_c': 8534L, 'rec_per_c_avg': 31.16046511627907}
+13/07/2013 10:09:01.363641 [perf_dai_30181_cellbound_lp] finalized_level 11
+13/07/2013 10:09:01.366887 [perf_dai_30181_cellbound_lp] initialized_level 10
+13/07/2013 10:09:15.573157 [perf_dai_30181_cellbound_lp] found_conflicts 10
+13/07/2013 10:09:16.544463 [perf_dai_30181_cellbound_lp] resolved_conflicts 10
+13/07/2013 10:09:17.050868 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.428696668614845, 'rank_remaining': 466703.71189583826, 'rank_lost': 46875.683375297922, 'recs_lost': 2238L, 'rec_per_c_min': 17L, 'num_c': 140L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 1335L, 'rec_per_c_max': 58L, 'lp_bound': 32831.395795272962, 'num_recs_having_c': 3422L, 'rec_per_c_avg': 34.921428571428571}
+13/07/2013 10:09:17.052631 [perf_dai_30181_cellbound_lp] finalized_level 10
+13/07/2013 10:09:17.055401 [perf_dai_30181_cellbound_lp] initialized_level 9
+13/07/2013 10:09:22.718895 [perf_dai_30181_cellbound_lp] found_conflicts 9
+13/07/2013 10:09:22.966732 [perf_dai_30181_cellbound_lp] resolved_conflicts 9
+13/07/2013 10:09:23.155139 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.3756906077348066, 'rank_remaining': 382446.60613795882, 'rank_lost': 84257.10575788081, 'recs_lost': 913L, 'rec_per_c_min': 18L, 'num_c': 45L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 422L, 'rec_per_c_max': 67L, 'lp_bound': 66216.124426143288, 'num_recs_having_c': 1267L, 'rec_per_c_avg': 38.733333333333334}
+13/07/2013 10:09:23.156904 [perf_dai_30181_cellbound_lp] finalized_level 9
+13/07/2013 10:09:23.159738 [perf_dai_30181_cellbound_lp] initialized_level 8
+13/07/2013 10:09:24.906385 [perf_dai_30181_cellbound_lp] found_conflicts 8
+13/07/2013 10:09:24.992134 [perf_dai_30181_cellbound_lp] resolved_conflicts 8
+13/07/2013 10:09:25.069071 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.413625304136253, 'rank_remaining': 285580.70065370743, 'rank_lost': 96865.905484251503, 'recs_lost': 252L, 'rec_per_c_min': 19L, 'num_c': 17L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 170L, 'rec_per_c_max': 54L, 'lp_bound': 74674.04473243664, 'num_recs_having_c': 411L, 'rec_per_c_avg': 34.176470588235297}
+13/07/2013 10:09:25.070645 [perf_dai_30181_cellbound_lp] finalized_level 8
+13/07/2013 10:09:25.073431 [perf_dai_30181_cellbound_lp] initialized_level 7
+13/07/2013 10:09:25.814050 [perf_dai_30181_cellbound_lp] found_conflicts 7
+13/07/2013 10:09:25.851666 [perf_dai_30181_cellbound_lp] resolved_conflicts 7
+13/07/2013 10:09:25.895533 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.2064516129032259, 'rank_remaining': 216159.00638257663, 'rank_lost': 69421.694271130764, 'recs_lost': 86L, 'rec_per_c_min': 21L, 'num_c': 6L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 84L, 'rec_per_c_max': 49L, 'lp_bound': 56412.473220857493, 'num_recs_having_c': 155L, 'rec_per_c_avg': 31.166666666666668}
+13/07/2013 10:09:25.897093 [perf_dai_30181_cellbound_lp] finalized_level 7
+13/07/2013 10:09:25.899790 [perf_dai_30181_cellbound_lp] initialized_level 6
+13/07/2013 10:09:26.272596 [perf_dai_30181_cellbound_lp] found_conflicts 6
+13/07/2013 10:09:26.302269 [perf_dai_30181_cellbound_lp] resolved_conflicts 6
+13/07/2013 10:09:26.338203 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.2, 'rank_remaining': 154922.77073646081, 'rank_lost': 61236.235646115783, 'recs_lost': 41L, 'rec_per_c_min': 20L, 'num_c': 3L, 'c_per_rec_min': 1L, 'c_per_rec_max': 2L, 'recs_remaining': 43L, 'rec_per_c_max': 34L, 'lp_bound': 49233.830397024954, 'num_recs_having_c': 70L, 'rec_per_c_avg': 28.0}
+13/07/2013 10:09:26.339701 [perf_dai_30181_cellbound_lp] finalized_level 6
+13/07/2013 10:09:26.342441 [perf_dai_30181_cellbound_lp] initialized_level 5
+13/07/2013 10:09:26.528753 [perf_dai_30181_cellbound_lp] found_conflicts 5
+13/07/2013 10:09:26.530020 [perf_dai_30181_cellbound_lp] resolved_conflicts 5
+13/07/2013 10:09:26.557493 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 154922.77073646081, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 43L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:26.558974 [perf_dai_30181_cellbound_lp] finalized_level 5
+13/07/2013 10:09:26.561718 [perf_dai_30181_cellbound_lp] initialized_level 4
+13/07/2013 10:09:26.758826 [perf_dai_30181_cellbound_lp] found_conflicts 4
+13/07/2013 10:09:26.784864 [perf_dai_30181_cellbound_lp] resolved_conflicts 4
+13/07/2013 10:09:26.819597 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.1860465116279071, 'rank_remaining': 138054.47616620609, 'rank_lost': 16868.294570254795, 'recs_lost': 21L, 'rec_per_c_min': 22L, 'num_c': 2L, 'c_per_rec_min': 1L, 'c_per_rec_max': 2L, 'recs_remaining': 22L, 'rec_per_c_max': 29L, 'lp_bound': 14614.876483901529, 'num_recs_having_c': 43L, 'rec_per_c_avg': 25.5}
+13/07/2013 10:09:26.821118 [perf_dai_30181_cellbound_lp] finalized_level 4
+13/07/2013 10:09:26.823967 [perf_dai_30181_cellbound_lp] initialized_level 3
+13/07/2013 10:09:26.943025 [perf_dai_30181_cellbound_lp] found_conflicts 3
+13/07/2013 10:09:26.967076 [perf_dai_30181_cellbound_lp] resolved_conflicts 3
+13/07/2013 10:09:26.999484 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 124757.17509908852, 'rank_lost': 13297.301067117533, 'recs_lost': 7L, 'rec_per_c_min': 22L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 15L, 'rec_per_c_max': 22L, 'lp_bound': 11339.276925680015, 'num_recs_having_c': 22L, 'rec_per_c_avg': 22.0}
+13/07/2013 10:09:27.001012 [perf_dai_30181_cellbound_lp] finalized_level 3
+13/07/2013 10:09:27.004069 [perf_dai_30181_cellbound_lp] initialized_level 2
+13/07/2013 10:09:27.080050 [perf_dai_30181_cellbound_lp] found_conflicts 2
+13/07/2013 10:09:27.081339 [perf_dai_30181_cellbound_lp] resolved_conflicts 2
+13/07/2013 10:09:27.107810 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 124757.17509908852, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 15L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:27.109281 [perf_dai_30181_cellbound_lp] finalized_level 2
+13/07/2013 10:09:27.112031 [perf_dai_30181_cellbound_lp] initialized_level 1
+13/07/2013 10:09:27.186274 [perf_dai_30181_cellbound_lp] found_conflicts 1
+13/07/2013 10:09:27.187544 [perf_dai_30181_cellbound_lp] resolved_conflicts 1
+13/07/2013 10:09:27.213844 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 124757.17509908852, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 15L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:27.215341 [perf_dai_30181_cellbound_lp] finalized_level 1
+13/07/2013 10:09:27.218127 [perf_dai_30181_cellbound_lp] initialized_level 0
+13/07/2013 10:09:27.294443 [perf_dai_30181_cellbound_lp] found_conflicts 0
+13/07/2013 10:09:27.295738 [perf_dai_30181_cellbound_lp] resolved_conflicts 0
+13/07/2013 10:09:27.322767 [perf_dai_30181_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 124757.17509908852, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 15L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:27.324261 [perf_dai_30181_cellbound_lp] finalized_level 0
+13/07/2013 10:09:27.521376 [perf_dai_30181_cellbound_lp] COMMIT
+13/07/2013 10:09:27.523523 [perf_airports_7411_cellbound_lp] BEGIN_TRANSACTION
+13/07/2013 10:09:27.644559 [perf_airports_7411_cellbound_lp] initialized
+13/07/2013 10:09:27.644950 [perf_airports_7411_cellbound_lp] solver "lp"
+13/07/2013 10:09:27.645277 [perf_airports_7411_cellbound_lp] constraints "cellbound(16,)"
+13/07/2013 10:09:27.653491 [perf_airports_7411_cellbound_lp] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_7k_airports where x_order <= 7411) t', 'total_rank': 61022.0, 'total_recs': 7411L}
+13/07/2013 10:09:27.656194 [perf_airports_7411_cellbound_lp] initialized_level 17
+13/07/2013 10:09:28.249111 [perf_airports_7411_cellbound_lp] found_conflicts 17
+13/07/2013 10:09:28.250498 [perf_airports_7411_cellbound_lp] resolved_conflicts 17
+13/07/2013 10:09:28.254998 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:28.256261 [perf_airports_7411_cellbound_lp] finalized_level 17
+13/07/2013 10:09:28.258837 [perf_airports_7411_cellbound_lp] initialized_level 16
+13/07/2013 10:09:28.786931 [perf_airports_7411_cellbound_lp] found_conflicts 16
+13/07/2013 10:09:28.788182 [perf_airports_7411_cellbound_lp] resolved_conflicts 16
+13/07/2013 10:09:28.792576 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:28.793871 [perf_airports_7411_cellbound_lp] finalized_level 16
+13/07/2013 10:09:28.796490 [perf_airports_7411_cellbound_lp] initialized_level 15
+13/07/2013 10:09:29.324318 [perf_airports_7411_cellbound_lp] found_conflicts 15
+13/07/2013 10:09:29.325505 [perf_airports_7411_cellbound_lp] resolved_conflicts 15
+13/07/2013 10:09:29.329829 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:29.331117 [perf_airports_7411_cellbound_lp] finalized_level 15
+13/07/2013 10:09:29.333831 [perf_airports_7411_cellbound_lp] initialized_level 14
+13/07/2013 10:09:29.885998 [perf_airports_7411_cellbound_lp] found_conflicts 14
+13/07/2013 10:09:29.887279 [perf_airports_7411_cellbound_lp] resolved_conflicts 14
+13/07/2013 10:09:29.891605 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:29.892900 [perf_airports_7411_cellbound_lp] finalized_level 14
+13/07/2013 10:09:29.895542 [perf_airports_7411_cellbound_lp] initialized_level 13
+13/07/2013 10:09:30.408507 [perf_airports_7411_cellbound_lp] found_conflicts 13
+13/07/2013 10:09:30.409691 [perf_airports_7411_cellbound_lp] resolved_conflicts 13
+13/07/2013 10:09:30.413955 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:30.415223 [perf_airports_7411_cellbound_lp] finalized_level 13
+13/07/2013 10:09:30.417693 [perf_airports_7411_cellbound_lp] initialized_level 12
+13/07/2013 10:09:30.932541 [perf_airports_7411_cellbound_lp] found_conflicts 12
+13/07/2013 10:09:30.933762 [perf_airports_7411_cellbound_lp] resolved_conflicts 12
+13/07/2013 10:09:30.938065 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:30.939348 [perf_airports_7411_cellbound_lp] finalized_level 12
+13/07/2013 10:09:30.941900 [perf_airports_7411_cellbound_lp] initialized_level 11
+13/07/2013 10:09:31.457782 [perf_airports_7411_cellbound_lp] found_conflicts 11
+13/07/2013 10:09:31.459055 [perf_airports_7411_cellbound_lp] resolved_conflicts 11
+13/07/2013 10:09:31.463389 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:31.464711 [perf_airports_7411_cellbound_lp] finalized_level 11
+13/07/2013 10:09:31.467432 [perf_airports_7411_cellbound_lp] initialized_level 10
+13/07/2013 10:09:31.983296 [perf_airports_7411_cellbound_lp] found_conflicts 10
+13/07/2013 10:09:31.984614 [perf_airports_7411_cellbound_lp] resolved_conflicts 10
+13/07/2013 10:09:31.988968 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:31.990271 [perf_airports_7411_cellbound_lp] finalized_level 10
+13/07/2013 10:09:31.993014 [perf_airports_7411_cellbound_lp] initialized_level 9
+13/07/2013 10:09:32.505579 [perf_airports_7411_cellbound_lp] found_conflicts 9
+13/07/2013 10:09:32.506820 [perf_airports_7411_cellbound_lp] resolved_conflicts 9
+13/07/2013 10:09:32.511145 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+13/07/2013 10:09:32.512455 [perf_airports_7411_cellbound_lp] finalized_level 9
+13/07/2013 10:09:32.515060 [perf_airports_7411_cellbound_lp] initialized_level 8
+13/07/2013 10:09:33.030958 [perf_airports_7411_cellbound_lp] found_conflicts 8
+13/07/2013 10:09:33.047765 [perf_airports_7411_cellbound_lp] resolved_conflicts 8
+13/07/2013 10:09:33.063300 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 117L, 'rec_per_c_min': 17L, 'num_c': 8L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7294L, 'rec_per_c_max': 19L, 'lp_bound': 9.7101866996304161e-11, 'num_recs_having_c': 142L, 'rec_per_c_avg': 17.75}
+13/07/2013 10:09:33.064614 [perf_airports_7411_cellbound_lp] finalized_level 8
+13/07/2013 10:09:33.067272 [perf_airports_7411_cellbound_lp] initialized_level 7
+13/07/2013 10:09:33.569556 [perf_airports_7411_cellbound_lp] found_conflicts 7
+13/07/2013 10:09:33.655825 [perf_airports_7411_cellbound_lp] resolved_conflicts 7
+13/07/2013 10:09:33.727831 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 863L, 'rec_per_c_min': 17L, 'num_c': 48L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 6431L, 'rec_per_c_max': 51L, 'lp_bound': 4.8574521885643062e-11, 'num_recs_having_c': 1095L, 'rec_per_c_avg': 22.8125}
+13/07/2013 10:09:33.729212 [perf_airports_7411_cellbound_lp] finalized_level 7
+13/07/2013 10:09:33.731925 [perf_airports_7411_cellbound_lp] initialized_level 6
+13/07/2013 10:09:34.177568 [perf_airports_7411_cellbound_lp] found_conflicts 6
+13/07/2013 10:09:34.369469 [perf_airports_7411_cellbound_lp] resolved_conflicts 6
+13/07/2013 10:09:34.539598 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 60950.0, 'rank_lost': 72.0, 'recs_lost': 1475L, 'rec_per_c_min': 17L, 'num_c': 107L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 4956L, 'rec_per_c_max': 42L, 'lp_bound': 44.000004587973848, 'num_recs_having_c': 2598L, 'rec_per_c_avg': 24.280373831775702}
+13/07/2013 10:09:34.541358 [perf_airports_7411_cellbound_lp] finalized_level 6
+13/07/2013 10:09:34.544372 [perf_airports_7411_cellbound_lp] initialized_level 5
+13/07/2013 10:09:34.925198 [perf_airports_7411_cellbound_lp] found_conflicts 5
+13/07/2013 10:09:35.252571 [perf_airports_7411_cellbound_lp] resolved_conflicts 5
+13/07/2013 10:09:35.539652 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 57226.0, 'rank_lost': 3724.0, 'recs_lost': 2277L, 'rec_per_c_min': 17L, 'num_c': 126L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 2679L, 'rec_per_c_max': 59L, 'lp_bound': 3387.0000395097877, 'num_recs_having_c': 3889L, 'rec_per_c_avg': 30.865079365079364}
+13/07/2013 10:09:35.541374 [perf_airports_7411_cellbound_lp] finalized_level 5
+13/07/2013 10:09:35.544234 [perf_airports_7411_cellbound_lp] initialized_level 4
+13/07/2013 10:09:35.731820 [perf_airports_7411_cellbound_lp] found_conflicts 4
+13/07/2013 10:09:35.951761 [perf_airports_7411_cellbound_lp] resolved_conflicts 4
+13/07/2013 10:09:36.162196 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 46494.0, 'rank_lost': 10732.0, 'recs_lost': 1453L, 'rec_per_c_min': 17L, 'num_c': 66L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 1226L, 'rec_per_c_max': 64L, 'lp_bound': 10412.000492791343, 'num_recs_having_c': 2400L, 'rec_per_c_avg': 36.363636363636367}
+13/07/2013 10:09:36.163919 [perf_airports_7411_cellbound_lp] finalized_level 4
+13/07/2013 10:09:36.166767 [perf_airports_7411_cellbound_lp] initialized_level 3
+13/07/2013 10:09:36.261715 [perf_airports_7411_cellbound_lp] found_conflicts 3
+13/07/2013 10:09:36.365082 [perf_airports_7411_cellbound_lp] resolved_conflicts 3
+13/07/2013 10:09:36.458461 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 33646.0, 'rank_lost': 12848.0, 'recs_lost': 759L, 'rec_per_c_min': 18L, 'num_c': 28L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 467L, 'rec_per_c_max': 63L, 'lp_bound': 12485.000237859125, 'num_recs_having_c': 1169L, 'rec_per_c_avg': 41.75}
+13/07/2013 10:09:36.460064 [perf_airports_7411_cellbound_lp] finalized_level 3
+13/07/2013 10:09:36.462891 [perf_airports_7411_cellbound_lp] initialized_level 2
+13/07/2013 10:09:36.500112 [perf_airports_7411_cellbound_lp] found_conflicts 2
+13/07/2013 10:09:36.542281 [perf_airports_7411_cellbound_lp] resolved_conflicts 2
+13/07/2013 10:09:36.579784 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 21065.0, 'rank_lost': 12581.0, 'recs_lost': 281L, 'rec_per_c_min': 17L, 'num_c': 11L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 186L, 'rec_per_c_max': 64L, 'lp_bound': 12293.000084228652, 'num_recs_having_c': 450L, 'rec_per_c_avg': 40.909090909090907}
+13/07/2013 10:09:36.581123 [perf_airports_7411_cellbound_lp] finalized_level 2
+13/07/2013 10:09:36.583924 [perf_airports_7411_cellbound_lp] initialized_level 1
+13/07/2013 10:09:36.602218 [perf_airports_7411_cellbound_lp] found_conflicts 1
+13/07/2013 10:09:36.621583 [perf_airports_7411_cellbound_lp] resolved_conflicts 1
+13/07/2013 10:09:36.639708 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 13836.0, 'rank_lost': 7229.0, 'recs_lost': 121L, 'rec_per_c_min': 31L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 65L, 'rec_per_c_max': 61L, 'lp_bound': 7229.0000885800691, 'num_recs_having_c': 185L, 'rec_per_c_avg': 46.25}
+13/07/2013 10:09:36.641032 [perf_airports_7411_cellbound_lp] finalized_level 1
+13/07/2013 10:09:36.643708 [perf_airports_7411_cellbound_lp] initialized_level 0
+13/07/2013 10:09:36.653479 [perf_airports_7411_cellbound_lp] found_conflicts 0
+13/07/2013 10:09:36.667281 [perf_airports_7411_cellbound_lp] resolved_conflicts 0
+13/07/2013 10:09:36.681468 [perf_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 6525.0, 'rank_lost': 7311.0, 'recs_lost': 48L, 'rec_per_c_min': 64L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 17L, 'rec_per_c_max': 64L, 'lp_bound': 7310.9999946126391, 'num_recs_having_c': 64L, 'rec_per_c_avg': 64.0}
+13/07/2013 10:09:36.682775 [perf_airports_7411_cellbound_lp] finalized_level 0
+13/07/2013 10:09:36.778638 [perf_airports_7411_cellbound_lp] COMMIT
+13/07/2013 10:09:36.779156 [perf_tourism_523096_proximity_lp] BEGIN_TRANSACTION
+13/07/2013 10:09:48.420628 [perf_tourism_523096_proximity_lp] initialized
+13/07/2013 10:09:48.421029 [perf_tourism_523096_proximity_lp] solver "lp"
+13/07/2013 10:09:48.421355 [perf_tourism_523096_proximity_lp] constraints "proximity(10,)"
+13/07/2013 10:09:48.938816 [perf_tourism_523096_proximity_lp] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_500k_tourism where x_order <= 523096) t', 'total_rank': 261258.82745761378, 'total_recs': 523096L}
+13/07/2013 10:09:48.942481 [perf_tourism_523096_proximity_lp] initialized_level 17
+13/07/2013 10:10:17.840073 [perf_tourism_523096_proximity_lp] found_conflicts 17
+13/07/2013 10:11:06.563995 [perf_tourism_523096_proximity_lp] resolved_conflicts 17
+13/07/2013 10:11:54.008156 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.4972975105535171, 'rank_remaining': 256036.23928346438, 'rank_lost': 5222.588174149394, 'recs_lost': 14117L, 'rec_per_c_min': 2L, 'num_c': 18976L, 'c_per_rec_min': 1L, 'c_per_rec_max': 45L, 'recs_remaining': 508979L, 'rec_per_c_max': 2L, 'lp_bound': 4492.7125786369515, 'num_recs_having_c': 25347L, 'rec_per_c_avg': 2.0}
+13/07/2013 10:11:54.010212 [perf_tourism_523096_proximity_lp] finalized_level 17
+13/07/2013 10:11:54.013433 [perf_tourism_523096_proximity_lp] initialized_level 16
+13/07/2013 10:12:29.059038 [perf_tourism_523096_proximity_lp] found_conflicts 16
+13/07/2013 10:12:53.812333 [perf_tourism_523096_proximity_lp] resolved_conflicts 16
+13/07/2013 10:13:17.674501 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.135116598079561, 'rank_remaining': 251798.51243296592, 'rank_lost': 4237.7268504984677, 'recs_lost': 11749L, 'rec_per_c_min': 2L, 'num_c': 13240L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 497230L, 'rec_per_c_max': 2L, 'lp_bound': 4072.0068172226624, 'num_recs_having_c': 23328L, 'rec_per_c_avg': 2.0}
+13/07/2013 10:13:17.676667 [perf_tourism_523096_proximity_lp] finalized_level 16
+13/07/2013 10:13:17.679842 [perf_tourism_523096_proximity_lp] initialized_level 15
+13/07/2013 10:13:53.406675 [perf_tourism_523096_proximity_lp] found_conflicts 15
+13/07/2013 10:15:09.740969 [perf_tourism_523096_proximity_lp] resolved_conflicts 15
+13/07/2013 10:16:23.799504 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.194141586695473, 'rank_remaining': 244279.14669343969, 'rank_lost': 7519.3657395262271, 'recs_lost': 20172L, 'rec_per_c_min': 2L, 'num_c': 23767L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 477058L, 'rec_per_c_max': 2L, 'lp_bound': 7117.1068150302926, 'num_recs_having_c': 39806L, 'rec_per_c_avg': 2.0}
+13/07/2013 10:16:23.802028 [perf_tourism_523096_proximity_lp] finalized_level 15
+13/07/2013 10:16:23.805070 [perf_tourism_523096_proximity_lp] initialized_level 14
+13/07/2013 10:16:57.989746 [perf_tourism_523096_proximity_lp] found_conflicts 14
+13/07/2013 10:20:05.543451 [perf_tourism_523096_proximity_lp] resolved_conflicts 14
+13/07/2013 10:23:09.967979 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.2375043088590141, 'rank_remaining': 232154.71026481129, 'rank_lost': 12124.436428628396, 'recs_lost': 30982L, 'rec_per_c_min': 2L, 'num_c': 37695L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 446076L, 'rec_per_c_max': 2L, 'lp_bound': 11288.448657279981, 'num_recs_having_c': 60921L, 'rec_per_c_avg': 2.0}
+13/07/2013 10:23:09.970603 [perf_tourism_523096_proximity_lp] finalized_level 14
+13/07/2013 10:23:09.973738 [perf_tourism_523096_proximity_lp] initialized_level 13
+13/07/2013 10:23:43.468947 [perf_tourism_523096_proximity_lp] found_conflicts 13
+13/07/2013 10:30:49.799299 [perf_tourism_523096_proximity_lp] resolved_conflicts 13
+13/07/2013 10:37:52.081371 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.3141122913505312, 'rank_remaining': 213615.26193785574, 'rank_lost': 18539.448326955549, 'recs_lost': 44778L, 'rec_per_c_min': 2L, 'num_c': 57156L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 401298L, 'rec_per_c_max': 2L, 'lp_bound': 16878.368613735565, 'num_recs_having_c': 86988L, 'rec_per_c_avg': 2.0}
+13/07/2013 10:37:52.084170 [perf_tourism_523096_proximity_lp] finalized_level 13
+13/07/2013 10:37:52.087273 [perf_tourism_523096_proximity_lp] initialized_level 12
+13/07/2013 10:38:24.556036 [perf_tourism_523096_proximity_lp] found_conflicts 12
+13/07/2013 10:52:36.836817 [perf_tourism_523096_proximity_lp] resolved_conflicts 12
+13/07/2013 11:06:46.558825 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.4150719517526251, 'rank_remaining': 187591.17800670071, 'rank_lost': 26024.083931155037, 'recs_lost': 58970L, 'rec_per_c_min': 2L, 'num_c': 79307L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 342328L, 'rec_per_c_max': 2L, 'lp_bound': 22978.545782460045, 'num_recs_having_c': 112089L, 'rec_per_c_avg': 2.0}
+13/07/2013 11:06:46.562044 [perf_tourism_523096_proximity_lp] finalized_level 12
+13/07/2013 11:06:46.565146 [perf_tourism_523096_proximity_lp] initialized_level 11
+13/07/2013 11:07:16.834042 [perf_tourism_523096_proximity_lp] found_conflicts 11
+13/07/2013 11:30:12.808680 [perf_tourism_523096_proximity_lp] resolved_conflicts 11
+13/07/2013 11:52:55.774811 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.5104966322822555, 'rank_remaining': 154758.334203979, 'rank_lost': 32832.843802721705, 'recs_lost': 69955L, 'rec_per_c_min': 2L, 'num_c': 97890L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 272373L, 'rec_per_c_max': 2L, 'lp_bound': 28079.203262500112, 'num_recs_having_c': 129613L, 'rec_per_c_avg': 2.0}
+13/07/2013 11:52:55.778061 [perf_tourism_523096_proximity_lp] finalized_level 11
+13/07/2013 11:52:55.781230 [perf_tourism_523096_proximity_lp] initialized_level 10
+13/07/2013 11:53:22.840186 [perf_tourism_523096_proximity_lp] found_conflicts 10
+13/07/2013 12:22:08.331103 [perf_tourism_523096_proximity_lp] resolved_conflicts 10
+13/07/2013 12:50:55.713025 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.6666820170389132, 'rank_remaining': 117413.66676034825, 'rank_lost': 37344.667443630751, 'recs_lost': 73607L, 'rec_per_c_min': 2L, 'num_c': 108576L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 198766L, 'rec_per_c_max': 2L, 'lp_bound': 30447.802155761445, 'num_recs_having_c': 130290L, 'rec_per_c_avg': 2.0}
+13/07/2013 12:50:55.716149 [perf_tourism_523096_proximity_lp] finalized_level 10
+13/07/2013 12:50:55.719377 [perf_tourism_523096_proximity_lp] initialized_level 9
+13/07/2013 12:51:20.001279 [perf_tourism_523096_proximity_lp] found_conflicts 9
+13/07/2013 13:18:05.423924 [perf_tourism_523096_proximity_lp] resolved_conflicts 9
+13/07/2013 13:44:50.261945 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 1.8663199836715858, 'rank_remaining': 80520.583720467053, 'rank_lost': 36893.083039881196, 'recs_lost': 67727L, 'rec_per_c_min': 2L, 'num_c': 105155L, 'c_per_rec_min': 1L, 'c_per_rec_max': 9L, 'recs_remaining': 131039L, 'rec_per_c_max': 2L, 'lp_bound': 28263.846948448132, 'num_recs_having_c': 112687L, 'rec_per_c_avg': 2.0}
+13/07/2013 13:44:50.265012 [perf_tourism_523096_proximity_lp] finalized_level 9
+13/07/2013 13:44:50.268153 [perf_tourism_523096_proximity_lp] initialized_level 8
+13/07/2013 13:45:10.137451 [perf_tourism_523096_proximity_lp] found_conflicts 8
+13/07/2013 14:02:00.635031 [perf_tourism_523096_proximity_lp] resolved_conflicts 8
+13/07/2013 14:18:46.323868 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.053842283085328, 'rank_remaining': 49682.905382482801, 'rank_lost': 30837.678337984253, 'recs_lost': 53195L, 'rec_per_c_min': 2L, 'num_c': 85713L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 77844L, 'rec_per_c_max': 2L, 'lp_bound': 22368.26425577241, 'num_recs_having_c': 83466L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:18:46.326940 [perf_tourism_523096_proximity_lp] finalized_level 8
+13/07/2013 14:18:46.330135 [perf_tourism_523096_proximity_lp] initialized_level 7
+13/07/2013 14:19:00.421354 [perf_tourism_523096_proximity_lp] found_conflicts 7
+13/07/2013 14:26:19.740941 [perf_tourism_523096_proximity_lp] resolved_conflicts 7
+13/07/2013 14:33:33.776124 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.1696461824953444, 'rank_remaining': 27987.378419991117, 'rank_lost': 21695.526962491684, 'recs_lost': 35463L, 'rec_per_c_min': 2L, 'num_c': 58255L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 42381L, 'rec_per_c_max': 2L, 'lp_bound': 15199.527500353977, 'num_recs_having_c': 53700L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:33:33.778742 [perf_tourism_523096_proximity_lp] finalized_level 7
+13/07/2013 14:33:33.788239 [perf_tourism_523096_proximity_lp] initialized_level 6
+13/07/2013 14:33:42.447471 [perf_tourism_523096_proximity_lp] found_conflicts 6
+13/07/2013 14:36:18.490127 [perf_tourism_523096_proximity_lp] resolved_conflicts 6
+13/07/2013 14:38:53.001326 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.2257496719685088, 'rank_remaining': 14859.688963788562, 'rank_lost': 13127.689456202555, 'recs_lost': 20797L, 'rec_per_c_min': 2L, 'num_c': 34774L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 21584L, 'rec_per_c_max': 2L, 'lp_bound': 9184.2461811198191, 'num_recs_having_c': 31247L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:38:53.003809 [perf_tourism_523096_proximity_lp] finalized_level 6
+13/07/2013 14:38:53.007166 [perf_tourism_523096_proximity_lp] initialized_level 5
+13/07/2013 14:38:59.082195 [perf_tourism_523096_proximity_lp] found_conflicts 5
+13/07/2013 14:39:55.440617 [perf_tourism_523096_proximity_lp] resolved_conflicts 5
+13/07/2013 14:40:50.626119 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.4153801339935916, 'rank_remaining': 6772.5277308016084, 'rank_lost': 8087.1612329869531, 'recs_lost': 12133L, 'rec_per_c_min': 2L, 'num_c': 20730L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 9451L, 'rec_per_c_max': 2L, 'lp_bound': 5352.6282547843412, 'num_recs_having_c': 17165L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:40:50.628161 [perf_tourism_523096_proximity_lp] finalized_level 5
+13/07/2013 14:40:50.631358 [perf_tourism_523096_proximity_lp] initialized_level 4
+13/07/2013 14:40:54.929936 [perf_tourism_523096_proximity_lp] found_conflicts 4
+13/07/2013 14:41:08.620306 [perf_tourism_523096_proximity_lp] resolved_conflicts 4
+13/07/2013 14:41:21.416305 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.4866700201207244, 'rank_remaining': 2760.7401776337065, 'rank_lost': 4011.7875531679019, 'recs_lost': 5767L, 'rec_per_c_min': 2L, 'num_c': 9887L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 3684L, 'rec_per_c_max': 2L, 'lp_bound': 2605.8627547457991, 'num_recs_having_c': 7952L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:41:21.418125 [perf_tourism_523096_proximity_lp] finalized_level 4
+13/07/2013 14:41:21.422211 [perf_tourism_523096_proximity_lp] initialized_level 3
+13/07/2013 14:41:23.903601 [perf_tourism_523096_proximity_lp] found_conflicts 3
+13/07/2013 14:41:26.330555 [perf_tourism_523096_proximity_lp] resolved_conflicts 3
+13/07/2013 14:41:28.723824 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.5421152628245727, 'rank_remaining': 1003.0649963770993, 'rank_lost': 1757.6751812566072, 'recs_lost': 2410L, 'rec_per_c_min': 2L, 'num_c': 4014L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 1274L, 'rec_per_c_max': 2L, 'lp_bound': 1104.5210154923834, 'num_recs_having_c': 3158L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:41:28.725512 [perf_tourism_523096_proximity_lp] finalized_level 3
+13/07/2013 14:41:28.728326 [perf_tourism_523096_proximity_lp] initialized_level 2
+13/07/2013 14:41:30.832158 [perf_tourism_523096_proximity_lp] found_conflicts 2
+13/07/2013 14:41:31.277534 [perf_tourism_523096_proximity_lp] resolved_conflicts 2
+13/07/2013 14:41:31.753166 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.4122965641952985, 'rank_remaining': 359.14491181867197, 'rank_lost': 643.92008455842733, 'recs_lost': 827L, 'rec_per_c_min': 2L, 'num_c': 1334L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 447L, 'rec_per_c_max': 2L, 'lp_bound': 406.86308751975372, 'num_recs_having_c': 1106L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:41:31.754852 [perf_tourism_523096_proximity_lp] finalized_level 2
+13/07/2013 14:41:31.757670 [perf_tourism_523096_proximity_lp] initialized_level 1
+13/07/2013 14:41:33.888906 [perf_tourism_523096_proximity_lp] found_conflicts 1
+13/07/2013 14:41:34.072067 [perf_tourism_523096_proximity_lp] resolved_conflicts 1
+13/07/2013 14:41:34.306285 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.3607427055702916, 'rank_remaining': 130.53685946809128, 'rank_lost': 228.60805235058069, 'recs_lost': 284L, 'rec_per_c_min': 2L, 'num_c': 445L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 163L, 'rec_per_c_max': 2L, 'lp_bound': 142.39205995322897, 'num_recs_having_c': 377L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:41:34.308068 [perf_tourism_523096_proximity_lp] finalized_level 1
+13/07/2013 14:41:34.310921 [perf_tourism_523096_proximity_lp] initialized_level 0
+13/07/2013 14:41:35.678998 [perf_tourism_523096_proximity_lp] found_conflicts 0
+13/07/2013 14:41:35.817521 [perf_tourism_523096_proximity_lp] resolved_conflicts 0
+13/07/2013 14:41:36.015957 [perf_tourism_523096_proximity_lp] levelstats {'c_per_rec_avg': 2.1526717557251906, 'rank_remaining': 64.036607005633414, 'rank_lost': 66.500252462457865, 'recs_lost': 82L, 'rec_per_c_min': 2L, 'num_c': 141L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 81L, 'rec_per_c_max': 2L, 'lp_bound': 49.229869940719432, 'num_recs_having_c': 131L, 'rec_per_c_avg': 2.0}
+13/07/2013 14:41:36.017618 [perf_tourism_523096_proximity_lp] finalized_level 0
+13/07/2013 14:41:36.081739 [perf_tourism_523096_proximity_lp] COMMIT
+13/07/2013 14:41:36.082254 [perf_usrivers_102486_proximity_lp] BEGIN_TRANSACTION
+13/07/2013 14:41:41.414998 [perf_usrivers_102486_proximity_lp] initialized
+13/07/2013 14:41:41.415417 [perf_usrivers_102486_proximity_lp] solver "lp"
+13/07/2013 14:41:41.415745 [perf_usrivers_102486_proximity_lp] constraints "proximity(10,)"
+13/07/2013 14:41:41.817635 [perf_usrivers_102486_proximity_lp] inputstats {'geometry_types': ['LINESTRING'], 'input': '(select * from lin_100k_usrivers where x_order <= 102486) t', 'total_rank': 308191.76648920408, 'total_recs': 102486L}
+13/07/2013 14:41:41.821214 [perf_usrivers_102486_proximity_lp] initialized_level 17
+13/07/2013 14:43:47.391529 [perf_usrivers_102486_proximity_lp] found_conflicts 17
+13/07/2013 15:09:53.073478 [perf_usrivers_102486_proximity_lp] resolved_conflicts 17
+13/07/2013 15:35:34.016248 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 2.0823527041186427, 'rank_remaining': 194364.80927714429, 'rank_lost': 113826.9572120571, 'recs_lost': 59598L, 'rec_per_c_min': 2L, 'num_c': 103343L, 'c_per_rec_min': 1L, 'c_per_rec_max': 254L, 'recs_remaining': 42888L, 'rec_per_c_max': 2L, 'lp_bound': 105792.26179425136, 'num_recs_having_c': 99256L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:35:34.019076 [perf_usrivers_102486_proximity_lp] finalized_level 17
+13/07/2013 15:35:34.022284 [perf_usrivers_102486_proximity_lp] initialized_level 16
+13/07/2013 15:36:00.617995 [perf_usrivers_102486_proximity_lp] found_conflicts 16
+13/07/2013 15:36:00.919369 [perf_usrivers_102486_proximity_lp] resolved_conflicts 16
+13/07/2013 15:36:01.192621 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.0628302994715209, 'rank_remaining': 193334.15357475402, 'rank_lost': 1030.6557023905623, 'recs_lost': 859L, 'rec_per_c_min': 2L, 'num_c': 905L, 'c_per_rec_min': 1L, 'c_per_rec_max': 12L, 'recs_remaining': 42029L, 'rec_per_c_max': 2L, 'lp_bound': 1026.1817584917171, 'num_recs_having_c': 1703L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:36:01.194295 [perf_usrivers_102486_proximity_lp] finalized_level 16
+13/07/2013 15:36:01.197065 [perf_usrivers_102486_proximity_lp] initialized_level 15
+13/07/2013 15:36:27.386693 [perf_usrivers_102486_proximity_lp] found_conflicts 15
+13/07/2013 15:36:28.051883 [perf_usrivers_102486_proximity_lp] resolved_conflicts 15
+13/07/2013 15:36:28.658745 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.0550887021475257, 'rank_remaining': 191867.74389057598, 'rank_lost': 1466.4096841775486, 'recs_lost': 1568L, 'rec_per_c_min': 2L, 'num_c': 1695L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 40461L, 'rec_per_c_max': 2L, 'lp_bound': 1464.3153005705028, 'num_recs_having_c': 3213L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:36:28.660441 [perf_usrivers_102486_proximity_lp] finalized_level 15
+13/07/2013 15:36:28.663084 [perf_usrivers_102486_proximity_lp] initialized_level 14
+13/07/2013 15:36:54.472540 [perf_usrivers_102486_proximity_lp] found_conflicts 14
+13/07/2013 15:36:55.972545 [perf_usrivers_102486_proximity_lp] resolved_conflicts 14
+13/07/2013 15:36:57.373734 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.0770673167072942, 'rank_remaining': 189415.97903993732, 'rank_lost': 2451.7648506385017, 'recs_lost': 2616L, 'rec_per_c_min': 2L, 'num_c': 2872L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 37845L, 'rec_per_c_max': 2L, 'lp_bound': 2441.4931506003422, 'num_recs_having_c': 5333L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:36:57.375424 [perf_usrivers_102486_proximity_lp] finalized_level 14
+13/07/2013 15:36:57.378123 [perf_usrivers_102486_proximity_lp] initialized_level 13
+13/07/2013 15:37:22.970493 [perf_usrivers_102486_proximity_lp] found_conflicts 13
+13/07/2013 15:37:26.046108 [perf_usrivers_102486_proximity_lp] resolved_conflicts 13
+13/07/2013 15:37:28.985888 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.1135614702154626, 'rank_remaining': 186196.42802026705, 'rank_lost': 3219.5510196699688, 'recs_lost': 3773L, 'rec_per_c_min': 2L, 'num_c': 4393L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 34072L, 'rec_per_c_max': 2L, 'lp_bound': 3218.4246384852963, 'num_recs_having_c': 7890L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:37:28.987800 [perf_usrivers_102486_proximity_lp] finalized_level 13
+13/07/2013 15:37:28.991013 [perf_usrivers_102486_proximity_lp] initialized_level 12
+13/07/2013 15:37:53.400157 [perf_usrivers_102486_proximity_lp] found_conflicts 12
+13/07/2013 15:38:00.328618 [perf_usrivers_102486_proximity_lp] resolved_conflicts 12
+13/07/2013 15:38:06.241970 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.1501437447834555, 'rank_remaining': 179908.99309872458, 'rank_lost': 6287.4349215423817, 'recs_lost': 5128L, 'rec_per_c_min': 2L, 'num_c': 6201L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 28944L, 'rec_per_c_max': 2L, 'lp_bound': 6267.7167485885784, 'num_recs_having_c': 10783L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:38:06.244046 [perf_usrivers_102486_proximity_lp] finalized_level 12
+13/07/2013 15:38:06.246883 [perf_usrivers_102486_proximity_lp] initialized_level 11
+13/07/2013 15:38:29.803319 [perf_usrivers_102486_proximity_lp] found_conflicts 11
+13/07/2013 15:38:39.047091 [perf_usrivers_102486_proximity_lp] resolved_conflicts 11
+13/07/2013 15:38:47.444430 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.2214648065948002, 'rank_remaining': 171617.08806161667, 'rank_lost': 8291.9050371078647, 'recs_lost': 5943L, 'rec_per_c_min': 2L, 'num_c': 7705L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 23001L, 'rec_per_c_max': 2L, 'lp_bound': 8198.3159745823705, 'num_recs_having_c': 12616L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:38:47.446389 [perf_usrivers_102486_proximity_lp] finalized_level 11
+13/07/2013 15:38:47.449632 [perf_usrivers_102486_proximity_lp] initialized_level 10
+13/07/2013 15:39:08.701628 [perf_usrivers_102486_proximity_lp] found_conflicts 10
+13/07/2013 15:39:19.204714 [perf_usrivers_102486_proximity_lp] resolved_conflicts 10
+13/07/2013 15:39:28.733116 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.3046100134888519, 'rank_remaining': 159856.45880124095, 'rank_lost': 11760.629260375737, 'recs_lost': 5989L, 'rec_per_c_min': 2L, 'num_c': 8221L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 17012L, 'rec_per_c_max': 2L, 'lp_bound': 11640.093086884659, 'num_recs_having_c': 12603L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:39:28.735141 [perf_usrivers_102486_proximity_lp] finalized_level 10
+13/07/2013 15:39:28.738506 [perf_usrivers_102486_proximity_lp] initialized_level 9
+13/07/2013 15:39:45.771799 [perf_usrivers_102486_proximity_lp] found_conflicts 9
+13/07/2013 15:39:54.940349 [perf_usrivers_102486_proximity_lp] resolved_conflicts 9
+13/07/2013 15:40:03.267104 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.4205694148196235, 'rank_remaining': 144851.81826033411, 'rank_lost': 15004.640540907139, 'recs_lost': 5347L, 'rec_per_c_min': 2L, 'num_c': 7659L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 11665L, 'rec_per_c_max': 2L, 'lp_bound': 14587.19901180719, 'num_recs_having_c': 10783L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:40:03.268992 [perf_usrivers_102486_proximity_lp] finalized_level 9
+13/07/2013 15:40:03.271812 [perf_usrivers_102486_proximity_lp] initialized_level 8
+13/07/2013 15:40:17.646495 [perf_usrivers_102486_proximity_lp] found_conflicts 8
+13/07/2013 15:40:25.040766 [perf_usrivers_102486_proximity_lp] resolved_conflicts 8
+13/07/2013 15:40:31.662281 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.6419961427193828, 'rank_remaining': 124671.28340965358, 'rank_lost': 20180.534850680786, 'recs_lost': 4288L, 'rec_per_c_min': 2L, 'num_c': 6811L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 7377L, 'rec_per_c_max': 2L, 'lp_bound': 19333.126581068111, 'num_recs_having_c': 8296L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:40:31.664238 [perf_usrivers_102486_proximity_lp] finalized_level 8
+13/07/2013 15:40:31.667408 [perf_usrivers_102486_proximity_lp] initialized_level 7
+13/07/2013 15:40:41.344131 [perf_usrivers_102486_proximity_lp] found_conflicts 7
+13/07/2013 15:40:46.509784 [perf_usrivers_102486_proximity_lp] resolved_conflicts 7
+13/07/2013 15:40:51.132349 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.9701181375955525, 'rank_remaining': 99086.321618297123, 'rank_lost': 25584.961791356338, 'recs_lost': 3328L, 'rec_per_c_min': 2L, 'num_c': 5670L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 4049L, 'rec_per_c_max': 2L, 'lp_bound': 23422.229355797801, 'num_recs_having_c': 5756L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:40:51.134203 [perf_usrivers_102486_proximity_lp] finalized_level 7
+13/07/2013 15:40:51.137015 [perf_usrivers_102486_proximity_lp] initialized_level 6
+13/07/2013 15:40:57.878265 [perf_usrivers_102486_proximity_lp] found_conflicts 6
+13/07/2013 15:41:00.107831 [perf_usrivers_102486_proximity_lp] resolved_conflicts 6
+13/07/2013 15:41:02.250017 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 2.2148564664101804, 'rank_remaining': 71758.597970960313, 'rank_lost': 27327.723647336723, 'recs_lost': 2071L, 'rec_per_c_min': 2L, 'num_c': 3742L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 1978L, 'rec_per_c_max': 2L, 'lp_bound': 24368.165884944327, 'num_recs_having_c': 3379L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:41:02.251927 [perf_usrivers_102486_proximity_lp] finalized_level 6
+13/07/2013 15:41:02.255185 [perf_usrivers_102486_proximity_lp] initialized_level 5
+13/07/2013 15:41:06.508656 [perf_usrivers_102486_proximity_lp] found_conflicts 5
+13/07/2013 15:41:07.352965 [perf_usrivers_102486_proximity_lp] resolved_conflicts 5
+13/07/2013 15:41:08.138938 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 2.4118329466357311, 'rank_remaining': 45391.334618114292, 'rank_lost': 26367.263352845952, 'recs_lost': 1079L, 'rec_per_c_min': 2L, 'num_c': 2079L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 899L, 'rec_per_c_max': 2L, 'lp_bound': 22614.354705822439, 'num_recs_having_c': 1724L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:41:08.140694 [perf_usrivers_102486_proximity_lp] finalized_level 5
+13/07/2013 15:41:08.143453 [perf_usrivers_102486_proximity_lp] initialized_level 4
+13/07/2013 15:41:10.213616 [perf_usrivers_102486_proximity_lp] found_conflicts 4
+13/07/2013 15:41:10.571799 [perf_usrivers_102486_proximity_lp] resolved_conflicts 4
+13/07/2013 15:41:10.908036 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 2.7834319526627218, 'rank_remaining': 18872.069262852539, 'rank_lost': 26519.265355261723, 'recs_lost': 598L, 'rec_per_c_min': 2L, 'num_c': 1176L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 301L, 'rec_per_c_max': 2L, 'lp_bound': 18896.024700280301, 'num_recs_having_c': 845L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:41:10.909652 [perf_usrivers_102486_proximity_lp] finalized_level 4
+13/07/2013 15:41:10.912434 [perf_usrivers_102486_proximity_lp] initialized_level 3
+13/07/2013 15:41:11.899833 [perf_usrivers_102486_proximity_lp] found_conflicts 3
+13/07/2013 15:41:12.028265 [perf_usrivers_102486_proximity_lp] resolved_conflicts 3
+13/07/2013 15:41:12.178785 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 3.202749140893471, 'rank_remaining': 5414.2161464385372, 'rank_lost': 13457.853116414006, 'recs_lost': 230L, 'rec_per_c_min': 2L, 'num_c': 466L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 71L, 'rec_per_c_max': 2L, 'lp_bound': 8564.2306368259724, 'num_recs_having_c': 291L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:41:12.180459 [perf_usrivers_102486_proximity_lp] finalized_level 3
+13/07/2013 15:41:12.183174 [perf_usrivers_102486_proximity_lp] initialized_level 2
+13/07/2013 15:41:12.583487 [perf_usrivers_102486_proximity_lp] found_conflicts 2
+13/07/2013 15:41:12.653751 [perf_usrivers_102486_proximity_lp] resolved_conflicts 2
+13/07/2013 15:41:12.754572 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 3.0149253731343282, 'rank_remaining': 1412.7397960480644, 'rank_lost': 4001.4763503904737, 'recs_lost': 54L, 'rec_per_c_min': 2L, 'num_c': 101L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 17L, 'rec_per_c_max': 2L, 'lp_bound': 2419.8604707223362, 'num_recs_having_c': 67L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:41:12.756203 [perf_usrivers_102486_proximity_lp] finalized_level 2
+13/07/2013 15:41:12.759081 [perf_usrivers_102486_proximity_lp] initialized_level 1
+13/07/2013 15:41:13.034751 [perf_usrivers_102486_proximity_lp] found_conflicts 1
+13/07/2013 15:41:13.093524 [perf_usrivers_102486_proximity_lp] resolved_conflicts 1
+13/07/2013 15:41:13.189990 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.6000000000000001, 'rank_remaining': 799.96524851671882, 'rank_lost': 612.77454753134509, 'recs_lost': 7L, 'rec_per_c_min': 2L, 'num_c': 12L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 10L, 'rec_per_c_max': 2L, 'lp_bound': 612.77454744568308, 'num_recs_having_c': 15L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:41:13.191659 [perf_usrivers_102486_proximity_lp] finalized_level 1
+13/07/2013 15:41:13.194420 [perf_usrivers_102486_proximity_lp] initialized_level 0
+13/07/2013 15:41:13.624128 [perf_usrivers_102486_proximity_lp] found_conflicts 0
+13/07/2013 15:41:13.681225 [perf_usrivers_102486_proximity_lp] resolved_conflicts 0
+13/07/2013 15:41:13.775773 [perf_usrivers_102486_proximity_lp] levelstats {'c_per_rec_avg': 1.7777777777777779, 'rank_remaining': 303.33193547006442, 'rank_lost': 496.63331304665451, 'recs_lost': 7L, 'rec_per_c_min': 2L, 'num_c': 8L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 3L, 'rec_per_c_max': 2L, 'lp_bound': 278.44066722633238, 'num_recs_having_c': 9L, 'rec_per_c_avg': 2.0}
+13/07/2013 15:41:13.777469 [perf_usrivers_102486_proximity_lp] finalized_level 0
+13/07/2013 15:41:13.862192 [perf_usrivers_102486_proximity_lp] COMMIT
+13/07/2013 15:41:13.862707 [perf_dai_30181_proximity_lp] BEGIN_TRANSACTION
+13/07/2013 15:41:23.474653 [perf_dai_30181_proximity_lp] initialized
+13/07/2013 15:41:23.475062 [perf_dai_30181_proximity_lp] solver "lp"
+13/07/2013 15:41:23.475387 [perf_dai_30181_proximity_lp] constraints "proximity(10,)"
+13/07/2013 15:41:23.614487 [perf_dai_30181_proximity_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'input': '(select * from pol_30k_dai where x_order <= 30181) t', 'total_rank': 606438.5909525489, 'total_recs': 30181L}
+13/07/2013 15:41:23.617696 [perf_dai_30181_proximity_lp] initialized_level 17
+13/07/2013 19:59:16.030145 [perf_dai_30181_proximity_lp] found_conflicts 17
+13/07/2013 23:56:54.107598 [perf_dai_30181_proximity_lp] resolved_conflicts 17
+14/07/2013 03:53:48.446997 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 21.806561810547294, 'rank_remaining': 7175.2548755386724, 'rank_lost': 599263.33607701072, 'recs_lost': 27637L, 'rec_per_c_min': 2L, 'num_c': 306403L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1820L, 'recs_remaining': 2544L, 'rec_per_c_max': 4L, 'lp_bound': 300506.05474797986, 'num_recs_having_c': 28102L, 'rec_per_c_avg': 2.0000065273512333}
+14/07/2013 03:53:48.449187 [perf_dai_30181_proximity_lp] finalized_level 17
+14/07/2013 03:53:48.452463 [perf_dai_30181_proximity_lp] initialized_level 16
+14/07/2013 03:53:56.607485 [perf_dai_30181_proximity_lp] found_conflicts 16
+14/07/2013 03:53:56.642014 [perf_dai_30181_proximity_lp] resolved_conflicts 16
+14/07/2013 03:53:56.679465 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.0602409638554218, 'rank_remaining': 7166.4523035576185, 'rank_lost': 8.8025719810535357, 'recs_lost': 52L, 'rec_per_c_min': 2L, 'num_c': 44L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 2492L, 'rec_per_c_max': 2L, 'lp_bound': 8.7877947404490886, 'num_recs_having_c': 83L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:53:56.680942 [perf_dai_30181_proximity_lp] finalized_level 16
+14/07/2013 03:53:56.683582 [perf_dai_30181_proximity_lp] initialized_level 15
+14/07/2013 03:54:04.776617 [perf_dai_30181_proximity_lp] found_conflicts 15
+14/07/2013 03:54:04.814031 [perf_dai_30181_proximity_lp] resolved_conflicts 15
+14/07/2013 03:54:04.852146 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.117117117117117, 'rank_remaining': 7127.207323523744, 'rank_lost': 39.244980033876111, 'recs_lost': 70L, 'rec_per_c_min': 2L, 'num_c': 62L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 2422L, 'rec_per_c_max': 2L, 'lp_bound': 39.207714665857345, 'num_recs_having_c': 111L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:04.853619 [perf_dai_30181_proximity_lp] finalized_level 15
+14/07/2013 03:54:04.856228 [perf_dai_30181_proximity_lp] initialized_level 14
+14/07/2013 03:54:12.758143 [perf_dai_30181_proximity_lp] found_conflicts 14
+14/07/2013 03:54:12.799849 [perf_dai_30181_proximity_lp] resolved_conflicts 14
+14/07/2013 03:54:12.840659 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.0993377483443709, 'rank_remaining': 7093.0317951856623, 'rank_lost': 34.175528338080532, 'recs_lost': 85L, 'rec_per_c_min': 2L, 'num_c': 83L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 2337L, 'rec_per_c_max': 2L, 'lp_bound': 34.170953162142482, 'num_recs_having_c': 151L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:12.842142 [perf_dai_30181_proximity_lp] finalized_level 14
+14/07/2013 03:54:12.844723 [perf_dai_30181_proximity_lp] initialized_level 13
+14/07/2013 03:54:20.393350 [perf_dai_30181_proximity_lp] found_conflicts 13
+14/07/2013 03:54:20.439010 [perf_dai_30181_proximity_lp] resolved_conflicts 13
+14/07/2013 03:54:20.482116 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.1647058823529413, 'rank_remaining': 6955.2055130262679, 'rank_lost': 137.82628215939425, 'recs_lost': 111L, 'rec_per_c_min': 2L, 'num_c': 99L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 2226L, 'rec_per_c_max': 2L, 'lp_bound': 137.29558797667886, 'num_recs_having_c': 170L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:20.483641 [perf_dai_30181_proximity_lp] finalized_level 13
+14/07/2013 03:54:20.486304 [perf_dai_30181_proximity_lp] initialized_level 12
+14/07/2013 03:54:27.315993 [perf_dai_30181_proximity_lp] found_conflicts 12
+14/07/2013 03:54:27.367244 [perf_dai_30181_proximity_lp] resolved_conflicts 12
+14/07/2013 03:54:27.414988 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.1176470588235294, 'rank_remaining': 6741.4069895266593, 'rank_lost': 213.79852349960478, 'recs_lost': 137L, 'rec_per_c_min': 2L, 'num_c': 133L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 2089L, 'rec_per_c_max': 2L, 'lp_bound': 213.67836751864129, 'num_recs_having_c': 238L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:27.416535 [perf_dai_30181_proximity_lp] finalized_level 12
+14/07/2013 03:54:27.419208 [perf_dai_30181_proximity_lp] initialized_level 11
+14/07/2013 03:54:33.882394 [perf_dai_30181_proximity_lp] found_conflicts 11
+14/07/2013 03:54:33.950630 [perf_dai_30181_proximity_lp] resolved_conflicts 11
+14/07/2013 03:54:34.007616 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.1807909604519773, 'rank_remaining': 6470.427430556676, 'rank_lost': 270.97955896998383, 'recs_lost': 206L, 'rec_per_c_min': 2L, 'num_c': 209L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 1883L, 'rec_per_c_max': 2L, 'lp_bound': 268.9458021119479, 'num_recs_having_c': 354L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:34.009153 [perf_dai_30181_proximity_lp] finalized_level 11
+14/07/2013 03:54:34.011818 [perf_dai_30181_proximity_lp] initialized_level 10
+14/07/2013 03:54:39.105690 [perf_dai_30181_proximity_lp] found_conflicts 10
+14/07/2013 03:54:39.189434 [perf_dai_30181_proximity_lp] resolved_conflicts 10
+14/07/2013 03:54:39.258744 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.1611650485436893, 'rank_remaining': 5916.2089292080045, 'rank_lost': 554.21850134867066, 'recs_lost': 293L, 'rec_per_c_min': 2L, 'num_c': 299L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 1590L, 'rec_per_c_max': 2L, 'lp_bound': 546.83164542405711, 'num_recs_having_c': 515L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:39.260289 [perf_dai_30181_proximity_lp] finalized_level 10
+14/07/2013 03:54:39.262965 [perf_dai_30181_proximity_lp] initialized_level 9
+14/07/2013 03:54:42.433356 [perf_dai_30181_proximity_lp] found_conflicts 9
+14/07/2013 03:54:42.571516 [perf_dai_30181_proximity_lp] resolved_conflicts 9
+14/07/2013 03:54:42.688193 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.3584415584415583, 'rank_remaining': 5078.8791930272328, 'rank_lost': 837.32973618076915, 'recs_lost': 477L, 'rec_per_c_min': 2L, 'num_c': 523L, 'c_per_rec_min': 1L, 'c_per_rec_max': 10L, 'recs_remaining': 1113L, 'rec_per_c_max': 2L, 'lp_bound': 793.24216943477973, 'num_recs_having_c': 770L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:42.689987 [perf_dai_30181_proximity_lp] finalized_level 9
+14/07/2013 03:54:42.692749 [perf_dai_30181_proximity_lp] initialized_level 8
+14/07/2013 03:54:44.262046 [perf_dai_30181_proximity_lp] found_conflicts 8
+14/07/2013 03:54:44.448293 [perf_dai_30181_proximity_lp] resolved_conflicts 8
+14/07/2013 03:54:44.612370 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.7796208530805686, 'rank_remaining': 4093.0607376072312, 'rank_lost': 985.81845541999382, 'recs_lost': 507L, 'rec_per_c_min': 2L, 'num_c': 751L, 'c_per_rec_min': 1L, 'c_per_rec_max': 11L, 'recs_remaining': 606L, 'rec_per_c_max': 2L, 'lp_bound': 937.00118074362979, 'num_recs_having_c': 844L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:44.614093 [perf_dai_30181_proximity_lp] finalized_level 8
+14/07/2013 03:54:44.616816 [perf_dai_30181_proximity_lp] initialized_level 7
+14/07/2013 03:54:45.189675 [perf_dai_30181_proximity_lp] found_conflicts 7
+14/07/2013 03:54:45.340812 [perf_dai_30181_proximity_lp] resolved_conflicts 7
+14/07/2013 03:54:45.483170 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 2.4623655913978495, 'rank_remaining': 3160.1865302544943, 'rank_lost': 932.87420735273827, 'recs_lost': 339L, 'rec_per_c_min': 2L, 'num_c': 687L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 267L, 'rec_per_c_max': 2L, 'lp_bound': 896.09137289365174, 'num_recs_having_c': 558L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:45.484965 [perf_dai_30181_proximity_lp] finalized_level 7
+14/07/2013 03:54:45.487738 [perf_dai_30181_proximity_lp] initialized_level 6
+14/07/2013 03:54:45.930362 [perf_dai_30181_proximity_lp] found_conflicts 6
+14/07/2013 03:54:46.016243 [perf_dai_30181_proximity_lp] resolved_conflicts 6
+14/07/2013 03:54:46.098653 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 3.1860465116279069, 'rank_remaining': 1551.8226161589496, 'rank_lost': 1608.3639140955459, 'recs_lost': 191L, 'rec_per_c_min': 2L, 'num_c': 411L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 76L, 'rec_per_c_max': 2L, 'lp_bound': 1117.1216044237046, 'num_recs_having_c': 258L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:46.100433 [perf_dai_30181_proximity_lp] finalized_level 6
+14/07/2013 03:54:46.103302 [perf_dai_30181_proximity_lp] initialized_level 5
+14/07/2013 03:54:46.441326 [perf_dai_30181_proximity_lp] found_conflicts 5
+14/07/2013 03:54:46.479445 [perf_dai_30181_proximity_lp] resolved_conflicts 5
+14/07/2013 03:54:46.525999 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 2.9863013698630136, 'rank_remaining': 1196.67886342937, 'rank_lost': 355.14375272957926, 'recs_lost': 45L, 'rec_per_c_min': 2L, 'num_c': 109L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 31L, 'rec_per_c_max': 2L, 'lp_bound': 355.14375379480038, 'num_recs_having_c': 73L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:46.527630 [perf_dai_30181_proximity_lp] finalized_level 5
+14/07/2013 03:54:46.530378 [perf_dai_30181_proximity_lp] initialized_level 4
+14/07/2013 03:54:46.840721 [perf_dai_30181_proximity_lp] found_conflicts 4
+14/07/2013 03:54:46.871032 [perf_dai_30181_proximity_lp] resolved_conflicts 4
+14/07/2013 03:54:46.908502 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 3.103448275862069, 'rank_remaining': 849.31408745298063, 'rank_lost': 347.36477597638935, 'recs_lost': 18L, 'rec_per_c_min': 2L, 'num_c': 45L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 13L, 'rec_per_c_max': 2L, 'lp_bound': 347.36477625635888, 'num_recs_having_c': 29L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:46.910100 [perf_dai_30181_proximity_lp] finalized_level 4
+14/07/2013 03:54:46.912833 [perf_dai_30181_proximity_lp] initialized_level 3
+14/07/2013 03:54:47.097552 [perf_dai_30181_proximity_lp] found_conflicts 3
+14/07/2013 03:54:47.122433 [perf_dai_30181_proximity_lp] resolved_conflicts 3
+14/07/2013 03:54:47.155907 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 4.0, 'rank_remaining': 585.84651640539869, 'rank_lost': 263.46757104758188, 'recs_lost': 9L, 'rec_per_c_min': 2L, 'num_c': 24L, 'c_per_rec_min': 2L, 'c_per_rec_max': 7L, 'recs_remaining': 4L, 'rec_per_c_max': 2L, 'lp_bound': 263.45776135733684, 'num_recs_having_c': 12L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:47.157481 [perf_dai_30181_proximity_lp] finalized_level 3
+14/07/2013 03:54:47.160211 [perf_dai_30181_proximity_lp] initialized_level 2
+14/07/2013 03:54:47.270476 [perf_dai_30181_proximity_lp] found_conflicts 2
+14/07/2013 03:54:47.291485 [perf_dai_30181_proximity_lp] resolved_conflicts 2
+14/07/2013 03:54:47.321624 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.5, 'rank_remaining': 511.78567193564299, 'rank_lost': 74.06084446975575, 'recs_lost': 2L, 'rec_per_c_min': 2L, 'num_c': 3L, 'c_per_rec_min': 1L, 'c_per_rec_max': 2L, 'recs_remaining': 2L, 'rec_per_c_max': 2L, 'lp_bound': 74.060844486943012, 'num_recs_having_c': 4L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:47.323120 [perf_dai_30181_proximity_lp] finalized_level 2
+14/07/2013 03:54:47.325908 [perf_dai_30181_proximity_lp] initialized_level 1
+14/07/2013 03:54:47.405116 [perf_dai_30181_proximity_lp] found_conflicts 1
+14/07/2013 03:54:47.425518 [perf_dai_30181_proximity_lp] resolved_conflicts 1
+14/07/2013 03:54:47.455499 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 265.28414412296524, 'rank_lost': 246.50152781267772, 'recs_lost': 1L, 'rec_per_c_min': 2L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 1L, 'rec_per_c_max': 2L, 'lp_bound': 246.50152275047461, 'num_recs_having_c': 2L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:47.457030 [perf_dai_30181_proximity_lp] finalized_level 1
+14/07/2013 03:54:47.459733 [perf_dai_30181_proximity_lp] initialized_level 0
+14/07/2013 03:54:47.501272 [perf_dai_30181_proximity_lp] found_conflicts 0
+14/07/2013 03:54:47.502686 [perf_dai_30181_proximity_lp] resolved_conflicts 0
+14/07/2013 03:54:47.528273 [perf_dai_30181_proximity_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 265.28414412296524, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 1L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+14/07/2013 03:54:47.529792 [perf_dai_30181_proximity_lp] finalized_level 0
+14/07/2013 03:54:47.622121 [perf_dai_30181_proximity_lp] COMMIT
+14/07/2013 03:54:47.622631 [perf_airports_7411_proximity_lp] BEGIN_TRANSACTION
+14/07/2013 03:54:47.731348 [perf_airports_7411_proximity_lp] initialized
+14/07/2013 03:54:47.731747 [perf_airports_7411_proximity_lp] solver "lp"
+14/07/2013 03:54:47.732072 [perf_airports_7411_proximity_lp] constraints "proximity(10,)"
+14/07/2013 03:54:47.740064 [perf_airports_7411_proximity_lp] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_7k_airports where x_order <= 7411) t', 'total_rank': 61022.0, 'total_recs': 7411L}
+14/07/2013 03:54:47.742773 [perf_airports_7411_proximity_lp] initialized_level 17
+14/07/2013 03:54:47.928152 [perf_airports_7411_proximity_lp] found_conflicts 17
+14/07/2013 03:54:47.951950 [perf_airports_7411_proximity_lp] resolved_conflicts 17
+14/07/2013 03:54:47.972103 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.2409638554216866, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 142L, 'rec_per_c_min': 2L, 'num_c': 103L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 7269L, 'rec_per_c_max': 2L, 'lp_bound': 3.2054628633288548e-10, 'num_recs_having_c': 166L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:47.973641 [perf_airports_7411_proximity_lp] finalized_level 17
+14/07/2013 03:54:47.976265 [perf_airports_7411_proximity_lp] initialized_level 16
+14/07/2013 03:54:48.158602 [perf_airports_7411_proximity_lp] found_conflicts 16
+14/07/2013 03:54:48.166453 [perf_airports_7411_proximity_lp] resolved_conflicts 16
+14/07/2013 03:54:48.175292 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 3L, 'rec_per_c_min': 2L, 'num_c': 2L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7266L, 'rec_per_c_max': 2L, 'lp_bound': -1.8415121252800001e-09, 'num_recs_having_c': 4L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:48.176642 [perf_airports_7411_proximity_lp] finalized_level 16
+14/07/2013 03:54:48.179212 [perf_airports_7411_proximity_lp] initialized_level 15
+14/07/2013 03:54:48.361008 [perf_airports_7411_proximity_lp] found_conflicts 15
+14/07/2013 03:54:48.370484 [perf_airports_7411_proximity_lp] resolved_conflicts 15
+14/07/2013 03:54:48.381077 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 12L, 'rec_per_c_min': 2L, 'num_c': 8L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7254L, 'rec_per_c_max': 2L, 'lp_bound': 5.3373179341504999e-10, 'num_recs_having_c': 16L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:48.382365 [perf_airports_7411_proximity_lp] finalized_level 15
+14/07/2013 03:54:48.384884 [perf_airports_7411_proximity_lp] initialized_level 14
+14/07/2013 03:54:48.566269 [perf_airports_7411_proximity_lp] found_conflicts 14
+14/07/2013 03:54:48.574399 [perf_airports_7411_proximity_lp] resolved_conflicts 14
+14/07/2013 03:54:48.583986 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 7L, 'rec_per_c_min': 2L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7247L, 'rec_per_c_max': 2L, 'lp_bound': -1.9939389266440002e-10, 'num_recs_having_c': 8L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:48.585285 [perf_airports_7411_proximity_lp] finalized_level 14
+14/07/2013 03:54:48.587782 [perf_airports_7411_proximity_lp] initialized_level 13
+14/07/2013 03:54:48.768910 [perf_airports_7411_proximity_lp] found_conflicts 13
+14/07/2013 03:54:48.776362 [perf_airports_7411_proximity_lp] resolved_conflicts 13
+14/07/2013 03:54:48.785281 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61012.0, 'rank_lost': 10.0, 'recs_lost': 6L, 'rec_per_c_min': 2L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7241L, 'rec_per_c_max': 2L, 'lp_bound': 9.9999999264772104, 'num_recs_having_c': 8L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:48.786547 [perf_airports_7411_proximity_lp] finalized_level 13
+14/07/2013 03:54:48.789143 [perf_airports_7411_proximity_lp] initialized_level 12
+14/07/2013 03:54:48.970452 [perf_airports_7411_proximity_lp] found_conflicts 12
+14/07/2013 03:54:48.980315 [perf_airports_7411_proximity_lp] resolved_conflicts 12
+14/07/2013 03:54:48.991243 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61012.0, 'rank_lost': 0.0, 'recs_lost': 21L, 'rec_per_c_min': 2L, 'num_c': 13L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7220L, 'rec_per_c_max': 2L, 'lp_bound': 9.3050590698009984e-11, 'num_recs_having_c': 26L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:48.992631 [perf_airports_7411_proximity_lp] finalized_level 12
+14/07/2013 03:54:48.995210 [perf_airports_7411_proximity_lp] initialized_level 11
+14/07/2013 03:54:49.176847 [perf_airports_7411_proximity_lp] found_conflicts 11
+14/07/2013 03:54:49.186224 [perf_airports_7411_proximity_lp] resolved_conflicts 11
+14/07/2013 03:54:49.196509 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61012.0, 'rank_lost': 0.0, 'recs_lost': 26L, 'rec_per_c_min': 2L, 'num_c': 14L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7194L, 'rec_per_c_max': 2L, 'lp_bound': -3.9724345333249999e-10, 'num_recs_having_c': 28L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:49.197775 [perf_airports_7411_proximity_lp] finalized_level 11
+14/07/2013 03:54:49.200406 [perf_airports_7411_proximity_lp] initialized_level 10
+14/07/2013 03:54:49.382699 [perf_airports_7411_proximity_lp] found_conflicts 10
+14/07/2013 03:54:49.393236 [perf_airports_7411_proximity_lp] resolved_conflicts 10
+14/07/2013 03:54:49.405008 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61009.0, 'rank_lost': 3.0, 'recs_lost': 37L, 'rec_per_c_min': 2L, 'num_c': 22L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7157L, 'rec_per_c_max': 2L, 'lp_bound': 3.0000001713643369, 'num_recs_having_c': 44L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:49.406293 [perf_airports_7411_proximity_lp] finalized_level 10
+14/07/2013 03:54:49.408801 [perf_airports_7411_proximity_lp] initialized_level 9
+14/07/2013 03:54:49.590369 [perf_airports_7411_proximity_lp] found_conflicts 9
+14/07/2013 03:54:49.601750 [perf_airports_7411_proximity_lp] resolved_conflicts 9
+14/07/2013 03:54:49.613485 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.1063829787234043, 'rank_remaining': 61003.0, 'rank_lost': 6.0, 'recs_lost': 41L, 'rec_per_c_min': 2L, 'num_c': 26L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 7116L, 'rec_per_c_max': 2L, 'lp_bound': 3.0000002200109526, 'num_recs_having_c': 47L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:49.614830 [perf_airports_7411_proximity_lp] finalized_level 9
+14/07/2013 03:54:49.617468 [perf_airports_7411_proximity_lp] initialized_level 8
+14/07/2013 03:54:49.800553 [perf_airports_7411_proximity_lp] found_conflicts 8
+14/07/2013 03:54:49.816481 [perf_airports_7411_proximity_lp] resolved_conflicts 8
+14/07/2013 03:54:49.831973 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.008, 'rank_remaining': 60998.0, 'rank_lost': 5.0, 'recs_lost': 92L, 'rec_per_c_min': 2L, 'num_c': 63L, 'c_per_rec_min': 1L, 'c_per_rec_max': 2L, 'recs_remaining': 7024L, 'rec_per_c_max': 2L, 'lp_bound': 4.0000000044028612, 'num_recs_having_c': 125L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:49.833320 [perf_airports_7411_proximity_lp] finalized_level 8
+14/07/2013 03:54:49.835959 [perf_airports_7411_proximity_lp] initialized_level 7
+14/07/2013 03:54:50.021967 [perf_airports_7411_proximity_lp] found_conflicts 7
+14/07/2013 03:54:50.065035 [perf_airports_7411_proximity_lp] resolved_conflicts 7
+14/07/2013 03:54:50.095003 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.0406091370558377, 'rank_remaining': 60980.0, 'rank_lost': 18.0, 'recs_lost': 286L, 'rec_per_c_min': 2L, 'num_c': 205L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 6738L, 'rec_per_c_max': 2L, 'lp_bound': 15.000000339184123, 'num_recs_having_c': 394L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:50.096441 [perf_airports_7411_proximity_lp] finalized_level 7
+14/07/2013 03:54:50.099247 [perf_airports_7411_proximity_lp] initialized_level 6
+14/07/2013 03:54:50.291840 [perf_airports_7411_proximity_lp] found_conflicts 6
+14/07/2013 03:54:50.386141 [perf_airports_7411_proximity_lp] resolved_conflicts 6
+14/07/2013 03:54:50.469409 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.1691331923890063, 'rank_remaining': 60530.0, 'rank_lost': 450.0, 'recs_lost': 675L, 'rec_per_c_min': 2L, 'num_c': 553L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 6063L, 'rec_per_c_max': 2L, 'lp_bound': 437.00007167817978, 'num_recs_having_c': 946L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:50.470829 [perf_airports_7411_proximity_lp] finalized_level 6
+14/07/2013 03:54:50.473601 [perf_airports_7411_proximity_lp] initialized_level 5
+14/07/2013 03:54:50.666349 [perf_airports_7411_proximity_lp] found_conflicts 5
+14/07/2013 03:54:50.892514 [perf_airports_7411_proximity_lp] resolved_conflicts 5
+14/07/2013 03:54:51.100191 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.3166023166023166, 'rank_remaining': 58437.0, 'rank_lost': 2093.0, 'recs_lost': 1076L, 'rec_per_c_min': 2L, 'num_c': 1023L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 4987L, 'rec_per_c_max': 2L, 'lp_bound': 2056.5001935630644, 'num_recs_having_c': 1554L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:51.101680 [perf_airports_7411_proximity_lp] finalized_level 5
+14/07/2013 03:54:51.104456 [perf_airports_7411_proximity_lp] initialized_level 4
+14/07/2013 03:54:51.291172 [perf_airports_7411_proximity_lp] found_conflicts 4
+14/07/2013 03:54:51.873275 [perf_airports_7411_proximity_lp] resolved_conflicts 4
+14/07/2013 03:54:52.430710 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 1.5582667227597813, 'rank_remaining': 54184.0, 'rank_lost': 4253.0, 'recs_lost': 1527L, 'rec_per_c_min': 2L, 'num_c': 1852L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 3460L, 'rec_per_c_max': 2L, 'lp_bound': 4093.0009401005846, 'num_recs_having_c': 2377L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:52.432397 [perf_airports_7411_proximity_lp] finalized_level 4
+14/07/2013 03:54:52.435177 [perf_airports_7411_proximity_lp] initialized_level 3
+14/07/2013 03:54:52.611955 [perf_airports_7411_proximity_lp] found_conflicts 3
+14/07/2013 03:54:53.725060 [perf_airports_7411_proximity_lp] resolved_conflicts 3
+14/07/2013 03:54:54.815722 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 2.1118498240125145, 'rank_remaining': 45573.0, 'rank_lost': 8611.0, 'recs_lost': 1651L, 'rec_per_c_min': 2L, 'num_c': 2700L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 1809L, 'rec_per_c_max': 2L, 'lp_bound': 8240.5000456774997, 'num_recs_having_c': 2557L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:54.817454 [perf_airports_7411_proximity_lp] finalized_level 3
+14/07/2013 03:54:54.820307 [perf_airports_7411_proximity_lp] initialized_level 2
+14/07/2013 03:54:54.955973 [perf_airports_7411_proximity_lp] found_conflicts 2
+14/07/2013 03:54:55.668397 [perf_airports_7411_proximity_lp] resolved_conflicts 2
+14/07/2013 03:54:56.367611 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 2.7140163419233185, 'rank_remaining': 32476.0, 'rank_lost': 13097.0, 'recs_lost': 1038L, 'rec_per_c_min': 2L, 'num_c': 2159L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 771L, 'rec_per_c_max': 2L, 'lp_bound': 11822.500464503559, 'num_recs_having_c': 1591L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:56.369354 [perf_airports_7411_proximity_lp] finalized_level 2
+14/07/2013 03:54:56.372158 [perf_airports_7411_proximity_lp] initialized_level 1
+14/07/2013 03:54:56.464406 [perf_airports_7411_proximity_lp] found_conflicts 1
+14/07/2013 03:54:56.689001 [perf_airports_7411_proximity_lp] resolved_conflicts 1
+14/07/2013 03:54:56.907099 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 3.2560801144492131, 'rank_remaining': 15007.0, 'rank_lost': 17469.0, 'recs_lost': 479L, 'rec_per_c_min': 2L, 'num_c': 1138L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 292L, 'rec_per_c_max': 2L, 'lp_bound': 12594.500648684159, 'num_recs_having_c': 699L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:56.908533 [perf_airports_7411_proximity_lp] finalized_level 1
+14/07/2013 03:54:56.911303 [perf_airports_7411_proximity_lp] initialized_level 0
+14/07/2013 03:54:56.967229 [perf_airports_7411_proximity_lp] found_conflicts 0
+14/07/2013 03:54:57.027926 [perf_airports_7411_proximity_lp] resolved_conflicts 0
+14/07/2013 03:54:57.086665 [perf_airports_7411_proximity_lp] levelstats {'c_per_rec_avg': 3.5897435897435899, 'rank_remaining': 4997.0, 'rank_lost': 10010.0, 'recs_lost': 215L, 'rec_per_c_min': 2L, 'num_c': 490L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 77L, 'rec_per_c_max': 2L, 'lp_bound': 6603.0000146512293, 'num_recs_having_c': 273L, 'rec_per_c_avg': 2.0}
+14/07/2013 03:54:57.088030 [perf_airports_7411_proximity_lp] finalized_level 0
+14/07/2013 03:54:57.179137 [perf_airports_7411_proximity_lp] COMMIT
+14/07/2013 03:54:57.179652 [perf_tourism_523096_cellbound-proximity_lp] BEGIN_TRANSACTION
+14/07/2013 03:55:08.613036 [perf_tourism_523096_cellbound-proximity_lp] initialized
+14/07/2013 03:55:08.613458 [perf_tourism_523096_cellbound-proximity_lp] solver "lp"
+14/07/2013 03:55:08.613786 [perf_tourism_523096_cellbound-proximity_lp] constraints "cellbound(16,), proximity(10,)"
+14/07/2013 03:55:09.132352 [perf_tourism_523096_cellbound-proximity_lp] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_500k_tourism where x_order <= 523096) t', 'total_rank': 261751.35642484436, 'total_recs': 523096L}
+14/07/2013 03:55:09.135865 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 17
+14/07/2013 03:56:15.431813 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 17
+14/07/2013 03:57:13.580660 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 17
+14/07/2013 03:58:10.489702 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.5100151307731104, 'rank_remaining': 256363.82096810918, 'rank_lost': 5387.5354567351751, 'recs_lost': 14859L, 'rec_per_c_min': 2L, 'num_c': 19128L, 'c_per_rec_min': 1L, 'c_per_rec_max': 46L, 'recs_remaining': 508237L, 'rec_per_c_max': 84L, 'lp_bound': 4683.9433577479849, 'num_recs_having_c': 27758L, 'rec_per_c_avg': 2.1912902551233793}
+14/07/2013 03:58:10.491968 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 17
+14/07/2013 03:58:10.495062 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 16
+14/07/2013 03:59:20.973744 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 16
+14/07/2013 03:59:54.203417 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 16
+14/07/2013 04:00:26.535235 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.1495046641116493, 'rank_remaining': 251738.57116437983, 'rank_lost': 4625.2498037293553, 'recs_lost': 12964L, 'rec_per_c_min': 2L, 'num_c': 12949L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 495273L, 'rec_per_c_max': 57L, 'lp_bound': 4479.318812657586, 'num_recs_having_c': 27658L, 'rec_per_c_avg': 2.45524750946019}
+14/07/2013 04:00:26.537550 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 16
+14/07/2013 04:00:26.540620 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 15
+14/07/2013 04:01:36.258191 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 15
+14/07/2013 04:03:25.534788 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 15
+14/07/2013 04:05:12.683782 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.2148648100855324, 'rank_remaining': 243544.95960733062, 'rank_lost': 8193.6115570492111, 'recs_lost': 22256L, 'rec_per_c_min': 2L, 'num_c': 22613L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 473017L, 'rec_per_c_max': 64L, 'lp_bound': 7865.6610621942455, 'num_recs_having_c': 49338L, 'rec_per_c_avg': 2.650643435192146}
+14/07/2013 04:05:12.686232 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 15
+14/07/2013 04:05:12.689341 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 14
+14/07/2013 04:06:17.877434 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 14
+14/07/2013 04:11:20.011611 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 14
+14/07/2013 04:16:21.425523 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.2777240490006447, 'rank_remaining': 230053.83460921142, 'rank_lost': 13491.124998119194, 'recs_lost': 35462L, 'rec_per_c_min': 2L, 'num_c': 35610L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 437555L, 'rec_per_c_max': 64L, 'lp_bound': 12750.889844694902, 'num_recs_having_c': 80652L, 'rec_per_c_avg': 2.8938781241224376}
+14/07/2013 04:16:21.428467 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 14
+14/07/2013 04:16:21.431533 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 13
+14/07/2013 04:17:30.055602 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 13
+14/07/2013 04:32:09.911780 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 13
+14/07/2013 04:46:44.086234 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.3565134667269694, 'rank_remaining': 208076.67879996542, 'rank_lost': 21977.155809246004, 'recs_lost': 55495L, 'rec_per_c_min': 2L, 'num_c': 52774L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 382060L, 'rec_per_c_max': 64L, 'lp_bound': 20856.46922515718, 'num_recs_having_c': 128242L, 'rec_per_c_avg': 3.2963580551028917}
+14/07/2013 04:46:44.089739 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 13
+14/07/2013 04:46:44.092963 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 12
+14/07/2013 04:47:43.616120 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 12
+14/07/2013 05:17:54.428616 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 12
+14/07/2013 05:47:49.196768 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.4359394870555469, 'rank_remaining': 173042.72957677068, 'rank_lost': 35033.949223194737, 'recs_lost': 81274L, 'rec_per_c_min': 2L, 'num_c': 67439L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 300786L, 'rec_per_c_max': 64L, 'lp_bound': 33428.642736949449, 'num_recs_having_c': 173781L, 'rec_per_c_avg': 3.7002179747623778}
+14/07/2013 05:47:49.200957 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 12
+14/07/2013 05:47:49.204164 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 11
+14/07/2013 05:48:36.853364 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 11
+14/07/2013 06:22:02.622278 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 11
+14/07/2013 06:55:31.929124 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.4851638936487757, 'rank_remaining': 126754.96541249054, 'rank_lost': 46287.764164280146, 'recs_lost': 94515L, 'rec_per_c_min': 2L, 'num_c': 67607L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 206271L, 'rec_per_c_max': 64L, 'lp_bound': 44151.26917075536, 'num_recs_having_c': 180910L, 'rec_per_c_avg': 3.9741594805271645}
+14/07/2013 06:55:31.933918 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 11
+14/07/2013 06:55:31.937187 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 10
+14/07/2013 06:56:04.126047 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 10
+14/07/2013 07:17:02.710324 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 10
+14/07/2013 07:37:55.569303 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.5169386789454729, 'rank_remaining': 81826.707042464521, 'rank_lost': 44928.258370026015, 'recs_lost': 80177L, 'rec_per_c_min': 2L, 'num_c': 52319L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 126094L, 'rec_per_c_max': 64L, 'lp_bound': 42417.606360499558, 'num_recs_having_c': 141599L, 'rec_per_c_avg': 4.1055257172346566}
+14/07/2013 07:37:55.573265 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 10
+14/07/2013 07:37:55.576400 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 9
+14/07/2013 07:38:17.277675 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 9
+14/07/2013 07:46:19.839146 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 9
+14/07/2013 07:54:18.151316 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.5247225240195139, 'rank_remaining': 50235.898254084866, 'rank_lost': 31590.808788379654, 'recs_lost': 52342L, 'rec_per_c_min': 2L, 'num_c': 33749L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 73752L, 'rec_per_c_max': 64L, 'lp_bound': 30546.989763749021, 'num_recs_having_c': 93882L, 'rec_per_c_avg': 4.2414293756852057}
+14/07/2013 07:54:18.154202 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 9
+14/07/2013 07:54:18.157408 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 8
+14/07/2013 07:54:30.808321 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 8
+14/07/2013 07:57:42.878460 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 8
+14/07/2013 08:00:58.158435 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.5571901128675676, 'rank_remaining': 28035.226981275715, 'rank_lost': 22200.671272809152, 'recs_lost': 35142L, 'rec_per_c_min': 2L, 'num_c': 21607L, 'c_per_rec_min': 1L, 'c_per_rec_max': 8L, 'recs_remaining': 38610L, 'rec_per_c_max': 64L, 'lp_bound': 21407.41101665757, 'num_recs_having_c': 60159L, 'rec_per_c_avg': 4.3355856898227429}
+14/07/2013 08:00:58.161357 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 8
+14/07/2013 08:00:58.164700 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 7
+14/07/2013 08:01:05.545923 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 7
+14/07/2013 08:02:13.074712 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 7
+14/07/2013 08:03:17.895480 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.6055159408332842, 'rank_remaining': 14358.405426212121, 'rank_lost': 13676.821555063594, 'recs_lost': 20164L, 'rec_per_c_min': 2L, 'num_c': 12413L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 18446L, 'rec_per_c_max': 64L, 'lp_bound': 13300.680443245281, 'num_recs_having_c': 33938L, 'rec_per_c_avg': 4.3895915572383792}
+14/07/2013 08:03:17.898233 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 7
+14/07/2013 08:03:17.901583 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 6
+14/07/2013 08:03:22.222868 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 6
+14/07/2013 08:03:40.979763 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 6
+14/07/2013 08:03:58.497836 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.630345394736842, 'rank_remaining': 6350.6317238686606, 'rank_lost': 8007.7737023434602, 'recs_lost': 10779L, 'rec_per_c_min': 2L, 'num_c': 6223L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 7667L, 'rec_per_c_max': 64L, 'lp_bound': 7589.2225727751766, 'num_recs_having_c': 17024L, 'rec_per_c_avg': 4.4600674915635548}
+14/07/2013 08:03:58.499915 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 6
+14/07/2013 08:03:58.503271 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 5
+14/07/2013 08:04:00.690519 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 5
+14/07/2013 08:04:04.620345 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 5
+14/07/2013 08:04:08.429551 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.643575265114998, 'rank_remaining': 2778.1432851497084, 'rank_lost': 3572.4884387189522, 'recs_lost': 4535L, 'rec_per_c_min': 2L, 'num_c': 2656L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 3132L, 'rec_per_c_max': 64L, 'lp_bound': 3512.3550338517653, 'num_recs_having_c': 7261L, 'rec_per_c_avg': 4.4932228915662655}
+14/07/2013 08:04:08.431356 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 5
+14/07/2013 08:04:08.434167 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 4
+14/07/2013 08:04:09.942375 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 4
+14/07/2013 08:04:11.091638 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 4
+14/07/2013 08:04:12.223877 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.799800796812749, 'rank_remaining': 1031.0413493392989, 'rank_lost': 1747.1019358104095, 'recs_lost': 2024L, 'rec_per_c_min': 2L, 'num_c': 1313L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 1108L, 'rec_per_c_max': 64L, 'lp_bound': 1710.6997768563344, 'num_recs_having_c': 3012L, 'rec_per_c_avg': 4.1287128712871288}
+14/07/2013 08:04:12.225875 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 4
+14/07/2013 08:04:12.229180 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 3
+14/07/2013 08:04:13.326541 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 3
+14/07/2013 08:04:13.700782 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 3
+14/07/2013 08:04:14.082695 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.8369462770970781, 'rank_remaining': 362.39145403541625, 'rank_lost': 668.64989530388266, 'recs_lost': 722L, 'rec_per_c_min': 2L, 'num_c': 475L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 386L, 'rec_per_c_max': 64L, 'lp_bound': 628.06277716666364, 'num_recs_having_c': 1061L, 'rec_per_c_avg': 4.1031578947368423}
+14/07/2013 08:04:14.084307 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 3
+14/07/2013 08:04:14.087128 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 2
+14/07/2013 08:04:15.043092 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 2
+14/07/2013 08:04:15.232562 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 2
+14/07/2013 08:04:15.469300 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.9697802197802199, 'rank_remaining': 134.70114396465942, 'rank_lost': 227.69031007075682, 'recs_lost': 241L, 'rec_per_c_min': 2L, 'num_c': 194L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 145L, 'rec_per_c_max': 58L, 'lp_bound': 215.71212154389505, 'num_recs_having_c': 364L, 'rec_per_c_avg': 3.695876288659794}
+14/07/2013 08:04:15.470967 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 2
+14/07/2013 08:04:15.473737 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 1
+14/07/2013 08:04:16.616587 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 1
+14/07/2013 08:04:16.767689 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 1
+14/07/2013 08:04:16.974375 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.9027777777777779, 'rank_remaining': 27.060558329336345, 'rank_lost': 107.64058563532308, 'recs_lost': 117L, 'rec_per_c_min': 2L, 'num_c': 69L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 28L, 'rec_per_c_max': 45L, 'lp_bound': 70.6730205177019, 'num_recs_having_c': 144L, 'rec_per_c_avg': 3.9710144927536231}
+14/07/2013 08:04:16.976024 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 1
+14/07/2013 08:04:16.978828 [perf_tourism_523096_cellbound-proximity_lp] initialized_level 0
+14/07/2013 08:04:18.026684 [perf_tourism_523096_cellbound-proximity_lp] found_conflicts 0
+14/07/2013 08:04:18.155878 [perf_tourism_523096_cellbound-proximity_lp] resolved_conflicts 0
+14/07/2013 08:04:18.348106 [perf_tourism_523096_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.4444444444444444, 'rank_remaining': 15.390222615562379, 'rank_lost': 11.670335713773966, 'recs_lost': 12L, 'rec_per_c_min': 2L, 'num_c': 7L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 16L, 'rec_per_c_max': 27L, 'lp_bound': 10.670351855400478, 'num_recs_having_c': 27L, 'rec_per_c_avg': 5.5714285714285712}
+14/07/2013 08:04:18.349832 [perf_tourism_523096_cellbound-proximity_lp] finalized_level 0
+14/07/2013 08:04:18.456341 [perf_tourism_523096_cellbound-proximity_lp] COMMIT
+14/07/2013 08:04:18.460318 [perf_usrivers_102486_cellbound-proximity_lp] BEGIN_TRANSACTION
+14/07/2013 08:04:23.439581 [perf_usrivers_102486_cellbound-proximity_lp] initialized
+14/07/2013 08:04:23.440008 [perf_usrivers_102486_cellbound-proximity_lp] solver "lp"
+14/07/2013 08:04:23.440339 [perf_usrivers_102486_cellbound-proximity_lp] constraints "cellbound(16,), proximity(10,)"
+14/07/2013 08:04:23.836986 [perf_usrivers_102486_cellbound-proximity_lp] inputstats {'geometry_types': ['LINESTRING'], 'input': '(select * from lin_100k_usrivers where x_order <= 102486) t', 'total_rank': 308191.76648920408, 'total_recs': 102486L}
+14/07/2013 08:04:23.840295 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 17
+14/07/2013 08:14:07.014992 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 17
+14/07/2013 08:40:19.575172 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 17
+14/07/2013 09:06:11.486952 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 2.0825340533569761, 'rank_remaining': 194356.05836264114, 'rank_lost': 113835.70812656044, 'recs_lost': 59629L, 'rec_per_c_min': 2L, 'num_c': 103344L, 'c_per_rec_min': 1L, 'c_per_rec_max': 254L, 'recs_remaining': 42857L, 'rec_per_c_max': 18L, 'lp_bound': 105792.26136920533, 'num_recs_having_c': 99256L, 'rec_per_c_avg': 2.0001548227279766}
+14/07/2013 09:06:11.489814 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 17
+14/07/2013 09:06:11.493126 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 16
+14/07/2013 09:09:45.388813 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 16
+14/07/2013 09:09:45.692166 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 16
+14/07/2013 09:09:45.965245 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.0629041740152851, 'rank_remaining': 193325.50694257728, 'rank_lost': 1030.5514200641737, 'recs_lost': 858L, 'rec_per_c_min': 2L, 'num_c': 904L, 'c_per_rec_min': 1L, 'c_per_rec_max': 12L, 'recs_remaining': 41999L, 'rec_per_c_max': 2L, 'lp_bound': 1026.0774759982787, 'num_recs_having_c': 1701L, 'rec_per_c_avg': 2.0}
+14/07/2013 09:09:45.966907 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 16
+14/07/2013 09:09:45.969632 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 15
+14/07/2013 09:13:08.820827 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 15
+14/07/2013 09:13:09.500229 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 15
+14/07/2013 09:13:10.103945 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.0552606931002184, 'rank_remaining': 191837.486039165, 'rank_lost': 1488.0209034118016, 'recs_lost': 1645L, 'rec_per_c_min': 2L, 'num_c': 1690L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 40354L, 'rec_per_c_max': 2L, 'lp_bound': 1463.8568209532325, 'num_recs_having_c': 3203L, 'rec_per_c_avg': 2.0}
+14/07/2013 09:13:10.106152 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 15
+14/07/2013 09:13:10.109470 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 14
+14/07/2013 09:16:22.877469 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 14
+14/07/2013 09:16:24.627902 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 14
+14/07/2013 09:16:26.042757 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.0763705103969754, 'rank_remaining': 189389.07702491747, 'rank_lost': 2448.4090142473292, 'recs_lost': 2592L, 'rec_per_c_min': 2L, 'num_c': 2847L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 37762L, 'rec_per_c_max': 2L, 'lp_bound': 2438.7128270100366, 'num_recs_having_c': 5290L, 'rec_per_c_avg': 2.0}
+14/07/2013 09:16:26.044590 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 14
+14/07/2013 09:16:26.047694 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 13
+14/07/2013 09:19:26.705095 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 13
+14/07/2013 09:19:29.822677 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 13
+14/07/2013 09:19:32.775749 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.1161552117676896, 'rank_remaining': 186169.48231830765, 'rank_lost': 3219.5947066095241, 'recs_lost': 3767L, 'rec_per_c_min': 2L, 'num_c': 4375L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 33995L, 'rec_per_c_max': 22L, 'lp_bound': 3216.0437254860849, 'num_recs_having_c': 7886L, 'rec_per_c_avg': 2.0118857142857145}
+14/07/2013 09:19:32.777505 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 13
+14/07/2013 09:19:32.780292 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 12
+14/07/2013 09:22:16.855782 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 12
+14/07/2013 09:22:23.685018 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 12
+14/07/2013 09:22:29.984739 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.197459688316368, 'rank_remaining': 179876.52127097358, 'rank_lost': 6292.9610473339972, 'recs_lost': 5138L, 'rec_per_c_min': 2L, 'num_c': 6205L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 28857L, 'rec_per_c_max': 35L, 'lp_bound': 6268.7841815289385, 'num_recs_having_c': 11101L, 'rec_per_c_avg': 2.1423045930701048}
+14/07/2013 09:22:29.986933 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 12
+14/07/2013 09:22:29.990133 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 11
+14/07/2013 09:24:51.779200 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 11
+14/07/2013 09:25:07.415351 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 11
+14/07/2013 09:25:22.200380 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.4603406003578292, 'rank_remaining': 171475.76902459346, 'rank_lost': 8400.7522463800615, 'recs_lost': 6249L, 'rec_per_c_min': 2L, 'num_c': 7933L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 22608L, 'rec_per_c_max': 42L, 'lp_bound': 8321.3921268830054, 'num_recs_having_c': 15091L, 'rec_per_c_avg': 2.778015883020295}
+14/07/2013 09:25:22.202501 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 11
+14/07/2013 09:25:22.205741 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 10
+14/07/2013 09:27:16.540825 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 10
+14/07/2013 09:27:41.000280 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 10
+14/07/2013 09:28:03.415116 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.7550104696380497, 'rank_remaining': 157517.81944749938, 'rank_lost': 13957.94957709423, 'recs_lost': 7941L, 'rec_per_c_min': 2L, 'num_c': 8309L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 14667L, 'rec_per_c_max': 62L, 'lp_bound': 13557.708658693102, 'num_recs_having_c': 16715L, 'rec_per_c_avg': 3.5305090865326756}
+14/07/2013 09:28:03.417338 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 10
+14/07/2013 09:28:03.420507 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 9
+14/07/2013 09:29:21.107568 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 9
+14/07/2013 09:29:34.755657 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 9
+14/07/2013 09:29:46.571339 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.8188201044609984, 'rank_remaining': 137705.53251596316, 'rank_lost': 19812.286931536073, 'recs_lost': 6615L, 'rec_per_c_min': 2L, 'num_c': 5685L, 'c_per_rec_min': 1L, 'c_per_rec_max': 9L, 'recs_remaining': 8052L, 'rec_per_c_max': 62L, 'lp_bound': 19749.848307128064, 'num_recs_having_c': 11679L, 'rec_per_c_avg': 3.7364995602462621}
+14/07/2013 09:29:46.573466 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 9
+14/07/2013 09:29:46.576628 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 8
+14/07/2013 09:30:33.953152 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 8
+14/07/2013 09:30:38.717620 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 8
+14/07/2013 09:30:42.735522 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.7805563776265168, 'rank_remaining': 115255.9849638281, 'rank_lost': 22449.547552135282, 'recs_lost': 3735L, 'rec_per_c_min': 2L, 'num_c': 3073L, 'c_per_rec_min': 1L, 'c_per_rec_max': 7L, 'recs_remaining': 4317L, 'rec_per_c_max': 66L, 'lp_bound': 22180.50576539808, 'num_recs_having_c': 6758L, 'rec_per_c_avg': 3.9157175398633255}
+14/07/2013 09:30:42.737613 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 8
+14/07/2013 09:30:42.740970 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 7
+14/07/2013 09:31:09.606458 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 7
+14/07/2013 09:31:11.664954 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 7
+14/07/2013 09:31:13.326445 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.8377777777777777, 'rank_remaining': 85272.446401330279, 'rank_lost': 29983.538562498023, 'recs_lost': 2436L, 'rec_per_c_min': 2L, 'num_c': 1825L, 'c_per_rec_min': 1L, 'c_per_rec_max': 5L, 'recs_remaining': 1881L, 'rec_per_c_max': 64L, 'lp_bound': 29183.338322878666, 'num_recs_having_c': 4050L, 'rec_per_c_avg': 4.0783561643835613}
+14/07/2013 09:31:13.328160 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 7
+14/07/2013 09:31:13.330920 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 6
+14/07/2013 09:31:26.122056 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 6
+14/07/2013 09:31:26.697075 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 6
+14/07/2013 09:31:27.202013 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.7931781266919329, 'rank_remaining': 47932.16914074395, 'rank_lost': 37340.277260586212, 'recs_lost': 1187L, 'rec_per_c_min': 2L, 'num_c': 765L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 694L, 'rec_per_c_max': 62L, 'lp_bound': 36595.055833753366, 'num_recs_having_c': 1847L, 'rec_per_c_avg': 4.3294117647058821}
+14/07/2013 09:31:27.203699 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 6
+14/07/2013 09:31:27.206516 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 5
+14/07/2013 09:31:32.007571 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 5
+14/07/2013 09:31:32.212618 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 5
+14/07/2013 09:31:32.408468 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.836972343522562, 'rank_remaining': 14768.614457174237, 'rank_lost': 33163.554683569673, 'recs_lost': 513L, 'rec_per_c_min': 2L, 'num_c': 309L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 181L, 'rec_per_c_max': 64L, 'lp_bound': 28046.668905277184, 'num_recs_having_c': 687L, 'rec_per_c_avg': 4.0841423948220061}
+14/07/2013 09:31:32.410095 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 5
+14/07/2013 09:31:32.412850 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 4
+14/07/2013 09:31:33.718792 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 4
+14/07/2013 09:31:33.802749 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 4
+14/07/2013 09:31:33.915108 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.8342541436464088, 'rank_remaining': 7180.3942931008223, 'rank_lost': 7588.2201640734056, 'recs_lost': 105L, 'rec_per_c_min': 2L, 'num_c': 81L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 76L, 'rec_per_c_max': 38L, 'lp_bound': 5976.8332716592158, 'num_recs_having_c': 181L, 'rec_per_c_avg': 4.098765432098765}
+14/07/2013 09:31:33.916833 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 4
+14/07/2013 09:31:33.922299 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 3
+14/07/2013 09:31:34.639825 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 3
+14/07/2013 09:31:34.707448 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 3
+14/07/2013 09:31:34.809963 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 1.7536231884057971, 'rank_remaining': 3976.2816671208161, 'rank_lost': 3204.1126259800085, 'recs_lost': 36L, 'rec_per_c_min': 2L, 'num_c': 37L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 40L, 'rec_per_c_max': 30L, 'lp_bound': 2450.3642076885062, 'num_recs_having_c': 69L, 'rec_per_c_avg': 3.2702702702702702}
+14/07/2013 09:31:34.811618 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 3
+14/07/2013 09:31:34.814476 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 2
+14/07/2013 09:31:35.365678 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 2
+14/07/2013 09:31:35.427416 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 2
+14/07/2013 09:31:35.525654 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 2.1944444444444442, 'rank_remaining': 2322.8064089067839, 'rank_lost': 1653.4752582140311, 'recs_lost': 17L, 'rec_per_c_min': 2L, 'num_c': 27L, 'c_per_rec_min': 1L, 'c_per_rec_max': 4L, 'recs_remaining': 23L, 'rec_per_c_max': 27L, 'lp_bound': 1365.6487953025799, 'num_recs_having_c': 36L, 'rec_per_c_avg': 2.925925925925926}
+14/07/2013 09:31:35.527333 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 2
+14/07/2013 09:31:35.530135 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 1
+14/07/2013 09:31:36.110418 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 1
+14/07/2013 09:31:36.171252 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 1
+14/07/2013 09:31:36.269719 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 3.3478260869565215, 'rank_remaining': 707.64402957927689, 'rank_lost': 1615.1623793275066, 'recs_lost': 16L, 'rec_per_c_min': 2L, 'num_c': 28L, 'c_per_rec_min': 1L, 'c_per_rec_max': 6L, 'recs_remaining': 7L, 'rec_per_c_max': 23L, 'lp_bound': 1009.8033146410528, 'num_recs_having_c': 23L, 'rec_per_c_avg': 2.75}
+14/07/2013 09:31:36.271412 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 1
+14/07/2013 09:31:36.274321 [perf_usrivers_102486_cellbound-proximity_lp] initialized_level 0
+14/07/2013 09:31:36.620935 [perf_usrivers_102486_cellbound-proximity_lp] found_conflicts 0
+14/07/2013 09:31:36.678568 [perf_usrivers_102486_cellbound-proximity_lp] resolved_conflicts 0
+14/07/2013 09:31:36.773902 [perf_usrivers_102486_cellbound-proximity_lp] levelstats {'c_per_rec_avg': 2.3999999999999999, 'rank_remaining': 202.17647553683275, 'rank_lost': 505.46755404244425, 'recs_lost': 5L, 'rec_per_c_min': 2L, 'num_c': 6L, 'c_per_rec_min': 2L, 'c_per_rec_max': 3L, 'recs_remaining': 2L, 'rec_per_c_max': 2L, 'lp_bound': 252.73377650089014, 'num_recs_having_c': 5L, 'rec_per_c_avg': 2.0}
+14/07/2013 09:31:36.775593 [perf_usrivers_102486_cellbound-proximity_lp] finalized_level 0
+14/07/2013 09:31:36.886224 [perf_usrivers_102486_cellbound-proximity_lp] COMMIT
+14/07/2013 09:31:36.888868 [perf_dai_30181_cellbound-proximity_lp] BEGIN_TRANSACTION
+14/07/2013 09:31:45.615618 [perf_dai_30181_cellbound-proximity_lp] initialized
+14/07/2013 09:31:45.616042 [perf_dai_30181_cellbound-proximity_lp] solver "lp"
+14/07/2013 09:31:45.616373 [perf_dai_30181_cellbound-proximity_lp] constraints "cellbound(16,), proximity(10,)"
+14/07/2013 09:31:45.754039 [perf_dai_30181_cellbound-proximity_lp] inputstats {'geometry_types': ['MULTIPOLYGON'], 'input': '(select * from pol_30k_dai where x_order <= 30181) t', 'total_rank': 606438.5909525489, 'total_recs': 30181L}
+14/07/2013 09:31:45.757577 [perf_dai_30181_cellbound-proximity_lp] initialized_level 17
+14/07/2013 13:54:35.956853 [perf_dai_30181_cellbound-proximity_lp] found_conflicts 17

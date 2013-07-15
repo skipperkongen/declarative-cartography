@@ -29,7 +29,7 @@ if __name__ == '__main__':
             analysis_time = reduce(lambda x,y: x+y,[level['timing']['levelstats'] for level in trace.levels], timedelta(0))
 
             print trace.name, \
-                ' ' * (45 - len(trace.name)), \
+                ' ' * (52 - len(trace.name)), \
                 trace.duration, \
                 '\t', (trace.duration - analysis_time), \
                 '\topt ratio:', \

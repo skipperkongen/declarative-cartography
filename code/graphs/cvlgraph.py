@@ -29,7 +29,7 @@ if __name__ == '__main__':
             analysis_time = reduce(lambda x,y: x+y,[level['timing']['levelstats'] for level in trace.levels], timedelta(0))
 
             print trace.name, \
-                ' ' * (52 - len(trace.name)), \
+                ' ' * (53 - len(trace.name)), \
                 trace.duration, \
                 ' ' * 4, (trace.duration - analysis_time), \
                 ' ' * 4, 'opt ratio:', solution / optimum if optimum > 0 else 'unknown'

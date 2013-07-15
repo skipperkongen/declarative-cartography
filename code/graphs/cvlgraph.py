@@ -6,11 +6,12 @@ from cvltrace import TraceReader
 
 import sys
 import pdb
+from datetime import timedelta
 
 if __name__ == '__main__':
     usage = "usage: %prog [options] tracefile"
     parser = OptionParser(usage=usage)
-    parser.add_option("-g", "--graph", default="stack",
+    parser.add_option("-g", "--graph", default="print",
                       help="Type of graph to produce: stack(default), scalability")
 
     (options, args) = parser.parse_args()
@@ -21,14 +22,18 @@ if __name__ == '__main__':
     tr = TraceReader(args[0])
     traces = tr.get_traces()
     for trace in traces:
-        solution = sum([level['stats']['rank_lost'] for level in trace.levels])
-        optimum = sum([level['stats']['lp_bound'] for level in trace.levels])
 
-        print trace.name, \
-            ' ' * (45 - len(trace.name)), \
-            trace.duration, \
-            '\topt ratio:', \
-            solution / optimum if optimum > 0 else 'unknown'
+        if options.graph == 'print':
+            solution = sum([level['levelstats']['rank_lost'] for level in trace.levels])
+            optimum = sum([level['levelstats']['lp_bound'] for level in trace.levels])
+            analysis_time = reduce(lambda x,y: x+y,[level['timing']['levelstats'] for level in trace.levels], timedelta(0))
+
+            print trace.name, \
+                ' ' * (45 - len(trace.name)), \
+                trace.duration, \
+                '\t', (trace.duration - analysis_time), \
+                '\topt ratio:', \
+                solution / optimum if optimum > 0 else 'unknown'
 
 
 

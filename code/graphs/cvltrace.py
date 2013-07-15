@@ -90,7 +90,8 @@ class Trace(object):
             self.current_level['timing']['resolved_conflicts'] = time_passed
 
         elif event_type == 'LEVELSTATS':
-            self.current_level['stats'] = event['value']
+            self.current_level['levelstats'] = event['value']
+            self.current_level['timing']['levelstats'] = time_passed
 
         elif event_type == 'FINALIZED_LEVEL':
             self.levels.append(self.current_level)

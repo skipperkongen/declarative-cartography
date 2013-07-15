@@ -1,5 +1,7 @@
 __author__ = 'kostas'
 from datetime import datetime
+import re
+import pdb
 
 class TraceReader(object):
 
@@ -76,6 +78,7 @@ class Trace(object):
 
         elif event_type == 'INPUTSTATS':
             self.inputstats = event['value']
+            self.input_table = re.search(r'from ([a-z0-9_]+)', event['value']['input'], re.I).group(1)
 
         elif event_type == 'INITIALIZED_LEVEL':
             self.current_level = {

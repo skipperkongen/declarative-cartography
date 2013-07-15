@@ -80,7 +80,7 @@ class Trace(object):
         elif event_type == 'INITIALIZED_LEVEL':
             self.current_level = {
                 'zoom': event['value'],
-                'timing': {'initialized': time_passed}
+                'timing': {'initialized_level': time_passed}
             }
 
         elif event_type == 'FOUND_CONFLICTS':
@@ -95,6 +95,7 @@ class Trace(object):
 
         elif event_type == 'FINALIZED_LEVEL':
             self.levels.append(self.current_level)
+            self.current_level['timing']['finalized_level'] = time_passed
 
         else:
             raise Exception('unhandled event: {0:s}'.format(event_type))

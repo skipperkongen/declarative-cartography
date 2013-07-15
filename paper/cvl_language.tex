@@ -3,6 +3,9 @@
 \label{sec:cvl-language}
 Cartographic Visualization Language (CVL) is a declarative language for generalizing or thinning a spatial dataset for a set of zoom-levels. CVL is designed to be very concise, typically no more than ten lines of code, and to be usable by people with intermediate geographical and programming skills.
 
+\marcos{Say above that it builds on top of SQL, and that CVL reuses SQL as  language to specify constraints.}
+\marcos{Somewhere here we must have  two sentences about reverse data management and how we differ (i.e., vision only vs. first real language and framework for cartographic generalization).}
+
 % add: motivated by experience of working with maps and such at grontmij and the agency. This type of skill set (geo + IT) is common among people who work with geospatial data in the public and private sectors. Add this argument before this section.
 
 The language has only two statements, the \emph{generalize} statement and the \emph{create constraint} statement. The create constraint statement is used to augment CVL with new cartographic constraints.
@@ -11,7 +14,11 @@ The language has only two statements, the \emph{generalize} statement and the \e
 
 % Add: explain how constraints in the subject-to clause expand into constraint on each level. Also explain 
 
+\marcos{This section should explain the core idea of CVL (implicit vs. explicit), and the core idea of each statement in CVL (generalize, create constraint). You may also need a forward pointer to the semantics of the language in the Optimization Models section.}
+
 In CVL all records are assigned a weight, and conditions are formulated that must hold for subsets of records. If a condition does not hold, it must be made to hold by deleting some of the records. This implies the following optimization problem: At every zoom level a possibly empty subset of records is deleted such that all conditions are made to hold and the sum of weights of records that are deleted is minimized.
+
+\marcos{\emph{Condition} in the paragraph above not so clear? }
 
 The principle of constant information density~\cite{toepfer} states that the amount of information presented to a user browsing a map must remain equal at all zoom levels. The goal of CVL is to enable the user to enforce this principle in a user-defined way. The principle implies that subsets of records are removed from the map at lower scales. In automated cartographic generalization, the removal of records is guided by cartographic constraints~\cite{something}.
 
@@ -23,12 +30,19 @@ A cartographic constraint in CVL is a condition that must hold for any $K$-sized
 
 The situation where a constraint is violated can always be resolved by deleting a subset of the records at a given zoom level.
 
+\marcos{What about the notion of conflicts and conflict sets? Those are pretty important.}
+
 \subsubsection{Weighting records}
 Instead of deleting records willy-nilly the deletion of records at the different zoom levels is guided by assigning a weight to each record. Higher weights imply more important records or records that we would rather not delete. Weights are assigned by evaluating a user defined expression over the set of records, which induces a partial order over the records with ties broken arbitrarily. Examples of assigning weights to records include using the output of a random number generator or the constant $1$. A more useful example is using a record attribute to partially order the records. For example in a restaurant dataset a star-rating may be used to partially order the records.
 
 % Make statement section, make one big syntax box (one for each statement), get rid of clause subsubsections.  
 
+\marcos{Never, ever, write \emph{willy-nilly}. :-) }
+
 \subsection{Generalize statement}
+
+\marcos{I suggest reorganizing the sections below so that the syntax is introduced all at once, in an especially marked box/figure. Then you can explain the intuition behind the constructs very briefly, but mainly give a lot of examples. If you feel it is appropriate, some of the notation from the Optimization Models section can be brought here, since that notation describes the semantics of the language. However, I suppose we will defer the actual global vs. per-level semantics discussion to the other section.}
+
 The generalize statement is used to transform an input spatial dataset to a multi-scale output dataset, which is well-suited for display on a zoomable map such as the web maps that have gained immense popularity over the last ten years. The generalize statement consists of several clauses. 
 
 \subsubsection{input-output clause}
@@ -97,6 +111,8 @@ RESOLVE cid IF DELETE (
 \subsection{CVL framework functions and variables}
 
 % give the variables by example, and explain together with the example, instead of listing everything up front.
+
+\marcos{These could be introduced by need along with the examples integrated into the sections above.}
 
 Some utility functions and variables are given by the CVL framework. These can be used when writing constraint statements. The aim of these functions is to make it easier to write constraints. The functions are:
 

@@ -31,9 +31,8 @@ if __name__ == '__main__':
             print trace.name, \
                 ' ' * (52 - len(trace.name)), \
                 trace.duration, \
-                '\t', (trace.duration - analysis_time), \
-                '\topt ratio:', \
-                solution / optimum if optimum > 0 else 'unknown'
+                ' ' * 4, (trace.duration - analysis_time), \
+                ' ' * 4, 'opt ratio:', solution / optimum if optimum > 0 else 'unknown'
 
 
 

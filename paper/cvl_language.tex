@@ -123,7 +123,7 @@ SUBJECT TO
 \label{sec:create-constraint-statement}
 
 % change text
-In the example shown in Figure~\ref{fig:cvl-example-airports} we referenced an as yet undefined constraint. Cartographic constraints are defined using the \emph{create constraint} statement.  The syntax of the statement is shown in Figure~\ref{fig:create-constraint-syntax}. The body of the statement is an SQL select statement that selects conflict sets as tuples $\langle cid, rid\rangle$, as explained in Section~\ref{sec:cartographic-constraints-in-cvl}.
+In the example shown in Figure~\ref{fig:cvl-example-airports} we referenced an as yet undefined constraint. Cartographic constraints are defined using the \emph{create constraint} statement.  The basic syntax of the statement is shown in Figure~\ref{fig:create-constraint-syntax}. The body of the statement is an SQL select statement that selects conflict sets as tuples $\langle cid, rid\rangle$, as explained in Section~\ref{sec:cartographic-constraints-in-cvl}.
 
 The \emph{resolve-if-delete} clause is used to compute the integer number of records that must be deleted in order to resolve the conflict with ID $cid$, which was also explained in Section~\ref{sec:cartographic-constraints-in-cvl}.
 
@@ -142,14 +142,13 @@ RESOLVE cid IF DELETE (
 \end{center}
 \end{figure}
 
-As an example, the definition of the proximity constraint is shown in Figure~\ref{fig:proximity-definition}. Here the conflict ID is created by concatenating the pair of record IDs that make up the conflict. The pairs are found by computing a distance self join using a distance function \texttt{ST\_Distance}. The body of the resolve-if-delete clause is simply the constant $1$, because that is how many records must be deleted to resolve a proximity conflict. The \texttt{Unnest} call creates exactly two tuples for each conflict set. The \texttt{l.\{rid\} < r.\{rid\}} expression takes care that each conflicting pair is only enumerated once.
+As an example, the definition of the proximity constraint is shown in Figure~\ref{fig:proximity-definition}. The conflict ID is created by concatenating the pair of record IDs that make up the conflict. This conflict ID is unique because each pair is only enumerated once. The pairs are found by computing a distance self join using a distance function \texttt{ST\_Distance}. The resolve-if-delete clause is simply the constant $1$, because that is how many records must be deleted to resolve a proximity conflict. The call to \texttt{Unnest} creates exactly two tuples for each conflict set and the \texttt{l.\{rid\} < r.\{rid\}} expression takes care that each conflicting pair is only enumerated once.
 
 \begin{figure}[htbp]
 \begin{center}
 \begin{lstlisting}
-CREATE CONSTRAINT C1
-AS NOT EXISTS
-(
+CREATE CONSTRAINT Proximity
+AS NOT EXISTS (
   SELECT 
     l.{rid} || r.{rid} AS cid,
     Unnest(array[l.{rid}, r.{rid}]) AS rid
@@ -172,38 +171,55 @@ RESOLVE cid IF DELETE (
 \end{center}
 \end{figure}
 
+In the example in Figure~\ref{fig:proximity-definition} you'll notice some names enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} variable is bound to the name of a view that contains all records that are visible at the current level. You'll also notice a call to a function \texttt{CVL\_Resolution(\{z\}, 256)}. This is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} would be bound to $10$ if running the example in Figure~\ref{fig:cvl-example-airports}.
 
+A constraint with a more elaborate definition is the \emph{cellbound} constraint (also known as the \emph{visibility} constraint~\cite{sarma2012fusiontables}). The definition is shown in Figure~\ref{fig:cellbound-definition}. This constraint states that tiles on any zoom-level may be intersected by at most $K$ records. The definition uses an extension of the basic create-constraint syntax, namely clauses (\texttt{SETUP} and \texttt{CLEAN UP}) that contain SQL that is run before and after the constraint body is evaluated. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. 
 
+Calls are made to the CVL runtime functions \texttt{CVL\_WebMercatorCells} and \texttt{CVL\_PointHash}. These functions returns a set of points corresponding to the centroids of intersected tiles (given a geometry) and a unique identifier for points, respectively. The unique identifier for points is based on the well-known GeoHash algorithm.
 
-\subsection{CVL framework functions and variables}
+\begin{figure}[htbp]
+\begin{center}
+\begin{lstlisting}
+CREATE CONSTRAINT Cellbound
+AS NOT EXISTS (
+    SELECT
+        busted_tiles.tile_id AS cid,
+        busted_tiles.rid
+    FROM
+        busted_tiles
+)
+RESOLVE cid IF DELETE (
+  SELECT count(*) - {parameter_1}
+  FROM   busted_tiles bt
+  WHERE  bt.tile_id = cid
+)
+WITH SETUP (
+    CREATE TEMPORARY TABLE busted_tiles AS (
+        SELECT
+            t.tile_id,
+            Unnest(array_agg(t.cvl_id)) AS rid
+        FROM
+        (
+        SELECT
+            CVL_PointHash(CVL_WebMercatorCells({geometry}, {z})) AS tile_id,
+            {rid}
+        FROM
+            {level_view}
+        ) t
+        GROUP BY t.tile_id
+        HAVING count(*) > {parameter_1}
+    );
+    CREATE INDEX busted_tiles_id_idx ON busted_tiles (tile_id);
+)
+WITH CLEAN UP (
+  DROP TABLE busted_tiles;
+)
+\end{lstlisting}
+\caption{Definition of cellbound constraint}
+\label{fig:cellbound-definition}
+\end{center}
+\end{figure}
 
 % give the variables by example, and explain together with the example, instead of listing everything up front.
 
-\marcos{These could be introduced by need along with the examples integrated into the sections above.}
-
-Some utility functions and variables are given by the CVL framework. These can be used when writing constraint statements. The aim of these functions is to make it easier to write constraints. The functions are:
-
-\minisec{CellSizeZ} yada yada
-
-\minisec{ResolutionZ} yada yada
-
-\minisec{PointHash} yada yada
-
-\minisec{WebMercatorCells}
-Takes as input a geometry and a zoom-level. Produces a set of points that correspond to the centers of intersected cells in standard Web Mercator tile model~\cite{osm?} at the given zoom-level.
-
-A number of variables can be referenced inside the query:
-
-\minisec{level-view} A view containing only the records that part of the currently active zoom level
-
-\minisec{z} The currently active zoom level as an integer
-
-\minisec{geometry} The name of the geometry field in the input
-
-\minisec{parameter 1, ..., n} The values of the floating point parameters given in the subject-to clause.
-
-Apart from these variables, CVL automatically creates the following fields in the output table: \emph{cvl-id}, \emph{cvl-rank} and \emph{cvl-zoom} which may additionally be used in the query.
-
-\subsection{Examples of CVL}
-
-TODO
+%\marcos{These could be introduced by need along with the examples integrated into the sections above.}

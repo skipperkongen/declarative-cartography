@@ -1,112 +1,179 @@
 % !TEX root = ./cvl.tex
-\section{Language}
+\section{CVL Language}
 \label{sec:cvl-language}
-Cartographic Visualization Language (CVL) is a declarative language for generalizing or thinning a spatial dataset for a set of zoom-levels. CVL is designed to be very concise, typically no more than ten lines of code, and to be usable by people with intermediate geographical and programming skills.
+The Cartographic Visualization Language (CVL) is a declarative language for filtering a geospatial dataset over a set of zoom-levels. CVL is a rule-based language with a similar goal as other rule-based languages for generalizing spatial datasets~cite{sld,mapnik}. While other related languages have a similar goal, the CVL approach is markedly different. In the related languages the user must explicitly control the filtering of records at each zoom-level, while also specifying how records are rendered (presentation). We say that these language have \emph{explicit filtering}. CVL is not concerned with presentation, only filtering. Furthermore CVL uses \emph{implicit filtering}. Instead of specifying the filtering of records explicitly for each level, CVL allows the user to formulate general \emph{cartographic constraints} that must hold at all zoom-levels. In languages with explicit filtering~\cite{sld,mapnik} the cartographic constraints are implicit and may or may not be hold after the explicit filtering is applied.
 
-\marcos{Say above that it builds on top of SQL, and that CVL reuses SQL as  language to specify constraints.}
-\marcos{Somewhere here we must have  two sentences about reverse data management and how we differ (i.e., vision only vs. first real language and framework for cartographic generalization).}
+An example of a cartographic constraint in CVL is the \emph{proximity constraint} which states that at all zoom-levels all visible records must be separated by at least $d$ pixels. CVL does not generally need the user to specify at which zoom-level a record is too close to other records, only what the user considers to be "too close". The formulation of the proximity constraint implies that at each zoom-level a (possibly empty) subset of records must be removed in order to respect the constraint, and this is a general property of constraints in CVL. Which records are prioritized over others is controlled by assigning weights to records to indicate their importance. The implicit goal of evaluating a CVL query is to maintaining as much aggregate weight at each zoom-level as possible while satisfying all constraints.
+
+CVL is among the first real languages and frameworks to implement the idea behind reverse data management~\cite{reverse}. In reverse data management, the core idea is that a user wants to transform an existing database into a desired new database without controlling the actual computation. Instead the user formulates a set of \emph{constraints} and \emph{objectives} for the desired database and from this specification an optimization algorithm is used to computes a feasible and optimal solution, i.e. the new database. This is exactly how CVL works. 
+
+The CVL language builds on top of SQL and reuses SQL as a language for formulating constraints and objectives. By using an existing language for this purpose, users who already know SQL can immediately begin formulating their own cartographic constraints and record weighing schemes in CVL. We will give example of a few constraints and weighing schemes in Section~\ref{sec:generalize-statement} and Section~\ref{sec:create-constraint}. Overall, CVL is designed to be very concise, typically no more than ten lines of code, and to be usable by people with intermediate knowledge of geographical data and programming. Users don't even need to know SQL, as CVL comes with several constraints built-in.
+
+%\marcos{Say above that it builds on top of SQL, and that CVL reuses SQL as  language to specify constraints.}
+
+%\marcos{Somewhere here we must have  two sentences about reverse data management and how we differ (i.e., vision only vs. first real language and framework for cartographic generalization).}
+
 
 % add: motivated by experience of working with maps and such at grontmij and the agency. This type of skill set (geo + IT) is common among people who work with geospatial data in the public and private sectors. Add this argument before this section.
 
-The language has only two statements, the \emph{generalize} statement and the \emph{create constraint} statement. The create constraint statement is used to augment CVL with new cartographic constraints.
-
 \subsection{Overview}
+The CVL language has two statements, the \emph{generalize} statement and the \emph{create constraint} statement. The create constraint statement is used to formulate new cartographic constraints and the generalize statement is used for everything else. The most important clause of the generalize statement is the \emph{weight by} clause which is used to assign weights to records to indicate their importance. Another important clause is the \emph{zoom-levels} clause which is used to specify the number of zoom-levels to generalize the input database for.
 
-% Add: explain how constraints in the subject-to clause expand into constraint on each level. Also explain 
+The core concept in CVL is to enforce the principle of constant information density~\cite{toepfer} which states that the amount of information presented to a user in a zoomable interface must remain constant at all levels. In general the density is controlled by choosing suitable parameters for the cartographic constraints, e.g. the minimum number of pixels separating records in the map.
 
-\marcos{This section should explain the core idea of CVL (implicit vs. explicit), and the core idea of each statement in CVL (generalize, create constraint). You may also need a forward pointer to the semantics of the language in the Optimization Models section.}
+\subsection{Conflicts and conflict sets}
+\label{sec:conflicts}
+The principle of constant information density implies that we must choose a subset of the records to be visible at each zoom-level of a map in order to satisfy a constraint. Of couser we only have to choose between records whenever a cartographic constraint is actually violated. In our work we use the term \emph{conflict set} to mean a set of records that together are in \emph{conflict}. Records are in conflict when they cause a specific cartographic constraint to be violated at a given zoom-level. Let us consider the proximity constraint introduced before. Using this constraint, there is a conflict for all pairs of records that are less than $d$ pixels apart, and each conflict set consists of one of these pairs. A record can be in several conflict sets if it is too close to more than one record.
+%\marcos{This section should explain the core idea of CVL (implicit vs. explicit), and the core idea of each statement in CVL (generalize, create constraint). You may also need a forward pointer to the semantics of the language in the Optimization Models section.}
 
-In CVL all records are assigned a weight, and conditions are formulated that must hold for subsets of records. If a condition does not hold, it must be made to hold by deleting some of the records. This implies the following optimization problem: At every zoom level a possibly empty subset of records is deleted such that all conditions are made to hold and the sum of weights of records that are deleted is minimized.
+\kostas{Move the following to related work once Marcos is done}
+Rule-based languages like Styled Layer Descriptor (SLD)  and Mapnik XML serve a similar purpose as CVL, but using a different approach. The user explicitly decides the filtering of records at each zoom level and how records are presented. CVL is only concerned with the filtering, but is implicit about the exact zoom-level at which a record will appear.
 
-\marcos{\emph{Condition} in the paragraph above not so clear? }
+% \marcos{\emph{Condition} in the paragraph above not so clear? }
 
-The principle of constant information density~\cite{toepfer} states that the amount of information presented to a user browsing a map must remain equal at all zoom levels. The goal of CVL is to enable the user to enforce this principle in a user-defined way. The principle implies that subsets of records are removed from the map at lower scales. In automated cartographic generalization, the removal of records is guided by cartographic constraints~\cite{something}.
-
-Other guiding principles for cartographic generalization exist~\cite{something}, but the principle of constant density is arguably the most important one. CVL therefore covers a large number of use cases for generalizing datasets.
 
 \subsubsection{Cartographic constraints in CVL}
+\label{sec:cartographic-constraints-in-cvl}
+A cartographic constraint in CVL is a condition that must hold for all subsets of a given size. Subsets of records for which the condition does not hold, are said to be in conflict. As part of formulating a constraint, the user writes SQL that finds conflicts for this constraint. Part of the CVL formulation of the proximity constraint is an SQL statement that finds all records that are too near each other at a given zoom-level. The contract between the user and the CVL framework is that the user code must generate $\langle cid, rid \rangle$ tuples that represent the conflict sets. The sematics are that $rid$ is the ID of a record which is a member of a conflict set uniquely identified by $cid$. As an example, the user code for the proximity constraint generates two tuples for each conflict found.
 
-A cartographic constraint in CVL is a condition that must hold for any $K$-sized subset of records at a given zoom levels. If the condition does not hold, it must be made to hold by deleting a subset of the records at the given zoom level. An example of a constraint is the \emph{proximity constraint} which says that all pairs of records must be separated by at least some distance $d$ on the screen. Another constraint is the \emph{visibility constraint} which says that for all subsets of $K$ records at most $K-1$ records may intersect the same cell in a map tile model.
+Given the set of conflict tuples generated by the user constraint code, the framework must decide how to resolve the conflicts. A conflict in CVL can always be resolved by removing a subset of the constituent records from the given zoom-level. How many records needs to be removed is also specified in the user code together with the code that finds the conflicts. For the proximity constraint we have to delete one record to resolve each conflict. How this is defined as user code is explained in Section~\ref{sec:create-constraint-statement}.
 
-The situation where a constraint is violated can always be resolved by deleting a subset of the records at a given zoom level.
-
-\marcos{What about the notion of conflicts and conflict sets? Those are pretty important.}
+%\marcos{What about the notion of conflicts and conflict sets? Those are pretty important.}
 
 \subsubsection{Weighting records}
-Instead of deleting records willy-nilly the deletion of records at the different zoom levels is guided by assigning a weight to each record. Higher weights imply more important records or records that we would rather not delete. Weights are assigned by evaluating a user defined expression over the set of records, which induces a partial order over the records with ties broken arbitrarily. Examples of assigning weights to records include using the output of a random number generator or the constant $1$. A more useful example is using a record attribute to partially order the records. For example in a restaurant dataset a star-rating may be used to partially order the records.
+Records are assigned a weight by user defined code which guides how the CVL framework will resolve conflicts.  The intuitive notion of weight is that it represents the relative importance of a record. In general, the CVL framework will try to find a solution for each zoom-level such that all constraints are  satisfied and such that the aggregate weight of records that are removed is minimized. For example, if two records constitute a conflict with respect to the proximity constraint, the CVL framework will delete the one with lesser weight, unless deleting the record with higher weight yields are better global solution for that zoom-level. In other words, the user does not control directly how the framework resolves conflicts, but influences the decision by assigning record weights. 
 
-% Make statement section, make one big syntax box (one for each statement), get rid of clause subsubsections.  
+While the user does not need to individually assign weights to records, CVL offers a very flexible scheme for doing this. Weights are assigned by evaluating a SQL expression for each input row. For example a given column in the input database can be used directly as the weight of a record, or the length or area of the record geometry could be used. In fact any floating point expression can be used to weigh records, and it is perfectly ok to use the output of the random number generator or even a constant. This implies that record weight is a partial order, i.e. any number of records can have the same weight.
 
-\marcos{Never, ever, write \emph{willy-nilly}. :-) }
+The only contract between the user and the CVL framework is that the user code must assign a floating point number to each record to use a the weight.
+
+%\marcos{Never, ever, write \emph{willy-nilly}. :-) }
 
 \subsection{Generalize statement}
+\label{sec:generalize-statement}
+%\marcos{I suggest reorganizing the sections below so that the syntax is introduced all at once, in an especially marked box/figure. Then you can explain the intuition behind the constructs very briefly, but mainly give a lot of examples. If you feel it is appropriate, some of the notation from the Optimization Models section can be brought here, since that notation describes the semantics of the language. However, I suppose we will defer the actual global vs. per-level semantics discussion to the other section.}
 
-\marcos{I suggest reorganizing the sections below so that the syntax is introduced all at once, in an especially marked box/figure. Then you can explain the intuition behind the constructs very briefly, but mainly give a lot of examples. If you feel it is appropriate, some of the notation from the Optimization Models section can be brought here, since that notation describes the semantics of the language. However, I suppose we will defer the actual global vs. per-level semantics discussion to the other section.}
+The generalize statement is the main statement in CVL. This statement creates a new multi-scale dataset from an input table of geospatial records, subject to user defined constraints. The syntax is shown in Figure~\ref{fig:generalize-syntax}. The statement has several clauses, including the ones for specifying input and output tables, weighing records and listing (but not defining) the constraints. 
 
-The generalize statement is used to transform an input spatial dataset to a multi-scale output dataset, which is well-suited for display on a zoomable map such as the web maps that have gained immense popularity over the last ten years. The generalize statement consists of several clauses. 
+For clarity the syntax is shown without clauses for naming the ID and geometry columns in the input. These clauses are straight forward and serve a practical and simple purpose.
 
-\subsubsection{input-output clause}
-
-The \emph{input-output} clause is used to define input and output tables along with the names of key fields (id and geometry) in the input table:
-
+\begin{figure}[htbp]
+\begin{center}
 \begin{lstlisting}
 GENERALIZE 
    {input} TO {output}
-WITH ID
-   {field}
-WITH GEOMETRY 
-   {field}
-WITH OTHER {list of fields}
-\end{lstlisting}
-
-The \emph{with-other} part is optional and is used to to list additional fields that should be copied from input to output.
-
-\subsubsection{zoom-levels clause}
-
-The \emph{zoom-levels} clause is parameterized by a positive integer which is the number of zoom-levels that the input should be generalized for. Zoom-levels run from 1 (lowest scale) to some positive integer $\mathcal{Z}$ (largest scale) typically less than the number 20:
-
-\begin{lstlisting}
 AT {integer} ZOOM LEVELS
-\end{lstlisting}
+WEIGH BY
+  {float expression}
 
-\subsubsection{rank-by clause}
-
-The \emph{rank by} clause is used to assign a weight to each record. It is parameterized by an expression that can be cast to a floating point number. The expression is anything that could used as a projection in an SQL select query, for example a call to the \texttt{random()} function or the name of a field:
-
-\begin{lstlisting}
-RANK BY {float expression}
-\end{lstlisting}
-
-If the clause is left out, records are ranked by the constant $1$
-
-\subsubsection{subject-to clause}
-
-The \emph{subject-to} clause is a list of cartographic constraints that should be enforced. Each element in the list is a tuple containing the name of a constraint as the first element followed by a set of floating point parameters. Constraints are created by using the \emph{create-constraint} statement (see Section~\ref{sec:create-constraint-statement}).
-
-\begin{lstlisting}
 SUBJECT TO 
-   {constraint} {float parameters} 
-AND
-   {constraint} {float parameters}
-...
+   {constraint} {float parameters} [AND
+   {constraint} {float parameters} [AND
+   ...]]
 \end{lstlisting}
+\caption{Syntax of generalize statement}
+\label{fig:generalize-syntax}
+\end{center}
+\end{figure}
+
+An example of generalizing an airports dataset for 18 zoom-levels is shown in Figure~\ref{fig:cvl-example-airports}. The statement uses a column containing the number of routes originating at each airport to weight the records. The intuition is that airports with more routes are more important. The constraint used is the proximity constraint, with a parameter of $16$ pixels.
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{lstlisting}
+GENERALIZE 
+   airports TO airports2
+AT 18 ZOOM LEVELS
+WEIGH BY
+  num_departures
+SUBJECT TO 
+   proximity 10 
+\end{lstlisting}
+\caption{Example: Generalizing an airports dataset, weighing records by number of departures}
+\label{fig:cvl-example-airports}
+\end{center}
+\end{figure}
+
+
+%An advanced example using a select statement as input, using two constraints and accounting for null values in the column used to weight the records is shown in Figure~\ref{fig:cvl-example-restaurants}.
+
+%\begin{figure}[htbp]
+%\begin{center}
+%\begin{lstlisting}
+%GENERALIZE 
+%   (select * from amenities 
+%    where type='restaurant') t TO restaurants
+%AT 18 ZOOM LEVELS
+%WEIGH BY
+%  CASE 
+%    WHEN stars IS NULL THEN 0.5
+%    ELSE stars
+%  END
+%SUBJECT TO 
+%   proximity 10 AND
+%   cellbound 16
+%\end{lstlisting}
+%\caption{Example: Advanced usage}
+%\label{fig:cvl-example-restaurants}
+%\end{center}
+%\end{figure}
+
 
 \subsection{Create constraint statement}
 \label{sec:create-constraint-statement}
 
 % change text
-A named cartographic constraints is created using the \emph{create constraint} statement. The body of the constraint is an SQL statement that selects a result consisting of tuples $\langle cid, rid, minhits \rangle$. It selects a tuple for every record that is part of a subset of records that violate a given constraint. To be precise, a record may be part of more than one subset. E.g. a record may violate the proximity constraint by being too close to more than one other record. The subsets are identified by a unique subset identifier $cid$,  the members of the subset are identified by record id $rid$ and $minhits$ is an integer that indicates how many records must be deleted from the subset in order to satisfy the constraint.
+In the example shown in Figure~\ref{fig:cvl-example-airports} we referenced an as yet undefined constraint. Cartographic constraints are defined using the \emph{create constraint} statement.  The syntax of the statement is shown in Figure~\ref{fig:create-constraint-syntax}. The body of the statement is an SQL select statement that selects conflict sets as tuples $\langle cid, rid\rangle$, as explained in Section~\ref{sec:cartographic-constraints-in-cvl}.
 
+The \emph{resolve-if-delete} clause is used to compute the integer number of records that must be deleted in order to resolve the conflict with ID $cid$, which was also explained in Section~\ref{sec:cartographic-constraints-in-cvl}.
+
+\begin{figure}[htbp]
+\begin{center}
 \begin{lstlisting}
 CREATE CONSTRAINT C1
 AS NOT EXISTS
-  (SELECT cid, rid
-   FROM  {more SQL})
+  {SQL select statement}
 RESOLVE cid IF DELETE (
   {integer expression}
 )
-
 \end{lstlisting}
+\caption{Syntax of create constraint statement}
+\label{fig:create-constraint-syntax}
+\end{center}
+\end{figure}
+
+As an example, the definition of the proximity constraint is shown in Figure~\ref{fig:proximity-definition}. Here the conflict ID is created by concatenating the pair of record IDs that make up the conflict. The pairs are found by computing a distance self join using a distance function \texttt{ST\_Distance}. The body of the resolve-if-delete clause is simply the constant $1$, because that is how many records must be deleted to resolve a proximity conflict. The \texttt{Unnest} call creates exactly two tuples for each conflict set. The \texttt{l.\{rid\} < r.\{rid\}} expression takes care that each conflicting pair is only enumerated once.
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{lstlisting}
+CREATE CONSTRAINT C1
+AS NOT EXISTS
+(
+  SELECT 
+    l.{rid} || r.{rid} AS cid,
+    Unnest(array[l.{rid}, r.{rid}]) AS rid
+  FROM
+    {level_view} l
+  JOIN
+    {level_view} r
+  ON
+    l.{rid} < r.{rid}
+  AND
+    ST_Distance(l.{geom}, r.{geom}) <
+      CVL_Resolution({z}, 256) * {parameter_1}
+)
+RESOLVE cid IF DELETE (
+  1
+)
+\end{lstlisting}
+\caption{Definition of the proximity constraint}
+\label{fig:proximity-definition}
+\end{center}
+\end{figure}
+
+
+
 
 \subsection{CVL framework functions and variables}
 

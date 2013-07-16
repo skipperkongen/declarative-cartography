@@ -16,7 +16,6 @@ from datetime import timedelta
 
 __author__ = 'kostas'
 
-
 class QualAccum(object):
 
     def __init__(self, trace):

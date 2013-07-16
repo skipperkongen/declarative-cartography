@@ -132,7 +132,7 @@ RESOLVE cid IF DELETE (
 
 In the example in Figure~\ref{fig:proximity-definition} you'll notice some names enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} variable is bound to the name of a view that contains all records that are visible at the current level. You'll also notice a call to a function \texttt{CVL\_Resolution(\{z\}, 256)}. This is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} would be bound to $10$ if running the example in Figure~\ref{fig:cvl-example-airports}.
 
-A constraint with a more elaborate definition is the \emph{cellbound} constraint (also known as the \emph{visibility} constraint~\cite{sarma2012fusiontables}). The definition is shown in Figure~\ref{fig:cellbound-definition}. This constraint states that tiles on any zoom-level may be intersected by at most $K$ records. The definition uses an extension of the basic create-constraint syntax, namely clauses (\texttt{SETUP} and \texttt{CLEAN UP}) that contain SQL that is run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table.
+A constraint with a more elaborate definition is the \emph{cellbound} constraint (also known as the \emph{visibility} constraint~\cite{sarma2012fusiontables}). The definition is shown in Figure~\ref{fig:cellbound-definition}. This constraint states that tiles on any zoom-level may be intersected by at most $K$ records. The definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses which will be covered again in Section~\ref{sec:implementation:extensions}. The purpose of these clauses is to enable arbitrary SQL statements to be run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table.
 
 In this example, calls are made to other CVL runtime functions, namely \texttt{CVL\_WebMercatorCells} and \texttt{CVL\_PointHash}. These functions returns a set of points corresponding to the centroids of intersected tiles (given a geometry) and a unique identifier for points, respectively. The unique identifier for points is based on the well-known GeoHash algorithm.
 
@@ -170,7 +170,7 @@ WITH SETUP (
     );
     CREATE INDEX busted_tiles_id_idx ON busted_tiles (cid);
 )
-WITH CLEAN UP (
+WITH TEARDOWN (
   DROP TABLE busted_tiles;
 )
 \end{lstlisting}

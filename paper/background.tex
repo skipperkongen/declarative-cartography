@@ -4,6 +4,8 @@
 
 \marcos{We should clearly state what the problem is in this section, in a separate subsection.}
 
+\marcos{Here is where your basic definitions go, e.g., what is a cell, what are zoom levels, how are objects typically selected when creating a map, what are basic and implicit constraints, such as adjacency and zoom consistency, what are application-specific constraints, what is importance/weight, etc.}
+
 Cartography has a long tradition spanning hundreds of years, and has rightly been considered as much an art as a science. The domain of the data is often considered very important, which is evident in many papers on algorithms for automated cartographic generalization~\cite{areaagg,ordnance,another}. This has changed with the rise and success of social networks and data journalism~\cite{datajournalism}, where the data is often both narrow and massive~\cite{twitter,datablog}. Together with the availability of good quality background maps online~\cite{bing,google,osm} this has opened up the playing field for \emph{domain-agnostic} algorithms~\cite{fusiontables,samet}. For example, a map published by a news agency may display just a single kind of point data from a massive dataset on top of a general purpose background map~\cite{iraq}. The emphasis is not so much on extreme sophistication, but more on the ability to work at large scale and with new datasets appearing all the time.
 
 \subsection{Map services}
@@ -17,6 +19,9 @@ A typical architecture used for map services consists of a rendering process and
 \minisec{Rendering} After the data has been filtered, it is rendered using \emph{cartographic visualization rules} such as "color lakes blue".
 
 Different steps are certainly possible, but these step represent the most typical case. In this work we realize an opportunity for making the rendering process more efficient. 
+
+\marcos{While I can certainly see that WMS@GST uses the process above, it is not clear that the three steps above are an accurate representation of all map services?}
+\marcos{It seems to me that it is important to say that rendering is orthogonal to the work, and that the selection task of generalization is computationally intensive and can be done at indexing time. Perhaps these two points can be conveyed with less words than in the section above and the section below? That would leave us space to introduce other important basic definitions listed in the comment at the beginning of this section.}
 
 \subsection{Specializing datasets by fixing filters}
 One of the reasons that such map services are hard to scale is that all three steps are performed every time a map visualization is produced. The first filtering step is both I/O and CPU intensive. The second filtering step is mainly CPU intensive. The third visualization step is also mainly CPU intensive. Our goal is to make the overall process less I/O and CPU intensive. Another approach would be to simply make redundancies in the system, by replicating the processes. While the rendering process is fairly cheap to replicate, as it is completely stateless, the database has state (the data) which makes it harder or at least more expensive to replicate.

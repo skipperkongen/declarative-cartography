@@ -12,12 +12,13 @@ from cvl.util.anonobject import Object
 class CodeGenerator(object):
     """docstring for Transaction"""
 
-    def __init__(self, query, solver_name, log_file='cvl.log', job_name='noname_job'):
+    def __init__(self, query, solver_name, log_file='cvl.log', job_name='noname_job', analytics=True):
         super(CodeGenerator, self).__init__()
         self.query = query
         self.solver_name = solver_name
         self.solver = self._load_module('solvers', solver_name)
         self.constraints = []
+        self.analytics = analytics
         for constraint in self.query.subject_to:
             module = self._load_module('constraints', constraint.name)
             self.constraints.append(Object(
@@ -118,8 +119,8 @@ class CodeGenerator(object):
 
     def FinalizeLevel(self, z):
         formatter = self._get_formatter(z=z)
-        self.LogLevelStats(z)
-        # self.code.append(DO_CHECK)
+        if self.analytics:
+            self.LogLevelStats(z)
         self.Info('Clean-up for level %d' % z)
         self.code.append(DROP_TEMPORARY.format(**formatter))
         self.Log('finalized_level {0:d}'.format(z))

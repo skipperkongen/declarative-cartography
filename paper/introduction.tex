@@ -1,8 +1,32 @@
 % !TEX root = ./cvl.tex
 \section{Introduction}
 
-\marcos{Discuss and think about title.}
 \marcos{Introduce GST somewhere.}
+\marcos{The introduction now reads a bit too generic, and a bit too rich in buzzwords (big data, crowd sourcing). What is the problem that is being addressed?}
+
+what's the situation
+
+- why do people need to do cartographic generalization?
+
+- how do people go about this task today?
+
+- what is the main related work, and why is it not enough?
+
+what is the approach, why is it cool
+
+- declarative. extensible. database integrated.
+
+four contributions
+
+- language, express real world constraints very concisely.
+
+- underlying math mapping makes constraints fully pluggable and reuse existing algorithms from literature.
+
+- implementation fully executes CVL inside the database.
+
+- results are usually listed as an explicit contribution (only summarize main points: variety of real datasets, time, quality).
+
+\marcos{Take into account the questions and flow above when rewriting the introduction}
 
 In recent year, two major cross-cutting trends in data management have been  big data and crowd-sourcing. These general trends have been changing a lot of fields, and the field of automated cartographic generalization is no exception. This field is concerned with the production of multi-scale maps from geographical datasets, where the main concern is the selection and presentation of data at different zoom-levels.
 
@@ -13,6 +37,8 @@ As a product of the big data phenomenon, data volumes are now growing significan
 Humans are increasingly collaborating and sharing online, a phenomenon known as crowd-sourcing. In recent years this has produced monumental value in many areas. An effect of crowd-sourcing is that a multitude of general purpose background maps of the world can now be downloaded for free~\cite{openstreetmap,googlemaps,bingmaps}. As a consequence of this, we consider the application of automated cartographic generalization to general background maps to be no longer relevant, at least for a very large class of important use cases of maps.
 
 This does not mean that automated cartographic generalization is a closed chapter in general, but that the relevance has shifted away from general purpose background maps to other kinds of maps such as \emph{overlays}. As a consequence of the big data and crowd-sourcing trends, such datasets are now flourishing! This is the kind of data targeted by CVL. While the general task of generalization has proven hard, there are indications that generalizing overlays is easier, and recent results in this field show promise~\cite{fusiontables,thatotherpaper}. 
+
+\marcos{The paragraph above has a nice argument; it would be great to keep it and expand on why promising related work is not enough.}
 
 While fully automatic generalization methods have been demonstrated to work on these types of data, they work best for simple point datasets. With CVL we take a small step back towards giving humans control of the generalization process. Just enough to improve the quality over fully automatic methods, but not so much as to require humans to waste a lot of time managing every detail of the generalization process~\cite{fme}. We believe that human-computer interaction should ideally be a dialogue between the human and the computer, rather than a monologue by one part.
 

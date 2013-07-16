@@ -41,6 +41,11 @@ DATASETS = [
     {
         'name': 'usriversplus',
         'input': '(select * from lin_3m_usriversplus where x_order <= {0:d}) t',
-        'rank_by': '',
-        'size': 3055237}
+        'rank_by': 'st_length(wkb_geometry)/1000',
+        'size': 3055237},
+    {
+        'name': '30millionpoints',
+        'input': '(select * from pnt_30m_synthetic where x_order <= {0:d}) t',
+        'rank_by': 'random()',
+        'size': 30000000}
 ]

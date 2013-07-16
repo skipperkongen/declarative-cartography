@@ -8,6 +8,10 @@ As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest s
 
 In addition to the zoom-consistency constraint there are a number of additional constraints that are modeled using CVL. Let $C$ be the set of additional constraints for all zoom levels; each constraint $c \in C$ is associated with a given zoom level $z_c$. A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
 
+\marcos{Is a constraint above equivalent to a CVL constraint or to a conflict set?}
+
+\marcos{The sections below need a better connection to the concepts introduced in the language section.}
+
 \subsection{Multi-scale optimization probem}
 
 The multi-scale optimization problem can now be modeled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The mathematical optimization problem is:

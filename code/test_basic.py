@@ -8,11 +8,13 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     compiler = CvlCompiler()
 
-    for dataset in DATASETS[0:4]:
-        for constraint in CONSTRAINTS:
-            for solver in SOLVERS:
+    for ds_name in ['airports', 'tourism', 'usrivers', 'dai']:
+        dataset = DATASETS[ds_name]
+        for cn_name in ['A', 'B']:
+            constraint = CONSTRAINTS[cn_name]
+            for solver in ['heuristic', 'lp']:
                     job_name = "basic_{0:s}_{1:d}_{2:s}_{3:s}".format(
-                        dataset['name'],
+                        ds_name,
                         dataset['size'],
                         '-'.join(map(lambda x: x[0], constraint)),
                         solver
@@ -26,5 +28,6 @@ if __name__ == '__main__':
                         solver=solver,
                         target='postgres',
                         log_file='/tmp/cvl.log',
-                        job_name=job_name
+                        job_name=job_name,
+                        analytics=True
                     )

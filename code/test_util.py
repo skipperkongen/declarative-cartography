@@ -11,41 +11,35 @@ SOLVERS = [
     'lp'
 ]
 
-CONSTRAINTS = [
-    [('cellbound', 16)],
-    [('proximity', 10)]us
-    [('cellbound', 16),('proximity', 10)]
-]
+CONSTRAINTS = {
+    'A': [('cellbound', 16)],
+    'B': [('proximity', 10)],
+    'AB': [('cellbound', 16), ('proximity', 10)]
+}
 
-DATASETS = [
-    {
-        'name': 'airports',
+DATASETS = {
+    'airports': {
         'input': '(select * from pnt_7k_airports where x_order <= {0:d}) t',
         'rank_by': 'num_routes',
         'size': 7411},
-    {
-        'name': 'tourism',
+    'tourism': {
         'input': '(select * from pnt_500k_tourism where x_order <= {0:d}) t',
         'rank_by': 'random()',
         'size': 523096},
-    {
-        'name': 'usrivers',
-        'input': '(select * from lin_4k_riversmerged where x_order <= {0:d}) t',
+    'usrivers': {
+        'input': "(select * from lin_30k_uswaterway where x_order <= {0:d} and waterway='river') t",
         'rank_by': 'st_length(wkb_geometry)/1000',
         'size': 4786},
-    {
-        'name': 'dai',
+    'usriversandstreams': {
+        'input': '(select * from lin_30k_uswaterway where x_order <= {0:d}) t',
+        'rank_by': 'st_length(wkb_geometry)/1000',
+        'size': 32231},
+    'dai': {
         'input': '(select * from pol_30k_dai where x_order <= {0:d}) t',
         'rank_by': 'st_area(wkb_geometry)/1000000',
         'size': 30181},
-    {
-        'name': 'xlarge_linestring',
-        'input': '(select * from lin_3m_usriversplus where x_order <= {0:d}) t',
-        'rank_by': 'st_length(wkb_geometry)/1000',
-        'size': 3055237},
-    {
-        'name': 'xlarge_points',
+    'fractal': {
         'input': '(select * from pnt_30m_synthetic where x_order <= {0:d}) t',
         'rank_by': 'random()',
         'size': 30000000}
-]
+}

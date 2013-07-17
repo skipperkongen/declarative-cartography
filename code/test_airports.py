@@ -8,11 +8,11 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     compiler = CvlCompiler()
 
-    dataset = DATASETS[0]
-    solver = SOLVERS[0]
-    constraint = CONSTRAINTS[0]
+    dataset = DATASETS['airports']
+    solver = 'heuristic'
+    constraint = CONSTRAINTS['A']
 
-    job_name = "airports"
+    job_name = "airports_visualize"
     QUERY_DICT['input'] = dataset['input'].format(dataset['size'])
     QUERY_DICT['subject_to'] = constraint
     QUERY_DICT['rank_by'] = dataset['rank_by']

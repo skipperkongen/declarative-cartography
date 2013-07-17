@@ -8,20 +8,17 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     compiler = CvlCompiler()
 
-    dataset = DATASETS[5]
+    dataset = DATASETS['fractal']
+    constraint = CONSTRAINTS['A']
 
-    job_name = "burnout_{0:s}_{1:s}_{2:s}".format(
-        dataset['name'],
-        CONSTRAINTS[0][0][0],
-        SOLVERS[0]
-    )
+    job_name = "xl_fractal_heuristic_A"
     QUERY_DICT['input'] = dataset['input'].format(dataset['size'])
-    QUERY_DICT['subject_to'] = CONSTRAINTS[0]
+    QUERY_DICT['subject_to'] = constraint
     QUERY_DICT['rank_by'] = dataset['rank_by']
     query = Query(**QUERY_DICT)
     print compiler.compile(
         query,
-        solver=SOLVERS[0],
+        solver='heuristic',
         target='postgres',
         log_file='/tmp/cvl.log',
         job_name=job_name,

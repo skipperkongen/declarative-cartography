@@ -1,7 +1,8 @@
 #!/bin/sh
 
+MACHINE='fill-me-in'
 
-DIRECTORY="../results/traces"
+DIRECTORY="../results/traces/$MACHINE"
 if [ ! -d "$DIRECTORY" ]; then
   mkdir "$DIRECTORY"
 fi

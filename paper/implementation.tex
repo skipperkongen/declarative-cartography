@@ -91,6 +91,7 @@ In the evaluation of CVL, the minimum level specifier controls what data is give
 
 \minisec{Set up and Tear Down for Constraints}   
 Cartographical constraints can exhibit significant complexity. Since a constraint is expressed as a single SELECT statement, it is often helpful to be able to refer to temporary tables in its formulation. We have thus extended the CREATE CONSTRAINT statement to include two additional clauses: WITH SETUP and WITH TEARDOWN. The former allows a user-defined SQL statement to be executed in advance of the constraint evaluation, creating any supporting tables for the evaluation of the constraint. The latter specifies user-defined cleanup code. Note that since constraints are evaluated independently at each zoom level, the set-up and tear-down clauses are evaluated before and after the constraint SQL at each zoom level.       
+\marcos{Move necessary information from paragraph above to Language section, and remove paragraph after that.}
 
 %
 % MVS: We can probably get away with not showing the syntax below. 

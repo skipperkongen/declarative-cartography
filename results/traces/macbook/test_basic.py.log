@@ -1,0 +1,233 @@
+18/07/2013 00:48:58.067260 [basic_airports_7411_cellbound_heuristic] BEGIN_TRANSACTION
+18/07/2013 00:48:59.546315 [basic_airports_7411_cellbound_heuristic] initialized
+18/07/2013 00:48:59.546887 [basic_airports_7411_cellbound_heuristic] solver "heuristic"
+18/07/2013 00:48:59.601997 [basic_airports_7411_cellbound_heuristic] constraints "cellbound(16,)"
+18/07/2013 00:48:59.678129 [basic_airports_7411_cellbound_heuristic] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_7k_airports where x_order <= 7411) t', 'total_rank': 61022.0, 'total_recs': 7411L}
+18/07/2013 00:49:00.014309 [basic_airports_7411_cellbound_heuristic] initialized_level 17
+18/07/2013 00:49:00.710518 [basic_airports_7411_cellbound_heuristic] found_conflicts 17
+18/07/2013 00:49:00.711895 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 17
+18/07/2013 00:49:00.812614 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:00.816289 [basic_airports_7411_cellbound_heuristic] finalized_level 17
+18/07/2013 00:49:00.851606 [basic_airports_7411_cellbound_heuristic] initialized_level 16
+18/07/2013 00:49:01.365031 [basic_airports_7411_cellbound_heuristic] found_conflicts 16
+18/07/2013 00:49:01.366254 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 16
+18/07/2013 00:49:01.371402 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:01.375282 [basic_airports_7411_cellbound_heuristic] finalized_level 16
+18/07/2013 00:49:01.627929 [basic_airports_7411_cellbound_heuristic] initialized_level 15
+18/07/2013 00:49:02.157917 [basic_airports_7411_cellbound_heuristic] found_conflicts 15
+18/07/2013 00:49:02.159056 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 15
+18/07/2013 00:49:02.164258 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:02.165866 [basic_airports_7411_cellbound_heuristic] finalized_level 15
+18/07/2013 00:49:02.253296 [basic_airports_7411_cellbound_heuristic] initialized_level 14
+18/07/2013 00:49:02.764300 [basic_airports_7411_cellbound_heuristic] found_conflicts 14
+18/07/2013 00:49:02.765564 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 14
+18/07/2013 00:49:02.770708 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:02.773751 [basic_airports_7411_cellbound_heuristic] finalized_level 14
+18/07/2013 00:49:02.783010 [basic_airports_7411_cellbound_heuristic] initialized_level 13
+18/07/2013 00:49:03.318338 [basic_airports_7411_cellbound_heuristic] found_conflicts 13
+18/07/2013 00:49:03.319560 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 13
+18/07/2013 00:49:03.324769 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:03.326555 [basic_airports_7411_cellbound_heuristic] finalized_level 13
+18/07/2013 00:49:03.330892 [basic_airports_7411_cellbound_heuristic] initialized_level 12
+18/07/2013 00:49:03.895272 [basic_airports_7411_cellbound_heuristic] found_conflicts 12
+18/07/2013 00:49:03.897112 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 12
+18/07/2013 00:49:03.903911 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:03.907433 [basic_airports_7411_cellbound_heuristic] finalized_level 12
+18/07/2013 00:49:03.915945 [basic_airports_7411_cellbound_heuristic] initialized_level 11
+18/07/2013 00:49:04.435712 [basic_airports_7411_cellbound_heuristic] found_conflicts 11
+18/07/2013 00:49:04.436866 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 11
+18/07/2013 00:49:04.442017 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:04.445242 [basic_airports_7411_cellbound_heuristic] finalized_level 11
+18/07/2013 00:49:04.456328 [basic_airports_7411_cellbound_heuristic] initialized_level 10
+18/07/2013 00:49:04.966730 [basic_airports_7411_cellbound_heuristic] found_conflicts 10
+18/07/2013 00:49:04.968048 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 10
+18/07/2013 00:49:04.973623 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:04.978574 [basic_airports_7411_cellbound_heuristic] finalized_level 10
+18/07/2013 00:49:05.018210 [basic_airports_7411_cellbound_heuristic] initialized_level 9
+18/07/2013 00:49:05.516069 [basic_airports_7411_cellbound_heuristic] found_conflicts 9
+18/07/2013 00:49:05.517258 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 9
+18/07/2013 00:49:05.522436 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:05.529709 [basic_airports_7411_cellbound_heuristic] finalized_level 9
+18/07/2013 00:49:05.537319 [basic_airports_7411_cellbound_heuristic] initialized_level 8
+18/07/2013 00:49:06.080591 [basic_airports_7411_cellbound_heuristic] found_conflicts 8
+18/07/2013 00:49:06.102081 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 8
+18/07/2013 00:49:06.231858 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 20L, 'rec_per_c_min': 18L, 'num_c': 5L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7391L, 'rec_per_c_max': 22L, 'lp_bound': 1.1099113813131022e-09, 'num_recs_having_c': 100L, 'rec_per_c_avg': 20.0}
+18/07/2013 00:49:06.234934 [basic_airports_7411_cellbound_heuristic] finalized_level 8
+18/07/2013 00:49:06.243195 [basic_airports_7411_cellbound_heuristic] initialized_level 7
+18/07/2013 00:49:06.758804 [basic_airports_7411_cellbound_heuristic] found_conflicts 7
+18/07/2013 00:49:06.864697 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 7
+18/07/2013 00:49:06.972844 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 432L, 'rec_per_c_min': 17L, 'num_c': 51L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 6959L, 'rec_per_c_max': 47L, 'lp_bound': 2.0401558400884672e-10, 'num_recs_having_c': 1248L, 'rec_per_c_avg': 24.470588235294116}
+18/07/2013 00:49:06.978420 [basic_airports_7411_cellbound_heuristic] finalized_level 7
+18/07/2013 00:49:06.986761 [basic_airports_7411_cellbound_heuristic] initialized_level 6
+18/07/2013 00:49:07.538138 [basic_airports_7411_cellbound_heuristic] found_conflicts 6
+18/07/2013 00:49:07.873450 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 6
+18/07/2013 00:49:08.256421 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 60970.0, 'rank_lost': 52.0, 'recs_lost': 1411L, 'rec_per_c_min': 17L, 'num_c': 116L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 5548L, 'rec_per_c_max': 64L, 'lp_bound': 52.00000054239483, 'num_recs_having_c': 3267L, 'rec_per_c_avg': 28.163793103448278}
+18/07/2013 00:49:08.263916 [basic_airports_7411_cellbound_heuristic] finalized_level 6
+18/07/2013 00:49:08.306946 [basic_airports_7411_cellbound_heuristic] initialized_level 5
+18/07/2013 00:49:08.816771 [basic_airports_7411_cellbound_heuristic] found_conflicts 5
+18/07/2013 00:49:09.067068 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 5
+18/07/2013 00:49:09.594385 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 57478.0, 'rank_lost': 3492.0, 'recs_lost': 2460L, 'rec_per_c_min': 17L, 'num_c': 131L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 3088L, 'rec_per_c_max': 64L, 'lp_bound': 3492.000061810141, 'num_recs_having_c': 4556L, 'rec_per_c_avg': 34.778625954198475}
+18/07/2013 00:49:09.621548 [basic_airports_7411_cellbound_heuristic] finalized_level 5
+18/07/2013 00:49:09.631986 [basic_airports_7411_cellbound_heuristic] initialized_level 4
+18/07/2013 00:49:09.924121 [basic_airports_7411_cellbound_heuristic] found_conflicts 4
+18/07/2013 00:49:10.094667 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 4
+18/07/2013 00:49:10.429443 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 46594.0, 'rank_lost': 10884.0, 'recs_lost': 1755L, 'rec_per_c_min': 18L, 'num_c': 67L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 1333L, 'rec_per_c_max': 64L, 'lp_bound': 10884.000055218201, 'num_recs_having_c': 2827L, 'rec_per_c_avg': 42.19402985074627}
+18/07/2013 00:49:10.436207 [basic_airports_7411_cellbound_heuristic] finalized_level 4
+18/07/2013 00:49:10.457244 [basic_airports_7411_cellbound_heuristic] initialized_level 3
+18/07/2013 00:49:10.588763 [basic_airports_7411_cellbound_heuristic] found_conflicts 3
+18/07/2013 00:49:10.646876 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 3
+18/07/2013 00:49:10.785822 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 34072.0, 'rank_lost': 12522.0, 'recs_lost': 830L, 'rec_per_c_min': 21L, 'num_c': 28L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 503L, 'rec_per_c_max': 64L, 'lp_bound': 12522.00008815609, 'num_recs_having_c': 1278L, 'rec_per_c_avg': 45.642857142857146}
+18/07/2013 00:49:10.792082 [basic_airports_7411_cellbound_heuristic] finalized_level 3
+18/07/2013 00:49:10.798286 [basic_airports_7411_cellbound_heuristic] initialized_level 2
+18/07/2013 00:49:10.855546 [basic_airports_7411_cellbound_heuristic] found_conflicts 2
+18/07/2013 00:49:10.933053 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 2
+18/07/2013 00:49:10.985049 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 21363.0, 'rank_lost': 12709.0, 'recs_lost': 312L, 'rec_per_c_min': 22L, 'num_c': 11L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 191L, 'rec_per_c_max': 64L, 'lp_bound': 12709.000054007522, 'num_recs_having_c': 488L, 'rec_per_c_avg': 44.36363636363637}
+18/07/2013 00:49:10.991441 [basic_airports_7411_cellbound_heuristic] finalized_level 2
+18/07/2013 00:49:10.998702 [basic_airports_7411_cellbound_heuristic] initialized_level 1
+18/07/2013 00:49:11.045187 [basic_airports_7411_cellbound_heuristic] found_conflicts 1
+18/07/2013 00:49:11.061303 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 1
+18/07/2013 00:49:11.081748 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 13836.0, 'rank_lost': 7527.0, 'recs_lost': 126L, 'rec_per_c_min': 33L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 65L, 'rec_per_c_max': 64L, 'lp_bound': 7527.000092757725, 'num_recs_having_c': 190L, 'rec_per_c_avg': 47.5}
+18/07/2013 00:49:11.084350 [basic_airports_7411_cellbound_heuristic] finalized_level 1
+18/07/2013 00:49:11.110639 [basic_airports_7411_cellbound_heuristic] initialized_level 0
+18/07/2013 00:49:11.141150 [basic_airports_7411_cellbound_heuristic] found_conflicts 0
+18/07/2013 00:49:11.146947 [basic_airports_7411_cellbound_heuristic] resolved_conflicts 0
+18/07/2013 00:49:11.161160 [basic_airports_7411_cellbound_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 6525.0, 'rank_lost': 7311.0, 'recs_lost': 48L, 'rec_per_c_min': 64L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 17L, 'rec_per_c_max': 64L, 'lp_bound': 7310.999994613656, 'num_recs_having_c': 64L, 'rec_per_c_avg': 64.0}
+18/07/2013 00:49:11.164247 [basic_airports_7411_cellbound_heuristic] finalized_level 0
+18/07/2013 00:49:11.313539 [basic_airports_7411_cellbound_heuristic] COMMIT
+18/07/2013 00:49:11.314480 [basic_airports_7411_cellbound_lp] BEGIN_TRANSACTION
+18/07/2013 00:49:11.585095 [basic_airports_7411_cellbound_lp] initialized
+18/07/2013 00:49:11.585442 [basic_airports_7411_cellbound_lp] solver "lp"
+18/07/2013 00:49:11.585946 [basic_airports_7411_cellbound_lp] constraints "cellbound(16,)"
+18/07/2013 00:49:11.592668 [basic_airports_7411_cellbound_lp] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_7k_airports where x_order <= 7411) t', 'total_rank': 61022.0, 'total_recs': 7411L}
+18/07/2013 00:49:11.625563 [basic_airports_7411_cellbound_lp] initialized_level 17
+18/07/2013 00:49:12.141449 [basic_airports_7411_cellbound_lp] found_conflicts 17
+18/07/2013 00:49:12.143672 [basic_airports_7411_cellbound_lp] resolved_conflicts 17
+18/07/2013 00:49:12.149428 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:12.153003 [basic_airports_7411_cellbound_lp] finalized_level 17
+18/07/2013 00:49:12.167122 [basic_airports_7411_cellbound_lp] initialized_level 16
+18/07/2013 00:49:12.701071 [basic_airports_7411_cellbound_lp] found_conflicts 16
+18/07/2013 00:49:12.703858 [basic_airports_7411_cellbound_lp] resolved_conflicts 16
+18/07/2013 00:49:12.710190 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:12.717101 [basic_airports_7411_cellbound_lp] finalized_level 16
+18/07/2013 00:49:12.725876 [basic_airports_7411_cellbound_lp] initialized_level 15
+18/07/2013 00:49:13.239519 [basic_airports_7411_cellbound_lp] found_conflicts 15
+18/07/2013 00:49:13.241271 [basic_airports_7411_cellbound_lp] resolved_conflicts 15
+18/07/2013 00:49:13.246367 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:13.250501 [basic_airports_7411_cellbound_lp] finalized_level 15
+18/07/2013 00:49:13.261966 [basic_airports_7411_cellbound_lp] initialized_level 14
+18/07/2013 00:49:13.802732 [basic_airports_7411_cellbound_lp] found_conflicts 14
+18/07/2013 00:49:13.804307 [basic_airports_7411_cellbound_lp] resolved_conflicts 14
+18/07/2013 00:49:13.809915 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:13.811943 [basic_airports_7411_cellbound_lp] finalized_level 14
+18/07/2013 00:49:13.858882 [basic_airports_7411_cellbound_lp] initialized_level 13
+18/07/2013 00:49:14.372228 [basic_airports_7411_cellbound_lp] found_conflicts 13
+18/07/2013 00:49:14.374077 [basic_airports_7411_cellbound_lp] resolved_conflicts 13
+18/07/2013 00:49:14.379384 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:14.386765 [basic_airports_7411_cellbound_lp] finalized_level 13
+18/07/2013 00:49:14.501659 [basic_airports_7411_cellbound_lp] initialized_level 12
+18/07/2013 00:49:15.049957 [basic_airports_7411_cellbound_lp] found_conflicts 12
+18/07/2013 00:49:15.053495 [basic_airports_7411_cellbound_lp] resolved_conflicts 12
+18/07/2013 00:49:15.064478 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:15.082985 [basic_airports_7411_cellbound_lp] finalized_level 12
+18/07/2013 00:49:15.207337 [basic_airports_7411_cellbound_lp] initialized_level 11
+18/07/2013 00:49:15.719992 [basic_airports_7411_cellbound_lp] found_conflicts 11
+18/07/2013 00:49:15.721796 [basic_airports_7411_cellbound_lp] resolved_conflicts 11
+18/07/2013 00:49:15.727050 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:15.729986 [basic_airports_7411_cellbound_lp] finalized_level 11
+18/07/2013 00:49:15.768358 [basic_airports_7411_cellbound_lp] initialized_level 10
+18/07/2013 00:49:16.271555 [basic_airports_7411_cellbound_lp] found_conflicts 10
+18/07/2013 00:49:16.273525 [basic_airports_7411_cellbound_lp] resolved_conflicts 10
+18/07/2013 00:49:16.278651 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:16.281285 [basic_airports_7411_cellbound_lp] finalized_level 10
+18/07/2013 00:49:16.300545 [basic_airports_7411_cellbound_lp] initialized_level 9
+18/07/2013 00:49:16.820416 [basic_airports_7411_cellbound_lp] found_conflicts 9
+18/07/2013 00:49:16.821990 [basic_airports_7411_cellbound_lp] resolved_conflicts 9
+18/07/2013 00:49:16.827362 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 0.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 0.0, 'rec_per_c_min': 0.0, 'num_c': 0.0, 'c_per_rec_min': 0.0, 'c_per_rec_max': 0.0, 'recs_remaining': 7411L, 'rec_per_c_max': 0.0, 'lp_bound': 0.0, 'num_recs_having_c': 0.0, 'rec_per_c_avg': 0.0}
+18/07/2013 00:49:16.829582 [basic_airports_7411_cellbound_lp] finalized_level 9
+18/07/2013 00:49:16.839666 [basic_airports_7411_cellbound_lp] initialized_level 8
+18/07/2013 00:49:17.337268 [basic_airports_7411_cellbound_lp] found_conflicts 8
+18/07/2013 00:49:17.364934 [basic_airports_7411_cellbound_lp] resolved_conflicts 8
+18/07/2013 00:49:17.381213 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 78L, 'rec_per_c_min': 18L, 'num_c': 5L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7333L, 'rec_per_c_max': 22L, 'lp_bound': 1.1099113813131022e-09, 'num_recs_having_c': 100L, 'rec_per_c_avg': 20.0}
+18/07/2013 00:49:17.385950 [basic_airports_7411_cellbound_lp] finalized_level 8
+18/07/2013 00:49:17.396316 [basic_airports_7411_cellbound_lp] initialized_level 7
+18/07/2013 00:49:17.897419 [basic_airports_7411_cellbound_lp] found_conflicts 7
+18/07/2013 00:49:18.127679 [basic_airports_7411_cellbound_lp] resolved_conflicts 7
+18/07/2013 00:49:18.220841 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 944L, 'rec_per_c_min': 17L, 'num_c': 51L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 6389L, 'rec_per_c_max': 45L, 'lp_bound': 2.2309177459668296e-09, 'num_recs_having_c': 1190L, 'rec_per_c_avg': 23.333333333333332}
+18/07/2013 00:49:18.227341 [basic_airports_7411_cellbound_lp] finalized_level 7
+18/07/2013 00:49:18.236355 [basic_airports_7411_cellbound_lp] initialized_level 6
+18/07/2013 00:49:18.709929 [basic_airports_7411_cellbound_lp] found_conflicts 6
+18/07/2013 00:49:19.087529 [basic_airports_7411_cellbound_lp] resolved_conflicts 6
+18/07/2013 00:49:19.306968 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 60928.0, 'rank_lost': 94.0, 'recs_lost': 1494L, 'rec_per_c_min': 17L, 'num_c': 111L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 4895L, 'rec_per_c_max': 42L, 'lp_bound': 52.00000294515187, 'num_recs_having_c': 2632L, 'rec_per_c_avg': 23.71171171171171}
+18/07/2013 00:49:19.561354 [basic_airports_7411_cellbound_lp] finalized_level 6
+18/07/2013 00:49:19.567241 [basic_airports_7411_cellbound_lp] initialized_level 5
+18/07/2013 00:49:20.100950 [basic_airports_7411_cellbound_lp] found_conflicts 5
+18/07/2013 00:49:21.459137 [basic_airports_7411_cellbound_lp] resolved_conflicts 5
+18/07/2013 00:49:21.817305 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 57115.0, 'rank_lost': 3813.0, 'recs_lost': 2222L, 'rec_per_c_min': 17L, 'num_c': 123L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 2673L, 'rec_per_c_max': 59L, 'lp_bound': 3450.0001141467615, 'num_recs_having_c': 3800L, 'rec_per_c_avg': 30.89430894308943}
+18/07/2013 00:49:21.826484 [basic_airports_7411_cellbound_lp] finalized_level 5
+18/07/2013 00:49:21.836533 [basic_airports_7411_cellbound_lp] initialized_level 4
+18/07/2013 00:49:22.094088 [basic_airports_7411_cellbound_lp] found_conflicts 4
+18/07/2013 00:49:22.458417 [basic_airports_7411_cellbound_lp] resolved_conflicts 4
+18/07/2013 00:49:22.710334 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 46273.0, 'rank_lost': 10842.0, 'recs_lost': 1455L, 'rec_per_c_min': 18L, 'num_c': 66L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 1218L, 'rec_per_c_max': 64L, 'lp_bound': 10525.000305079322, 'num_recs_having_c': 2396L, 'rec_per_c_avg': 36.303030303030305}
+18/07/2013 00:49:22.717126 [basic_airports_7411_cellbound_lp] finalized_level 4
+18/07/2013 00:49:22.737605 [basic_airports_7411_cellbound_lp] initialized_level 3
+18/07/2013 00:49:22.864161 [basic_airports_7411_cellbound_lp] found_conflicts 3
+18/07/2013 00:49:23.034803 [basic_airports_7411_cellbound_lp] resolved_conflicts 3
+18/07/2013 00:49:23.148655 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 33709.0, 'rank_lost': 12564.0, 'recs_lost': 748L, 'rec_per_c_min': 21L, 'num_c': 27L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 470L, 'rec_per_c_max': 62L, 'lp_bound': 12201.000233395362, 'num_recs_having_c': 1147L, 'rec_per_c_avg': 42.48148148148148}
+18/07/2013 00:49:23.156141 [basic_airports_7411_cellbound_lp] finalized_level 3
+18/07/2013 00:49:23.202302 [basic_airports_7411_cellbound_lp] initialized_level 2
+18/07/2013 00:49:23.259114 [basic_airports_7411_cellbound_lp] found_conflicts 2
+18/07/2013 00:49:23.320624 [basic_airports_7411_cellbound_lp] resolved_conflicts 2
+18/07/2013 00:49:23.365351 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 21065.0, 'rank_lost': 12644.0, 'recs_lost': 286L, 'rec_per_c_min': 17L, 'num_c': 11L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 184L, 'rec_per_c_max': 64L, 'lp_bound': 12356.000140335691, 'num_recs_having_c': 455L, 'rec_per_c_avg': 41.36363636363637}
+18/07/2013 00:49:23.369589 [basic_airports_7411_cellbound_lp] finalized_level 2
+18/07/2013 00:49:23.404658 [basic_airports_7411_cellbound_lp] initialized_level 1
+18/07/2013 00:49:23.441608 [basic_airports_7411_cellbound_lp] found_conflicts 1
+18/07/2013 00:49:23.480721 [basic_airports_7411_cellbound_lp] resolved_conflicts 1
+18/07/2013 00:49:23.500066 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 13836.0, 'rank_lost': 7229.0, 'recs_lost': 119L, 'rec_per_c_min': 31L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 65L, 'rec_per_c_max': 61L, 'lp_bound': 7229.000096460244, 'num_recs_having_c': 183L, 'rec_per_c_avg': 45.75}
+18/07/2013 00:49:23.504447 [basic_airports_7411_cellbound_lp] finalized_level 1
+18/07/2013 00:49:23.530125 [basic_airports_7411_cellbound_lp] initialized_level 0
+18/07/2013 00:49:23.569188 [basic_airports_7411_cellbound_lp] found_conflicts 0
+18/07/2013 00:49:23.586583 [basic_airports_7411_cellbound_lp] resolved_conflicts 0
+18/07/2013 00:49:23.600078 [basic_airports_7411_cellbound_lp] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 6525.0, 'rank_lost': 7311.0, 'recs_lost': 48L, 'rec_per_c_min': 64L, 'num_c': 1L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 17L, 'rec_per_c_max': 64L, 'lp_bound': 7310.999994613656, 'num_recs_having_c': 64L, 'rec_per_c_avg': 64.0}
+18/07/2013 00:49:23.601902 [basic_airports_7411_cellbound_lp] finalized_level 0
+18/07/2013 00:49:23.725675 [basic_airports_7411_cellbound_lp] COMMIT
+18/07/2013 00:49:23.726196 [basic_airports_7411_proximity_heuristic] BEGIN_TRANSACTION
+18/07/2013 00:49:24.552965 [basic_airports_7411_proximity_heuristic] initialized
+18/07/2013 00:49:24.553271 [basic_airports_7411_proximity_heuristic] solver "heuristic"
+18/07/2013 00:49:24.553561 [basic_airports_7411_proximity_heuristic] constraints "proximity(10,)"
+18/07/2013 00:49:24.560398 [basic_airports_7411_proximity_heuristic] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_7k_airports where x_order <= 7411) t', 'total_rank': 61022.0, 'total_recs': 7411L}
+18/07/2013 00:49:24.628006 [basic_airports_7411_proximity_heuristic] initialized_level 17
+18/07/2013 00:49:58.053961 [basic_airports_7411_proximity_heuristic] found_conflicts 17
+18/07/2013 00:49:58.133417 [basic_airports_7411_proximity_heuristic] resolved_conflicts 17
+18/07/2013 00:49:58.154138 [basic_airports_7411_proximity_heuristic] levelstats {'c_per_rec_avg': 1.2409638554216866, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 93L, 'rec_per_c_min': 2L, 'num_c': 103L, 'c_per_rec_min': 1L, 'c_per_rec_max': 3L, 'recs_remaining': 7318L, 'rec_per_c_max': 2L, 'lp_bound': 3.2048023838094817e-10, 'num_recs_having_c': 166L, 'rec_per_c_avg': 2.0}
+18/07/2013 00:49:58.166548 [basic_airports_7411_proximity_heuristic] finalized_level 17
+18/07/2013 00:49:58.184904 [basic_airports_7411_proximity_heuristic] initialized_level 16
+18/07/2013 00:50:31.234040 [basic_airports_7411_proximity_heuristic] found_conflicts 16
+18/07/2013 00:50:31.241416 [basic_airports_7411_proximity_heuristic] resolved_conflicts 16
+18/07/2013 00:50:31.249775 [basic_airports_7411_proximity_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 2L, 'rec_per_c_min': 2L, 'num_c': 2L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7316L, 'rec_per_c_max': 2L, 'lp_bound': -1.84151209588e-09, 'num_recs_having_c': 4L, 'rec_per_c_avg': 2.0}
+18/07/2013 00:50:31.297863 [basic_airports_7411_proximity_heuristic] finalized_level 16
+18/07/2013 00:50:31.303273 [basic_airports_7411_proximity_heuristic] initialized_level 15
+18/07/2013 00:52:10.690055 [basic_airports_7411_proximity_heuristic] found_conflicts 15
+18/07/2013 00:52:10.693568 [basic_airports_7411_proximity_heuristic] resolved_conflicts 15
+18/07/2013 00:52:10.704137 [basic_airports_7411_proximity_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 8L, 'rec_per_c_min': 2L, 'num_c': 8L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7308L, 'rec_per_c_max': 2L, 'lp_bound': 5.33731972701622e-10, 'num_recs_having_c': 16L, 'rec_per_c_avg': 2.0}
+18/07/2013 00:52:10.706368 [basic_airports_7411_proximity_heuristic] finalized_level 15
+18/07/2013 00:52:10.711204 [basic_airports_7411_proximity_heuristic] initialized_level 14
+18/07/2013 00:52:43.116551 [basic_airports_7411_proximity_heuristic] found_conflicts 14
+18/07/2013 00:52:43.118412 [basic_airports_7411_proximity_heuristic] resolved_conflicts 14
+18/07/2013 00:52:43.126538 [basic_airports_7411_proximity_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61022.0, 'rank_lost': 0.0, 'recs_lost': 4L, 'rec_per_c_min': 2L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7304L, 'rec_per_c_max': 2L, 'lp_bound': -1.99394323387e-10, 'num_recs_having_c': 8L, 'rec_per_c_avg': 2.0}
+18/07/2013 00:52:43.129209 [basic_airports_7411_proximity_heuristic] finalized_level 14
+18/07/2013 00:52:43.132553 [basic_airports_7411_proximity_heuristic] initialized_level 13
+18/07/2013 00:53:15.626150 [basic_airports_7411_proximity_heuristic] found_conflicts 13
+18/07/2013 00:53:15.627987 [basic_airports_7411_proximity_heuristic] resolved_conflicts 13
+18/07/2013 00:53:15.635826 [basic_airports_7411_proximity_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61012.0, 'rank_lost': 10.0, 'recs_lost': 4L, 'rec_per_c_min': 2L, 'num_c': 4L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7300L, 'rec_per_c_max': 2L, 'lp_bound': 9.99999992647722, 'num_recs_having_c': 8L, 'rec_per_c_avg': 2.0}
+18/07/2013 00:53:15.638432 [basic_airports_7411_proximity_heuristic] finalized_level 13
+18/07/2013 00:53:15.641808 [basic_airports_7411_proximity_heuristic] initialized_level 12
+18/07/2013 00:53:50.365748 [basic_airports_7411_proximity_heuristic] found_conflicts 12
+18/07/2013 00:53:50.368580 [basic_airports_7411_proximity_heuristic] resolved_conflicts 12
+18/07/2013 00:53:50.378424 [basic_airports_7411_proximity_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61012.0, 'rank_lost': 0.0, 'recs_lost': 13L, 'rec_per_c_min': 2L, 'num_c': 13L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7287L, 'rec_per_c_max': 2L, 'lp_bound': 9.305053281549401e-11, 'num_recs_having_c': 26L, 'rec_per_c_avg': 2.0}
+18/07/2013 00:53:50.380159 [basic_airports_7411_proximity_heuristic] finalized_level 12
+18/07/2013 00:53:50.384339 [basic_airports_7411_proximity_heuristic] initialized_level 11
+18/07/2013 00:54:32.202168 [basic_airports_7411_proximity_heuristic] found_conflicts 11
+18/07/2013 00:54:32.206507 [basic_airports_7411_proximity_heuristic] resolved_conflicts 11
+18/07/2013 00:54:32.218693 [basic_airports_7411_proximity_heuristic] levelstats {'c_per_rec_avg': 1.0, 'rank_remaining': 61012.0, 'rank_lost': 0.0, 'recs_lost': 14L, 'rec_per_c_min': 2L, 'num_c': 14L, 'c_per_rec_min': 1L, 'c_per_rec_max': 1L, 'recs_remaining': 7273L, 'rec_per_c_max': 2L, 'lp_bound': -3.97242911159e-10, 'num_recs_having_c': 28L, 'rec_per_c_avg': 2.0}
+18/07/2013 00:54:32.220787 [basic_airports_7411_proximity_heuristic] finalized_level 11
+18/07/2013 00:54:32.272138 [basic_airports_7411_proximity_heuristic] initialized_level 10

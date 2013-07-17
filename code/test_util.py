@@ -30,21 +30,21 @@ DATASETS = [
         'size': 523096},
     {
         'name': 'usrivers',
-        'input': '(select * from lin_100k_usrivers where x_order <= {0:d}) t',
+        'input': '(select * from lin_4k_riversmerged where x_order <= {0:d}) t',
         'rank_by': 'st_length(wkb_geometry)/1000',
-        'size': 102486},
+        'size': 4786},
     {
         'name': 'dai',
         'input': '(select * from pol_30k_dai where x_order <= {0:d}) t',
         'rank_by': 'st_area(wkb_geometry)/1000000',
         'size': 30181},
     {
-        'name': 'usriversplus',
+        'name': 'xlarge_linestring',
         'input': '(select * from lin_3m_usriversplus where x_order <= {0:d}) t',
         'rank_by': 'st_length(wkb_geometry)/1000',
         'size': 3055237},
     {
-        'name': '30millionpoints',
+        'name': 'xlarge_points',
         'input': '(select * from pnt_30m_synthetic where x_order <= {0:d}) t',
         'rank_by': 'random()',
         'size': 30000000}

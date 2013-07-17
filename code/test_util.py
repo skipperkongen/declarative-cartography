@@ -13,7 +13,7 @@ SOLVERS = [
 
 CONSTRAINTS = [
     [('cellbound', 16)],
-    [('proximity', 10)],
+    [('proximity', 10)]us
     [('cellbound', 16),('proximity', 10)]
 ]
 

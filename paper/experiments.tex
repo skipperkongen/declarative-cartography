@@ -9,20 +9,20 @@
 \subsection{Experimental Setup}
 
 \minisec{Datasets}
-\marcos{Introduce datasets and any selection procedures to scale datasets with justification.}
+We have tested CVL using four real-world datasets with the biggest one containing 23 million points and one synthetic dataset containing 30 million points. The airports dataset is from Openflights and contains 7411 airports (points). The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database. The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. The US rivers/streams dataset contains 30 thousand named rivers and streams in the United States as multilinestrings, and has been reduced from a OpenStreetMap waterway dataset by merging objects with the same name into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a filtering situation. The Protection zones dataset contains 30 thousand high-fidelity administrative protection zone polygons published by the Danish government, and ranges from small polygons the size of buildings to large polygons the size of entire regions.
 
 \begin{table}[htdp]
 \caption{Datasets used in experiments}
 \begin{center}
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|}
 \hline
-\textbf{Dataset} & \textbf{Type} & \textbf{Records} & \textbf{Points} \\
+\textbf{Origin} & \textbf{Dataset} & \textbf{Type} & \textbf{Records} & \textbf{Points} \\
 \hline
-Openflights airports & Points & $7K$ & $7K$ \\
-Tourist attractions & Points & $500K$ & $500K$ \\
-Synthetic & Points & $30M$ & $30M$ \\
-Danish Area Information & Polygons & $30K$ & $9M$ \\
-US Waterways & Linestrings & $100K$ & $5M$ \\
+Real & Airports & Points & $7K$ & $7K$ \\
+Real & Tourism & Points & $500K$ & $500K$ \\
+Synthetic & Fractal & Points & $30M$ & $30M$ \\
+Real & US rivers/streams & Linestrings & $4K$ & $23M$ \\
+Real & Proctection zones & Polygons & $30K$ & $9M$ \\
 \hline
 \end{tabular}
 \end{center}
@@ -31,26 +31,34 @@ US Waterways & Linestrings & $100K$ & $5M$ \\
 
 
 \minisec{Hardware, Software, and Methods}
-\marcos{Introduce hardware and software setup, as well as measurement procedures..}
-\marcos{Say we use PostgreSQL + PostGIS here.}
-\marcos{Say that automatic parallelism is not supported natively by PostGIS, but is an interesting avenue for future work.}
+The hardware used for testing was an Amazon EC2 instance with 17GB RAM, 2 x Intel(R) Xeon(R) CPU E5-2665 0 @ 2.40GHz and 20MB Cache. 
+
+The operating system was Amazon Linux 3.4.48-45.46.amzn1.x86\_64. An image of the instance we used for testing is available through Amazon EC2 as an AMI. The image contains the exact database used for testing, with all tables preloaded.
+
+The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0. We used the following versions of libraries: GDAL 1.9.2 and GEOS 3.3.8. For the LP solver we integrated the database with the convex optimization library CVXOPT version 1.1.6 (\texttt{http://cvxopt.org/}). We installed Python language bindings in the database installed against Python 2.6.8.
+
+We ran each test three times on this installation, taking the average of these runs. We observed that measurements were very stable, with negligible difference in compute time between runs.
+
+It should be noted that PostgreSQL always uses a single core to compute a transaction. The generalization process in CVL is run as a single long transaction, which then means that the process is essentially run on a single core. A future avenue would be to investigate parallel executing as the structure of the single-scale filtering problem offers many opportunities for data parallelism.
 
 \subsection{Point Data}
 \label{sec:exp:points}
 
 In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. We first discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (cellbound / proximity / combined), we show only representative results for brevity. Results for the combined cellbound and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below.    
 
+The test instances
+
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_7k_airports_heuristic_B.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_7k_airports_heuristic_B.png}}
     \centerline{(a) SGA + Proximity}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_7k_airports_lp_A.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_7k_airports_lp_A.png}}
     \centerline{(b) LPGA + Cellbound}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_7k_airports_lp_B.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_7k_airports_lp_B.png}}
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
   \vspace{-0ex}
@@ -60,15 +68,15 @@ In this section, we present experimental results with point datasets, namely the
 
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_500k_tourism_heuristic_A.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_heuristic_A.png}}
     \centerline{(a) SGA + Cellbound}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_500k_tourism_lp_A.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_lp_A.png}}
     \centerline{(b) LPGA + Cellbound}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_500k_tourism_lp_B.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_lp_B.png}}
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
   \vspace{-0ex}
@@ -121,8 +129,25 @@ While SGA performs significantly better than LPGA, it does not do so at the cost
 \subsection{Graphical Output}
 \label{sec:exp:graphical}
 
-\marcos{Show maps for airport datasets with full dataset (world), top zoom level (world), and one intermediate zoom level (US). Goal is to show anecdotal evidence for quality of generalizations that can be created with CVL.}
+\begin{figure*}[tb]
+  \begin{minipage}{0.329\linewidth}
+    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports.png}}
+    \centerline{(a) Full Openflights Airport dataset}
+  \end{minipage} \hfill
+  \begin{minipage}{0.329\linewidth}
+    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports_z4.png}}
+    \centerline{(b) Airports at zoom-level 5}
+  \end{minipage} \hfill
+  \begin{minipage}{0.329\linewidth}
+    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports_z0.png}}
+    \centerline{(c) Airports on the top-most zoom-level.}
+  \end{minipage}
+  \vspace{-0ex}
+  \caption{Visualization of CVL output for Openflights Airport dataset (7K points) using the cellbound constraint with $K=16$} \label{fig:graphical:output:airport}
+  \vspace{-2ex}
+\end{figure*}
 
+In Figure~\ref{fig:graphical:output:airport} we have visualized the output of CVL for the Openflights Airports dataset, subject to the cellbound constraint with $K=16$. The image on the left shows the full Openflights Airports dataset. Notice how the individual records are not distinquishable from each other. The image on the right shows the CVL filtering for the top-most zoom-level (lowest scale), which includes the 16 biggest and arguably most important airports in the world, among them Los Angeles International Airport (LAX), John F. Kennedy International Airport (JFK), London Heathrow Airport (LHR), Frankfurt Airport (FRA), Singapore Changi Airport (SIN) and Hong Kong International Airport (HKG). The image in the middle shows an intermediate zoom-level over the United States.
 %\begin{figure}[htbp]
 %\begin{center}
 %\includegraphics[scale=.5]{figs/cvl_todo.pdf}

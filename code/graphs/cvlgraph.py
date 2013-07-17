@@ -7,14 +7,17 @@ from cvltrace import TraceReader
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import matplotlib
 import matplotlib.font_manager as font_manager
 
 import sys
 import os
 import re
+import pdb
 from datetime import timedelta
 
 __author__ = 'kostas'
+
 
 class QualAccum(object):
 
@@ -64,8 +67,6 @@ class QualAccum(object):
         plt.clf()
 
 
-
-
 class Stack(object):
 
     def __init__(self, trace):
@@ -111,12 +112,15 @@ class Stack(object):
             constr = 'A'
         else:
             constr = 'B'
-        plt.title('{0:s}: {1:s} + {2:s}'.format(
-            self.trace.input_table,
-            self.trace.solver,
-            constr))
-        plt.legend(loc='upper right',
-                   prop=font_manager.FontProperties(size=10))
+        #plt.title('{0:s}: {1:s} + {2:s}'.format(
+        #    self.trace.input_table,
+        #    self.trace.solver,
+        #    constr))
+        if trace.input_table == 'pnt_7k_airports':
+            leg = plt.legend(loc='upper left', fancybox=True)
+        else:
+            leg = plt.legend(loc='upper right',fancybox=True)
+        leg.get_frame().set_alpha(0.6)
         #plt.gca().yaxis.set_major_formatter(FuncFormatter(billions))
 
         filename = os.path.join(output_dir, "prelim_{0:s}_{1:s}_{2:s}.png".format(
@@ -139,6 +143,8 @@ if __name__ == '__main__':
     if len(args) == 0:
         parser.print_help()
         sys.exit(1)
+
+    matplotlib.rcParams.update({'font.size': 20})
 
     output_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..','..','results','figures')
     output_dir = os.path.realpath(output_dir)

@@ -1,11 +1,12 @@
 % !TEX root = ./cvl.tex
-\section{Background}
+\section{Multi-scale filtering Problem}
 \label{sec:background}
 
-\marcos{We should clearly state what the problem is in this section, in a separate subsection.}
+\martin{I am updating this section. Introduce terms (e.g. geospacial records, weights, zoom levels, cells, conflicts, constraints, etc.}
+
+%\marcos{We should clearly state what the problem is in this section, in a separate subsection.}
 
 \marcos{Here is where your basic definitions go, e.g., what is a cell, what are zoom levels, how are objects typically selected when creating a map, what are basic and implicit constraints, such as adjacency and zoom consistency, what are application-specific constraints, what is importance/weight, etc.}
-
 
 \subsection{Conflicts and conflict sets}
 \label{sec:conflicts}
@@ -38,33 +39,7 @@ While the user does not need to individually assign weights to records, CVL offe
 
 The only contract between the user and the CVL framework is that the user code must assign a floating point number to each record to use a the weight.
 
+%\marcos{While I can certainly see that WMS@GST uses the process above, it is not clear that the three steps above are an accurate representation of all map services?}
+%\marcos{It seems to me that it is important to say that rendering is orthogonal to the work, and that the selection task of generalization is computationally intensive and can be done at indexing time. Perhaps these two points can be conveyed with less words than in the section above and the section below? That would leave us space to introduce other important basic definitions listed in the comment at the beginning of this section.}
 
-Cartography has a long tradition spanning hundreds of years, and has rightly been considered as much an art as a science. The domain of the data is often considered very important, which is evident in many papers on algorithms for automated cartographic generalization~\cite{areaagg,ordnance,another}. This has changed with the rise and success of social networks and data journalism~\cite{datajournalism}, where the data is often both narrow and massive~\cite{twitter,datablog}. Together with the availability of good quality background maps online~\cite{bing,google,osm} this has opened up the playing field for \emph{domain-agnostic} algorithms~\cite{fusiontables,samet}. For example, a map published by a news agency may display just a single kind of point data from a massive dataset on top of a general purpose background map~\cite{iraq}. The emphasis is not so much on extreme sophistication, but more on the ability to work at large scale and with new datasets appearing all the time.
-
-\subsection{Map services}
-
-A typical architecture used for map services consists of a rendering process and a database process. In this architecture each section of the map is visualized by following these three steps:
-
-\minisec{Scale-oblivious spatial filtering} The rendering process fetches data from the database using a spatial predicate such as \emph{intersects-boundingbox} to fetch data that overlaps the section of the map being rendered. The filtering is computed by the database and is made fast by the use of spatial indexes.
-
-\minisec{Scale-aware attribute filtering} The rendering process applies \emph{post-filtering} to the data that was retrieved, using range and equality predicates according to scale. The predicates come from \emph{cartographic filtering rules} that make statements of what sets of records should be omitted/included at what scales, such as "omit individual buildings on a map of the world" or "include restaurants on a map of a city".
-
-\minisec{Rendering} After the data has been filtered, it is rendered using \emph{cartographic visualization rules} such as "color lakes blue".
-
-Different steps are certainly possible, but these step represent the most typical case. In this work we realize an opportunity for making the rendering process more efficient. 
-
-\marcos{While I can certainly see that WMS@GST uses the process above, it is not clear that the three steps above are an accurate representation of all map services?}
-\marcos{It seems to me that it is important to say that rendering is orthogonal to the work, and that the selection task of generalization is computationally intensive and can be done at indexing time. Perhaps these two points can be conveyed with less words than in the section above and the section below? That would leave us space to introduce other important basic definitions listed in the comment at the beginning of this section.}
-
-\subsection{Specializing datasets by fixing filters}
-One of the reasons that such map services are hard to scale is that all three steps are performed every time a map visualization is produced. The first filtering step is both I/O and CPU intensive. The second filtering step is mainly CPU intensive. The third visualization step is also mainly CPU intensive. Our goal is to make the overall process less I/O and CPU intensive. Another approach would be to simply make redundancies in the system, by replicating the processes. While the rendering process is fairly cheap to replicate, as it is completely stateless, the database has state (the data) which makes it harder or at least more expensive to replicate.
-
-Here we discuss how a dataset can be specialized to a set of cartographic filtering rules, without fixing the cartographic visualization rules that can be applied later. By doing so the overall task of visualizing the data becomes less I/O and CPU intensive, and the total cost of the system can therefore be expected to decrease. The idea is to do most of the filtering as preprocessing, and deferring only the rendering of the data.
-
-The first realization is that the scale-oblivious spatial filtering does not dependent on how the data will be rendered in the end. A street either intersects a geographical area corresponding to a section of the map or it doesn't. It makes no difference whether the street is eventually colored red or blue. This implies that scale-oblivious spatial filtering can be done once, as pre-processing.
-
-The second realization is that there is a relationship between the principle of constant information density and the scale-aware attribute filtering. If residential streets are excluded from one world map, simply because there are too many, they are likely to be excluded from any other world map. This implies that scale-aware attribute filtering can be done once, as pre-processing.
-
-The task that remains corresponds roughly to deciding which color to draw the records that survived the filtering process, which is outside the focus of CVL.
-
-
+% text is moved to introduction /MZ

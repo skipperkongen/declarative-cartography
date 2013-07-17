@@ -1,53 +1,53 @@
 % !TEX root = ./cvl.tex
 \section{Introduction}
 
-\marcos{Introduce GST somewhere.}
-\marcos{The introduction now reads a bit too generic, and a bit too rich in buzzwords (big data, crowd sourcing). What is the problem that is being addressed?}
+%\marcos{The introduction now reads a bit too generic, and a bit too rich in buzzwords (big data, crowd sourcing). What is the problem that is being addressed?}
+%what's the situation
 
-what's the situation
+%- why do people need to do cartographic generalization?
 
-- why do people need to do cartographic generalization?
+%- how do people go about this task today?
 
-- how do people go about this task today?
+%- what is the main related work, and why is it not enough?
 
-- what is the main related work, and why is it not enough?
+\martin{All citations in this section need to be checked - some should perhaps be moved to the related work section (Kostas?)}
 
-what is the approach, why is it cool
+Cartographic generalization has a long tradition spanning hundreds of years, and has rightly been considered as much an art as a science. In \emph{automated} cartographic generalization the selection, simplification and enhancement of data for representation on a map is performed by algorithms on a computer. Automated cartographic generalization has been quite successful for the construction of general purpose maps~\cite{areaagg,ordnance,another}, resulting in online availability of high-quality background maps~\cite{bing,google,osm}. Also, as a result of crowd-sourcing, a multitude of general purpose background maps of the world can now be downloaded for free~\cite{openstreetmap,googlemaps,bingmaps}. 
+%As a consequence of this, we consider the application of automated cartographic generalization to general background maps to be no longer relevant, at least for a very large class of important use cases of maps.
 
-- declarative. extensible. database integrated.
+With the rise of social networks and data journalism~\cite{datajournalism}, data has become both narrow and massive~\cite{twitter,datablog}. This has opened up the playing field for \emph{domain-agnostic} algorithms for cartographic generalization~\cite{fusiontables,samet}. For example, a map published by a news agency may display just a single kind of point data from a massive dataset on top of a general purpose background map~\cite{iraq}. The emphasis is not so much on extreme sophistication, but more on the ability to work at large scale and with new datasets appearing all the time  --- shifting the relevance of automated cartographic generalization away from general purpose background maps to other kinds of maps such as overlay maps.
 
-four contributions
+One of the major challenges for automated cartographic generalization for massive datasets is the selection of data for each scale of the generated map; socalled \emph{cartographic filtering rules} make statements of what sets of data should be omitted/included at what scales, such as "omit individual buildings on a map of the world" or "include restaurants on a map of a city". However, specifying explicit filtering rules is not practically feasible for unstructured, massive (and often dynamic) datasets.
+ 
+%what is the approach, why is it cool
 
-- language, express real world constraints very concisely.
+%- declarative. extensible. database integrated.
 
-- underlying math mapping makes constraints fully pluggable and reuse existing algorithms from literature.
+In many current map services, the filtering of data for a given query --- which specifies a scale and a bounding box --- takes place \emph{after} retrieving all the data within the given bounding box. Also, the filtering rules are, as noted above, typically static. This is both I/O and CPU intensive, and not flexible from a users point of view.
 
-- implementation fully executes CVL inside the database.
+In this paper, we present a \emph{database integrated} approach that reduces I/O and CPU load, while at the same time being more flexible. By using a \emph{declarative language}, we allow the user to express the importance of the each data element plus additional constraints. This input is used by an algorithm that performs the actual filtering for each scale in a pre-processing phase. All operations are performed within the database, and the result of the filtering stored for fast execution of subsequent queries.
 
-- results are usually listed as an explicit contribution (only summarize main points: variety of real datasets, time, quality).
+%four contributions
 
-\marcos{Take into account the questions and flow above when rewriting the introduction}
+%- language, express real world constraints very concisely.
 
-In recent year, two major cross-cutting trends in data management have been  big data and crowd-sourcing. These general trends have been changing a lot of fields, and the field of automated cartographic generalization is no exception. This field is concerned with the production of multi-scale maps from geographical datasets, where the main concern is the selection and presentation of data at different zoom-levels.
+%- underlying math mapping makes constraints fully pluggable and reuse existing algorithms from literature.
 
-In this work we present CVL (pronounced \emph{civil}), a language and implementation for cartographic generalization, which is a reaction to these trends. The heart of CVL is a generalization procedure that runs entirely in the database.
+%- implementation fully executes CVL inside the database.
 
-As a product of the big data phenomenon, data volumes are now growing significantly faster than our ability to move data around, leading to \emph{diminishing relative bandwidth}. This condition has lead to a practice of moving code to data~\cite{mapreduce} instead of vice versa~\cite{fusiontables}. CVL is designed to compile to other languages that can run where the data is stored, e.g. SQL or MapReduce.
+%- results are usually listed as an explicit contribution (only summarize main points: variety of real datasets, time, quality).
 
-Humans are increasingly collaborating and sharing online, a phenomenon known as crowd-sourcing. In recent years this has produced monumental value in many areas. An effect of crowd-sourcing is that a multitude of general purpose background maps of the world can now be downloaded for free~\cite{openstreetmap,googlemaps,bingmaps}. As a consequence of this, we consider the application of automated cartographic generalization to general background maps to be no longer relevant, at least for a very large class of important use cases of maps.
+%\marcos{Take into account the questions and flow above when rewriting the introduction}
 
-This does not mean that automated cartographic generalization is a closed chapter in general, but that the relevance has shifted away from general purpose background maps to other kinds of maps such as \emph{overlays}. As a consequence of the big data and crowd-sourcing trends, such datasets are now flourishing! This is the kind of data targeted by CVL. While the general task of generalization has proven hard, there are indications that generalizing overlays is easier, and recent results in this field show promise~\cite{fusiontables,thatotherpaper}. 
+In this paper, we make the following four contributions:
+\begin{enumerate}
+\item Define a declarative language, Cartographic Visualization Language (CVL), for generalizing spatial datasets. CVL is designed to be simple and efficient to use for non-cartographers. While fully automatic generalization methods have been demonstrated to work on these types of data, they work best for simple point datasets~\cite{thinningpaper}. With CVL we take a small step back towards giving humans control of the generalization process. Just enough to improve the quality over fully automatic methods, but not so much as to require humans to waste a lot of time managing every detail of the generalization process~\cite{fme}. 
 
-\marcos{The paragraph above has a nice argument; it would be great to keep it and expand on why promising related work is not enough.}
+\item Map the associated cartographic filtering problem to the \emph{set multicover problem}, which makes constraints fully pluggable and allows reuse of well-known algorithms.
 
-While fully automatic generalization methods have been demonstrated to work on these types of data, they work best for simple point datasets. With CVL we take a small step back towards giving humans control of the generalization process. Just enough to improve the quality over fully automatic methods, but not so much as to require humans to waste a lot of time managing every detail of the generalization process~\cite{fme}. We believe that human-computer interaction should ideally be a dialogue between the human and the computer, rather than a monologue by one part.
+\item Show how to fully implement CVL inside the database; this enables us to reuse basic database technology for data management and scalability. Thus we move code to data~\cite{mapreduce} instead of vice versa~\cite{fusiontables}. Furthermore, CVL is designed to compile to other languages that can run where the data is stored, e.g. SQL or MapReduce.
 
-We make the following contributions:
+\item Present experimental results for a variety of real datasets. The results show that the proposed approach has good performance and produces high-quality carteographic generalizations. [Mention GST somewhere here?] 
+\end{enumerate}
 
-\begin{itemize}
-\item A declarative language for generalizing spatial datasets called CVL, which is designed to be simple and efficient to use for non-cartographers. 
-\item A mapping of the the cartographic generalization problem to the \emph{set multicover problem}, which makes constraints fully pluggable and allows reuse of well-known algorithms.
-\item A compilation procedure of CVL to a relational database backend. This enables us to reuse basic database technology for data management and scalability.
-\end{itemize}
-
-In Section~\ref{sec:background} we cover some background for automated cartographic generalization. In Section~\ref{sec:cvl-language} we introduce the CVL language. In Section~\ref{sec:algorithms} we introduce the mapping to multi-set cover problem and revisit algorithms for this problem. In Section~\ref{sec:compilation} we introduce the compilation procedure, which enables us to run CVL on a relational database backend.
+In Section~\ref{sec:background} we define the multi-scale filtering problem for cartographic generalization. In Section~\ref{sec:cvl-language} we introduce the CVL language. In Section~\ref{sec:optimizationmodel} we introduce the mapping to the set multicover problem, and we revisit algorithms for this problem in Section~\ref{sec:algorithms}. In Section~\ref{sec:implementation} we introduce the compilation procedure, which enables us to run CVL on a relational database backend. Experimental results are presented in Section~\ref{sec:experimental}, and finally related work is summarized in Section~\ref{sec:related}.

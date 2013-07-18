@@ -1,18 +1,20 @@
 % !TEX root = ./cvl.tex
 \section{CVL Language}
 \label{sec:cvl-language}
-The Cartographic Visualization Language (CVL) is a declarative language for filtering a geospatial dataset over a set of zoom-levels. CVL is a rule-based language with a similar goal as other rule-based languages for generalizing spatial datasets~\cite{sld,mapnik}. The CVL approach is however markedly different. In the related languages the user must explicitly control the filtering of records at each zoom-level, while also specifying how records are rendered (presentation). First of all, CVL is not concerned with presentation, only filtering. Furthermore CVL controls filtering in a novel way compared to these languages. Instead of having the user explicitly control the filtering of records at each zoom-level, CVL lets the user choose \emph{cartographic constraints} that are instead enforced at all zoom-levels. By making the constraints explicit and the control implicit a very concise formulation is obtained, see Figure~\ref{fig:cvl-example-airports}.
+The Cartographic Visualization Language (CVL) is a declarative language that can be used to specify an instance of the multi-scale filtering problem. CVL is a rule-based language with a similar goal as other rule-based languages for filtering spatial datasets~\cite{sld,mapnik}, i.e. to control the density of information at each zoom-level. The CVL approach is however markedly different. In the related languages the user must explicitly control the filtering of records at each zoom-level, while also specifying how records are rendered (presentation). First of all, CVL is not concerned with presentation, only filtering. Furthermore CVL controls filtering in a novel constraint-based way. Instead of having the user explicitly control the filtering of records at each zoom-level, CVL lets the user choose \emph{cartographic constraints} that are instead enforced at all zoom-levels. By making the constraints explicit and the control implicit a very concise formulation is obtained. See Figure~\ref{fig:cvl-example-airports} for an example of this.
 
-CVL is one of the first languages and frameworks to implement the idea behind reverse data management~\cite{reverse}. In reverse data management, the core idea is that a user states a set of constraints and objective. These are given together with an input database to an optimization algorithm which computes an output database that is feasible and optimal with regard to the constraints and objective (if a feasible solution exists). This is exactly how CVL works. 
+CVL is one of the first languages and frameworks to implement the vision of reverse data management~\cite{meliou2011reverse}. In reverse data management, the core idea is that a user states a set of constraints and objective. These are given together with an input database to an optimization algorithm which computes an output database that is feasible and optimal with regard to the constraints and objective (if a feasible solution exists). This is exactly how CVL works. Furthermore a feasible solution is guaranteed to exist as filtering out all records is always a feasible solution.
 
-The CVL language has two statements, the \emph{generalize} statement and the \emph{create constraint} statement. The create constraint statement is used to formulate new cartographic constraints and the generalize statement is used for everything else. 
+The CVL language has two statements, the \emph{generalize} statement and the \emph{create-constraint} statement. The create constraint statement is used to formulate new cartographic constraints and the generalize statement is used for everything else. 
 
 The CVL language builds on top of SQL and reuses SQL as a language for formulating constraints and record weighting schemes.
 
 \subsection{Generalize statement}
 \label{sec:generalize-statement}
 
-The generalize statement is the main statement in CVL. This statement creates a new multi-scale dataset from an input table of geospatial records, subject to user defined constraints. The syntax is shown in Figure~\ref{fig:generalize-syntax}. The statement has several clauses, including a specification of input and output tables, how records should be weighted, a list of cartographic constraints and the number of zoom-levels. 
+The generalize statement is the main statement in CVL. This statement creates a new multi-scale dataset from an input table of geospatial records, subject to user defined constraints. The syntax is shown in Figure~\ref{fig:generalize-syntax}. The statement has several clauses, beginning with the specification of input and output tables. Instead of giving the name of an input table, the user can optionally write a dynamic select statement in SQL on the form \texttt{(SELECT ...) t}. The next clause is the \emph{zoom-levels} clause where the user writes a positive integer, which is the zoom-level  at which the filtering process will begin. The \emph{weigh-by} clause is used to give an arbitrary floating point expression that is evaluated for each row in the input and used as weight for that record. The \emph{subject-to} clause lists the cartographic constraints along with any parameters (as a comma-separated list). The \texttt{AND} keyword is used to separate constraints in the case more than one is used.
+
+For clarity the syntax is shown without two clauses, the \emph{with-id} clause and the \emph{with-geometry} clause, which are used simply to specify the names of the ID and geometry columns in the input table.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -22,7 +24,6 @@ GENERALIZE
 AT {integer} ZOOM LEVELS
 WEIGH BY
   {float expression}
-
 SUBJECT TO 
    {constraint} {float parameters} [AND
    {constraint} {float parameters} [AND
@@ -33,9 +34,9 @@ SUBJECT TO
 \end{center}
 \end{figure}
 
-An example of generalizing a dataset using the generalize statement is shown in Figure~\ref{fig:cvl-example-airports}. In this example a dataset containing the location of airports is generalized. The records are weighted by using a column containing the number of routes departing from each airport. The intuition is that airports with more departures are more important. The single constraint that is enforced is the proximity constraint, with a parameter of $10$ pixels.
+An example of generalizing a dataset using the generalize statement is shown in Figure~\ref{fig:cvl-example-airports}. In this example a dataset containing point records representing the location of airports world-wide is generalized. The records are weighted by using the name of a column containing the number of routes departing from each airport (CVL automatically handles the cast from integer to floating point). The intuition is that airports with more departures are more important. The single constraint that is enforced is the proximity constraint, with a parameter of $10$ pixels.
 
-The result is a map where airports on all zoom-levels are separated by at least 10 pixels. This implies that some airports are missing on some zoom-levels. The CVL framework automatically gives priority to the airports with the highest weight.
+The result is a map where airports on all zoom-levels are separated by at least 10 pixels, which would leave enough room for a nice clickable icon in a map. This implies that some airports are missing on some zoom-levels. The CVL framework automatically gives priority to the airports with the highest weight. How this is done is elaborated upon in sections~\ref{sec:optimizationmodel} and~\ref{sec:algorithms}.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -82,7 +83,7 @@ SUBJECT TO
 \label{sec:create-constraint-statement}
 
 % change text
-In the example shown in Figure~\ref{fig:cvl-example-airports} we referenced an as yet undefined constraint, the proximity constraint. Cartographic constraints are defined using the \emph{create constraint} statement.  The basic syntax of the statement is shown in Figure~\ref{fig:create-constraint-syntax}. The body of the statement is an SQL select statement that selects tuples $\langle cid, rid\rangle$ representing conflicts that are found at a given zoom-level in the map.
+In the example shown in Figure~\ref{fig:cvl-example-airports} we referenced an as yet undefined constraint, the proximity constraint. Cartographic constraints are defined using the create-constraint statement.  The basic syntax of the statement is shown in Figure~\ref{fig:create-constraint-syntax}. The body of the statement is an SQL select statement that selects tuples $\langle cid, rid\rangle$ representing conflicts that are found at a given zoom-level in the map. See Section~\ref{sec:conflicts} for the semantics of the tuples.
 
 The \emph{resolve-if-delete} clause is used to compute the integer number of records that must be deleted in order to resolve the conflict with a given $cid$. For the proximity constraints this number is always 1, but for other constraints this may vary.
 
@@ -101,7 +102,7 @@ RESOLVE cid IF DELETE (
 \end{center}
 \end{figure}
 
-The definition of the proximity constraint using this syntax is shown in Figure~\ref{fig:proximity-definition}. The body of the constraint is a distance self join using a distance function \texttt{ST\_Distance} provided by a spatial extension to SQL. This join finds all pairs of records that are too close, i.e. less than $10$ pixels apart if running the example from Figure~\ref{fig:cvl-example-airports}. For each conflict the select statement outputs two tuples and exactly once for each conflict. The resolve-if-delete clause is simply the constant $1$, because that is how many records must be deleted to resolve a proximity conflict.
+Using this syntax, the definition of the proximity constraint is given in Figure~\ref{fig:proximity-definition}. The body of the constraint is a distance self join using a distance function \texttt{ST\_Distance} provided by a spatial extension to SQL. This join finds all pairs of records that are too close, i.e. less than $10$ pixels apart if running the example from Figure~\ref{fig:cvl-example-airports}. For each conflict the select statement outputs two tuples and exactly once for each conflict. The resolve-if-delete clause is simply the constant $1$, because that is how many records must be deleted to resolve a proximity conflict.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -118,6 +119,10 @@ AS NOT EXISTS (
   ON
     l.{rid} < r.{rid}
   AND
+    l.{geom} && ST_Expand(r.{geom}, 
+      CVL_Resolution({z}, 256) * 
+        {parameter_1})
+  AND
     ST_Distance(l.{geom}, r.{geom}) <
       CVL_Resolution({z}, 256) * {parameter_1}
 )
@@ -130,11 +135,11 @@ RESOLVE cid IF DELETE (
 \end{center}
 \end{figure}
 
-In the example in Figure~\ref{fig:proximity-definition} you'll notice some names enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level. You'll also notice a call to a function \texttt{CVL\_Resolution(\{z\}, 256)}. This is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is a constraint parameter, and would be bound to $10$ if running the example from Figure~\ref{fig:cvl-example-airports}.
+In the example in Figure~\ref{fig:proximity-definition} you'll notice some names enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level, i.e. the records that have not been filtered out at at higher zoom-level. You'll also notice a call to a function \texttt{CVL\_Resolution(\{z\}, 256)}. This is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is a constraint parameter, and would be bound to $10$ if running the example from Figure~\ref{fig:cvl-example-airports}.
 
 A constraint with a more elaborate definition is the \emph{cellbound} constraint (also known as the \emph{visibility} constraint~\cite{sarma2012fusiontables}). The definition is shown in Figure~\ref{fig:cellbound-definition}. This constraint states that tiles on any zoom-level may be intersected by at most $K$ records. The definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses which will be covered again in Section~\ref{sec:implementation:extensions}. The purpose of these clauses is to enable arbitrary SQL statements to be run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table, using the \texttt{tile\_id} column as the conflict ID.
 
-The user does not need to know how the conflicts are handled, because all conflicts are automatically resolved by the CVL framework using one of the algorithms introduced in Section~\ref{sec:optimizationmodel}.
+The user does not need to know how the conflicts are handled, because all conflicts are automatically resolved by the CVL framework using one of the algorithms introduced in Section~\ref{sec:algorithms}.
 
 %In this example, calls are made to other CVL runtime functions, namely \texttt{CVL\_WebMercatorCells} and \texttt{CVL\_PointHash}. These functions returns a set of points corresponding to the centroids of intersected tiles (given a geometry) and a unique identifier for points, respectively. The unique identifier for points is based on the well-known GeoHash algorithm.
 

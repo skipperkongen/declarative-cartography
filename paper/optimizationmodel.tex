@@ -2,13 +2,11 @@
 \section{Multi-scale filtering optimization problem}
 \label{sec:optimizationmodel}
 
-In this section we introduce the optimization model considered in this paper. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record; an important (or highly ranked) record has a higher weight than a less important record.
+In this section we formally define the multi-scale filtering problem as an optimization problem. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record. As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the multi-scale filtering problem is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. A primary constraint is the \emph{zoom-consistency} constraint~\cite{fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all lower scales. 
 
-As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the multi-scale filtering problem is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. A primary constraint is the \emph{zoom-consistency} constraint~\cite{fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all \emph{lower} scales. 
+In addition to the zoom-consistency constraint there are a number of additional constraints (corresponding to conflict sets) that are modeled using CVL. Let $C$ be the set of additional constraints for all zoom levels; each constraint $c \in C$ is associated with a given zoom level $z_c$. A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
 
-In addition to the zoom-consistency constraint there are a number of additional constraints that are modeled using CVL. Let $C$ be the set of additional constraints for all zoom levels; each constraint $c \in C$ is associated with a given zoom level $z_c$. A constraint $c \in C$ corresponds to a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
-
-\marcos{Is a constraint above equivalent to a CVL constraint or to a conflict set?}
+%\marcos{Is a constraint above equivalent to a CVL constraint or to a conflict set?}
 
 \marcos{The sections below need a better connection to the concepts introduced in the language section.}
 

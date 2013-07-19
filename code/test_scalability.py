@@ -34,6 +34,6 @@ if __name__ == '__main__':
                             target='postgres',
                             log_file='/tmp/cvl.log',
                             job_name=job_name,
-                            analytics=True
+                            analytics=False
                         )
         current_size *= 2

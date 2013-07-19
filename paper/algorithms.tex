@@ -19,12 +19,14 @@ Below we describe two different heuristic algorithms for solving the single-scal
 
 In this algorithm we consider each constraint $c \in C$ in turn, and simply choose the $\lambda_c$ records with minimum weight from constraint $R_c$ --- independently of what has been chosen earlier. If the sets $R_c$ are disjoint, the algorithm is clearly optimal. However, in general no approximation guarantee can be provided. The algorithm runs in $O(n f \log f)$ time, as we just need to sort the records by weight for each constraint; alternatively we can sort all records by weight in $O(m \log m)$ time and pick the minimum weight records from the constraints in linear time in the total number of records in all constraints.
 
+\kostas{we should revisit our use of constraint and conflict set. in the SGA we are sorting each conflict set, not each constraint.}
+
 \subsection{LP-based greedy algorithm (LPGA)}
 \label{sec:algorithms:lpga}
 
 In this algorithm we first solve a linear programming (LP) relaxation of the set multicover problem. This LP-problem is obtained by relaxing the constraint $x_r \in \{0, 1\}$ to $0 \leq x_r \leq 1$. Then we choose all records $r \in R$ for which the LP-solution variable $x_r$ is at least $1 / f$. Intuitively, we round up to 1 all fractional values that are large enough; the remaining fractional variables are rounded down to 0. 
 
-This algorithm provides a feasible solution to the single-scale problem, and the approximation guarantee is $f$~\cite{seevaziranibookforreference}; thus, if $f$ is small, the algorithm provides a good approximation guarantee. As the LP-problem can be solved in polynomial time, the complete algorithm is polynomial.
+This algorithm provides a feasible solution to the single-scale problem, and the approximation guarantee is $f$~\cite{vazirani2001approximation}; thus, if $f$ is small, the algorithm provides a good approximation guarantee. As the LP-problem can be solved in polynomial time, the complete algorithm is polynomial.
 
 %\subsection{Dynamic greedy algorithm (DGA)}
 

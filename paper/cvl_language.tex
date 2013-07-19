@@ -1,7 +1,7 @@
 % !TEX root = ./cvl.tex
 \section{CVL Language}
 \label{sec:cvl:language}
-The Cartographic Visualization Language (CVL) is a declarative language that can be used to specify an instance of the multi-scale filtering problem. CVL is a rule-based language with a similar goal as other rule-based languages for filtering spatial datasets~\cite{sld,mapnik}, i.e. to control the density of information at each zoom-level. The CVL approach is however markedly different. In the related languages the user must explicitly control the filtering of records at each zoom-level, while also specifying how records are rendered (presentation). First of all, CVL is not concerned with presentation, only filtering. Furthermore CVL controls filtering in a novel constraint-based way. Instead of having the user explicitly control the filtering of records at each zoom-level, CVL lets the user choose \emph{cartographic constraints} that are instead enforced at all zoom-levels. By making the constraints explicit and the control implicit a very concise formulation is obtained. See Figure~\ref{fig:cvl-example-airports} for an example of this.
+The Cartographic Visualization Language (CVL) is a declarative language that can be used to specify an instance of the multi-scale filtering problem. CVL is a rule-based language with a similar goal as other rule-based languages for filtering spatial datasets~\cite{sld,mapnik}, i.e. to control the density of information at each zoom-level. The CVL approach is however markedly different. In the related languages the user must explicitly control the filtering of records at each zoom-level, while also specifying how records are rendered (presentation). First of all, CVL is not concerned with presentation, only filtering. Furthermore CVL controls filtering in a novel constraint-based way. Instead of having the user explicitly control the filtering of records at each zoom-level, CVL lets the user choose \emph{cartographic constraints} that are instead enforced at all zoom-levels. By making the constraints explicit and the control implicit a very concise formulation is obtained. See Figure~\ref{fig:cvl:example:airports} for an example of this.
 
 CVL is one of the first languages and frameworks to implement the vision of reverse data management~\cite{meliou2011reverse}. In reverse data management, the core idea is that a user states a set of constraints and objective. These are given together with an input database to an optimization algorithm which computes an output database that is feasible and optimal with regard to the constraints and objective (if a feasible solution exists). This is exactly how CVL works. Furthermore a feasible solution is guaranteed to exist as filtering out all records is always a feasible solution.
 
@@ -34,11 +34,26 @@ SUBJECT TO
 \end{center}
 \end{figure}
 
-An example of generalizing a dataset using the generalize statement is shown in Figure~\ref{fig:cvl:example:airports}. In this example a dataset containing point records representing the location of airports world-wide is generalized. The records are weighted by using the name of a column containing the number of routes departing from each airport (CVL automatically handles the cast from integer to floating point). The intuition is that airports with more departures are more important. The single constraint that is enforced is the density constraint, with a parameter of $K=16$.
+\begin{figure*}[tb]
+  \begin{minipage}{0.329\linewidth}
+    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports.png}}
+    \centerline{(a) Full Openflights Airport dataset}
+  \end{minipage} \hfill
+  \begin{minipage}{0.329\linewidth}
+    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports_z4.png}}
+    \centerline{(b) Airports on zoom-level 5}
+  \end{minipage} \hfill
+  \begin{minipage}{0.329\linewidth}
+    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports_z0.png}}
+    \centerline{(c) Airports on the top-most zoom-level.}
+  \end{minipage}
+  \vspace{-0ex}
+  \caption{Airport map (7K points) before (a) and after (b, c) running CVL. The output corresponds to the CVL statement in Figure~\ref{fig:cvl:example:airports}.}
+  \label{fig:graphical:output:airport}
+  \vspace{-2ex}
+\end{figure*}
 
-The result is a map where there are at most $16$ airports shown on each tile of the map. This implies that some airports are missing on some zoom-levels. The CVL framework automatically gives priority to the airports with the highest weight. How this is done is elaborated upon in sections~\ref{sec:optimizationmodel} and~\ref{sec:algorithms}.
-
-\martin{Remember to change all references to the cellbound constraint to density constraint.}
+An example of generalizing a dataset using the generalize statement is shown in Figure~\ref{fig:cvl:example:airports}. In this example a dataset containing point records representing the location of airports world-wide is generalized. The records are weighted by using the name of a column containing the number of routes departing from each airport (CVL automatically handles the cast from integer to floating point). The intuition is that airports with more departures are more important. The single constraint that is enforced is the density constraint, with a parameter of $K=16$. Recall that the density constraint says that each tile can contain at most $K$ records.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -51,35 +66,12 @@ WEIGH BY
 SUBJECT TO 
    density 16 
 \end{lstlisting}
-\caption{Example: Generalizing an airports map. The airports are weighting by number of departures}
+\caption{Generalization of airports. The airports are weighting by number of departures. See Figure~\ref{fig:graphical:output:airport} for a vizualization of the result.}
 \label{fig:cvl:example:airports}
 \end{center}
 \end{figure}
 
-
-%An advanced example using a select statement as input, using two constraints and accounting for null values in the column used to weight the records is shown in Figure~\ref{fig:cvl-example-restaurants}.
-
-%\begin{figure}[htbp]
-%\begin{center}
-%\begin{lstlisting}
-%GENERALIZE 
-%   (select * from amenities 
-%    where type='restaurant') t TO restaurants
-%AT 18 ZOOM LEVELS
-%WEIGH BY
-%  CASE 
-%    WHEN stars IS NULL THEN 0.5
-%    ELSE stars
-%  END
-%SUBJECT TO 
-%   proximity 10 AND
-%   cellbound 16
-%\end{lstlisting}
-%\caption{Example: Advanced usage}
-%\label{fig:cvl-example-restaurants}
-%\end{center}
-%\end{figure}
-
+The resulting map is shown in Figure~\ref{fig:graphical:output:airport} and has at most $16$ airports on each tile. This implies that some airports are missing on some zoom-levels. The CVL framework automatically gives priority to the airports with the highest weight. How this is done is elaborated upon in sections~\ref{sec:optimizationmodel} and~\ref{sec:algorithms}.
 
 \subsection{Create constraint statement}
 \label{sec:create:constraint:statement}
@@ -139,7 +131,7 @@ RESOLVE cid IF DELETE (
 
 In Figure~\ref{fig:proximity:definition} you will notice some names enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level, i.e. the records that have not been filtered out at at higher zoom-level. You will also notice a call to a function \texttt{CVL\_Resolution(\{z\}, 256)}. This is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is a constraint parameter, and would be bound to $10$ if running the example from Figure~\ref{fig:cvl-example-airports}.
 
-In the example shown in Figure~\ref{fig:cvl-example-airports} we referenced the as yet undefined density constraint. In Figure~\ref{fig:density:definition} we show how this constraint may be defined using CVL. Recall that this constraint states that tiles on any zoom-level may be contain at most $K$ records. The CVL definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses which will be covered again in Section~\ref{sec:implementation:extensions}. The purpose of these clauses is to enable arbitrary SQL statements to be run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table, using the \texttt{tile\_id} column as the conflict ID.
+In the CVL example in Figure~\ref{fig:cvl:example:airports} we referenced the as yet undefined density constraint. In Figure~\ref{fig:density:definition} we show how this constraint may be defined using CVL. The CVL definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses which will be covered again in Section~\ref{sec:implementation:extensions}. The purpose of these clauses is to enable arbitrary SQL statements to be run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table, using the \texttt{tile\_id} column as the conflict ID.
 
 The user does not need to know how the conflicts are handled, because all conflicts are automatically resolved by the CVL framework using one of the algorithms introduced in Section~\ref{sec:algorithms}.
 
@@ -148,7 +140,7 @@ The user does not need to know how the conflicts are handled, because all confli
 \begin{figure}[htbp]
 \begin{center}
 \begin{lstlisting}
-CREATE CONSTRAINT Cellbound
+CREATE CONSTRAINT Density
 AS NOT EXISTS (
     SELECT
         busted_tiles.cid,

@@ -44,7 +44,7 @@ It should be noted that PostgreSQL always uses a single core to compute a transa
 \subsection{Point Data}
 \label{sec:exp:points}
 
-In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. We first discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (cellbound / proximity / combined), we show only representative results for brevity. Results for the combined cellbound and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below.    
+In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. We first discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (density / proximity / combined), we show only representative results for brevity. Results for the combined density and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below.    
 
 The test instances
 
@@ -55,7 +55,7 @@ The test instances
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
     \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_7k_airports_lp_A.png}}
-    \centerline{(b) LPGA + Cellbound}
+    \centerline{(b) LPGA + Density}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
     \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_7k_airports_lp_B.png}}
@@ -69,11 +69,11 @@ The test instances
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}
     \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_heuristic_A.png}}
-    \centerline{(a) SGA + Cellbound}
+    \centerline{(a) SGA + Density}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
     \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_lp_A.png}}
-    \centerline{(b) LPGA + Cellbound}
+    \centerline{(b) LPGA + Density}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
     \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_lp_B.png}}
@@ -89,9 +89,9 @@ The test instances
 \minisec{Performance and Quality}
  Figure~\ref{fig:performance:airport} shows the performance breakdown per zoom level of executing CVL with the Openflight airports dataset. Note the different y-scales in the graphs. In Parts~(a)-(c), we observe that the time needed to find conflicts is roughly stable until eight zoom levels, then slightly increases, and finally drops sharply for lower zoom levels. The constraints used generate few conflicts at higher zoom levels, given the relatively low density of the airport distribution in space. Nevertheless, even though almost no conflicts are generated, the dataset is still processed, resulting in roughly equal time for finding conflicts and negligible time for solving conflicts per zoom level. 
  
-As zoom levels decrease, more conflicts naturally arise, leading initially to increased conflict finding time, as well as conflict solving time. However, as conflicts are solved, records are deleted from the dataset taken as input for the next zoom level. This procedure causes conflict finding time (and eventually total time) to drop significantly for low zoom levels. For SGA under the proximity constraint (Part (a)), total time at zoom level zero is over two times shorter than the initial runtime at zoom level 17; for LPGA under the cellbound constraint (Part (b)), the difference in total time reaches over an order of magnitude.  
+As zoom levels decrease, more conflicts naturally arise, leading initially to increased conflict finding time, as well as conflict solving time. However, as conflicts are solved, records are deleted from the dataset taken as input for the next zoom level. This procedure causes conflict finding time (and eventually total time) to drop significantly for low zoom levels. For SGA under the proximity constraint (Part (a)), total time at zoom level zero is over two times shorter than the initial runtime at zoom level 17; for LPGA under the density constraint (Part (b)), the difference in total time reaches over an order of magnitude.  
 
-Conflict solving time does not increase equally for different solvers. SGA exhibits conflict solving time that is consistently smaller than LPGA. Peak total time for SGA under the proximity constraint (Part (a)) is roughly four times shorter than for LPGA (Part (c)). In addition, LPGA is extremely sensitive to the number of conflicts reported by user-defined constraints. From Parts (b) and (c), we can see that LPGA exhibits peak conflict solving time over three times larger for the proximity constraint than for the cellbound constraint, since the latter generates far fewer conflicts than the former. 
+Conflict solving time does not increase equally for different solvers. SGA exhibits conflict solving time that is consistently smaller than LPGA. Peak total time for SGA under the proximity constraint (Part (a)) is roughly four times shorter than for LPGA (Part (c)). In addition, LPGA is extremely sensitive to the number of conflicts reported by user-defined constraints. From Parts (b) and (c), we can see that LPGA exhibits peak conflict solving time over three times larger for the proximity constraint than for the density constraint, since the latter generates far fewer conflicts than the former. 
 
 \marcos{Show plot with number of conflicts found per zoom level to support argument above.}
 
@@ -101,9 +101,9 @@ In terms of quality, the difference between SGA and LPGA is not stark. TODO
 
 Figure~\ref{fig:performance:tourism} exhibits results with the larger tourism attraction dataset. Since the dataset is denser in space than the airport dataset, conflicts are found and solved at higher zoom levels, resulting in an earlier drop in total time per zoom level. For Parts (a)-(c), total time is uninteresting for zoom levels lower than five. The same cannot be said, however, about peak total time in general, and about conflict solving time in particular.
 
-Parts (a) and (b) compare performance of SGA and LPGA under the cellbound constraint. Even though cellbound generates a smaller number of conflicts than proximity, peak total time for LPGA is still roughly a factor of four larger than for SGA (see zoom level 11). Note that the difference is completely due to the efficiency of the solver, since the time to find conflicts is essentially the same for both methods. Total time for LPGA rises prohibitively when we employ the proximity constraint, reaching a baffling peak of near half an hour at zoom level 10 (Part (c)). While not shown, total times per zoom level for SGA under the proximity constraint are roughly comparable to the times reported in Part (a) for the cellbound constraint using this dataset. SGA's peak total time is slightly above 40 seconds, roughly a factor of 40 smaller than LPGA's.         
+Parts (a) and (b) compare performance of SGA and LPGA under the density constraint. Even though density generates a smaller number of conflicts than proximity, peak total time for LPGA is still roughly a factor of four larger than for SGA (see zoom level 11). Note that the difference is completely due to the efficiency of the solver, since the time to find conflicts is essentially the same for both methods. Total time for LPGA rises prohibitively when we employ the proximity constraint, reaching a baffling peak of near half an hour at zoom level 10 (Part (c)). While not shown, total times per zoom level for SGA under the proximity constraint are roughly comparable to the times reported in Part (a) for the density constraint using this dataset. SGA's peak total time is slightly above 40 seconds, roughly a factor of 40 smaller than LPGA's.         
 
-While SGA performs significantly better than LPGA, it does not do so at the cost of quality. As discussed in Section~\ref{sec:algorithms:sga}, SGA is optimal for the cellbound constraint, since conflict sets are disjoint. For the proximity constraint, TODO
+While SGA performs significantly better than LPGA, it does not do so at the cost of quality. As discussed in Section~\ref{sec:algorithms:sga}, SGA is optimal for the density constraint, since conflict sets are disjoint. For the proximity constraint, TODO
 
 \marcos{Add quality argument above for SGA vs. LPGA for proximity constraint when we get the numbers.}
 
@@ -125,27 +125,4 @@ While SGA performs significantly better than LPGA, it does not do so at the cost
 \label{sec:exp:large}
 
 \marcos{Show resuls with the large-scale dataset with 30M points.}
-
-\subsection{Graphical Output}
-\label{sec:exp:graphical}
-
-\begin{figure*}[tb]
-  \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports.png}}
-    \centerline{(a) Full Openflights Airport dataset}
-  \end{minipage} \hfill
-  \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports_z4.png}}
-    \centerline{(b) Airports on zoom-level 5}
-  \end{minipage} \hfill
-  \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=0.95\linewidth]{./figs/airports_z0.png}}
-    \centerline{(c) Airports on the top-most zoom-level.}
-  \end{minipage}
-  \vspace{-0ex}
-  \caption{Visualization of CVL output for Openflights Airport dataset (7K points) using the cellbound constraint with $K=16$} \label{fig:graphical:output:airport}
-  \vspace{-2ex}
-\end{figure*}
-
-In Figure~\ref{fig:graphical:output:airport} we have visualized the output of CVL for the Openflights Airports dataset, subject to the cellbound constraint with $K=16$. The image on the left shows the full Openflights Airports dataset. Notice how the individual records are not distinquishable from each other. The image on the right shows the CVL filtering for the top-most zoom-level (lowest scale), which includes the 16 biggest and arguably most important airports in the world, among them Los Angeles International Airport (LAX), John F. Kennedy International Airport (JFK), London Heathrow Airport (LHR), Frankfurt Airport (FRA), Singapore Changi Airport (SIN) and Hong Kong International Airport (HKG). The image in the middle shows an intermediate zoom-level over the United States.
 

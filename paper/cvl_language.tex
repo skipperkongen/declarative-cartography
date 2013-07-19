@@ -87,6 +87,7 @@ The \emph{resolve-if-delete} clause is used to compute the integer number of rec
 CREATE CONSTRAINT C1
 AS NOT EXISTS
   {SQL select statement}
+  
 RESOLVE cid IF DELETE (
   {integer expression}
 )
@@ -120,6 +121,7 @@ AS NOT EXISTS (
     ST_Distance(l.{geom}, r.{geom}) <
       CVL_Resolution({z}, 256) * {parameter_1}
 )
+
 RESOLVE cid IF DELETE (
   1
 )
@@ -148,11 +150,13 @@ AS NOT EXISTS (
     FROM
         busted_tiles
 )
+
 RESOLVE cid IF DELETE (
   SELECT count(*) - {parameter_1}
   FROM   busted_tiles bt
   WHERE  bt.cid = cid
 )
+
 WITH SETUP (
     CREATE TEMPORARY TABLE busted_tiles AS (
         SELECT
@@ -171,6 +175,7 @@ WITH SETUP (
     );
     CREATE INDEX busted_tiles_id_idx ON busted_tiles (cid);
 )
+
 WITH TEARDOWN (
   DROP TABLE busted_tiles;
 )

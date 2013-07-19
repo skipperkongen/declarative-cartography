@@ -12,14 +12,15 @@ The algorithmic framework for the multi-scale filtering problem is illustrated i
 \end{center}
 \end{figure}
 
-Below we describe two different heuristic algorithms for solving the single-scale optimization problem. Let $n=|C|$ be the number of constraints (or elements in the set multicover problem), and let $m=|R|$ be the number of records (or sets in the set multicover problem). Recall that $R_c \subseteq R$ is the set of records in constraint $c \in C$. The largest number of records in any constraint is $f = \max_{c \in C} |R_c|$, and is called the \emph{maximum frequency}.
+Below we describe two different heuristic algorithms for solving the single-scale optimization problem. Let $n=|C|$ be the number of conflict sets (or elements in the set multicover problem), and let $m=|R|$ be the number of records (or sets in the set multicover problem). Recall that $R_c \subseteq R$ is the set of records in conflict set $c \in C$. The largest number of records in any conflict set is $f = \max_{c \in C} |R_c|$, and is called the \emph{maximum frequency}.
 
 \subsection{Static greedy algorithm (SGA)}
 \label{sec:algorithms:sga}
 
-In this algorithm we consider each constraint $c \in C$ in turn, and simply choose the $\lambda_c$ records with minimum weight from constraint $R_c$ --- independently of what has been chosen earlier. If the sets $R_c$ are disjoint, the algorithm is clearly optimal. However, in general no approximation guarantee can be provided. The algorithm runs in $O(n f \log f)$ time, as we just need to sort the records by weight for each constraint; alternatively we can sort all records by weight in $O(m \log m)$ time and pick the minimum weight records from the constraints in linear time in the total number of records in all constraints.
+In this algorithm we consider each conflict set $c \in C$ in turn, and simply choose the $\lambda_c$ records with minimum weight from conflict set $R_c$ --- independently of what has been chosen earlier. If the sets $R_c$ are disjoint, the algorithm is clearly optimal. However, in general no approximation guarantee can be provided. The algorithm runs in $O(n f \log f)$ time, as we just need to sort the records by weight for each conflict set; alternatively we can sort all records by weight in $O(m \log m)$ time and pick the minimum weight records from the conflict sets in linear time in the total number of records in all conflict sets.
 
-\kostas{we should revisit our use of constraint and conflict set. in the SGA we are sorting each conflict set, not each constraint.}
+%\kostas{we should revisit our use of constraint and conflict set. in the SGA we are sorting each conflict set, not each constraint.}
+%\martin{Done}
 
 \subsection{LP-based greedy algorithm (LPGA)}
 \label{sec:algorithms:lpga}

@@ -22,6 +22,8 @@ Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref
 \subsection{Zoom levels}
 \label{sec:zoomlevels}
 
+\marcos{I am wondering whether this section is about zoom levels, constraints, or zoom levels and constraints?}
+
 % Scales and zoom levels
 % Cells/tiles
 % Density/visibility
@@ -30,7 +32,11 @@ Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref
 
 The map should be generated on multiple scales, as specified by the user. Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). On a given zoom level, the map is rendered at a certain pixel resolution. Thus, for a given zoom level, we know the distance in pixels between geospatial locations. This gives rise to two fundamental constraints when generating a map for the dataset at a given zoom level.
 
+\marcos{Why are these two constraints fundamental?}
+
 Firstly, the principle of constant information density~\cite{topfer1966principles} implies that the number of records that can be displayed in an area of a certain pixel size should be bounded. Assume that we divide the complete map into cells (or tiles) of, say, 256 x 256 pixels. The \emph{density} constraint states that each cell can contain at most $K$ visible records, where $K$ is a user defined parameter.
+
+\marcos{We use the term cellbound and also refer to visibility later in the paper. Should we introduce that nomenclature already here?}
 
 Secondly, records cannot be too close to each other in the map --- otherwise the user will not be able to interactively manipulate records in the map. The \emph{proximity} constraint states that every pair of visible records must be separated by at least $d$ pixels, where $d$ is a user defined parameter.
 
@@ -52,6 +58,8 @@ Apart from the zoom-consistency constraint which must hold for any map, the dens
 For a given zoom level, we model constraints such as density or proximity constraints using the notion of \emph{conflict sets}. A conflict set is a set of records that cannot all appear simultaneously at a given zoom level. For the density constraint, one conflict set is generated for each cell that contains more than $K$ records. For the proximity constraint, one conflict set is generated for each pair of records that is less than $d$ pixels apart. An example is shown in Figure~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example.
 
 Any cartographic constraint that can be formulated as a conflict set can be added by the user using CVL --- but this is also the only means of formulating constraints at a given zoom level. Thus in CVL there is a one-to-one correspondence between conflict sets and constraints. 
+
+\marcos{If one CVL constraint generates multiple conflict sets, then how can there be a one-to-one correspondence between conflict sets and constraints?}
 
 Consider a conflict set containing $k_1$ records, where at most $k_2$ of these records can appear on the map (where $k_1 > k_2$). Then it is equivalent to state that at least $\lambda = k_1 - k_2$ of these records must be \emph{filtered out} at the given zoom level. In the mathematical formulation of the problem in Section~\ref{sec:optimizationmodel} we will use this alternative way to formulate constraints.
 

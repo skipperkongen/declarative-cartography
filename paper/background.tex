@@ -19,10 +19,10 @@ Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref
 %While the user does not need to individually assign weights to records, CVL offers a very flexible scheme for doing this. Weights are assigned by evaluating a SQL expression for each input row. For example a given column in the input database can be used directly as the weight of a record, or the length or area of the record geometry could be used. In fact any floating point expression can be used to weigh records, and it is perfectly ok to use the output of the random number generator or even a constant. 
 
 
-\subsection{Zoom levels}
+\subsection{Zoom levels and cartographic constraints}
 \label{sec:zoomlevels}
 
-\marcos{I am wondering whether this section is about zoom levels, constraints, or zoom levels and constraints?}
+%\marcos{I am wondering whether this section is about zoom levels, constraints, or zoom levels and constraints?}
 
 % Scales and zoom levels
 % Cells/tiles
@@ -30,13 +30,15 @@ Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref
 % Proximity
 % Zoom consistency
 
-The map should be generated on multiple scales, as specified by the user. Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). On a given zoom level, the map is rendered at a certain pixel resolution. Thus, for a given zoom level, we know the distance in pixels between geospatial locations. This gives rise to two fundamental constraints when generating a map for the dataset at a given zoom level.
+The map should be generated on multiple scales, as specified by the user. Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). On a given zoom level, the map is rendered at a certain pixel resolution. Thus, for a given zoom level, we know the distance in pixels between geospatial locations. This gives rise to two particularly important constraints when generating a map for the dataset at a given zoom level.
 
-\marcos{Why are these two constraints fundamental?}
+%\marcos{Why are these two constraints fundamental?}
 
 Firstly, the principle of constant information density~\cite{topfer1966principles} implies that the number of records that can be displayed in an area of a certain pixel size should be bounded. Assume that we divide the complete map into cells (or tiles) of, say, 256 x 256 pixels. The \emph{density} constraint states that each cell can contain at most $K$ visible records, where $K$ is a user defined parameter.
 
 \marcos{We use the term cellbound and also refer to visibility later in the paper. Should we introduce that nomenclature already here?}
+
+\martin{I believe Kostas would like to change the name to "density" constraint throughout the paper. Kostas?}
 
 Secondly, records cannot be too close to each other in the map --- otherwise the user will not be able to interactively manipulate records in the map. The \emph{proximity} constraint states that every pair of visible records must be separated by at least $d$ pixels, where $d$ is a user defined parameter.
 
@@ -44,8 +46,7 @@ In addition to these constraints that must hold separately for each zoom level, 
 
 Apart from the zoom-consistency constraint which must hold for any map, the density and proximity constraints are optional. The user chooses the set of constraints that must hold for a given map, and can even define new constraints using the CVL language, see Section~\ref{sec:cvl-language}.
 
-\subsection{Conflict sets and constraints}
-\label{sec:conflicts}
+For a given zoom level, we model constraints such as density or proximity constraints using the notion of \emph{conflict sets}. A conflict set is a set of records that cannot all appear simultaneously at a given zoom level. For the density constraint, one conflict set is generated for each cell that contains more than $K$ records. For the proximity constraint, one conflict set is generated for each pair of records that is less than $d$ pixels apart. An example is shown in Figure~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -55,11 +56,11 @@ Apart from the zoom-consistency constraint which must hold for any map, the dens
 \end{center}
 \end{figure}
 
-For a given zoom level, we model constraints such as density or proximity constraints using the notion of \emph{conflict sets}. A conflict set is a set of records that cannot all appear simultaneously at a given zoom level. For the density constraint, one conflict set is generated for each cell that contains more than $K$ records. For the proximity constraint, one conflict set is generated for each pair of records that is less than $d$ pixels apart. An example is shown in Figure~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example.
-
-Any cartographic constraint that can be formulated as a conflict set can be added by the user using CVL --- but this is also the only means of formulating constraints at a given zoom level. Thus in CVL there is a one-to-one correspondence between conflict sets and constraints. 
+Any cartographic constraint that can be formulated as a conflict set can be added by the user using CVL --- but this is also the only means of formulating general constraints at a given zoom level. Thus in CVL there is a one-to-one correspondence between conflict sets and constraints. 
 
 \marcos{If one CVL constraint generates multiple conflict sets, then how can there be a one-to-one correspondence between conflict sets and constraints?}
+
+\martin{This is question of what "constraint" means. The assumption above is that there are several proximity constraints, on for each pair of too close points. In this sense there is a one-to-one correspondence between conflict sets and constraints. Should we make this more clear?}
 
 Consider a conflict set containing $k_1$ records, where at most $k_2$ of these records can appear on the map (where $k_1 > k_2$). Then it is equivalent to state that at least $\lambda = k_1 - k_2$ of these records must be \emph{filtered out} at the given zoom level. In the mathematical formulation of the problem in Section~\ref{sec:optimizationmodel} we will use this alternative way to formulate constraints.
 

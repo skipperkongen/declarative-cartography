@@ -36,15 +36,11 @@ The map should be generated on multiple scales, as specified by the user. Let th
 
 Firstly, the principle of constant information density~\cite{topfer1966principles} implies that the number of records that can be displayed in an area of a certain pixel size should be bounded. Assume that we divide the complete map into cells (or tiles) of, say, 256 x 256 pixels. The \emph{density} constraint states that each cell can contain at most $K$ visible records, where $K$ is a user defined parameter.
 
-\marcos{We use the term cellbound and also refer to visibility later in the paper. Should we introduce that nomenclature already here?}
-
-\martin{Kostas will change the name to "density" constraint throughout the paper.}
-
 Secondly, records cannot be too close to each other in the map --- otherwise the user will not be able to interactively manipulate records in the map. The \emph{proximity} constraint states that every pair of visible records must be separated by at least $d$ pixels, where $d$ is a user defined parameter.
 
 In addition to these constraints that must hold separately for each zoom level, the filtering of the records must be consistent across zoom levels. The \emph{zoom-consistency} constraint~\cite{sarma2012fusiontables} states that when a record is filtered out at a given scale, it should also be filtered out at all \emph{lower} scales. When a user zooms out on a map, records can only disappear --- not reappear.
 
-Apart from the zoom-consistency constraint which must hold for any map, the density and proximity constraints are optional. The user chooses the set of constraints that must hold for a given map, and can even define new constraints using the CVL language, see Section~\ref{sec:cvl-language}.
+Apart from the zoom-consistency constraint which must hold for any map, the density and proximity constraints are optional. The user chooses the set of constraints that must hold for a given map, and can even define new constraints using the CVL language, see Section~\ref{sec:cvl:language}.
 
 For a given zoom level, we model constraints such as density or proximity constraints using the notion of \emph{conflict sets}. A conflict set is a set of records that cannot all appear simultaneously at a given zoom level. For the density constraint, one conflict set is generated for each cell that contains more than $K$ records. For the proximity constraint, one conflict set is generated for each pair of records that is less than $d$ pixels apart. An example is shown in Figure~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example.
 

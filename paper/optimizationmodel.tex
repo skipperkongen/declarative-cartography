@@ -2,7 +2,7 @@
 \section{Multi-scale filtering optimization problem}
 \label{sec:optimizationmodel}
 
-In this section we formally define the multi-scale filtering problem as an optimization problem. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record. As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the multi-scale filtering problem is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. A primary constraint is the \emph{zoom-consistency} constraint~\cite{fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all lower scales. 
+In this section we formally define the multi-scale filtering problem as an optimization problem. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record. As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the multi-scale filtering problem is to filter out records on each zoom level so that the remaining records fulfill a number of cartographic constraints. A primary constraint is the \emph{zoom-consistency} constraint~\cite{sarma2012fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all lower scales. 
 
 In addition to the zoom-consistency constraint there are a number of additional constraints (formulated as conflict sets) that are modeled using CVL. Let $C$ be the collection of conflict sets for all zoom levels; each conflict set $c \in C$ is associated with a given zoom level $z_c$. A conflict set $c \in C$ is a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
 
@@ -38,6 +38,6 @@ Let $\bar{R} \subseteq R$ be the set of records that have survived up to the giv
   x_r & \in \{0, 1\}, ~~ r \in \bar{R}, ~c \in \bar{C}
 \end{align}
 
-This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element/conflict set $c \in C$ needs to be covered $\lambda_c \geq 1$ times by the sets/records $r \in R$; each set/record can be chosen at most once~\cite{RajogopalanVazirani98}. 
+This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element/conflict set $c \in C$ needs to be covered $\lambda_c \geq 1$ times by the sets/records $r \in R$; each set/record can be chosen at most once~\cite{rajagopalan1998primal}. 
 
 In the next section we discuss algorithmic approaches for solving the single-scale problem. Note that although we solve the multi-scale problem as a series of single-scale problems, in the experimental evaluation of our approach also includes a discussion on the objective value (\ref{eq:objective}) of the \emph{multi-scale} problem. 

@@ -38,7 +38,7 @@ Firstly, the principle of constant information density~\cite{topfer1966principle
 
 \marcos{We use the term cellbound and also refer to visibility later in the paper. Should we introduce that nomenclature already here?}
 
-\martin{I believe Kostas would like to change the name to "density" constraint throughout the paper. Kostas?}
+\martin{Kostas will change the name to "density" constraint throughout the paper.}
 
 Secondly, records cannot be too close to each other in the map --- otherwise the user will not be able to interactively manipulate records in the map. The \emph{proximity} constraint states that every pair of visible records must be separated by at least $d$ pixels, where $d$ is a user defined parameter.
 
@@ -56,13 +56,13 @@ For a given zoom level, we model constraints such as density or proximity constr
 \end{center}
 \end{figure}
 
-Any cartographic constraint that can be formulated as a conflict set can be added by the user using CVL --- but this is also the only means of formulating general constraints at a given zoom level. Thus in CVL there is a one-to-one correspondence between conflict sets and constraints. 
+Any cartographic constraint that can be formulated as a conflict set can be added by the user using CVL --- but this is also the only means of formulating general constraints at a given zoom level. 
 
-\marcos{If one CVL constraint generates multiple conflict sets, then how can there be a one-to-one correspondence between conflict sets and constraints?}
+%\marcos{If one CVL constraint generates multiple conflict sets, then how can there be a one-to-one correspondence between conflict sets and constraints?}
 
-\martin{This is question of what "constraint" means. The assumption above is that there are several proximity constraints, on for each pair of too close points. In this sense there is a one-to-one correspondence between conflict sets and constraints. Should we make this more clear?}
+%\martin{This is question of what "constraint" means. The assumption above is that there are several proximity constraints, on for each pair of too close points. In this sense there is a one-to-one correspondence between conflict sets and constraints. Should we make this more clear?}
 
-Consider a conflict set containing $k_1$ records, where at most $k_2$ of these records can appear on the map (where $k_1 > k_2$). Then it is equivalent to state that at least $\lambda = k_1 - k_2$ of these records must be \emph{filtered out} at the given zoom level. In the mathematical formulation of the problem in Section~\ref{sec:optimizationmodel} we will use this alternative way to formulate constraints.
+Consider a conflict set containing $k_1$ records, where at most $k_2$ of these records can appear on the map (where $k_1 > k_2$). Then it is equivalent to state that at least $\lambda = k_1 - k_2$ of these records must be \emph{filtered out} at the given zoom level. In the mathematical formulation of the problem in Section~\ref{sec:optimizationmodel} we will use this alternative way to formulate conflict sets.
 
 %A cartographic constraint in CVL is a condition that must hold for all subsets of a given size. Subsets of records for which the condition does not hold, are said to be in conflict. As part of formulating a constraint, the user writes SQL that finds conflicts for this constraint. Part of the CVL formulation of the proximity constraint is an SQL statement that finds all records that are too near each other at a given zoom-level. The contract between the user and the CVL framework is that the user code must generate $\langle cid, rid \rangle$ tuples that represent the conflict sets. The sematics are that $rid$ is the ID of a record which is a member of a conflict set uniquely identified by $cid$. As an example, the user code for the proximity constraint generates two tuples for each conflict found.
 

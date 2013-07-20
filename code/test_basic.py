@@ -8,7 +8,7 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     compiler = CvlCompiler()
 
-    for ds_name in ['airports', 'tourism', 'usrivers', 'dai']:
+    for ds_name in ['usrivers', 'airports', 'tourism', 'dai']:
         dataset = DATASETS[ds_name]
         for cn_name in ['A', 'B']:
             constraint = CONSTRAINTS[cn_name]

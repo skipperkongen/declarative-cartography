@@ -1,0 +1,8 @@
+19/07/2013 08:48:13.052511 [xl_fractal_heuristic_A] BEGIN_TRANSACTION
+19/07/2013 09:06:48.034662 [xl_fractal_heuristic_A] initialized
+19/07/2013 09:06:48.035032 [xl_fractal_heuristic_A] solver "heuristic"
+19/07/2013 09:06:48.035346 [xl_fractal_heuristic_A] constraints "cellbound(16,)"
+19/07/2013 09:08:01.587412 [xl_fractal_heuristic_A] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_30m_synthetic where x_order <= 30000000) t', 'total_rank': 14998141.729098393, 'total_recs': 30000000L}
+19/07/2013 09:08:01.687936 [xl_fractal_heuristic_A] initialized_level 17
+
+psql:cvl.sql:359: connection to server was lost

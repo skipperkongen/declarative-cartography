@@ -16,8 +16,8 @@ if __name__ == '__main__':
         for constraint_name in ['A', 'B']:
             constraint = CONSTRAINTS[constraint_name]
             for solver in ['heuristic']:
-                job_name = "scala2_{0:s}_{1:d}_{2:s}_{3:s}".format(
-                    'tourism',
+                job_name = "scala3_{0:s}_{1:d}_{2:s}_{3:s}".format(
+                    'fractal',
                     current_size,
                     constraint[0][0],
                     solver

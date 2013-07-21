@@ -29,7 +29,7 @@ DATASETS = {
     'usrivers': {
         'input': "(select * from lin_30k_uswaterway where x_order <= {0:d} and waterway='river') t",
         'rank_by': 'st_length(wkb_geometry)/1000',
-        'size': 4786},
+        'size': 32231},
     'usriversandstreams': {
         'input': '(select * from lin_30k_uswaterway where x_order <= {0:d}) t',
         'rank_by': 'st_length(wkb_geometry)/1000',

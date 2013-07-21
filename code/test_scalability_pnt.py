@@ -14,6 +14,8 @@ if __name__ == '__main__':
     while current_size <= dataset['size']*2:
         for solver in ['heuristic','lp']:
             for constraint_name in ['A', 'B']:
+                if solver == 'lp' and constraint_name == 'B':
+                    continue
                 constraint = CONSTRAINTS[constraint_name]
                 job_name = "scalapnt_fractal_{0:d}_{1:s}_{2:s}".format(
                     current_size,

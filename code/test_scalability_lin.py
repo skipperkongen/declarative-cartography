@@ -13,7 +13,7 @@ if __name__ == '__main__':
     dataset = DATASETS['usriversandstreams']
     while current_size <= dataset['size']*2:
         for solver in ['heuristic','lp']:
-            for constraint_name in ['A', 'B']:
+            for constraint_name in ['A']:  # proximity does not scale for linestrings
                 constraint = CONSTRAINTS[constraint_name]
                 job_name = "scalalin_riversandstreams_{0:d}_{1:s}_{2:s}".format(
                     current_size,

@@ -39,7 +39,7 @@ For the LP solver we integrated the database with the convex optimization librar
 
 We ran each test three times on this installation, taking averages. We observed that measurements were very stable, with negligible difference in compute time between runs.
 
-It should be noted that PostgreSQL always uses a single core to compute a transaction. The generalization process in CVL is run as a single long transaction, which means that the process is essentially run on a single core. A future avenue would be to investigate parallel execution of CVL queries using an appropriate processing engine such as a parallel database or Hadoop cluster.
+It should be noted that PostgreSQL always uses a single core to compute a transaction. The generalization process in CVL is run as a single long transaction, which means that the process is essentially run on a single core. A future avenue would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a Hadoop cluster.
 
 \subsection{Point Data}
 \label{sec:exp:points}
@@ -83,8 +83,6 @@ The test instances
   \caption{Performance breakdown by zoom level, Tourism dataset (500K points)} \label{fig:performance:tourism}
   \vspace{-2ex}
 \end{figure*}
-
-\marcos{We should remove the title from the graph images, and increase the fonts as possible.}
 
 \minisec{Performance and Quality}
  Figure~\ref{fig:performance:airport} shows the performance breakdown per zoom level of executing CVL with the Openflight airports dataset. Note the different y-scales in the graphs. In Parts~(a)-(c), we observe that the time needed to find conflicts is roughly stable until eight zoom levels, then slightly increases, and finally drops sharply for lower zoom levels. The constraints used generate few conflicts at higher zoom levels, given the relatively low density of the airport distribution in space. Nevertheless, even though almost no conflicts are generated, the dataset is still processed, resulting in roughly equal time for finding conflicts and negligible time for solving conflicts per zoom level. 

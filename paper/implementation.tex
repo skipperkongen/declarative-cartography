@@ -58,6 +58,8 @@ The procedure \texttt{CVL\_PointHash} uses a call to \texttt{ST\_GeoHash} to imp
 
 The \texttt{CVL\_WebMercatorCells} function maps a geometry at a given zoom-level to centroids of all intersected tiles (on that zoom-level). We experimented with several ways to do this for general geometries (points, line segments, polygons) and found that rasterizing the geometry (using the function \texttt{ST\_AsRaster} in the spatial extension of the database) and iterating over the indices was the fastest for general geometries. For point records it is significantly faster to use the standard transformation function \texttt{ST\_SnapToGrid}.
 
+An improvement to \texttt{CVL\_WebMercatorCells} that we didn't have time to implement, is to compute tiles as quad-keys on the highest level only. Tile identifiers for lower levels are easily computed by taking prefixes of the quad-keys. This approach only benefits the running time when using constraints that are tile-based.
+
 \subsection{Extensions}
 \label{sec:implementation:extensions}
 

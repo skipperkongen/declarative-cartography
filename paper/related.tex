@@ -1,35 +1,15 @@
 % !TEX root = ./cvl.tex
 \section{Related work}
 \label{sec:related}
-\marcos{One should make sure to include the items below.}
 
-Basic reference set:
+Cartographic generalization is a classic topic of investigation in the GIS community, and several models have been developed for generalization operations~\cite{brassel1988generalization,gruenreich1992atkis,shea1989cartographic}. These operations span a large spectrum from the semantic integration of data for maps to geometric operations such as simplification and filtering~\cite{foerster2008classification,shea1989cartographic}. While the problem has been considered by some as AI complete~\cite{frank1994multiscaletree}, recent work has focused on automatic map generalization based on optimization models or queries for filtering~\cite{nutanong2012multiresolution,sarma2012fusiontables}. This reduction in scope reflects the need of providing a wide variety of web-accessible maps summarizing ever increasing amounts of geospatial datasets. Our work provides support for the same trend.  
 
-\begin{itemize}
+The optimization approach of Das Sarma et al. is the most related to our work~\cite{sarma2012fusiontables}. In contrast to our approach, however, Das Sarma et al. do not provide a flexible declarative interface for user-defined constraints, nor does their approach leverage SQL. 
+%As a consequence, their approach is restricted to memory-resident datasets and pre-specified, not user-defined, constraints. 
+In addition, it is hard to integrate their approach with existing geospatial data serving infrastructures, which are mostly based on standard spatial database technology~\cite{postgis}.
 
-\item Fusion Tables~\cite{fusion-tables}. 
-% zoom consistency, adjacency, visibility; not general constraints. // different types of objectives, but no declarative interface and integration with standard database technology.
+User-defined constraints and declarative specifications have been shown to yield elegant solutions to a variety of problems in data management, including record deduplication~\cite{ArasuRS09:Dedupalog}, database testing~\cite{BinnigKL07:ReverseQP,Binnig:2007:SymbolicQP}, as well as cloud and networking resource optimization~\cite{Liu:2012:Cologne}. Our work brings these ideas to the context of map generalization and geospatial data, and as mentioned previously, is among the first frameworks to implement the vision of reverse data management~\cite{meliou2011reverse}. 
 
-\item Summary and most important references from cartographic generalization survey.
+In-database processing has also been explored successfully in diverse contexts in the literature. Translation of high-level languages, such as XQuery or LINQ, to SQL lead to highly scalable and efficient implementations~\cite{pathfinder,ferry}. A number of recent approaches have targeted expressing complex statistical analytics in SQL~\cite{Hellerstein:2012:Madlib,Ordonez2007:StatisticsUDFs}. In contrast, we show how in-database processing can be used in the implementation of a declarative language for map generalization which includes solvers and constraints, leveraging the trend to incorporate whole programming language interpreters and support for spatial data structures in database engines~\cite{Blakeley2008:DotNET}.  
 
-\item Reverse data management vision~\cite{reverse-dm}
-
-\end{itemize}
-
-Additional references:
-
-\begin{itemize}
-
-\item In-database processing: briefly repeat argument with Pathfinder and Ferry (As we mentioned earlier,...). Increasingly, relational are incorporating whole programming language interpreters and support for spatial data structures~\cite{Blakeley2008:DotNET}. Then also cite MADLib work~\cite{madlib} as well as Ordonez~\cite{Ordonez2007:StatisticsUDFs}. But: direct SQL and not higher-level DSL leveraging SQL + analytics / statistics and not spatial.  
-
-\item Say something about how you actually serve the map after it is built with our framework (e.g., the usual references in linearization)~\cite{hilbert}.
-
-\item ...
-
-\marcos{Still performing scan of recent literature, just in case.}
-
-\item if it fits, reverse / symbolic query processing.
-
-\end{itemize}
-
-\martin{We should mention that the dynamic greedy algorithm would have improved the running time compared to the LP-based greedy algorithm, while achieving good quality~\cite{RajogopalanVazirani98}.}
+Our approach dovetails with a number of techniques from the literature, which hold potential to further extend or complement it. First, we plan to explore other algorithms for set multi-cover, such as the dynamic greedy algorithm described by Rajagopalan and Vazirani~\cite{rajagopalan1998primal}, to improve running time compared to the LP-based greedy algorithm, while achieving good quality. Second, we would like to experiment with geospatial-aware parallel processing infrastructures, such as Hadoop-GIS~\cite{Aji:2013:HadoopGIS}, for even further scalability in computing map generalizations. Finally, once a map generalization is complete, the resulting map must be served to end-users. This problem is orthogonal to our work, and classic linearization techniques can be applied~\cite{hilbert1891ueber}. All of these are interesting avenues for future work.

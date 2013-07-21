@@ -163,6 +163,12 @@ if __name__ == '__main__':
                 ' ' * 4, (trace.duration - analysis_time), \
                 ' ' * 4, 'opt ratio:', solution / optimum if optimum > 0 else 'unknown'
 
+    elif options.graph == 'print_nostat':
+        for trace in tr.get_traces():
+            print trace.name, \
+                trace.duration
+
+
     elif options.graph == 'stack':
         for trace in tr.get_traces():
             chart = Stack(trace)

@@ -30,4 +30,4 @@ if __name__ == '__main__':
                 job_name=job_name,
                 analytics=False
             )
-    current_size *= 2
+        current_size *= 2

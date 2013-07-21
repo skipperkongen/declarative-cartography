@@ -8,16 +8,14 @@ from cvl.framework.query import Query
 if __name__ == '__main__':
     compiler = CvlCompiler()
 
-    MAX = 512000
-    current_size = 4000
+    current_size = 1000
 
-    while current_size < MAX:
-        dataset = DATASETS['tourism']
-        for constraint_name in ['A', 'B']:
-            constraint = CONSTRAINTS[constraint_name]
-            for solver in ['heuristic']:
-                job_name = "scala2_{0:s}_{1:d}_{2:s}_{3:s}".format(
-                    'tourism',
+    dataset = DATASETS['fractal']
+    while current_size <= dataset['size']*2:
+        for solver in ['heuristic','lp']:
+            for constraint_name in ['A', 'B']:
+                constraint = CONSTRAINTS[constraint_name]
+                job_name = "scalapnt_fractal_{0:d}_{1:s}_{2:s}".format(
                     current_size,
                     constraint[0][0],
                     solver
@@ -26,6 +24,7 @@ if __name__ == '__main__':
                 QUERY_DICT['subject_to'] = constraint
                 QUERY_DICT['rank_by'] = dataset['rank_by']
                 query = Query(**QUERY_DICT)
+                query.zoomlevels = 10
                 print compiler.compile(
                     query,
                     solver=solver,

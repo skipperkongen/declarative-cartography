@@ -9,7 +9,14 @@
 \subsection{Experimental Setup}
 
 \minisec{Datasets}
-We have tested CVL using four real-world datasets with the biggest one containing 23 million points and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. The airports dataset is from Openflights and contains 7411 airports (points). The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database. The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. The US rivers/streams dataset contains 30 thousand named rivers and streams in the United States as multilinestrings, and has been reduced from a OpenStreetMap waterway dataset by merging objects with the same name into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a filtering situation. The Protection zones dataset contains 30 thousand high-fidelity administrative protection zone polygons published by the Danish government, and ranges from small polygons the size of buildings to large polygons the size of entire regions.
+
+We have tested CVL using four real-world datasets with the biggest one containing 23 million points and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. 
+
+We have used three point datasets. The airports dataset is from Openflights and contains 7411 airports (points). The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database. The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. 
+
+We have used two line segment datasets. The US rivers/streams dataset contains roughly 4 thousand rivers and roughly 27 thousand streams in the United States derived from the OpenStreetMap database. Records with identical name attributes have been merged into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a filtering situation (either show the waterway completely or not at all). 
+
+We have used a single polygon dataset, the area information dataset, published by the Danish government. This dataset contains 30 thousand high-fidelity administrative protection zone polygons, and ranges from small polygons the size of buildings to large polygons the size of entire regions. The biggest polygon contains by 36 thousand points.
 
 \marcos{Cite sources for datasets above.}
 
@@ -24,7 +31,8 @@ We have tested CVL using four real-world datasets with the biggest one containin
 Real & Airports & Points & $7K$ & $7K$ \\
 Real & Tourism & Points & $500K$ & $500K$ \\
 Synthetic & Fractal & Points & $30M$ & $30M$ \\
-Real & US rivers/streams & Linestrings & $4K$ & $23M$ \\
+Real & US rivers & Line segments & $4K$ & $2M$ \\
+Real & US rivers/streams & Line segments & $30K$ & $6M$ \\
 Real & Proctection zones & Polygons & $30K$ & $9M$ \\
 \hline
 \end{tabular}
@@ -40,12 +48,35 @@ The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built again
 
 We ran each test three times on this installation, taking averages. We observed that measurements were very stable, with negligible difference in compute time between runs.
 
-It should be noted that PostgreSQL always uses a single core to compute a transaction. The generalization process in CVL is run as a single long transaction, which means that the process is essentially run on a single core. A future avenue would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or MapReduce environment.
+PostgreSQL always uses a single core to compute a transaction. Because the generalization process in CVL runs as a single long transaction, each job in CVL runs on a single core. A future direction would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a MapReduce environment.
+
 
 \subsection{Point Data}
 \label{sec:exp:points}
 
-In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. We first discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (visibility / proximity / combined), we show only representative results for brevity. Results for the combined visibility and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below.    
+In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. After a quick overview of the results, we then discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (visibility / proximity / combined), we show only representative results for brevity. Results for the combined visibility and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below. 
+
+
+\begin{table}[htdp]
+\caption{Results for CVL on point datasets}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Dataset} & \textbf{Constraint} & \textbf{Solver} & \textbf{Time} & \textbf{Opt. ratio}\\ 
+\hline
+Airports (7K)  & Proximity  & SGA& 1000 s & 1.0 \\
+Airports (7K)  & Proximity & LPGA & 1000 s & 1.0 \\
+Tourism (500K) & Proximity & SGA & 1000 s & 1.0 \\
+Tourism (500K) & Proximity & LPGA & 1000 s & 1.0 \\
+Airports (7K) & Visibility & SGA & 1000 s & 1.0 \\
+Airports (7K) & Visibility & LPGA & 1000 s & 1.0 \\
+Tourism (500K) & Visibility & SGA & 1000 s & 1.0 \\
+Tourism (500K) & Visibility & LPGA & 1000 s & 1.0 \\
+\hline
+\end{tabular}
+\end{center}
+\label{tab:results:overview}
+\end{table}%
 
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}
@@ -111,6 +142,28 @@ While SGA performs significantly better than LPGA, it does not do so at the cost
 
 \subsection{Complex Shape Data}
 \label{sec:exp:complex:shapes}
+
+\begin{table}[htdp]
+\caption{Results for CVL on complex datasets}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Dataset} & \textbf{Constraint} & \textbf{Solver} & \textbf{Time} & \textbf{Opt. ratio}\\ 
+\hline
+Rivers (4K)  & Proximity  & SGA& 1000 s & 1.0 \\
+Rivers (4K)  & Proximity & LPGA & 1000 s & 1.0 \\
+Zones (30K) & Proximity & SGA & --- & --- \\
+Zones (30K) & Proximity & LPGA & --- & --- \\
+Rivers (4K) & Visibility & SGA & 1000 s & 1.0 \\
+Rivers (4K) & Visibility & LPGA & 1000 s & 1.0 \\
+Zones (30K) & Visibility & SGA & 1000 s & 1.0 \\
+Zones (30K) & Visibility & LPGA & 1000 s & 1.0 \\
+\hline
+\end{tabular}
+\end{center}
+\label{tab:results:overview}
+\end{table}%
+
 
 \minisec{Performance and Quality}
 \marcos{Show performance and quality plots for linestrings and polygons.}

@@ -11,7 +11,7 @@ if __name__ == '__main__':
     current_size = 1000
 
     dataset = DATASETS['usriversandstreams']
-    while current_size <= dataset['size']:
+    while current_size <= dataset['size']*2:
         for constraint_name in ['A', 'B']:
             constraint = CONSTRAINTS[constraint_name]
             job_name = "scalalin_usriversandstreams_{0:d}_{1:s}_heuristic".format(

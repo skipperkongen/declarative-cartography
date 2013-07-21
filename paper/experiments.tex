@@ -9,10 +9,13 @@
 \subsection{Experimental Setup}
 
 \minisec{Datasets}
-We have tested CVL using four real-world datasets with the biggest one containing 23 million points and one synthetic dataset containing 30 million points. The airports dataset is from Openflights and contains 7411 airports (points). The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database. The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. The US rivers/streams dataset contains 30 thousand named rivers and streams in the United States as multilinestrings, and has been reduced from a OpenStreetMap waterway dataset by merging objects with the same name into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a filtering situation. The Protection zones dataset contains 30 thousand high-fidelity administrative protection zone polygons published by the Danish government, and ranges from small polygons the size of buildings to large polygons the size of entire regions.
+We have tested CVL using four real-world datasets with the biggest one containing 23 million points and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. The airports dataset is from Openflights and contains 7411 airports (points). The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database. The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. The US rivers/streams dataset contains 30 thousand named rivers and streams in the United States as multilinestrings, and has been reduced from a OpenStreetMap waterway dataset by merging objects with the same name into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a filtering situation. The Protection zones dataset contains 30 thousand high-fidelity administrative protection zone polygons published by the Danish government, and ranges from small polygons the size of buildings to large polygons the size of entire regions.
+
+\marcos{Cite sources for datasets above.}
 
 \begin{table}[htdp]
 \caption{Datasets used in experiments}
+\label{tab:datasets}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -33,20 +36,16 @@ Real & Proctection zones & Polygons & $30K$ & $9M$ \\
 \minisec{Hardware, Software, and Methods}
 The machine used for testing was an Amazon EC2 instance with 17GB RAM, 2 x Intel(R) Xeon(R) CPU E5-2665 0 @ 2.40GHz and 20MB Cache, running Amazon Linux 3.4.48-45.46.amzn1.x86\_64\footnote{An image of the instance we used for testing is available through Amazon EC2 as an AMI. The image contains the exact database used for testing, with all tables preloaded}.
 
-The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built against the following libraries: GDAL 1.9.2 and GEOS 3.3.8. 
-
-For the LP solver we integrated the database with the convex optimization library CVXOPT version 1.1.6 (\texttt{http://cvxopt.org/}). We installed Python language bindings in the database installed against Python 2.6.8.
+The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built against the following libraries: GDAL 1.9.2 and GEOS 3.3.8. For the LP solver we integrated the database with the convex optimization library CVXOPT version 1.1.6 (\texttt{http://cvxopt.org/}). We installed Python language bindings in the database  against Python 2.6.8.
 
 We ran each test three times on this installation, taking averages. We observed that measurements were very stable, with negligible difference in compute time between runs.
 
-It should be noted that PostgreSQL always uses a single core to compute a transaction. The generalization process in CVL is run as a single long transaction, which means that the process is essentially run on a single core. A future avenue would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a Hadoop cluster.
+It should be noted that PostgreSQL always uses a single core to compute a transaction. The generalization process in CVL is run as a single long transaction, which means that the process is essentially run on a single core. A future avenue would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or MapReduce environment.
 
 \subsection{Point Data}
 \label{sec:exp:points}
 
 In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. We first discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (visibility / proximity / combined), we show only representative results for brevity. Results for the combined visibility and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below.    
-
-The test instances
 
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}

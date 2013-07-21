@@ -52,18 +52,20 @@ LPGA solves a linear programming relaxation of the set multicover problem. We ex
 Finally, note that the code for finding conflict sets is already expressed in SQL by the user for each constraint. As a consequence, this user code can make use of all built-in database optimizations available in the target engine.
 
 \minisec{CVL runtime functions}
-In the definition of the visibility constraint in Section~\ref{sec:create:constraint:statement} we reference two stored procedures in the CVL runtime library, \texttt{CVL\_PointHash} and \texttt{CVL\_WebMercatorCells}. These functions are implemented in SQL and make use of the spatial extension of the database.
+In the definition of the visibility constraint in Section~\ref{sec:create:constraint:statement} we reference two stored procedures in the CVL runtime library, \texttt{CVL\_PointHash} and \texttt{CVL\_WebMercatorCells}. These functions are implemented in SQL and make use of the spatial extension of the database~\cite{postgis}.
 
 The procedure \texttt{CVL\_PointHash} uses a call to \texttt{ST\_GeoHash} to implement an injective mapping from points to strings. These strings are used as unique $cid$s for the visibility constraint.  
 
 The \texttt{CVL\_WebMercatorCells} function maps a geometry at a given zoom-level to centroids of all intersected tiles (on that zoom-level). We experimented with several ways to do this for general geometries (points, line segments, polygons) and found that rasterizing the geometry (using the function \texttt{ST\_AsRaster} in the spatial extension of the database) and iterating over the indices was the fastest for general geometries. For point records it is significantly faster to use the standard transformation function \texttt{ST\_SnapToGrid}.
 
-An improvement to \texttt{CVL\_WebMercatorCells} that we didn't have time to implement, is to compute tiles as quad-keys on the highest level only. Tile identifiers for lower levels are easily computed by taking prefixes of the quad-keys. This approach only benefits the running time when using constraints that are tile-based.
+An improvement to \texttt{CVL\_WebMercatorCells} that we did not have time to implement is to compute tiles as quad-keys on the highest level only. Tile identifiers for lower levels are easily computed by taking prefixes of the quad-keys. This approach only benefits the running time when using constraints that are tile-based.
 
 \subsection{Extensions}
 \label{sec:implementation:extensions}
 
 When designing CVL, we discussed a number of our decisions with geospatial map developers at GST. These discussions, along with our implementation experience of CVL use cases, led us to a set of extensions over the core language targeted at improving convenience of use. We present these extensions below.
+
+\marcos{Either introduce GST in Intro or remove reference above.}
 
 \minisec{Partitioning and Merging Datasets} 
 A single input table may contain geospatial objects of different classes, e.g., roads and points of interest. When this is the case, users often wish to generalize some of these classes of objects independently, but obtain a single result map. While this can be done by merging the results of multiple GENERALIZE statements, we found it useful to add syntactic sugar to support this case. We extend the GENERALIZE statement with PARTITION BY and MERGE PARTITIONS clauses. PARTITION BY allows us to effectively segregate the input into multiple independent sets. MERGE PARTITIONS combines a few of these sets before providing them as input to generalization. For example, assume a \emph{geo\_objects} table contains highways, roads, restaurants, and hotels, tagged by a \emph{type} attribute. We could then generalize \emph{geo\_objects} as follows:
@@ -73,7 +75,8 @@ GENERALIZE  geo_objects
 TO network_and_poi_map
 ...
 PARTITION BY type
-MERGE PARTITIONS 'restaurant', 'hotel' AS 'poi'
+MERGE PARTITIONS 'restaurant', 'hotel' 
+              AS 'poi'
 ... 
 \end{lstlisting}
 
@@ -90,9 +93,9 @@ FORCE MIN LEVEL 10 ALLORNOTHING FOR 'highway'
 
 In the evaluation of CVL, the minimum level specifier controls what data is given as input for a zoom level. The all-or-nothing specifier, on the other hand, controls filtering of the output of the level generalization process. If the specifier is present, all records of a partition are eliminated if any record from the partition input is not present in the output. By filtering output, we ensure that the result also respects all other constraints specified by the user. 
 
-\minisec{Set up and Tear Down for Constraints}   
-Map constraints can exhibit significant complexity. Since a constraint is expressed as a single SELECT statement, it is often helpful to be able to refer to temporary tables in its formulation. We have thus extended the CREATE CONSTRAINT statement to include two additional clauses: WITH SETUP and WITH TEARDOWN. The former allows a user-defined SQL statement to be executed in advance of the constraint evaluation, creating any supporting tables for the evaluation of the constraint. The latter specifies user-defined cleanup code. Note that since constraints are evaluated independently at each zoom level, the set-up and tear-down clauses are evaluated before and after the constraint SQL at each zoom level.       
-\marcos{Move necessary information from paragraph above to Language section, and remove paragraph after that.}
+%\minisec{Set up and Tear Down for Constraints}   
+%Map constraints can exhibit significant complexity. Since a constraint is expressed as a single SELECT statement, it is often helpful to be able to refer to temporary tables in its formulation. We have thus extended the CREATE CONSTRAINT statement to include two additional clauses: WITH SETUP and WITH TEARDOWN. The former allows a user-defined SQL statement to be executed in advance of the constraint evaluation, creating any supporting tables for the evaluation of the constraint. The latter specifies user-defined cleanup code. Note that since constraints are evaluated independently at each zoom level, the set-up and tear-down clauses are evaluated before and after the constraint SQL at each zoom level.       
+%\marcos{Move necessary information from paragraph above to Language section, and remove paragraph after that.}
 
 %
 % MVS: We can probably get away with not showing the syntax below. 

@@ -7,7 +7,7 @@ In the multi-scale filtering problem we select the subsets of the dataset that s
 \subsection{Geospatial records and weights}
 \label{sec:records}
 
-The dataset is assumed to consist of a set of \emph{geospatial records} that are drawn from a database table. Each record has a geometry, e.g.\ is a point, line segment, polygon --- or is a collection of simple geometric entities. Also, each geospatial record has relevant associated information, for example a city name, a hotel name or a description of an incident that took place at the given spatial location. Each record is assumed to have a unique ID.
+The dataset is assumed to consist of a set of \emph{geospatial records} that are drawn from a database table. Each record has a geometry, i.e.\ is a point, line segment or polygon --- or is a collection of simple geometric entities. Also, each geospatial record has relevant associated information, for example a city name, a hotel name or a description of an incident that took place at the given spatial location. Records are assumed to have a unique ID.
 
 Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref{sec:cvl:language}). The weight represents the relative importance of a record in the generated map; an important (or highly ranked) record has a higher weight than a less important record. Any subset of records --- or all records for that matter --- may have the same weight. Therefore, the weights induce a partial order of the records.
 
@@ -29,8 +29,6 @@ Apart from the zoom-consistency constraint which must hold for any map, the visi
 
 For a given zoom level, we model constraints such as visibility or proximity constraints using the notion of \emph{conflict sets}. A conflict set is a set of records that cannot all appear simultaneously at a given zoom level. 
 
-For the visibility constraint, one conflict set is generated for each cell that contains more than $K$ records. For the proximity constraint, one conflict set is generated for each pair of records that is less than $d$ pixels apart. An example is shown in Figure~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example.
-
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[scale=.3]{figs/cvl_proximity_conflicts.pdf}
@@ -39,7 +37,11 @@ For the visibility constraint, one conflict set is generated for each cell that 
 \end{center}
 \end{figure}
 
-Any map constraint that can be formulated as a conflict set can be added by the user using CVL --- but this is also the only means of formulating general constraints at a given zoom level. 
+\vspace{5em}
+
+For the visibility constraint, one conflict set is generated for each cell that contains more than $K$ records. For the proximity constraint, one conflict set is generated for each pair of records that is less than $d$ pixels apart, see Figure~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example shown in the figure.
+
+CVL supports the definition of any map constraint that can be formulated using this notion of conflicts --- but this is also the only means of formulating general constraints at a given zoom level. 
 
 Consider a conflict set containing $k_1$ records, where at most $k_2$ of these records can appear on the map (where $k_1 > k_2$). Then it is equivalent to state that at least $\lambda = k_1 - k_2$ of these records must be \emph{filtered out} at the given zoom level. In the mathematical formulation of the problem in Section~\ref{sec:optimizationmodel} we will use this alternative way to formulate conflict sets.
 

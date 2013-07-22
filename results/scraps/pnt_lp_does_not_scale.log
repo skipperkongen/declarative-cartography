@@ -964,13 +964,3 @@
 21/07/2013 23:40:11.799183 [scalapnt_fractal_64000_cellbound_lp] resolved_conflicts 0
 21/07/2013 23:40:11.800425 [scalapnt_fractal_64000_cellbound_lp] finalized_level 0
 21/07/2013 23:40:12.103953 [scalapnt_fractal_64000_cellbound_lp] COMMIT
-21/07/2013 23:40:12.104450 [scalapnt_fractal_128000_cellbound_heuristic] BEGIN_TRANSACTION
-21/07/2013 23:40:20.639399 [scalapnt_fractal_128000_cellbound_heuristic] initialized
-21/07/2013 23:40:20.639796 [scalapnt_fractal_128000_cellbound_heuristic] solver "heuristic"
-21/07/2013 23:40:20.640127 [scalapnt_fractal_128000_cellbound_heuristic] constraints "cellbound(16,)"
-21/07/2013 23:40:20.770250 [scalapnt_fractal_128000_cellbound_heuristic] inputstats {'geometry_types': ['POINT'], 'input': '(select * from pnt_30m_synthetic where x_order <= 128000) t', 'total_rank': 64050.351563373581, 'total_recs': 128000L}
-21/07/2013 23:40:20.773534 [scalapnt_fractal_128000_cellbound_heuristic] initialized_level 9
-21/07/2013 23:42:13.804218 [scalapnt_fractal_128000_cellbound_heuristic] found_conflicts 9
-21/07/2013 23:42:21.926079 [scalapnt_fractal_128000_cellbound_heuristic] resolved_conflicts 9
-21/07/2013 23:42:21.927729 [scalapnt_fractal_128000_cellbound_heuristic] finalized_level 9
-21/07/2013 23:42:21.930761 [scalapnt_fractal_128000_cellbound_heuristic] initialized_level 8

@@ -2,7 +2,7 @@
 \section{Experimental Results}
 \label{sec:experimental}
 
-\marcos{What are the goals of the experiments? Certainly related to performance breakdown, quality, scalability, showing feasibility of very large datasets. The goals should motivate and reflect Sections~\ref{sec:exp:points} to~\ref{sec:exp:large} below.}
+\marcos{What are the goals of the experiments? Certainly related to performance breakdown, quality and scalability. The goals should motivate and reflect Sections~\ref{sec:exp:points} to~\ref{sec:exp:complex:shapes} below.}
 \marcos{Show three/four main sections and plots, explain all of them, justify effects observed.}
 \martin{Compare experimental results with theory e.g. expected approximation guarantee, number of constraints, number of records per constraint etc.}
 
@@ -52,26 +52,28 @@ PostgreSQL always uses a single core to compute a transaction. Because the gener
 
 In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. After a quick overview of the results, we then discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (visibility / proximity / combined), we show only representative results for brevity. Results for the combined visibility and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below. 
 
+An overview of running times and solution qualities for the point datasets are shown in Table~\ref{tab:points:overview}. In Section~\ref{sec:algorithms:sga} we wrote that SGA is optimal for disjoint conflict sets. This is confirmed by the entries for visibility + SGA in the table. For the point datasets we used for testing, the LPGA algorithm is also optimal or within $3\%$ of the optimum when combined with the visibility constraint. Recall that the approximation guarantee of LPGA is $f$, see Section~\ref{sec:algorithms:lpga}.
 
 \begin{table}[htdp]
-\caption{Results for CVL on point datasets}
+\caption{Results for CVL on point datasets group by constraint}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 \textbf{Dataset} & \textbf{Constraint} & \textbf{Solver} & \textbf{Time} & \textbf{Opt. ratio}\\ 
 \hline
-Airports (7K)  & Proximity  & SGA& 1000 s & 1.0 \\
-Airports (7K)  & Proximity & LPGA & 1000 s & 1.0 \\
-Tourism (500K) & Proximity & SGA & 1000 s & 1.0 \\
-Tourism (500K) & Proximity & LPGA & 1000 s & 1.0 \\
-Airports (7K) & Visibility & SGA & 1000 s & 1.0 \\
-Airports (7K) & Visibility & LPGA & 1000 s & 1.0 \\
-Tourism (500K) & Visibility & SGA & 1000 s & 1.0 \\
-Tourism (500K) & Visibility & LPGA & 1000 s & 1.0 \\
+Airports (7K) & Visibility & SGA & 7s & 1.0 \\
+Airports (7K) & Visibility & LPGA & 7s & 1.03 \\
+Tourism (500K) & Visibility & SGA & 6m 9s s & 1.0 \\
+Tourism (500K) & Visibility & LPGA & 13m 35s & 1.0 \\
+\hline
+Airports (7K)  & Proximity  & SGA & 3s & 1.13 \\
+Airports (7K)  & Proximity & LPGA & 7s s & 1.14 \\
+Tourism (500K) & Proximity & SGA & 7m 17s & 1.18 \\
+Tourism (500K) & Proximity & LPGA & 2h 18m 57s & 1.21 \\
 \hline
 \end{tabular}
 \end{center}
-\label{tab:results:overview}
+\label{tab:points:overview}
 \end{table}%
 
 \begin{figure*}[tb]
@@ -141,20 +143,21 @@ The combination of LPGA + Proximity + Points does not scale. We have excluded th
 \label{sec:exp:complex:shapes}
 
 \begin{table}[htdp]
-\caption{Results for CVL on complex datasets}
+\caption{Results for CVL on complex datasets grouped by constraint}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 \textbf{Dataset} & \textbf{Constraint} & \textbf{Solver} & \textbf{Time} & \textbf{Opt. ratio}\\ 
 \hline
-Rivers (4K)  & Proximity  & SGA& 1000 s & 1.0 \\
-Rivers (4K)  & Proximity & LPGA & 1000 s & 1.0 \\
-Zones (30K) & Proximity & SGA & --- & --- \\
+Rivers (4K) & Visibility & SGA & 1h 32m & 1.36 \\
+Rivers (4K) & Visibility & LPGA & 1h 33m & 1.0 \\
+Zones (30K) & Visibility & SGA & 13m 38s & 1.22 \\
+Zones (30K) & Visibility & LPGA & 32m 15s & 1.17 \\
+\hline
+Rivers (4K)  & Proximity  & SGA& 1h 11m s & 1.56 \\
+Rivers (4K)  & Proximity & LPGA & 1h 31m & 1.12 \\
+Zones (30K) & Proximity & SGA & 4h 28m & 1.77 \\
 Zones (30K) & Proximity & LPGA & --- & --- \\
-Rivers (4K) & Visibility & SGA & 1000 s & 1.0 \\
-Rivers (4K) & Visibility & LPGA & 1000 s & 1.0 \\
-Zones (30K) & Visibility & SGA & 1000 s & 1.0 \\
-Zones (30K) & Visibility & LPGA & 1000 s & 1.0 \\
 \hline
 \end{tabular}
 \end{center}
@@ -169,9 +172,4 @@ Zones (30K) & Visibility & LPGA & 1000 s & 1.0 \\
 \marcos{Show scalability plot for polygons.}
 
 The combination of Proximity + Complex does not scale. We have excluded these from the test.
-
-\subsection{Large-Scale Test}
-\label{sec:exp:large}
-
-\marcos{Show resuls with the large-scale dataset with 30M points.}
 

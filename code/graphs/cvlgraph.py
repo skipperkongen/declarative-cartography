@@ -19,52 +19,18 @@ from datetime import timedelta
 __author__ = 'kostas'
 
 
-class QualAccum(object):
+class Scalability(object):
 
-    def __init__(self, trace):
-        self.trace = trace
+    def __init__(self, traces, table_filter=None):
+        if table_filter:
+            self.traces = filter(lambda x: x.input_table == table_filter, traces)
+            print "using filter: {0:s}".format(table_filter)
+        else:
+            self.traces = traces
+            print "no filter"
 
     def write_out(self):
-        num_levels = len(self.trace.levels)
-
-        current_rank = self.trace.inputstats['total_rank']
-        x = []
-        opt = []
-        actual = []
-        for level in self.trace.levels:
-            x.append(level['zoom'])
-            opt.append(current_rank - level['levelstats']['lp_bound'])
-            actual.append(level['levelstats']['rank_remaining'])
-            current_rank = level['levelstats']['rank_remaining']
-
-        plt.plot(x, opt, label='Lower bound')
-        plt.plot(x, actual, label='Solution')
-        #plt.xticks(np.arange(len(zoom_levels)) + (width/2),
-        #           [int(zoom) for zoom in zoom_levels])
-        plt.xlabel('Zoom')
-        plt.ylabel('Weight remaining')
-        if len(self.trace.constraints) == 30:
-            constr = 'AB'
-        elif self.trace.constraints.startswith('cell'):
-            constr = 'A'
-        else:
-            constr = 'B'
-        plt.title('{0:s}: {1:s} + {2:s}'.format(
-            self.trace.input_table,
-            self.trace.solver,
-            constr))
-        plt.legend(loc='upper left',
-                   prop=font_manager.FontProperties(size=10))
-        #plt.gca().yaxis.set_major_formatter(FuncFormatter(billions))
-
-        filename = os.path.join(output_dir, "prelim_qual_{0:s}_{1:s}_{2:s}.png".format(
-            #re.sub(r'[\[\]]', '', trace.name)))
-            self.trace.input_table,
-            self.trace.solver,
-            constr))
-        print "Writing figure to {0:s}".format(filename)
-        plt.savefig(filename)
-        plt.clf()
+        # traces group by (table, constraint, solver)
 
 
 class Stack(object):
@@ -158,6 +124,8 @@ if __name__ == '__main__':
     parser = OptionParser(usage=usage)
     parser.add_option("-g", "--graph", default="print",
                       help="Type of graph to produce: stack(default), scalability")
+    parser.add_option("-t", "--table", default=None,
+                      help="Only do graph for this table")
 
     (options, args) = parser.parse_args()
     if len(args) == 0:
@@ -189,16 +157,14 @@ if __name__ == '__main__':
             print trace.name, \
                 trace.duration
 
-
     elif options.graph == 'stack':
         for trace in tr.get_traces():
             chart = Stack(trace)
             chart.write_out()
 
-    elif options.graph == 'qualaccum':
-        for trace in tr.get_traces():
-            chart = QualAccum(trace)
-            chart.write_out()
+    elif options.graph == 'scala':
+        chart = Scalability(tr.get_traces(), options.table)
+        chart.write_out()
     else:
         print 'unknown chart type'
 

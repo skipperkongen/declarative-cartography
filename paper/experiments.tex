@@ -59,6 +59,8 @@ The numbers we present in Table~\ref{tab:points:overview} and Table~\ref{} are g
 
 In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. After a quick overview of the results, we then discuss performance and quality breakdowns for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (visibility / proximity / combined), we show only representative results for brevity. Results for the combined visibility and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below. 
 
+\martin{We should explain that we compare with the LP lower bound, so opt. ratio is an upper bound on the real opt. Explain that opt. ratio in the table is the value of the objective function for the algorithm in question divided by the LP-solution (lower bound). Also, we should emphasize that we compute the opt. ratio per zoom level and take the average - this is not the opt. ratio for the multi-scale filtering problem.}
+
 An overview of running times and solution qualities for the point datasets are shown in Table~\ref{tab:points:overview}. In Section~\ref{sec:algorithms:sga} we wrote that SGA is optimal for disjoint conflict sets. This is confirmed by the entries for visibility + SGA in the table. For the point datasets we used for testing, the LPGA algorithm is also optimal or within $3\%$ of the optimum when combined with the visibility constraint. Recall that the approximation guarantee of LPGA is $f$, see Section~\ref{sec:algorithms:lpga}.
 
 \begin{table}[htdp]

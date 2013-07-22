@@ -72,13 +72,13 @@ An overview of running times and solution qualities for the point datasets are s
 \hline
 Airports (7K) & Visibility & SGA & 7s & 1.0 \\
 Airports (7K) & Visibility & LPGA & 7s & 1.03 \\
-Tourism (500K) & Visibility & SGA & 6m 9s s & 1.0 \\
+Tourism (500K) & Visibility & SGA & 6m 9s & 1.0 \\
 Tourism (500K) & Visibility & LPGA & 13m 35s & 1.0 \\
 \hline
 Airports (7K)  & Proximity  & SGA & 3s & 1.18 \\
 Airports (7K)  & Proximity & LPGA & 7s s & 1.22 \\
 Tourism (500K) & Proximity & SGA & 7m 17s & 1.21 \\
-Tourism (500K) & Proximity & LPGA & 2h 18m 57s & 1.24 \\
+Tourism (500K) & Proximity & LPGA & 2h 18m & 1.24 \\
 \hline
 \end{tabular}
 \end{center}
@@ -121,7 +121,7 @@ Tourism (500K) & Proximity & LPGA & 2h 18m 57s & 1.24 \\
   \vspace{-2ex}
 \end{figure*}
 
-\minisec{Performance and Quality}
+\minisec{Performance breakdown}
  Figure~\ref{fig:performance:airport} shows the performance breakdown per zoom level of executing CVL with the Openflight airports dataset. Note the different y-scales in the graphs. In Parts~(a)-(c), we observe that the time needed to find conflicts is roughly stable until eight zoom levels, then slightly increases, and finally drops sharply for lower zoom levels. The constraints used generate few conflicts at higher zoom levels, given the relatively low density of the airport distribution in space. Nevertheless, even though almost no conflicts are generated, the dataset is still processed, resulting in roughly equal time for finding conflicts and negligible time for solving conflicts per zoom level. 
  
 As zoom levels decrease, more conflicts naturally arise, leading initially to increased conflict finding time, as well as conflict solving time. However, as conflicts are solved, records are deleted from the dataset taken as input for the next zoom level. This procedure causes conflict finding time (and eventually total time) to drop significantly for low zoom levels. For SGA under the proximity constraint (Part (a)), total time at zoom level zero is over two times shorter than the initial runtime at zoom level 17; for LPGA under the visibility constraint (Part (b)), the difference in total time reaches over an order of magnitude.  
@@ -158,6 +158,8 @@ The combination of LPGA + Proximity + Points does not scale. We have excluded th
 \subsection{Complex Shape Data}
 \label{sec:exp:complex:shapes}
 
+In Table~\cite{tab:complex:overview} we summarize running times and average optimality ratios for complex shape data. We immediately observe that the average optimality ratio for the visibility constraint is no longer $1.0$ for the SGA solver. This is because the conflict sets are no longer disjoint.
+
 \begin{table}[htdp]
 \caption{Results for CVL on complex datasets grouped by constraint}
 \begin{center}
@@ -177,11 +179,11 @@ Zones (30K) & Proximity & LPGA & --- & --- \\
 \hline
 \end{tabular}
 \end{center}
-\label{tab:results:overview}
+\label{tab:complex:overview}
 \end{table}%
 
 
-\minisec{Performance and Quality}
+\minisec{Performance breakdown}
 
 In Figure~\ref{fig:performance:complex} we have selected three performance breakdowns for the two complex datasets. What we see is that, for complex shape datasets, the running time is mostly dominated by the time spent finding conflicts. Finding conflicts operates over the geometric properties of the data, and requires time proportional to the number of points that make up each complex shape. When solving conflicts, the running time is independent of geometric complexity. This causes the running time to be dominated by finding conflicts for complex shape datasets.
 

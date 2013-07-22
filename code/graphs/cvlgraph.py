@@ -47,7 +47,7 @@ class Scalability(object):
         plt.xlabel('Data size')
         plt.ylabel('Runtime (seconds)')
         filename = os.path.join(output_dir, "scal_{0:s}.png".format(self.ds_name))
-        plt.subplots_adjust(bottom=0.15)
+        plt.tight_layout()
         plt.savefig(filename)
         plt.clf()
         print "Writing figure to {0:s}".format(filename)

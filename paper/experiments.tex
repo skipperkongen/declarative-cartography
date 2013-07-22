@@ -89,7 +89,7 @@ In this section, we present experimental results with point datasets, namely the
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
   \vspace{-0ex}
-  \caption{Performance breakdown by zoom level, Airport dataset (7K points). Black line indicates number of conflicts} \label{fig:performance:airport}
+  \caption{Performance breakdown by zoom level, Airport dataset (7K points). The black line indicates number of conflicts} \label{fig:performance:airport}
   \vspace{-2ex}
 \end{figure*}
 
@@ -107,7 +107,7 @@ In this section, we present experimental results with point datasets, namely the
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
   \vspace{-0ex}
-  \caption{Performance breakdown by zoom level, Tourism dataset (500K points). Black line indicates number of conflicts} \label{fig:performance:tourism}
+  \caption{Performance breakdown by zoom level, Tourism dataset (500K points). The black line indicates number of conflicts} \label{fig:performance:tourism}
   \vspace{-2ex}
 \end{figure*}
 
@@ -151,19 +151,25 @@ Parts (a) and (b) compare performance of SGA and LPGA under the visibility const
 While SGA performs significantly better than LPGA, it does not do so at the cost of quality, at least for point datasets. As discussed in Section~\ref{sec:algorithms:sga}, SGA is optimal for the visibility constraint, since conflict sets are disjoint. For the proximity constraint, we observe that the solutions have comparable quality for the two algorithms, while the running time of LPGA is much larger than SGA, and more so for the larger dataset.
 
 \minisec{Scalability}
-We tested the scalability of CVL by varying the size of the synthetic dataset of 30 million points, starting with one thousand records, and tested by iteratively doubling up until we reached roughly four million records. We used the sweep-line approach introduced in Section~\ref{sec:exp:setup} to increase the dataset size. We have plotted the running time of each solver/constraint combination for different dataset size in Figure~\ref{fig:scalability:points}.
+We tested the scalability of CVL by varying the size of the synthetic dataset of 30 million points, starting with one thousand records, and tested by iteratively doubling up until we reached roughly four million records. We used the sweep-line approach introduced in Section~\ref{sec:exp:setup} to increase the dataset size. We have plotted the running time of each solver/constraint combination for different dataset size in Figure~\ref{fig:scalability}.
 
 In general, we found that SGA scales a lot better than LPGA, which confirms the observation we made in the performance breakdown above. After reaching four million points the running time became prohibitively large (more than 3 hours) even for SGA. Up to this point the algorithm scales more or less linearly. The running time of the solvers depend on the number of conflicts, as well as the structure of the conflicts. It is easy to see that after the first zoom-level, the number of conflicts is bounded by a constant that is proportional either on the number of records (for the proximity constraint) or the number of cells (for the visibility constraint). For the proximity constraint each point can be in at most six conflicts. For the visibility constraint, each cell can contain at most $64$ records for $K=16$, after the first zoom-level is processed.
 
 There is a curious fall in running time for SGA with the proximity constraint. We did not gather sufficient data during the scalability experiment to explain this phenomenon.
 
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=1.0\linewidth]{./figs/scal_pnt_30m_synthetic.png}
-\caption{Scalability for point datasets with different algorithms and constraints (visibility=A, proximity=B). SGA has better scalability.}
-\label{fig:scalability:points}
-\end{center}
-\end{figure}
+\begin{figure*}[tb]
+  \begin{minipage}{0.49\linewidth}
+    \centerline{\includegraphics[width=0.9\linewidth]{./figs/scal_pnt_30m_synthetic.png}}
+    \centerline{(a) Scalability for point data}
+  \end{minipage} \hfill
+  \begin{minipage}{0.49\linewidth}
+    \centerline{\includegraphics[width=0.9\linewidth]{./figs/scal_lin_30k_uswaterway.png}}
+    \centerline{(b) Scalability for complex shape data}
+  \end{minipage} \hfill
+  \vspace{-0ex}
+  \caption{Scalability of CVL for point datasets and complex shape datasets. Constraints are marked as \emph{Visibility}: A, \emph{Proximity}: B} \label{fig:scalability}
+  \vspace{-2ex}
+\end{figure*}
 
 \subsection{Complex Shape Data}
 \label{sec:exp:complex:shapes}
@@ -224,15 +230,6 @@ The LPGA solver is the exception when there are a lot of conflicts, were it cons
 
 \minisec{Scalability}
 
-In Figure~\ref{fig:scalability:complex} we show scalability results for complex shape data. Here the scalability depends more on the choice of constraint than the choice of solver. The proximity constraint scales much worse than the visibility constraint. This is because the running time of the distance test used in the proximity constraint is proportional to the product of point counts in the two geometric shapes used in each comparison. Evaluating the visibility depends on the number of tiles that each shape intersects, which depends more on the length or area of each shape. 
+In Figure~\ref{fig:scalability} we show scalability results for complex shape data. Here the scalability depends more on the choice of constraint than the choice of solver. The proximity constraint scales much worse than the visibility constraint. This is because the running time of the distance test used in the proximity constraint is proportional to the product of point counts in the two geometric shapes used in each comparison. Evaluating the visibility depends on the number of tiles that each shape intersects, which depends more on the length or area of each shape. 
 
 While constraints matter more to scalability for complex shapes, the SGA solver scales better than LPGA, which was also the case for our point data.
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=1.0\linewidth]{./figs/scal_lin_30k_uswaterway.png}
-\caption{Scalability for US waterway datasets using different algorithms and constraints (visibility=A, proximity=B). SGA has better scalability.}
-\label{fig:scalability:complex}
-\end{center}
-\end{figure}
-

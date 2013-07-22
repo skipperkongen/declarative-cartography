@@ -4,7 +4,7 @@
 
 In this section, we formally define the multi-scale filtering problem as an optimization problem. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record. As before, the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). The overall task of the multi-scale filtering problem is to filter out records on each zoom level so that the remaining records fulfill a number of map constraints. A primary constraint is the \emph{zoom-consistency} constraint~\cite{sarma2012fusiontables}: when a record is filtered out at a given scale, it should also be filtered out at all lower scales. 
 
-In addition to the zoom-consistency constraint there are a number of additional constraints (formulated as conflict sets) that are modeled using CVL. Let $C$ be the collection of conflict sets for all zoom levels; each conflict set $c \in C$ is associated with a given zoom level $z_c$. A conflict set $c \in C$ is a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at the corresponding zoom level. 
+In addition to the zoom-consistency constraint there are a number of additional constraints (formulated as conflict sets) that are modeled using CVL. Let $C$ be the collection of conflict sets for all zoom levels; each conflict set $c \in C$ is associated with a given zoom level $z_c$. A conflict set $c \in C$ is a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be filtered out at zoom level~$z_c$. 
 
 %\marcos{Is a constraint above equivalent to a CVL constraint or to a conflict set?}
 
@@ -15,7 +15,7 @@ In addition to the zoom-consistency constraint there are a number of additional 
 The multi-scale filtering problem can now be modeled as a 0-1 integer program. We have a 0-1 decision variable $x_{rz}$ for each record $r \in R$ and each zoom level $z \in \{1,\ldots, \mathcal{Z}\}$; this decision variable is 1 if record $r$ is \emph{filtered out} at zoom level $z$, and 0 otherwise. The mathematical optimization problem is:
 \begin{align}
   \label{eq:objective}
-  \min ~\sum_{r \in R} \sum_{z=1}^Z &w_r x_{rz} \\
+  \min ~\sum_{r \in R} \sum_{z=1}^\mathcal{Z} &w_r x_{rz} \\
   \label{eq:zoom-consistency}
   \mbox{s.t.}~~~~~~~x_{rz} &\geq x_{rz'}, ~~~~r \in R, ~~1 \leq z < z' \leq \mathcal{Z} \\
   \label{eq:general-constraints}
@@ -43,3 +43,4 @@ This is the \emph{set multicover problem} --- a generalization of the well-known
 In the next section we discuss algorithmic approaches for solving the single-scale problem. Note that although we solve the multi-scale problem as a series of single-scale problems, in the experimental evaluation of our approach also includes a discussion on the objective value (\ref{eq:objective}) of the \emph{multi-scale} problem. 
 
 \marcos{Is the above really true of our experiments?}
+\martin{That was the plan. Kostas, I hope that this is still true?}

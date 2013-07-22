@@ -147,7 +147,7 @@ We found that SGA scales a lot better than LPGA, which confirms the conclusion w
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.7\linewidth]{./figs/scal_pnt_30m_synthetic.png}
+\includegraphics[width=1.0\linewidth]{./figs/scal_pnt_30m_synthetic.png}
 \caption{Scalability for point datasets with different algorithms and constraints (visibility=A, proximity=B). SGA has better scalability.}
 \label{fig:scalability:points}
 \end{center}
@@ -183,29 +183,40 @@ Zones (30K) & Proximity & LPGA & --- & --- \\
 
 \minisec{Performance and Quality}
 
+In Figure~\ref{fig:performance:complex} we have selected three performance breakdowns for the two complex datasets. What we see is that, for complex shape datasets, the running time is mostly dominated by the time spent finding conflicts. Finding conflicts operates over the geometric properties of the data, and requires time proportional to the number of points that make up each complex shape. When solving conflicts, the running time is independent of geometric complexity. This causes the running time to be dominated by finding conflicts for complex shape datasets.
+
+The LPGA solver is the exception when there are a lot of conflicts, were it consumes a lot of time. A similar effect was seen for points, indicating that the LPGA solver does not scale well, which is confirmed in our scalability experiments.
+
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_lp_B.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pol_30k_dai_lp_A.png}}
     \centerline{(a) SGA + Proximity}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_lp_B.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pol_30k_dai_heuristic_A.png}}
     \centerline{(b) LPGA + Visibility}
   \end{minipage} \hfill
   \begin{minipage}{0.329\linewidth}
-    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_pnt_500k_tourism_lp_B.png}}
+    \centerline{\includegraphics[width=1.0\linewidth]{./figs/prelim_lin_30k_uswaterway_lp_B.png}}
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
   \vspace{-0ex}
-  \caption{Performance breakdown by zoom level. Black line indicates number of conflicts} \label{fig:performance:complex}
+  \caption{Performance breakdown by zoom level for complex shapes. Running time is dominated by finding conflicts. Black line indicates number of conflicts} \label{fig:performance:complex}
   \vspace{-2ex}
 \end{figure*}
 
 
-
-
 \minisec{Scalability}
-\marcos{Show scalability plot for polygons.}
 
-The combination of Proximity + Complex does not scale. We have excluded these from the test.
+In Figure~\ref{fig:scalability:complex} we show scalability results for complex shape data. Here the scalability depends more on the choice of constraint than the choice of solver. The proximity constraint scales much worse than the visibility constraint. This is because the running time of the distance test used in the proximity constraint is proportional to the product of point counts in the two geometric shapes used in each comparison. Evaluating the visibility depends on the number of tiles that each shape intersects, which depends more on the length or area of each shape. 
+
+While constraints matter more to scalability for complex shapes, the SGA solver scales better than LPGA, which was also the case for our point data.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=1.0\linewidth]{./figs/scal_lin_30k_uswaterway.png}
+\caption{Scalability for US waterway datasets using different algorithms and constraints (visibility=A, proximity=B). SGA has better scalability.}
+\label{fig:scalability:complex}
+\end{center}
+\end{figure}
 

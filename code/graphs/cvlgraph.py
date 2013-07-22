@@ -133,6 +133,26 @@ class Stack(object):
         plt.clf()
 
 
+class OptimalityRatio(object):
+
+    def __init__(self, trace):
+        self.solution = 0
+        self.lowerbound = 0
+        for level in trace.levels:
+            zoom = level['zoom'] + 1
+            self.solution += (zoom * level['levelstats']['rank_lost'])
+            self.lowerbound += (zoom * level['levelstats']['lp_bound'])
+
+    def get_lowerbound(self):
+        return self.lowerbound
+
+    def get_solution(self):
+        return self.solution
+
+    def get_ratio(self):
+        return self.solution / float(self.lowerbound)
+
+
 if __name__ == '__main__':
     usage = "usage: %prog [options] tracefile"
     parser = OptionParser(usage=usage)
@@ -153,15 +173,16 @@ if __name__ == '__main__':
 
     if options.graph == 'print':
         for trace in tr.get_traces():
-            solution = sum([level['levelstats']['rank_lost'] for level in trace.levels])
-            optimum = sum([level['levelstats']['lp_bound'] for level in trace.levels])
-            analysis_time = reduce(lambda x,y: x+y,[level['timing']['levelstats'] for level in trace.levels], timedelta(0))
+            optratio = OptimalityRatio(trace)
+            analysis_time = reduce(lambda x, y: x+y,
+                                   [level['timing']['levelstats'] for level in trace.levels],
+                                   timedelta(0))
 
             print trace.name, \
                 ' ' * (53 - len(trace.name)), \
                 trace.duration, \
                 ' ' * 4, (trace.duration - analysis_time), \
-                ' ' * 4, 'opt ratio:', solution / optimum if optimum > 0 else 'unknown'
+                ' ' * 4, 'opt ratio:', optratio.get_ratio() if optratio.lowerbound > 0 else 'unknown'
 
     elif options.graph == 'print_nostat':
         for trace in tr.get_traces():

@@ -2,11 +2,25 @@
 \section{Experimental Results}
 \label{sec:experimental}
 
-\marcos{What are the goals of the experiments? Certainly related to performance breakdown, quality and scalability. The goals should motivate and reflect Sections~\ref{sec:exp:points} to~\ref{sec:exp:complex:shapes} below.}
-\marcos{Show three/four main sections and plots, explain all of them, justify effects observed.}
 \martin{Compare experimental results with theory e.g. expected approximation guarantee, number of constraints, number of records per constraint etc.}
 
+In this section, we present experimental results with our implementation of CVL. Our experiments have the following goals:
+
+\begin{itemize}
+
+\item Evaluate the performance and solution quality of CVL generalizations with a variety of real-world datasets, including point data as well as complex shapes such as polygons and line strings. 
+
+\item Analyze the performance and solution quality of CVL generalizations produced under the proximity and visibility constraints presented in Section~\ref{sec:cvl:language} by both the SGA as well as the LPGA solvers of Section~\ref{sec:algorithms}.
+
+\item Observe how the performance of CVL with different constraints and solvers scales with the number of objects in the geospatial dataset.
+
+\end{itemize}
+
+We start by presenting our experimental setup (Section~\ref{sec:exp:setup}), and then show results for both point data (Section~\ref{sec:exp:points}) and complex shapes (Section~\ref{sec:exp:complex:shapes}). Each result section discusses performance, quality, and scalability. 
+
+
 \subsection{Experimental Setup}
+\label{sec:exp:setup}
 
 \minisec{Datasets}
 We have tested CVL using four real-world datasets with the biggest one containing 23 million points and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. 

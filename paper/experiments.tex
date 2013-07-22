@@ -45,7 +45,9 @@ The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built again
 
 We ran each test three times on this installation, taking averages. We observed that measurements were very stable, with negligible difference in compute time between runs.
 
-PostgreSQL always uses a single core to compute a transaction. Because the generalization process in CVL runs as a single long transaction, each job in CVL runs on a single core. A future direction would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a MapReduce environment.	
+PostgreSQL always uses a single core to compute a transaction. Because the generalization process in CVL runs as a single long transaction, each job in CVL runs on a single core. A future direction would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a MapReduce environment.
+
+In the tables below the optimality ratio has been computed as described in Section~\ref{sec:filtering}. Ideally we would be comparing with a lower bound or optimal solution to the multi-scale filtering problem. We have however not developed a method for computing this value. The best we can do is to let records filtered out on a zoom-level $z$ contribute to the objective function on all lower zoom-levels.
 
 \subsection{Point Data}
 \label{sec:exp:points}

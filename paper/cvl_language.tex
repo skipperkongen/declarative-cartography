@@ -99,6 +99,7 @@ RESOLVE cid IF DELETE (
 \end{center}
 \end{figure}
 
+\martin{Why do we refer to Figure 3 below? Should it be  "e.g." rather than "i.e."? Also note a reference to Figure 3 and the constant 10 in the next paragraph; this is rather confusing since the example in Figure 3 involves constant 16 and the visibility constraint...}
 Using this syntax, the definition of the proximity constraint is given in Figure~\ref{fig:proximity:definition}. The body of the constraint is a distance self join using a distance function \texttt{ST\_Distance} provided by a spatial extension to SQL. This join finds all pairs of records that are too close, i.e., less than $10$ pixels apart in running the example from Figure~\ref{fig:cvl:example:airports}. For each conflict, the select statement outputs two tuples and exactly once for each conflict. The resolve-if-delete clause is simply the constant $1$, because that is how many records must be deleted to resolve a proximity conflict.
 
 \begin{figure}[htbp]
@@ -128,18 +129,19 @@ RESOLVE cid IF DELETE (
   1
 )
 \end{lstlisting}
-\caption{Definition of the proximity constraint}
+\caption{Definition of the proximity constraint.}
 \label{fig:proximity:definition}
 \end{center}
 \end{figure}
 
-In Figure~\ref{fig:proximity:definition} you will notice some names enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level, i.e., the records that have not been filtered out at at higher zoom-level. You will also notice a call to a function \texttt{CVL\_Resolution(\{z\}, 256)}. This is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is a constraint parameter, and would be bound to $10$ if running the example from Figure~\ref{fig:cvl:example:airports}.
+In Figure~\ref{fig:proximity:definition} some names are enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level, i.e., the records that have not been filtered out at a higher zoom-level. The function \texttt{CVL\_Resolution(\{z\}, 256)} is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is a constraint parameter, and would be bound to $10$ if running the example from Figure~\ref{fig:cvl:example:airports}.
 
-In the CVL example in Figure~\ref{fig:cvl:example:airports}, we referenced the as yet undefined visibility constraint. In Figure~\ref{fig:visibility:definition} we show how this constraint may be defined using CVL. The CVL definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses. 
+%In the CVL example in Figure~\ref{fig:cvl:example:airports}, we referenced the as yet undefined visibility constraint. 
+Figure~\ref{fig:visibility:definition} shows how the visibility constraint may be defined using CVL. The CVL definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses. 
 %which will be covered again in Section~\ref{sec:implementation:extensions}. 
 The purpose of these clauses is to enable arbitrary SQL statements to be run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table, using the \texttt{tile\_id} column as the conflict ID.
 
-The user does not need to know how the conflicts are handled, because all conflicts are automatically resolved by the CVL framework using one of the algorithms introduced in Section~\ref{sec:algorithms}.
+The user does not need to know how the conflicts are handled, because all conflicts are automatically resolved by the CVL framework using one of the algorithms presented in Section~\ref{sec:algorithms}.
 
 %In this example, calls are made to other CVL runtime functions, namely \texttt{CVL\_WebMercatorCells} and \texttt{CVL\_PointHash}. These functions returns a set of points corresponding to the centroids of intersected tiles (given a geometry) and a unique identifier for points, respectively. The unique identifier for points is based on the well-known GeoHash algorithm.
 
@@ -184,7 +186,7 @@ WITH TEARDOWN (
   DROP TABLE busted_tiles;
 )
 \end{lstlisting}
-\caption{Definition of visibility constraint}
+\caption{Definition of the visibility constraint.}
 \label{fig:visibility:definition}
 \end{center}
 \end{figure}

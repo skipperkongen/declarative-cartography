@@ -60,6 +60,8 @@ Creating good maps is the challenge of map generalization. An important generali
 Unfortunately, with current tools, users must explicitly specify which objects to show at each zoom level of their map, while keeping their application constraints implicit. This paper introduces a novel declarative approach to map generalization based on a language called CVL, the Cartographic Visualization Language. In contrast to current tools, users declare application constraints and object importance in CVL, while leaving the selection of objects implicit. In order to compute an explicit selection of objects, CVL scripts are translated into an algorithmic search task. We show how this translation allows for reuse of existing algorithms from the optimization literature, while at the same time supporting fully pluggable, user-defined constraints and object weight functions. In addition, we show how to evaluate CVL entirely inside a relational database. The latter allows users to seamlessly integrate storage of geospatial data with its transformation into map visualizations. In a set of experiments with a variety of real-world data sets, we find that CVL produces generalizations in reasonable time for off-line processing and with quality close to optimal. 
 \end{abstract}
 
+\martin{The word "legibility" now used in the abstract but not in the introduction...}
+
 \input{introduction}
 
 \input{background}
@@ -81,6 +83,8 @@ Unfortunately, with current tools, users must explicitly specify which objects t
 \input{acknowledgements}
 
 %\input{conclusion}
+
+\martin{I made a pass through the bibliography - checked consistency regarding capital letters etc. Please could you also do the same. Thanks.}
 
 % The following two commands are all you need in the
 % initial runs of your .tex file to

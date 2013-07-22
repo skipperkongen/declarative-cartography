@@ -110,7 +110,7 @@ class Stack(object):
 
         ax2.plot(range(len(zoom_levels)), [level['levelstats']['num_c'] for level in trace.levels], 'o-', linewidth=2,
                  c="black")
-        ax2.set_ylabel('conflicts')
+        #ax2.set_ylabel('conflicts')
 
         if trace.input_table == 'pnt_7k_airports':
             leg = ax1.legend(loc='upper left', fancybox=True)
@@ -127,7 +127,8 @@ class Stack(object):
             self.trace.solver,
             constr))
         print "Writing figure to {0:s}".format(filename)
-        plt.subplots_adjust(wspace=1.4)
+        #plt.subplots_adjust(left=-2.4)
+        plt.tight_layout()
         plt.savefig(filename)
         plt.clf()
 

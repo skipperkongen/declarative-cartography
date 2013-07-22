@@ -29,7 +29,7 @@ SUBJECT TO
    {constraint} {float parameters} [AND
    ...]]
 \end{lstlisting}
-\caption{Syntax of generalize statement}
+\caption{Syntax of generalize statement.}
 \label{fig:generalize:syntax}
 \end{center}
 \end{figure}
@@ -132,7 +132,7 @@ RESOLVE cid IF DELETE (
 \end{center}
 \end{figure}
 
-In Figure~\ref{fig:proximity:definition} some names are enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level, i.e., the records that have not been filtered out at a higher zoom-level. The function \texttt{CVL\_Resolution(\{z\}, 256)} is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is a constraint parameter, and would be bound to $10$ if running the example from Figure~\ref{fig:cvl:example:airports}.
+In Figure~\ref{fig:proximity:definition} some names are enclosed in curly braces like \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level, i.e., the records that have not been filtered out at a higher zoom-level. The function \texttt{CVL\_Resolution(\{z\}, 256)} is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is the constraint parameter, e.g. $10$ pixels.
 
 \vspace{5em}
 

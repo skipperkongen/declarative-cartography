@@ -46,6 +46,8 @@ Using a.o.t. a bit-vector to represent already selected entries
 
 ## Postgres bit stuff
 
+Use bit-vector to keep tally of records with minimum zoom-level defined. This is used to compute a the highest (smaller numerical value) record that should be considered for intersection test. 
+
 ```sql
 CREATE TABLE test (a BIT(10));
 

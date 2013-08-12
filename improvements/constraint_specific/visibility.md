@@ -1,6 +1,27 @@
 # Visibility specific CVL algorithm
 
+The following algorithms compute solutions to the thinning problem with visibility-constraint for some *K*. All the algorithms respect the zoom-consistency constraint automatically, because we're only setting the minimum zoom-level for each record (they implicitely appear on all higher zoom-levels).
+
+# Analysis
+
+Observations about the possible rank of records on different zoom-levels.
+
+* Top-level (level 0) certainly contains the *K* highest-ranked records, and in fact only those.
+* Level 1 certainly contains the records with rank *K+1* to rank *2K*.
+* Level 1 may contain records with rank *2K + 1* though to rank *4K*
+* Level 1 will never contain records with rank lower than *4K*.
+* Level 2 will never contain records with rank *2K* or higher
+* ...
+
+Generalizations:
+
+* Zoom-level *z* only contains records from the *4^z* highest ranked records. This is a pretty useless observation for higher values of *z*, as the number grows large fast.
+* Zoom-level *z* cannot contain records that are among the *zK* highest ranked records, e.g. for zoom-level 0 among the zero highest ranked records, and for zoom-level 1 among the *K* highest ranked records. This is also a pretty useless observation, because this lower-bound rises very slowly.
+* If a bit-vector is used to record whether a record (ordered by rank decreasing) has been selected or not, we can do the following: The records selected for zoom-level *z*, must be among the *4^z* first unselected records in the bit-vector. Still pretty useless however.
+
 # Naïve solution
+
+## Python pseudo-code
 
 D = set of all records
 
@@ -36,7 +57,11 @@ def assign_zs(D, box, z):
     assign_zs(D, box3, z+1)
 ```
 
+While correct, it is (presumumed to be) inefficient because of the many repeated sorts and big repeated intersection tests.
+
 # Maybe better solution
+
+Key ideas: Only sort records once. Don't compute intersection over all records again and again, only records that could possibly be relevant in this round (i.e. not records that are guaranteed to have their minimum zoom-level set in a later round).
 
 Using a.o.t. a bit-vector to represent already selected entries
 
@@ -46,7 +71,7 @@ Using a.o.t. a bit-vector to represent already selected entries
 
 ## Postgres bit stuff
 
-Use bit-vector to keep tally of records with minimum zoom-level defined. This is used to compute a the highest (smaller numerical value) record that should be considered for intersection test. 
+Use bit-vector to keep tally of records with minimum zoom-level defined. This is used to compute a the highest (smaller numerical value) record that could have its zoom-level defined. 
 
 ```sql
 CREATE TABLE test (a BIT(10));
@@ -65,7 +90,7 @@ UPDATE test SET a = a | (B'1'::bit(10) >> 7);
 DROP TABLE test;
 ```
 
-## Visibility algorithm
+## Python pseudo-code
 
 D = set of all records
 V = bit-vector of selected records (in order of rank)

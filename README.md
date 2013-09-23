@@ -1,6 +1,6 @@
 # Declarative Cartography
 
-Making ideas happen index:
+Overview:
 
 * References: See wiki, sql wiki, paper and presentation
 * Action items: See issue tracker

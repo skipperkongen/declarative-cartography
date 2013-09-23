@@ -1,0 +1,11 @@
+
+GENERALIZE 
+  airports TO 
+  airports_thinned
+AT 
+  18 ZOOM LEVELS
+WEIGH BY
+  num_departures
+SUBJECT TO
+  visibility 16
+

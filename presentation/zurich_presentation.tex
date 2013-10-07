@@ -6,6 +6,27 @@
 \setbeamertemplate{footline}{\parbox[t][12pt][c]{12pt}{~\scriptsize\insertframenumber}}
 % \usepackage{beamerthemesplit} // Activate for custom appearance
 
+%%%%%%%%%%%%
+% MVS: Language definitions
+%
+\renewcommand{\ttdefault}{pcr}
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true
+}
+\lstdefinelanguage{cvl}{
+  morekeywords={generalize,to, with, other, at, zoom, levels, weigh, by, subject, and, create, constraint, as, not, exists, resolve, if, delete, select, from, where, in, order, over, setup, teardown,force,min,level,for,allornothing,join,on,setup,group,having,index,temporary,table,drop,partition,merge,partitions},
+  sensitive=false,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+}
+\lstset{
+  language=cvl
+}
+
+
+
 \title{Declarative Cartography}
 \subtitle{In-Database Map Generalization of Spatial Datasets}
 \author{\underline{Pimin Konstantin Kefaloukos}, Marcos Vaz Salles, Martin Zachariasen\\ \small{Computer Science Department, University of Copenhagen} (DIKU)}
@@ -34,6 +55,19 @@
 
 \frame
 {
+  \frametitle{Generalization 101}
+  Going from:
+  \begin{center}
+  \fbox{\includegraphics[scale=0.10]{figs/toomanyobjects.png}}
+  \end{center}
+  To:
+  \begin{center}
+  \fbox{\includegraphics[scale=0.10]{figs/toomanyobjects.png}}
+  \end{center}
+}
+
+\frame
+{
   \frametitle{Our approach}
   \begin{itemize}
   \item \textbf{Language}: Design and implement an easy to use \emph{programming language} for generalizing spatial data 
@@ -48,19 +82,34 @@
 
 \frame
 {
-  \frametitle{Relation to Reverse Data Management}
-
-  We implemented \emph{how-to} queries for spatial data:
+  \frametitle{Main idea}
   \begin{itemize}
-  \item \textbf{How-to queries}~\cite{reversedatamanagement}: Given an \emph{input database}; compute an \emph{output database}, subject to set of \emph{constraints} and minimizing/maximizing an \emph{objective function}
-  \item \textbf{Spatial example}: Given an \emph{input database of spatial objects}; compute an output database that generalizes the objects to $\mathcal{Z}$ zoom-levels, subject to \emph{spatial constraints} and while \emph{minimizing loss} of objects in map (with prioritization)
+  \item \textbf{Language}: Design and implement an easy to use \emph{programming language} for generalizing spatial data 
+  \item \textbf{Optimization}: Fit generalization problem to well-known \emph{optimization problem}, i.e. variant of Set Cover Problem~\cite{vazirani}
+  \item \textbf{Algorithms}: Reuse \emph{existing algorithms} for this problem
+  \item \textbf{Databases}: Reuse \emph{database technology} and \emph{move code to data} by implementing algorithms in a spatial database
   \end{itemize}
+  \begin{center}
+  \fbox{\includegraphics[scale=0.18]{figs/toomanyobjects.png}}
+  \end{center}
 }
+
+
+%\frame
+%{
+%  \frametitle{Relation to Reverse Data Management}
+
+%  We implemented \emph{how-to} queries for spatial data:
+%  \begin{itemize}
+%  \item \textbf{How-to queries}~\cite{reversedatamanagement}: Given an \emph{input database}; compute an \emph{output database}, subject to set of \emph{constraints} and minimizing/maximizing an \emph{objective function}
+%  \item \textbf{Spatial example}: Given an \emph{input database of spatial objects}; compute an output database that generalizes the objects to $\mathcal{Z}$ zoom-levels, subject to \emph{spatial constraints} and while \emph{minimizing loss} of objects in map (with prioritization)
+%  \end{itemize}
+%}
 
 \frame
 {
   \frametitle{Please note!}
-  When you see the word \emph{``delete''} in this presentation, please append the words \emph{``or aggregate (future work)''} in your mind. \\
+  Whenever you see the word \emph{``delete''} in this presentation, please append the words \emph{``or aggregate (future work)''} in your mind. \\
   making grammatical adjustments where appropriate.
   
   \begin{center}
@@ -74,11 +123,12 @@
 {
   \frametitle{Problem definition}
   \begin{itemize}
-  \item Spatial objects with \emph{unique ID}, \emph{weight} and \emph{geometry} (point, linestring, polygon etc)
+  \item Given set of spatial objects with \emph{unique ID}, \emph{weight} (models ``importance'' of object) and \emph{geometry} (point, polygon)
+  \item Set of zoom-levels $\lbrace 1, 2, \dots, \mathcal{Z} \rbrace$
   \item Compute minimum zoom-level for all objects:
   \begin{itemize}
-  \item Minimize weight of objects that are missing
-  \item Subject to spatial constraints (proximity, density, ...)
+  \item Objective: Minimize weight of missing objects
+  \item Subject to: Spatial constraints (proximity, density, ...)
   \end{itemize}
   \end{itemize}
   \begin{center}
@@ -91,13 +141,13 @@
   \frametitle{Constraints}
 
   \begin{itemize}
-  \item \textbf{Zoom-consistency} If object in missing from zoom-level, it is also missing from all lower zoom-levels~\cite{fusiontables}
+  \item \textbf{Zoom-consistency} Objects never disappear as we zoom in~\cite{fusiontables}
   \item \textbf{User-defined constraints}:
   \begin{itemize}
   \item Arbitrary property that must hold for \emph{sets of objects}
   \item If property does not hold for set of objects $\implies$ \emph{conflict}
   \item Conflicts resolved by \emph{deleting} objects
-  \item Example: \emph{proximity}
+  \item Property example: \emph{proximity}
   \end{itemize}
   \end{itemize}
   
@@ -106,14 +156,14 @@
   \end{center}
   
     \begin{itemize}
-  \item Like a gladiator fight, but outcome is decided by ``management''
+  \item Like a gladiator fight, but outcome is decided by ``management'' :-)
   \end{itemize}
 
 }
 
 \frame
 {
-  \frametitle{Constraints: Proximity}
+  \frametitle{Example: Proximity}
   \textbf{Proximity constraint}:
   \begin{itemize}
   \item Any two objects must be separated by minimum distance
@@ -127,7 +177,7 @@
 
 \frame
 {
-  \frametitle{Constraints: Visibility}
+  \frametitle{Example: Visibility}
   \textbf{Visibility constraint}:  
   \begin{itemize}
   \item Within unit area, at most $K$ objects may be visible
@@ -138,6 +188,101 @@
   \small{Red objects violate visibility constraint ($K=8$)}
   \end{center}
 }
+
+\begin{frame}[fragile]
+\frametitle{Declarative Language for Generalization (CVL)}
+
+\begin{itemize}
+\item Language has two statements: \emph{Generalize} and \emph{Create Constraint}
+\item A \emph{Generalize} statement can reference constraints defined in a \emph{Create Constraint} statement
+\item Language is visually similar to SQL and uses snippets of embedded SQL
+\item Designed to be compiled into SQL and executed in a database (where the data is assumed to be stored)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{CVL: Generalize statement}
+\begin{lstlisting}
+GENERALIZE 
+   restaurants TO restaurants_generalized
+AT 20 ZOOM LEVELS
+WEIGH BY
+  star_rating
+SUBJECT TO 
+   proximity 10 AND
+   visibility 64
+\end{lstlisting}
+
+\begin{itemize}
+\item \texttt{restaurants} is an existing database table
+\item \texttt{restaurants\_generalized} will be computed  
+\item \texttt{star\_rating} used as object weight (any valid SQL expression)
+\item \texttt{proximity} and \texttt{visibility} references constraints
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{CVL: Create Constraint}
+\begin{lstlisting}
+CREATE CONSTRAINT {Name, e.g. Proximity}
+AS NOT EXISTS
+  {SQL select statement}
+  
+RESOLVE cid IF DELETE (
+  {integer expression}
+)
+\end{lstlisting}
+
+\begin{itemize}
+\item Select statement should return two result columns: \texttt{cid} (conflict ID) and \texttt{rid} (object ID)
+\item Proximity constraint: the SQL select statement is a two-way spatial distance join that finds all objects that are too close
+\item Proximity constraint: the integer expression is the constant $1$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Defining the proximity constraint (experts only)}
+\begin{lstlisting}
+CREATE CONSTRAINT Proximity
+AS NOT EXISTS (
+  SELECT l.{rid} || r.{rid} AS cid, Unnest(array[l.{rid}, r.{rid}]) AS rid
+  FROM
+    {level_view} l JOIN {level_view} r
+  ON
+    l.{rid} < r.{rid}
+  AND
+    l.{geom} && ST_Expand(r.{geom}, CVL_Resolution({z}, 256) * {parameter_1})
+  AND
+    ST_Distance(l.{geom}, r.{geom}) < CVL_Resolution({z}, 256) * {parameter_1}
+)
+
+RESOLVE cid IF DELETE (
+  1
+)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Proximity constraint: the important part}
+\begin{itemize}
+\item The core of the proximity constraint is a two-way spatial join:
+\end{itemize}
+\begin{lstlisting}
+SELECT
+   ...
+FROM 
+   ... left JOIN ... right
+ON 
+   ST_Distance(left.the_geometry, right.the_geometry) < {meters}
+\end{lstlisting}
+\end{frame}
+
+
+
+
 
 \frame
 {
@@ -153,7 +298,7 @@
 {
   \frametitle{Future work: Aggregation}
   \begin{center}
-  \fbox{This is where I really need your help :-)}
+  \fbox{This is where we need your help :-)}
   \end{center}
 
   \begin{itemize}

@@ -29,7 +29,7 @@
 
 \title{Declarative Cartography}
 \subtitle{In-Database Map Generalization of Spatial Datasets}
-\author{\underline{Pimin Konstantin Kefaloukos}, Marcos Vaz Salles, Martin Zachariasen\\ \small{Computer Science Department, University of Copenhagen} (DIKU)}
+\author{\underline{Pimin Konstantin Kefaloukos}, Marcos Vaz Salles, \\Martin Zachariasen\\ \small{\emph{Computer Science Department (DIKU)}, \textbf{University of Copenhagen}}}
 \date{\today}
 
 \begin{document}
@@ -41,13 +41,13 @@
 {
   \frametitle{Overview}
   \begin{center}
-  \fbox{A narrow view of the world of digital web maps :-)}
+  \fbox{A view of digital web maps today :-) }
   \end{center}
   
   \begin{itemize}
   \item \textbf{OK}: Background maps are stable and of good quality (commercial and national map providers)
-  \item \textbf{Work needed}: Foreground data is dynamic and constantly emerging and changing (social media, sensors, ...)
-  \item \textbf{Challenge}: Design \emph{easy-to-use}, \emph{cheap}, \emph{scalable} and \emph{effective} method for \underline{generalizing}, \underline{serving} and \underline{visualizing} foreground data
+  \item \textbf{Challenge}: New thematic data is constantly emerging and changing (social media, sensors, ...)
+  \item \textbf{Goal}: Design \emph{easy-to-use}, \emph{cheap}, \emph{scalable} and \emph{effective} method for \underline{generalizing}, \underline{serving} and \underline{visualizing} thematic data
   \item \textbf{Use cases}: Data journalism, citizen information systems, crisis response, social media, ...
   \end{itemize}
 
@@ -56,41 +56,73 @@
 \frame
 {
   \frametitle{Map Generalization 101}
-  Going from a big pile of data:
+  Transforming raw spatial data\footnote{Tourism points-of-interest from OpenStreetMap}
   \begin{center}
-  \fbox{\includegraphics[scale=0.14]{figs/toomanyobjects.png}}
+  \fbox{\includegraphics[scale=0.12]{figs/toomanyobjects.png}}
   \end{center}
-  To a friendly map:
+  Into legible maps\footnote{Map created using simple random sampling of thematic point data}
   \begin{center}
-  \includegraphics[scale=0.19]{figs/generalized-tourism.pdf}
+  \fbox{\includegraphics[scale=0.15]{figs/generalized-tourism.pdf}}
   \end{center}
 }
+
+\frame
+{
+  \frametitle{Questions pt 1}
+  \begin{itemize}
+  \item Decades of research in efficient algorithms for \emph{non}-spatial problems (Shortest Path, Travelling Salesman, Set Cover)
+  \item Good algorithms exist for specific generalization problems\footnote{CS view, maybe geographers have knowledge to share here}~\cite{fusiontables,landcover}
+  \item \textbf{Question}: Can we transform several related map generalization problems into a \emph{non}-spatial problem and reuse existing algorithms for this problem?
+  \item \textbf{Question}: What is a good non-spatial problem to use?
+  \end{itemize}
+  
+  \begin{center}
+  \includegraphics[scale=0.6]{figs/cvl-spatial-to-nonspatial.pdf}
+  \end{center}
+}
+
+\frame
+{
+  \frametitle{Questions pt 2}
+  \begin{itemize}
+  \item A spatial database is a natural place to store spatial records
+  \item However, map generalization algorithms are often implemented in specialized \emph{external software}, e.g. a Java program $\implies$ \emph{moving data in and out of database}
+  \item Decades of research in database optimization
+  \item Functionality includes \texttt{JOIN}, \texttt{ORDER BY}, \texttt{GROUP BY},  \texttt{CREATE INDEX} and many spatial functions: \texttt{ST\_Intersects}, \texttt{ST\_Distance}, ...
+  \item \textbf{Question}: Can we formulate map generalization algorithms as a SQL transaction (with stored procedures) to be executed efficiently by a \emph{spatial database}?
+  \end{itemize}
+}
+
+\begin{frame}[fragile]
+  \frametitle{Questions pt 3}
+  \begin{itemize}
+  \item Writing complex queries in SQL is hard
+  \item \textbf{Question}: Can we design a simple language that is compiled into complex SQL?
+\begin{lstlisting}
+GENERALIZE 
+   restaurants TO restaurants2
+AT 20 ZOOM LEVELS
+WEIGH BY
+  star_rating
+SUBJECT TO 
+   proximity 10
+\end{lstlisting}
+  \end{itemize}
+\end{frame}
+
 
 \frame
 {
   \frametitle{Our approach}
   \begin{itemize}
-  \item \textbf{Language}: Design and implement an easy to use \emph{programming language} for generalizing spatial data 
-  \item \textbf{Optimization}: Fit generalization problem to well-known \emph{optimization problem}, i.e. variant of Set Cover Problem~\cite{vazirani}
-  \item \textbf{Algorithms}: Reuse \emph{existing algorithms} for this problem
-  \item \textbf{Databases}: Reuse \emph{database technology} and \emph{move code to data} by implementing algorithms in a spatial database
+  \item \textbf{Optimization}: Fit thematic generalization problem to well-known \emph{optimization problem}, i.e. \emph{set multicover problem}
+  \item \textbf{Algorithms}: Survey \emph{existing algorithms} for this problem
+  \item \textbf{Language}: Design an easy to use \emph{programming language} (CVL) for a class of generalization problems
+  \item \textbf{Compile}: Compile CVL into a SQL transaction that generates and solves instances of the set multicover problem, and in turn solves the original generalization problem
+
   \end{itemize}
   \begin{center}
   \includegraphics[scale=0.3]{figs/indatabase-execution.pdf}
-  \end{center}
-}
-
-\frame
-{
-  \frametitle{Main idea}
-  \begin{itemize}
-  \item \textbf{Language}: Design and implement an easy to use \emph{programming language} for generalizing spatial data 
-  \item \textbf{Optimization}: Fit generalization problem to well-known \emph{optimization problem}, i.e. variant of Set Cover Problem~\cite{vazirani}
-  \item \textbf{Algorithms}: Reuse \emph{existing algorithms} for this problem
-  \item \textbf{Databases}: Reuse \emph{database technology} and \emph{move code to data} by implementing algorithms in a spatial database
-  \end{itemize}
-  \begin{center}
-  \fbox{\includegraphics[scale=0.18]{figs/toomanyobjects.png}}
   \end{center}
 }
 
@@ -109,85 +141,73 @@
 \frame
 {
   \frametitle{Please note!}
+  TODO: Eliminate this slide, it disrupts flow...
+  
   Whenever you see the word \emph{``delete''} in this presentation, please append the words \emph{``or aggregate (future work)''} in your mind. \\
   making grammatical adjustments where appropriate.
   
   \begin{center}
   \includegraphics[scale=0.50]{figs/cvl-delete-aggregate.pdf}
   \end{center}
-
 }
 
 
 \frame
 {
-  \frametitle{Problem definition}
+  \frametitle{Multi-scale filtering problem}
   \begin{itemize}
-  \item Given set of spatial objects with \emph{unique ID}, \emph{weight} (models ``importance'' of object) and \emph{geometry} (point, polygon)
-  \item Set of zoom-levels $\lbrace 1, 2, \dots, \mathcal{Z} \rbrace$
-  \item Compute minimum zoom-level for all objects:
-  \begin{itemize}
-  \item Objective: Minimize weight of missing objects
-  \item Subject to: Spatial constraints (proximity, density, ...)
-  \end{itemize}
+  \item Each record in database has a user-defined ``weight'' which models the importance of the record
+  \item For each record we must pick a minimum zoom-level from which the records appears in the map
+  \item We must minimize the aggregate weight over all zoom-levels of records that are filtered out
+  \item At each zoom-level we must satisfy a set of constraints
   \end{itemize}
   \begin{center}
   \fbox{\includegraphics[scale=0.4]{figs/cvl-problem.pdf}}
   \end{center}
 }
 
+
 \frame
 {
-  \frametitle{Constraints}
+  \frametitle{Spatial constraints considered}
+  \begin{itemize}
+  \item \textbf{Zoom-consistency} (always enforced):  If an object is filtered out on a given zoom-level, it must also be filtered out on all lower zoom-levels
+  \item \textbf{Proximity constraint} (user defined): Any pair of objects must be separated by minimum distance
+  \item \textbf{Visibility constraint} (user defined): At most $K$ objects may be visible within a cell
+  \end{itemize}
+  \begin{center}
+  \includegraphics[scale=0.4]{figs/cvl-proximity.pdf} \includegraphics[scale=0.4]{figs/cvl-visibility.pdf}
+  \end{center}
+}
 
+
+\frame
+{
+  \frametitle{Conflict sets}
   \begin{itemize}
-  \item \textbf{Zoom-consistency} Objects never disappear as we zoom in~\cite{fusiontables}
-  \item \textbf{User-defined constraints}:
-  \begin{itemize}
-  \item Arbitrary property that must hold for \emph{sets of objects}
-  \item If property does not hold for set of objects $\implies$ \emph{conflict}
-  \item Conflicts resolved by \emph{deleting} objects
-  \item Property example: \emph{proximity}
+  \item Model constraints (visibility, proximity, ...) using the notion of \emph{conflict sets}
+  \item A conflict set is a \emph{set of objects} that cannot all appear simultaneously at a given zoom level
+  \item An object can be in several conflict sets
+  \item In a conflict set consisting of $k_1$ objects, where at most $k_2$ may appear in map, $\lambda = k_2 - k_1$ objects must be filtered out (deleted from current and lower zoom-levels)
   \end{itemize}
-  \end{itemize}
-  
   \begin{center}
   	\fbox{\includegraphics[scale=0.20]{figs/cvl-proximity-conflicts-2.pdf}} \fbox{\includegraphics[scale=.38]{figs/gladiators.jpg}} \fbox{\includegraphics[scale=.288]{figs/the-godfather-1.jpg}}
   \end{center}
-  
-    \begin{itemize}
-  \item Like a gladiator fight, but outcome is decided by ``management'' :-)
-  \end{itemize}
-
 }
 
 \frame
 {
-  \frametitle{Example: Proximity}
-  \textbf{Proximity constraint}:
+  \frametitle{Single-scale filtering problem $\Leftrightarrow$ Set multicover problem}
+
+  For each zoom-level we seek an optimal solution:
+
   \begin{itemize}
-  \item Any two objects must be separated by minimum distance
-  \item Resolve conflicts by deleting one object
+  \item \textbf{Set cover problem}: Given a universe $U$ of elements and a set $S$ of subsets of $U$, a \emph{cover} is a set $Q \subseteq S$ such that the union of $Q$ equals $U$.
+  \item \textbf{Set multicover problem}: Each element in $e \in U$ has to be covered multiple times by $Q$.
+  \item \textbf{Single-scale filtering problem}: Each conflict set $c \in C$ has to be covered multiple times times by objects that are filtered out.
   \end{itemize}
-  \begin{center}
-  \fbox{\includegraphics[scale=0.4]{figs/cvl-proximity.pdf}} \\
-  \small{Red objects violate proximity constraint}
-  \end{center}
 }
 
-\frame
-{
-  \frametitle{Example: Visibility}
-  \textbf{Visibility constraint}:  
-  \begin{itemize}
-  \item Within unit area, at most $K$ objects may be visible
-  \item Resolve conflict (involving $K'$ objects) by deleting $K' - K$ objects
-  \end{itemize}
-  \begin{center}
-  \includegraphics[scale=0.4]{figs/cvl-visibility.pdf} \\
-  \small{Red objects violate visibility constraint ($K=8$)}
-  \end{center}
-}
 
 \begin{frame}[fragile]
 \frametitle{Declarative Language for Generalization (CVL)}

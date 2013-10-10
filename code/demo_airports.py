@@ -9,10 +9,10 @@ if __name__ == '__main__':
     compiler = CvlCompiler()
 
     QUERY_DICT = {
-        'input': 'openflights_airports',
-        'output': 'openflights_airports_thinned',
+        'input': 'zurich_amenity',
+        'output': 'zurich_amenity',
         'subject_to': [('cellbound', 16)],
-        'rank_by': 'num_routes',
+        'rank_by': 'random()',
         'zoomlevels': 18,
         'fid': 'airport_id',
         'geometry': 'wkb_geometry'

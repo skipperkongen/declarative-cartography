@@ -35,6 +35,46 @@
 
 \frame{\titlepage}
 
+\frame
+{
+  \frametitle{Data visualization w/o generalization}
+  \begin{itemize}
+  \item \textbf{Example}: Restaurant records (points) stored in a database
+  \item We want a nice restaurant map of Z\"{u}rich.
+  \item Simply showing all the records creates a mess
+  \item What to do?
+  \end{itemize}
+  \includegraphics[scale=0.5]{figs/spatial-database-with-points.pdf} \includegraphics[scale=0.18]{figs/zurich-unfiltered.pdf}
+}
+
+% zoom 12
+\frame
+{
+  \frametitle{Data visualization with generalization}
+\begin{columns}
+	\begin{column}[l]{6cm}
+		\begin{itemize}[<+->]
+			\item We want records to appear gradually as we zoom in
+			\item Maintaining \emph{constant information density}
+			\item Without loosing track of visible items as we zoom in
+			\item Giving priority to the ``good stuff''
+		\end{itemize}
+	\end{column}
+	\begin{column}[l]{7cm}
+    \begin{figure}
+        \includegraphics<1>[scale=0.15]{figs/zoom12.pdf}
+        \includegraphics<2>[scale=0.15]{figs/zoom13.pdf}
+        \includegraphics<3>[scale=0.15]{figs/zoom14.pdf}
+        \includegraphics<4>[scale=0.15]{figs/zoom15.pdf}
+    \end{figure}                            
+\end{column}
+\end{columns}
+}
+
+
+% OLD STUFF BELOW
+
+
 % MOTIVATION
 \frame
 {

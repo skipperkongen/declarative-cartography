@@ -42,40 +42,121 @@
   \item \textbf{Example}: Restaurant records (points) stored in a database
   \item We want a nice restaurant map of Z\"{u}rich.
   \item Simply showing all the records creates a mess
-  \item What to do?
+  \item What to do? (answer: \emph{generalization})
   \end{itemize}
   \includegraphics[scale=0.5]{figs/spatial-database-with-points.pdf} \includegraphics[scale=0.18]{figs/zurich-unfiltered.pdf}
 }
 
-% zoom 12
-\frame
+% zooming
+\frame[t]
 {
-  \frametitle{Data visualization with generalization}
-\begin{columns}
+  \frametitle{Data Visualization with Generalization}
+  \emph{What we want}:
+\begin{columns}[t]
 	\begin{column}[l]{6cm}
 		\begin{itemize}[<+->]
-			\item We want records to appear gradually as we zoom in
-			\item Maintaining \emph{constant information density}
-			\item Without loosing track of visible items as we zoom in
-			\item Giving priority to the ``good stuff''
+			\item Records should appear \emph{gradually} when zooming in
+			\item \emph{Information density} should be approximately constant on all zoom-levels
+			\item We need a way to prioritize ``important'' records
+			\item Items should \emph{remain visible} when zooming in
 		\end{itemize}
 	\end{column}
-	\begin{column}[l]{7cm}
+	\begin{column}[l]{6cm}
     \begin{figure}
-        \includegraphics<1>[scale=0.15]{figs/zoom12.pdf}
-        \includegraphics<2>[scale=0.15]{figs/zoom13.pdf}
-        \includegraphics<3>[scale=0.15]{figs/zoom14.pdf}
-        \includegraphics<4>[scale=0.15]{figs/zoom15.pdf}
+        \includegraphics<1>[scale=0.18]{figs/zoom12.pdf}
+        \includegraphics<2>[scale=0.18]{figs/zoom13.pdf}
+        \includegraphics<3>[scale=0.18]{figs/zoom14.pdf}
+        \includegraphics<4>[scale=0.18]{figs/zoom15.pdf}
+        \includegraphics<5>[scale=0.18]{figs/zoom16.pdf}
     \end{figure}                            
 \end{column}
 \end{columns}
 }
 
+% Overview
+\frame
+{
+  \frametitle{A Language for Generalization?}  
+  \begin{itemize}[<+->]
+  \item Given that a user wants this map...
+  \item How is the desired outcome \emph{specified}?
+  \item We could use a \emph{declarative programming language}...\\
+  (specify \emph{what} you want, not \emph{how} it is produced)
+  \item SQL is a declarative language that can transform spatial data inside a spatial database
+  \item But maybe we can design a language for generalization that is easier to use?
+  \end{itemize}
+}
+
+\begin{frame}[fragile,t]
+  \frametitle{Declarative Language for Generalization (CVL)}
+  \begin{description}[<+->]
+  \item[``I want to generalize data in a table called \texttt{restaurants}'']:
+\begin{lstlisting}
+GENERALIZE restaurants 
+\end{lstlisting}
+  \item[``Store the result in a new table called \texttt{restaurants2}'']:
+\begin{lstlisting}
+TO restaurants2
+\end{lstlisting}
+  \item[``My map will have 20 zoom levels'']:
+\begin{lstlisting}
+AT 20 ZOOM LEVELS
+\end{lstlisting}
+  \item[``Use the \texttt{star\_rating} to measure importance of restaurants'']:
+\begin{lstlisting}
+WEIGH BY star_rating
+\end{lstlisting}
+  \item[``At least 10 pixels between objects and max 64 objects per tile'']:
+\begin{lstlisting}    
+SUBJECT TO proximity 10
+AND visibility 64
+\end{lstlisting}    
+  \end{description}
+\end{frame}
+
+
+\begin{frame}[fragile,t]
+  \frametitle{GENERALIZE statement}
+\begin{lstlisting}
+GENERALIZE <existing relation> 
+TO <new relation> 
+AT <integer> ZOOM LEVELS
+WEIGH BY <column, function or expression>
+SUBJECT TO <constr> <parameters>
+AND <constr> <parameters>
+\end{lstlisting}    
+\begin{enumerate}
+\item \texttt{restaurants2}  is a copy of the input table with an additional column computed: \texttt{min\_zoom} \emph{(explained soon)}
+\item New constraints are defined using the \texttt{CREATE~CONSTRAINT} statement \emph{(explained soon)}
+\end{enumerate}
+
+\end{frame}
+
+
+
+
+
+
+% Last slide
+
+
+\frame
+{
+  \frametitle{Conclusion}
+  \begin{center}
+  \fbox{Thank you :-) }
+  \end{center}
+  
+  \begin{itemize}
+  \item Bla bla
+  \item Bla bla
+  \item Bla bla
+  \end{itemize}
+}
 
 % OLD STUFF BELOW
 
-
-% MOTIVATION
+% Overview
 \frame
 {
   \frametitle{Overview}
@@ -85,11 +166,9 @@
   
   \begin{itemize}
   \item \textbf{OK}: Background maps are stable and of good quality (commercial and national map providers)
-  \item \textbf{Challenge}: New thematic data is constantly emerging and changing (social media, sensors, ...)
-  \item \textbf{Goal}: Design \emph{easy-to-use}, \emph{cheap}, \emph{scalable} and \emph{effective} method for \underline{generalizing}, \underline{serving} and \underline{visualizing} thematic data
-  \item \textbf{Use cases}: Data journalism, citizen information systems, crisis response, social media, ...
+  \item \textbf{Challenge}: New thematic data is constantly emerging and changing (social media, sensors, ...) and needs to be visualized
+  \item \textbf{Goal}: Design easy-to-use and effective \emph{programming language} for generalization that can be evaluated by a spatial database  \item \textbf{Use cases}: Data journalism, citizen information systems, crisis response, social media, ...
   \end{itemize}
-
 }
 
 \frame

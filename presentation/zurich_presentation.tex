@@ -78,9 +78,13 @@
 {
   \frametitle{A new language for generalization?}
   \begin{itemize}[<+->]
-  \item We designed a small \emph{programming language} for generalizing thematic data, e.g. points of interest, hiking paths, nature observations etc. 
-  \item Simple enough that it could be used by a non-programmer, e.g. a journalist or non-technical scientist
-  \item It was designed for quick creation of thematic maps and to work with both point, linestring and polygon data at multiple scales
+  \item We designed a small \emph{programming language} for generalizing thematic data, e.g. tourist attractions, hiking paths, nature observations etc.
+  \item Sprinkled a little bit of SQL on top for extensibility
+  \begin{center}
+  \includegraphics[scale=0.18]{figs/sprinkle.jpg}
+  \end{center}
+  \item Made it simple enough to be used by a non-programmers
+  \item And optimized it for quick creation of thematic maps (point, linestring and polygon data)
   \item It has two statements: \texttt{GENERALIZE} and \texttt{CREATE CONSTRAINT}
   \end{itemize}
 }
@@ -89,47 +93,28 @@
 \begin{frame}[fragile,t]
   \frametitle{GENERALIZE statement}
   \begin{description}[<+->]
-  \item[``I have data in a table called \texttt{restaurants}'']:
+  \item[I have data in a table called \texttt{restaurants}]:
 \begin{lstlisting}
 GENERALIZE restaurants 
 \end{lstlisting}
-  \item[``I want a generalized table called \texttt{restaurants2}'']:
+  \item[I want a generalized table called \texttt{restaurants2}]:
 \begin{lstlisting}
 TO restaurants2
 \end{lstlisting}
-  \item[``I am making a map that has 20 zoom levels'']:
+  \item[I am making a map that has 20 zoom levels]:
 \begin{lstlisting}
 AT 20 ZOOM LEVELS
 \end{lstlisting}
-  \item[``Use \texttt{star\_rating} as restaurant weight (importance)'']:
+  \item[Use \texttt{star\_rating} to prioritize records]:
 \begin{lstlisting}
 WEIGH BY star_rating
 \end{lstlisting}
-  \item[``Objects must be 10 pixels apart and max 64 objects per tile'']:
+  \item[Visible records must be 10 pixels apart, max 64 records per tile]:
 \begin{lstlisting}    
 SUBJECT TO proximity 10 AND density 64
 \end{lstlisting}    
   \end{description}
 \end{frame}
-
-% Explain problem
-\frame
-{
-  \frametitle{Solution}
-  \begin{itemize}
-  \item The solution is an output table with a \texttt{min\_zoom} column added to every record in input table
-  \item A record is visible in a map if its \texttt{min\_zoom} is less than or equal to current zoom
-  \item \textbf{Feasible solution}: Visible records satisfy all constraints (e.g. proximity) on all zoom-levels
-  \item \textbf{Optimal solution} The combined weight of non-visible records on all zoom levels is minimized
-  \end{itemize}
-  \begin{center}
-  % Note add +w to levels where record is missing
-  \fbox{\includegraphics[scale=0.30]{figs/cvl-problem.pdf}}
-  \end{center}
-}
-
-
-
 
 % Explain syntax
 \begin{frame}[fragile,t]
@@ -153,6 +138,21 @@ AND ...
 \end{itemize}
 \end{frame}
 
+% Explain problem
+\frame
+{
+  \frametitle{Solution}
+  \begin{itemize}
+  \item The solution is an output table with a \texttt{min\_zoom} column added to every record in input table
+  \item A record is visible in a map if its \texttt{min\_zoom} is less than or equal to current zoom
+  \item \textbf{Feasible solution}: Visible records satisfy all constraints (e.g. proximity) on all zoom-levels
+  \item \textbf{Optimal solution} The combined weight of \emph{non}-visible records on all zoom levels is minimized
+  \end{itemize}
+  \begin{center}
+  % Note add +w to levels where record is missing
+  \fbox{\includegraphics[scale=0.30]{figs/cvl-problem.pdf}}
+  \end{center}
+}
 
 % Explain constraints
 \frame
@@ -161,7 +161,7 @@ AND ...
   \begin{itemize}
   \item \textbf{Proximity constraint}: Any pair of objects must be separated by minimum distance measured in pixels on screen
   \item \textbf{Density\footnote{Called \emph{visibility constraint} in our paper because it references prior work~\cite{fusiontables})} constraint}: At most $K$ distinct objects may be visible within a tile of $256 \times 256$ pixels
-  \item Users can define these using special syntax
+  \item Users can define these constraints using special syntax (introduced next)
   \end{itemize}
   \begin{center}
   \begin{figure}
@@ -185,16 +185,17 @@ RESOLVE cid IF DELETE (
 \end{lstlisting}
 
 \begin{itemize}
-\item The \texttt{AS NOT EXISTS} clause contains SQL to find all records that violate the constraint on a given zoom-level
+\item This syntax is used to create new constraints
+\item The \texttt{AS NOT EXISTS} clause contains SQL to find all conflicting records and group them together
 \item \texttt{RESOLVE IF DELETE} clause is used to indicate how many records in a conflict set must be filtered out to resolve a conflict
-\item If this is a bit abstract, let's try an example
+\item \textbf{Example}: A conflict set under the proximity constraint is a pair of records (that are too close). One must be deleted.
 \end{itemize}
 \end{frame}
 
 % Abstract view of constraints
 \frame
 {
-  \frametitle{Some definitions}
+  \frametitle{But first some definitions}
   \begin{itemize}
   \item \textbf{Constraint}: Condition (usually spatial) that must hold for subsets of records in the database on all zoom levels
   \item \textbf{Conflict}: Subset of records in database that violate a constraint, e.g. two records that are too close together

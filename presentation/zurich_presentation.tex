@@ -188,14 +188,13 @@ RESOLVE cid IF DELETE (
 \item This syntax is used to create new constraints
 \item The \texttt{AS NOT EXISTS} clause contains SQL to find all conflicting records and group them together
 \item \texttt{RESOLVE IF DELETE} clause is used to indicate how many records in a conflict set must be filtered out to resolve a conflict
-\item \textbf{Example}: A conflict set under the proximity constraint is a pair of records (that are too close). One must be deleted.
 \end{itemize}
 \end{frame}
 
 % Abstract view of constraints
 \frame
 {
-  \frametitle{But first some definitions}
+  \frametitle{Constraints generate conflicts that must be resolved}
   \begin{itemize}
   \item \textbf{Constraint}: Condition (usually spatial) that must hold for subsets of records in the database on all zoom levels
   \item \textbf{Conflict}: Subset of records in database that violate a constraint, e.g. two records that are too close together
@@ -215,15 +214,17 @@ RESOLVE cid IF DELETE (
 \begin{lstlisting}
 CREATE CONSTRAINT Proximity
 AS NOT EXISTS (
-  SELECT l.{rid} || r.{rid} AS cid, Unnest(array[l.{rid}, r.{rid}]) AS rid
+  SELECT l.id || r.id AS cid, Unnest(array[l.id, r.id]) AS rid
   FROM
     {level_view} l JOIN {level_view} r
   ON
-    l.{rid} < r.{rid}
+    l.id < r.id
   AND
-    l.{geom} && ST_Expand(r.{geom}, CVL_Resolution({z}, 256) * {parameter_1})
+    l.geom && ST_Expand(r.geom, 
+      CVL_Resolution({z}, 256) * {parameter_1})
   AND
-    ST_Distance(l.{geom}, r.{geom}) < CVL_Resolution({z}, 256) * {parameter_1}
+    ST_Distance(l.geom, r.geom) < 
+      CVL_Resolution({z}, 256) * {parameter_1}
 )
 
 RESOLVE cid IF DELETE (
@@ -233,19 +234,17 @@ RESOLVE cid IF DELETE (
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Proximity constraint: the important part}
+\frametitle{Finding conflicts: Distance join}
+(Simplified proximity constraint)
 \begin{lstlisting}
 SELECT
-   ...
+   left.id || right.id AS cid, 
+   Unnest(array[left.id, right.id]) AS rid
 FROM 
    {level_view} left JOIN {level_view} right
 ON 
-   ST_Distance(left.{geom}, right.{geom}) < CVL_Resolution({z}, 256) * {parameter_1}
+   ST_Distance(left.geom, right.geom) < CVL_Resolution({z}, 256) * {parameter_1}
 \end{lstlisting}
-\begin{itemize}
-\item The core of the proximity constraint is a two-way spatial join:
-\end{itemize}
-
 \end{frame}
 
 % Last slide
@@ -257,7 +256,7 @@ ON
   \item \textbf{Systems}: 
   \begin{enumerate}
     \item Map out design space of in-database generalization
-    \item Deeper understanding of connection between combinatorial optimization and relational algebra
+    \item Deeper understanding of using relational algebra to solve combinatorial optimization problems
   \end{enumerate}
   \item \textbf{Language}: 
   \begin{enumerate}

@@ -37,28 +37,27 @@
 
 \frame
 {
-  \frametitle{Data visualization w/o generalization}
+  \frametitle{Motivation for generalization}
   \begin{itemize}
-  \item \textbf{Example}: Restaurant records (points) stored in a database
-  \item We want a nice restaurant map of Z\"{u}rich.
+  \item \textbf{Imagine}: you're a \emph{journalist} and want to tell a story about restaurants in Z\"{u}rich \emph{using a map}.
+  \item \textbf{Example}: You have a \emph{database} of restaurants (location, star rating, name etc.)
   \item Simply showing all the records creates a mess
   \item What to do? (answer: \emph{generalization})
   \end{itemize}
   \includegraphics[scale=0.5]{figs/spatial-database-with-points.pdf} \includegraphics[scale=0.18]{figs/zurich-unfiltered.pdf}
 }
 
-% zooming
+% Setting stage
 \frame[t]
 {
-  \frametitle{Data Visualization with Generalization}
-  \emph{What we want}:
+  \frametitle{What a good map looks like}
 \begin{columns}[t]
 	\begin{column}[l]{6cm}
 		\begin{itemize}[<+->]
-			\item Records should appear \emph{gradually} when zooming in
-			\item \emph{Information density} should be approximately constant on all zoom-levels
-			\item We need a way to prioritize ``important'' records
-			\item Items should \emph{remain visible} when zooming in
+			\item Records should appear \emph{gradually} when zooming in, i.e. \emph{constant information~density}
+			\item ``Important'' records should get priority
+			\item Visible records should \emph{remain visible} when zooming in
+			\item There should be some way of controlling \emph{layout}
 		\end{itemize}
 	\end{column}
 	\begin{column}[l]{6cm}
@@ -66,74 +65,192 @@
         \includegraphics<1>[scale=0.18]{figs/zoom12.pdf}
         \includegraphics<2>[scale=0.18]{figs/zoom13.pdf}
         \includegraphics<3>[scale=0.18]{figs/zoom14.pdf}
-        \includegraphics<4>[scale=0.18]{figs/zoom15.pdf}
-        \includegraphics<5>[scale=0.18]{figs/zoom16.pdf}
+        \includegraphics<4>[scale=0.18]{figs/zoom16.pdf}
+        %\includegraphics<4>[scale=0.18]{figs/zoom15.pdf}
+        %\includegraphics<5>[scale=0.18]{figs/zoom16.pdf}
     \end{figure}                            
 \end{column}
 \end{columns}
 }
 
-% Overview
+% Motivation
 \frame
 {
   \frametitle{A Language for Generalization?}  
-  \begin{itemize}[<+->]
-  \item Given that a user wants this map...
-  \item How is the desired outcome \emph{specified}?
-  \item We could use a \emph{declarative programming language}...\\
-  (specify \emph{what} you want, not \emph{how} it is produced)
-  \item SQL is a declarative language that can transform spatial data inside a spatial database
-  \item But maybe we can design a language for generalization that is easier to use?
-  \end{itemize}
+  We designed a small \emph{programming language} for generalization...  
 }
 
+% Introduce syntax
 \begin{frame}[fragile,t]
-  \frametitle{Declarative Language for Generalization (CVL)}
+  \frametitle{GENERALIZE statement}
   \begin{description}[<+->]
-  \item[``I want to generalize data in a table called \texttt{restaurants}'']:
+  \item[``I have data in a table called \texttt{restaurants}'']:
 \begin{lstlisting}
 GENERALIZE restaurants 
 \end{lstlisting}
-  \item[``Store the result in a new table called \texttt{restaurants2}'']:
+  \item[``I want a generalized table called \texttt{restaurants2}'']:
 \begin{lstlisting}
 TO restaurants2
 \end{lstlisting}
-  \item[``My map will have 20 zoom levels'']:
+  \item[``I am making a map that has 20 zoom levels'']:
 \begin{lstlisting}
 AT 20 ZOOM LEVELS
 \end{lstlisting}
-  \item[``Use the \texttt{star\_rating} to measure importance of restaurants'']:
+  \item[``Use \texttt{star\_rating} as restaurant weight (importance)'']:
 \begin{lstlisting}
 WEIGH BY star_rating
 \end{lstlisting}
-  \item[``At least 10 pixels between objects and max 64 objects per tile'']:
+  \item[``Objects must be 10 pixels apart and max 64 objects per tile'']:
 \begin{lstlisting}    
-SUBJECT TO proximity 10
-AND visibility 64
+SUBJECT TO proximity 10 AND density 64
 \end{lstlisting}    
   \end{description}
 \end{frame}
 
+% Explain problem
+\frame
+{
+  \frametitle{Result of \texttt{GENERALIZE} statement}
+  \begin{itemize}
+  \item Compute \emph{output table} with a \texttt{min\_zoom} column added to each record in \emph{input table}
+  \item Value of \texttt{min\_zoom} is the zoom level at which a given record becomes visible in the map (when zooming in)
+  \item An optimal solution minimizes the combined weight of non-visible records over all zoom levels
+  \item Spatial constraints must be satisfied on each zoom level (generally forcing records to become non-visible)
+  \end{itemize}
+  \begin{center}
+  % Note add +w to levels where record is missing
+  \fbox{\includegraphics[scale=0.35]{figs/cvl-problem.pdf}}
+  \end{center}
+}
 
+
+
+
+% Explain syntax
 \begin{frame}[fragile,t]
   \frametitle{GENERALIZE statement}
+
+The \texttt{GENERALIZE} statement:
 \begin{lstlisting}
-GENERALIZE <existing relation> 
-TO <new relation> 
+GENERALIZE <input> 
+TO <output> 
 AT <integer> ZOOM LEVELS
 WEIGH BY <column, function or expression>
 SUBJECT TO <constr> <parameters>
 AND <constr> <parameters>
+AND ...
 \end{lstlisting}    
-\begin{enumerate}
-\item \texttt{restaurants2}  is a copy of the input table with an additional column computed: \texttt{min\_zoom} \emph{(explained soon)}
-\item New constraints are defined using the \texttt{CREATE~CONSTRAINT} statement \emph{(explained soon)}
-\end{enumerate}
-
+\begin{itemize}
+\item Makes \emph{explicit} the \underline{constraints} and \underline{record ranking}
+\item Makes \emph{implicit} the \underline{algorithm} for computing a solution
+\item Language is \emph{limited by design}, i.e. \underline{easy to use}
+\item Allows transforming to underlying \underline{optimization problem}
+\end{itemize}
 \end{frame}
 
 
+% Explain constraints
+\frame
+{
+  \frametitle{Semantics of spatial constraints (examples)}
+  \begin{itemize}
+  \item \textbf{Proximity constraint}: Any pair of objects must be separated by minimum distance measured in pixels on screen
+  \item \textbf{Density\footnote{Called \emph{visibility constraint} in our paper because it references prior work~\cite{fusiontables})} constraint}: At most $K$ distinct objects may be visible within a tile of $256 \times 256$ pixels
+  \end{itemize}
+  \begin{center}
+  \begin{figure}
+  \label{fig:contraints}
+  \includegraphics[scale=0.4]{figs/cvl-proximity.pdf} \includegraphics[scale=0.4]{figs/cvl-visibility.pdf}
+  \caption{Red objects are in violation of a constraint; proximity (left) and density (right)}
+  \end{figure}
+  \end{center}
+}
 
+% Abstract view of constraints
+\frame
+{
+  \frametitle{Conflicts and conflict resolution}
+  \begin{itemize}
+  \item \textbf{Conflict}: Any \emph{subset of records} that violate a spatial constraint
+  \item \textbf{Resolving conflicts}: Filter out some of these records; set \texttt{min\_zoom} to previous (higher) zoom level
+  \item \textbf{Feasible map}: A map where there are no conflicts on any zoom level
+  \item \textbf{Optimal map}: A feasible map where the combined weight of non-visible records is minimum
+  \end{itemize}
+  \begin{center}
+  	\fbox{\includegraphics[scale=0.20]{figs/cvl-proximity-conflicts-2.pdf}} \fbox{\includegraphics[scale=.38]{figs/gladiators.jpg}} \fbox{\includegraphics[scale=.288]{figs/the-godfather-1.jpg}}
+  \end{center}
+  
+  
+}
+
+
+\begin{frame}[fragile]
+\frametitle{Creating constraints using CVL}
+\begin{lstlisting}
+CREATE CONSTRAINT {Name, e.g. Proximity}
+AS NOT EXISTS
+  {SQL select statement}
+  
+RESOLVE cid IF DELETE (
+  {integer expression}
+)
+\end{lstlisting}
+
+\begin{itemize}
+\item Select statement should return two result columns: \texttt{cid} (conflict ID) and \texttt{rid} (object ID)
+\item Evaluated for every zoom-level
+\item A conflict is consided \emph{resolved} if certain number of objects (in a given conflict) are filtered out on the given zoom-level
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Defining the proximity constraint (experts only)}
+\begin{lstlisting}
+CREATE CONSTRAINT Proximity
+AS NOT EXISTS (
+  SELECT l.{rid} || r.{rid} AS cid, Unnest(array[l.{rid}, r.{rid}]) AS rid
+  FROM
+    {level_view} l JOIN {level_view} r
+  ON
+    l.{rid} < r.{rid}
+  AND
+    l.{geom} && ST_Expand(r.{geom}, CVL_Resolution({z}, 256) * {parameter_1})
+  AND
+    ST_Distance(l.{geom}, r.{geom}) < CVL_Resolution({z}, 256) * {parameter_1}
+)
+
+RESOLVE cid IF DELETE (
+  1
+)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Proximity constraint: the important part}
+\begin{itemize}
+\item The core of the proximity constraint is a two-way spatial join:
+\end{itemize}
+\begin{lstlisting}
+SELECT
+   ...
+FROM 
+   ... left JOIN ... right
+ON 
+   ST_Distance(left.the_geometry, right.the_geometry) < {meters}
+\end{lstlisting}
+\end{frame}
+
+
+\frame
+{
+  \frametitle{Future work}
+  \begin{itemize}
+  \item More consise/flexible ways to formulate constraints and objectives
+  \item Other modes of conflict resolution, e.g. aggregation
+  \item Improved algorithms for in-database evaluation
+  \end{itemize}
+}
 
 
 
@@ -270,33 +387,9 @@ SUBJECT TO
 }
 
 
-\frame
-{
-  \frametitle{Multi-scale filtering problem}
-  \begin{itemize}
-  \item Each record in database has a user-defined ``weight'' which models the importance of the record
-  \item For each record we must pick a minimum zoom-level from which the records appears in the map
-  \item We must minimize the aggregate weight over all zoom-levels of records that are filtered out
-  \item At each zoom-level we must satisfy a set of constraints
-  \end{itemize}
-  \begin{center}
-  \fbox{\includegraphics[scale=0.4]{figs/cvl-problem.pdf}}
-  \end{center}
-}
 
 
-\frame
-{
-  \frametitle{Spatial constraints considered}
-  \begin{itemize}
-  \item \textbf{Zoom-consistency} (always enforced):  If an object is filtered out on a given zoom-level, it must also be filtered out on all lower zoom-levels
-  \item \textbf{Proximity constraint} (user defined): Any pair of objects must be separated by minimum distance
-  \item \textbf{Visibility constraint} (user defined): At most $K$ objects may be visible within a cell
-  \end{itemize}
-  \begin{center}
-  \includegraphics[scale=0.4]{figs/cvl-proximity.pdf} \includegraphics[scale=0.4]{figs/cvl-visibility.pdf}
-  \end{center}
-}
+
 
 
 \frame
@@ -338,7 +431,6 @@ SUBJECT TO
 \end{itemize}
 \end{frame}
 
-
 \begin{frame}[fragile]
 \frametitle{CVL: Generalize statement}
 \begin{lstlisting}
@@ -361,76 +453,11 @@ SUBJECT TO
 
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{CVL: Create Constraint}
-\begin{lstlisting}
-CREATE CONSTRAINT {Name, e.g. Proximity}
-AS NOT EXISTS
-  {SQL select statement}
-  
-RESOLVE cid IF DELETE (
-  {integer expression}
-)
-\end{lstlisting}
-
-\begin{itemize}
-\item Select statement should return two result columns: \texttt{cid} (conflict ID) and \texttt{rid} (object ID)
-\item Proximity constraint: the SQL select statement is a two-way spatial distance join that finds all objects that are too close
-\item Proximity constraint: the integer expression is the constant $1$
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Defining the proximity constraint (experts only)}
-\begin{lstlisting}
-CREATE CONSTRAINT Proximity
-AS NOT EXISTS (
-  SELECT l.{rid} || r.{rid} AS cid, Unnest(array[l.{rid}, r.{rid}]) AS rid
-  FROM
-    {level_view} l JOIN {level_view} r
-  ON
-    l.{rid} < r.{rid}
-  AND
-    l.{geom} && ST_Expand(r.{geom}, CVL_Resolution({z}, 256) * {parameter_1})
-  AND
-    ST_Distance(l.{geom}, r.{geom}) < CVL_Resolution({z}, 256) * {parameter_1}
-)
-
-RESOLVE cid IF DELETE (
-  1
-)
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{Proximity constraint: the important part}
-\begin{itemize}
-\item The core of the proximity constraint is a two-way spatial join:
-\end{itemize}
-\begin{lstlisting}
-SELECT
-   ...
-FROM 
-   ... left JOIN ... right
-ON 
-   ST_Distance(left.the_geometry, right.the_geometry) < {meters}
-\end{lstlisting}
-\end{frame}
 
 
 
 
 
-\frame
-{
-  \frametitle{Future work}
-  \begin{itemize}
-  \item Relax zoom-consistency: \emph{min} and \emph{max} zoom-level for records)
-  \item Extend work with \emph{aggregation} in language (semantics) and algorithm (implementation)
-  \item Implement compilation of CVL to a distributed database dialect
-  \end{itemize}
-}
 
 \frame
 {

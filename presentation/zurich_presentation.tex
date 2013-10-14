@@ -40,7 +40,7 @@
   \frametitle{Motivation for generalization}
   \begin{itemize}
   \item \textbf{Imagine}: you're a \emph{journalist} and want to tell a story about restaurants in Z\"{u}rich \emph{using a map}.
-  \item \textbf{Example}: You have a \emph{database} of restaurants (location, star rating, name etc.)
+  \item \textbf{Example}: You have a \emph{database} of restaurants (unique ID, location, star rating, name etc.)
   \item Simply showing all the records creates a mess
   \item What to do? (answer: \emph{generalization})
   \end{itemize}
@@ -50,7 +50,7 @@
 % Setting stage
 \frame[t]
 {
-  \frametitle{What a good map looks like}
+  \frametitle{What a good (thematic) map looks like}
 \begin{columns}[t]
 	\begin{column}[l]{6cm}
 		\begin{itemize}[<+->]
@@ -76,8 +76,13 @@
 % Motivation
 \frame
 {
-  \frametitle{A Language for Generalization?}  
-  We designed a small \emph{programming language} for generalization...  
+  \frametitle{A new language for generalization?}
+  \begin{itemize}[<+->]
+  \item We designed a small \emph{programming language} for generalizing thematic data, e.g. points of interest, hiking paths, nature observations etc. 
+  \item Simple enough that it could be used by a non-programmer, e.g. a journalist or non-technical scientist
+  \item It was designed for quick creation of thematic maps and to work with both point, linestring and polygon data at multiple scales
+  \item It has two statements: \texttt{GENERALIZE} and \texttt{CREATE CONSTRAINT}
+  \end{itemize}
 }
 
 % Introduce syntax
@@ -110,16 +115,16 @@ SUBJECT TO proximity 10 AND density 64
 % Explain problem
 \frame
 {
-  \frametitle{Result of \texttt{GENERALIZE} statement}
+  \frametitle{Solution}
   \begin{itemize}
-  \item Compute \emph{output table} with a \texttt{min\_zoom} column added to each record in \emph{input table}
-  \item Value of \texttt{min\_zoom} is the zoom level at which a given record becomes visible in the map (when zooming in)
-  \item An optimal solution minimizes the combined weight of non-visible records over all zoom levels
-  \item Spatial constraints must be satisfied on each zoom level (generally forcing records to become non-visible)
+  \item The solution is an output table with a \texttt{min\_zoom} column added to every record in input table
+  \item A record is visible in a map if its \texttt{min\_zoom} is less than or equal to current zoom
+  \item \textbf{Feasible solution}: Visible records satisfy all constraints (e.g. proximity) on all zoom-levels
+  \item \textbf{Optimal solution} The combined weight of non-visible records on all zoom levels is minimized
   \end{itemize}
   \begin{center}
   % Note add +w to levels where record is missing
-  \fbox{\includegraphics[scale=0.35]{figs/cvl-problem.pdf}}
+  \fbox{\includegraphics[scale=0.30]{figs/cvl-problem.pdf}}
   \end{center}
 }
 
@@ -141,10 +146,10 @@ AND <constr> <parameters>
 AND ...
 \end{lstlisting}    
 \begin{itemize}
-\item Makes \emph{explicit} the \underline{constraints} and \underline{record ranking}
+\item Makes \emph{explicit} the \underline{constraints} and \underline{record ranking} of the generalization problem
 \item Makes \emph{implicit} the \underline{algorithm} for computing a solution
 \item Language is \emph{limited by design}, i.e. \underline{easy to use}
-\item Allows transforming to underlying \underline{optimization problem}
+\item Allows transformation to an \underline{optimization problem} and reuse of \underline{existing algorithms}
 \end{itemize}
 \end{frame}
 
@@ -152,10 +157,11 @@ AND ...
 % Explain constraints
 \frame
 {
-  \frametitle{Semantics of spatial constraints (examples)}
+  \frametitle{What are spatial constraints?}
   \begin{itemize}
   \item \textbf{Proximity constraint}: Any pair of objects must be separated by minimum distance measured in pixels on screen
   \item \textbf{Density\footnote{Called \emph{visibility constraint} in our paper because it references prior work~\cite{fusiontables})} constraint}: At most $K$ distinct objects may be visible within a tile of $256 \times 256$ pixels
+  \item Users can define these using special syntax
   \end{itemize}
   \begin{center}
   \begin{figure}
@@ -166,26 +172,8 @@ AND ...
   \end{center}
 }
 
-% Abstract view of constraints
-\frame
-{
-  \frametitle{Conflicts and conflict resolution}
-  \begin{itemize}
-  \item \textbf{Conflict}: Any \emph{subset of records} that violate a spatial constraint
-  \item \textbf{Resolving conflicts}: Filter out some of these records; set \texttt{min\_zoom} to previous (higher) zoom level
-  \item \textbf{Feasible map}: A map where there are no conflicts on any zoom level
-  \item \textbf{Optimal map}: A feasible map where the combined weight of non-visible records is minimum
-  \end{itemize}
-  \begin{center}
-  	\fbox{\includegraphics[scale=0.20]{figs/cvl-proximity-conflicts-2.pdf}} \fbox{\includegraphics[scale=.38]{figs/gladiators.jpg}} \fbox{\includegraphics[scale=.288]{figs/the-godfather-1.jpg}}
-  \end{center}
-  
-  
-}
-
-
 \begin{frame}[fragile]
-\frametitle{Creating constraints using CVL}
+\frametitle{CREATE CONSTRAINT statement}
 \begin{lstlisting}
 CREATE CONSTRAINT {Name, e.g. Proximity}
 AS NOT EXISTS
@@ -197,15 +185,32 @@ RESOLVE cid IF DELETE (
 \end{lstlisting}
 
 \begin{itemize}
-\item Select statement should return two result columns: \texttt{cid} (conflict ID) and \texttt{rid} (object ID)
-\item Evaluated for every zoom-level
-\item A conflict is consided \emph{resolved} if certain number of objects (in a given conflict) are filtered out on the given zoom-level
+\item The \texttt{AS NOT EXISTS} clause contains SQL to find all records that violate the constraint on a given zoom-level
+\item \texttt{RESOLVE IF DELETE} clause is used to indicate how many records in a conflict set must be filtered out to resolve a conflict
+\item If this is a bit abstract, let's try an example
 \end{itemize}
-
 \end{frame}
 
+% Abstract view of constraints
+\frame
+{
+  \frametitle{Some definitions}
+  \begin{itemize}
+  \item \textbf{Constraint}: Condition (usually spatial) that must hold for subsets of records in the database on all zoom levels
+  \item \textbf{Conflict}: Subset of records in database that violate a constraint, e.g. two records that are too close together
+  \item \textbf{Resolving conflicts}: Make some records non-visible by setting \texttt{min\_zoom} to previous lower zoom level
+  \end{itemize}
+  \begin{center}
+  \begin{figure}
+  	\fbox{\includegraphics[scale=0.20]{figs/cvl-proximity-conflicts-2.pdf}} \fbox{\includegraphics[scale=.38]{figs/gladiators.jpg}} \fbox{\includegraphics[scale=.288]{figs/the-godfather-1.jpg}}
+  	\caption{Resolving conflicts: Not always the survival of the most ``important'' record}
+  \end{figure}
+  \end{center}
+}
+
+
 \begin{frame}[fragile]
-\frametitle{Defining the proximity constraint (experts only)}
+\frametitle{Example: Proximity constraint}
 \begin{lstlisting}
 CREATE CONSTRAINT Proximity
 AS NOT EXISTS (
@@ -228,48 +233,52 @@ RESOLVE cid IF DELETE (
 
 \begin{frame}[fragile]
 \frametitle{Proximity constraint: the important part}
-\begin{itemize}
-\item The core of the proximity constraint is a two-way spatial join:
-\end{itemize}
 \begin{lstlisting}
 SELECT
    ...
 FROM 
-   ... left JOIN ... right
+   {level_view} left JOIN {level_view} right
 ON 
-   ST_Distance(left.the_geometry, right.the_geometry) < {meters}
+   ST_Distance(left.{geom}, right.{geom}) < CVL_Resolution({z}, 256) * {parameter_1}
 \end{lstlisting}
+\begin{itemize}
+\item The core of the proximity constraint is a two-way spatial join:
+\end{itemize}
+
 \end{frame}
 
+% Last slide
 
 \frame
 {
   \frametitle{Future work}
   \begin{itemize}
-  \item More consise/flexible ways to formulate constraints and objectives
-  \item Other modes of conflict resolution, e.g. aggregation
-  \item Improved algorithms for in-database evaluation
+  \item \textbf{Systems}: 
+  \begin{enumerate}
+    \item Map out design space of in-database generalization
+    \item Deeper understanding of connection between combinatorial optimization and relational algebra
+  \end{enumerate}
+  \item \textbf{Language}: 
+  \begin{enumerate}
+  	\item Discover success and shortcomings of approach in user tests
+  	\item Try other constraint and objective formulations
+  	\item Other ways to resolve conflicts (e.g. aggregation)
+  \end{enumerate}
+  \item \textbf{Compiler}: Optimize SQL code generation
+  \item \textbf{Algorithms}: Try other algorithms
   \end{itemize}
-}
-
-
-
-% Last slide
-
-
-\frame
-{
-  \frametitle{Conclusion}
+  
   \begin{center}
   \fbox{Thank you :-) }
   \end{center}
-  
-  \begin{itemize}
-  \item Bla bla
-  \item Bla bla
-  \item Bla bla
-  \end{itemize}
+
 }
+
+
+
+
+
+
 
 % OLD STUFF BELOW
 

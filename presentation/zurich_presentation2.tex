@@ -29,6 +29,7 @@
 \title{Declarative Cartography}
 \subtitle{In-Database Map Generalization of Spatial Datasets}
 \author{\underline{Pimin Konstantin Kefaloukos}, Marcos Vaz Salles, \\Martin Zachariasen\\ \small{\emph{Computer Science Department (DIKU)}, \textbf{University of Copenhagen}}}
+
 \date{\today}
 
 \begin{document}
@@ -91,12 +92,12 @@
 
 \frame[t]
 {
-  \frametitle{External software}
+  \frametitle{Situation}
 	\begin{itemize}[<+->]
-		\item The ``normal'' way is to pull the data out of the \emph{database}
-		\item Process the data in external software, i.e. implement generalization algorithms
-		\item Put the data back into the database when done
-		\item \emph{Several drawbacks}: re-inventing the wheel, memory and bandwidth limits, serialization costs, deployment
+		\item Normally data is pulled out of the \emph{database} for processing tasks like generalization
+		\item Generalization algorithms are usually implemented in external software
+		\item After the processing is done the data is put back into the database
+		\item \emph{Several drawbacks}: re-inventing the wheel, memory and bandwidth limits, development and deployment costs, 
 	\end{itemize}
 	\begin{center}
 	\begin{figure}
@@ -110,11 +111,11 @@
 
 \frame[t]
 {
-  \frametitle{Code-to-data}
+  \frametitle{Why not use the database itself?}
 	\begin{itemize}[<+->]
-		\item Instead, what if we stated intensions in a high-level generalization language
-		\item Transformed the high-level statement into a database executable program
-		\item And moved ``code-to-data'' instead of ``data-to-code''
+		\item Instead, we state generalization in terms of a high-level language
+		\item The language is translated to a low-level database program
+		\item We move code-to-data instead of moving data-to-code
 
 	\end{itemize}
 	\begin{center}
@@ -129,9 +130,9 @@
 
 \frame[t]
 {
-  \frametitle{Code-to-data}
+  \frametitle{In-database processing}
 	\begin{itemize}
-		\item Approach exploits capabilities of spatial databases
+		\item The low-level program can of course exploit capabilities of spatial databases, such as indexing and spatial functions
 	\end{itemize}
 	\begin{center}
 	\begin{figure}
@@ -144,20 +145,19 @@
 {
   \frametitle{The language}
 	\begin{itemize}[<+->]
-		\item What does the high-level language look like?
-	\begin{center}
-	\begin{figure}
-    		\includegraphics[scale=0.4]{figs/cvl-intensions-only.pdf}
-	\end{figure}
-	\end{center}                     
-	\item The language has a \texttt{GENERALIZE} statement and a \texttt{CREATE CONSTRAINT} statement
-	\item (next) Using the \texttt{GENERALIZE} statement on a database table called \emph{restaurants}
+		\item High-level language has a \texttt{GENERALIZE} statement and a \texttt{CREATE CONSTRAINT} statement
+		\item The \texttt{GENERALIZE} statement produces a generalized database table from a table of base data
+		\item The \texttt{CREATE CONSTRAINT} statement is used to define new spatial constraints, e.g. proximity
+		\item The table produced by \texttt{GENERALIZE} has a \texttt{min\_zoom} column added to all records
 	\end{itemize}
+	\begin{center}
+  		\fbox{\includegraphics[scale=0.30]{figs/cvl-problem.pdf}}
+  	\end{center}
 }
 
 % Introduce syntax
 \begin{frame}[fragile,t]
-  \frametitle{GENERALIZE statement}
+  \frametitle{Language example}
   \begin{description}[<+->]
   \item
   \begin{lstlisting}
@@ -181,5 +181,46 @@ SUBJECT TO proximity 10 AND density 64
 \end{lstlisting}    
   \end{description}
 \end{frame}
+
+% Introduce syntax
+\begin{frame}[fragile,t]
+  \frametitle{Language example}
+  \begin{itemize}
+  \item Result of generalization viewed at zoom-level 16
+  \end{itemize}
+  \begin{center}
+  	\includegraphics[scale=0.30]{figs/zoom16.pdf}
+  \end{center}
+
+\end{frame}
+
+
+\frame[t]
+{
+  \frametitle{Computing solutions}
+	\begin{itemize}[<+->]
+	\item Combination of record weights and spatial constraints (proximity, density) present a natural optimization problem
+	\item Represent generalization problem as instances of set multicover problem (SMP)
+	\item Reuse existing algorithms for SMP (database implementations)
+	\item Solution to SMP $\rightarrow$ records that should be filtered out at given zoom level
+	\end{itemize}
+	\begin{center}
+  		\includegraphics[scale=0.70]{figs/cvl-spatial-to-nonspatial.pdf}
+  	\end{center}
+}
+
+\frame[t]
+{
+  \frametitle{Computing solutions}
+	\begin{itemize}[<+->]
+	\item Combination of record weights and spatial constraints (proximity, density) present a natural optimization problem
+	\item Represent generalization problem as instances of set multicover problem (SMP)
+	\item Reuse existing algorithms for SMP (database implementations)
+	\item Solution to SMP $\rightarrow$ records that should be filtered out at given zoom level
+	\end{itemize}
+	\begin{center}
+  		\includegraphics[scale=0.70]{figs/cvl-spatial-to-nonspatial.pdf}
+  	\end{center}
+}
 
 \end{document}

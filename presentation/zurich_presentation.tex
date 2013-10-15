@@ -37,12 +37,12 @@
 
 \frame
 {
-  \frametitle{Motivation for generalization}
+  \frametitle{Motivation}
   \begin{itemize}
   \item \textbf{Imagine}: you're a \emph{journalist} and want to tell a story about restaurants in Z\"{u}rich \emph{using a map}.
-  \item \textbf{Example}: You have a \emph{database} of restaurants (unique ID, location, star rating, name etc.)
-  \item Simply showing all the records creates a mess
-  \item What to do? (answer: \emph{generalization})
+  \item \textbf{Database}: You have a \emph{database} of restaurants (unique ID, location, star rating, name etc.)
+  \item Simply showing all the records creates a mess (see picture)
+  \item \textbf{Generalization}: It would be nice if the database could generalize the data for you!
   \end{itemize}
   \includegraphics[scale=0.5]{figs/spatial-database-with-points.pdf} \includegraphics[scale=0.18]{figs/zurich-unfiltered.pdf}
 }
@@ -50,7 +50,7 @@
 % Setting stage
 \frame[t]
 {
-  \frametitle{What a good (thematic) map looks like}
+  \frametitle{What a good (thematic) map might look like}
 \begin{columns}[t]
 	\begin{column}[l]{6cm}
 		\begin{itemize}[<+->]
@@ -58,6 +58,7 @@
 			\item ``Important'' records should get priority
 			\item Visible records should \emph{remain visible} when zooming in
 			\item There should be some way of controlling \emph{layout}
+			\item It would be nice if you get state all these things in an \underline{easy way}
 		\end{itemize}
 	\end{column}
 	\begin{column}[l]{6cm}
@@ -65,9 +66,8 @@
         \includegraphics<1>[scale=0.18]{figs/zoom12.pdf}
         \includegraphics<2>[scale=0.18]{figs/zoom13.pdf}
         \includegraphics<3>[scale=0.18]{figs/zoom14.pdf}
-        \includegraphics<4>[scale=0.18]{figs/zoom16.pdf}
-        %\includegraphics<4>[scale=0.18]{figs/zoom15.pdf}
-        %\includegraphics<5>[scale=0.18]{figs/zoom16.pdf}
+        \includegraphics<4>[scale=0.18]{figs/zoom15.pdf}
+        \includegraphics<5>[scale=0.18]{figs/zoom16.pdf}
     \end{figure}                            
 \end{column}
 \end{columns}
@@ -78,14 +78,12 @@
 {
   \frametitle{A new language for generalization?}
   \begin{itemize}[<+->]
-  \item We designed a small \emph{programming language} for generalizing thematic data, e.g. tourist attractions, hiking paths, nature observations etc.
-  \item Sprinkled a little bit of SQL on top for extensibility
-  \begin{center}
-  \includegraphics[scale=0.18]{figs/sprinkle.jpg}
-  \end{center}
-  \item Made it simple enough to be used by a non-programmers
-  \item And optimized it for quick creation of thematic maps (point, linestring and polygon data)
-  \item It has two statements: \texttt{GENERALIZE} and \texttt{CREATE CONSTRAINT}
+  \item We designed a small \emph{declarative language} for generalization
+  \item Target is thematic overlays, e.g. tourist attractions, hiking paths, nature observations
+  \item Assumes that good background maps are available
+  \item Simple enough to be used by a non-programmers
+  \item Can be extended by programmers
+  \item It feels a bit like having a conversation with the database...
   \end{itemize}
 }
 
@@ -131,22 +129,21 @@ AND <constr> <parameters>
 AND ...
 \end{lstlisting}    
 \begin{itemize}
-\item Makes \emph{explicit} the \underline{record weights} and \underline{constraints}
+\item Makes \emph{explicit} the things a non-programmer would know about, i.e. \underline{weights} and \underline{map constraints})
 \item Makes \emph{implicit} the \underline{algorithm} for computing a solution
-\item Language is \emph{limited by design}, i.e. \underline{easy to use}
-\item Allows transformation to an \underline{optimization problem} and reuse of \underline{existing algorithms}
 \end{itemize}
 \end{frame}
 
 % Explain problem
 \frame
 {
-  \frametitle{What is a valid solution?}
+  \frametitle{Result of generalization}
   \begin{itemize}
-  \item The solution is an output table with a \texttt{min\_zoom} column added to every record in input table, simple as that!
-  \item A record is visible in a map if its \texttt{min\_zoom} is less than or equal to current zoom
-  \item \textbf{Feasible solution}: Visible records satisfy all constraints (e.g. proximity) on all zoom-levels
-  \item \textbf{Optimal solution} The combined weight of \emph{non}-visible records on all zoom levels is minimized
+  \item Assign \emph{metadata} to records, i.e. \texttt{min\_zoom} column
+  \item \texttt{min\_zoom} column: level when record should become \emph{visible} in the map
+  \item Assignment guided by \emph{constraints} and \emph{objective}
+  \item Constraints must be \emph{satisfied} by visible records on any given zoom level
+  \item Objective is to \emph{minimize} combined weight of \emph{non}-visible records on all zoom levels
   \end{itemize}
   \begin{center}
   % Note add +w to levels where record is missing
@@ -185,9 +182,10 @@ RESOLVE cid IF DELETE (
 \end{lstlisting}
 
 \begin{itemize}
-\item This syntax is used to create new constraints (experts only)
-\item The \texttt{AS NOT EXISTS} clause contains SQL to find all conflicting records and group them together by \emph{conflict ID}
+\item Programmers can use this syntax to create new constraints
+\item The \texttt{AS NOT EXISTS} clause contains SQL that finds all conflicting records and groups them together by \emph{conflict ID}
 \item \texttt{RESOLVE IF DELETE} clause is used to indicate how many records in a conflict group must be filtered out to resolve the conflict with the given ID
+\item The term \emph{conflict} means a subset of records that violate a constraint, e.g. a pair of records that are too close vis-a-vis the proximity constraint
 \end{itemize}
 \end{frame}
 
@@ -219,16 +217,18 @@ RESOLVE cid IF DELETE (
 \begin{frame}[fragile]
 \frametitle{Example: Proximity constraint}
 \begin{center}
-\fbox{Using spatial joins to evaluate proximity constraint}
+\fbox{The core of this constraint}
 \end{center}
 \begin{lstlisting}
 ...
 (
   SELECT
-     left.id || right.id AS cid, 
-     Unnest(array[left.id, right.id]) AS rid
+    left.id || right.id AS cid, 
+    Unnest(array[left.id, right.id]) AS rid
   FROM 
-     {level_view} left JOIN {level_view} right
+    {level_view} left
+  JOIN 
+    {level_view} right
   ON 
     ...
     ST_Distance(left.geom, right.geom) < CVL_Resolution({z}, 256) * {parameter_1}
@@ -237,13 +237,35 @@ RESOLVE cid IF DELETE (
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Unbound variables}
+\begin{lstlisting}
+...
+    {level_view}
+...    
+    {level_view}
+...
+    {z} ... {parameter_1}
+...
+\end{lstlisting}
+\begin{itemize}
+\item Variables in $\lbrace \rbrace$ are bound at runtime
+\item End users, e.g. data journalists, don't need to know about variables, i.e. not used in \texttt{GENERALIZE} statement
+\item Constraints are evaluated on every zoom level $\lbrace z \rbrace$
+\item The $\lbrace level\_view \rbrace$ contains the currently visible records
+\item A $\lbrace parameter\_n \rbrace$ is the $n$'th parameter passed to constraint in \texttt{SUBJECT TO} clause
+
+\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile,t]
   \frametitle{How to run CVL programs?}
   \begin{columns}[t]
 	\begin{column}[l]{5.5cm}
 		\begin{itemize}[<+->]
-  			\item Only parts of CVL can be executed in existing runtime (the parts that are SQL) 
-  			\item How do we execute the rest of CVL?
+			\item CVL contains part SQL and part \emph{non}-SQL
+  			\item SQL can be executed in spatial database 
+  			\item How do we execute the \emph{non}-SQL part of CVL?
   		\end{itemize}
 	\end{column}
 	\begin{column}[r]{5.5cm}
@@ -265,19 +287,22 @@ RESOLVE cid IF DELETE
   \frametitle{How to run CVL programs?}
   \begin{columns}[t]
 	\begin{column}[l]{5.5cm}
-		\begin{itemize}
-  			\item Only parts of CVL can be executed in existing runtime (the parts that are SQL) 
-  			\item How do we execute the rest of CVL?
-			\item We compile CVL $\rightarrow$ SQL and Stored Procedures and send to database for evaluation!
+		\begin{itemize}[<+->]
+			\item Compile CVL to \\$\langle$SQL + Stored Procedures$\rangle$
+			\item Send to spatial database for execution!
+			\item ``Send-code-to-data'' instead of ``send-data-to-code''
+			\item What is the content of\\ $\langle$SQL + Stored Procedures$\rangle$?
   		\end{itemize}
 	\end{column}
 	\begin{column}[r]{5.5cm}
+	    \begin{center}
+  		%\includegraphics[scale=0.2]{figs/light-bulb.png}
+  	    \end{center}
 	\end{column}
   \end{columns}
     \begin{center}
   \includegraphics[scale=0.3]{figs/indatabase-execution.pdf}
   \end{center}
-
 \end{frame}
 
 

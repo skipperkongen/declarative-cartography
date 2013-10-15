@@ -42,7 +42,7 @@
   \item \textbf{Imagine}: you're a \emph{journalist} and want to tell a story about restaurants in Z\"{u}rich \emph{using a map}.
   \item \textbf{Database}: You have a \emph{database} of restaurants (unique ID, location, star rating, name etc.)
   \item Simply showing all the records creates a mess (see picture)
-  \item Generalization of overlays is an important problem, with increasing use cases
+  \item Generalization of thematic data is an important problem, with increasing use cases in \emph{social networks}, \emph{data journalism} etc
   \end{itemize}
   \includegraphics[scale=0.5]{figs/spatial-database-with-points.pdf} \includegraphics[scale=0.18]{figs/zurich-unfiltered.pdf}
 }
@@ -66,7 +66,6 @@
         \includegraphics<2>[scale=0.18]{figs/zoom13.pdf}
         \includegraphics<3>[scale=0.18]{figs/zoom14.pdf}
         \includegraphics<4>[scale=0.18]{figs/zoom15.pdf}
-        \includegraphics<5>[scale=0.18]{figs/zoom16.pdf}
     \end{figure}                            
 \end{column}
 \end{columns}
@@ -113,9 +112,10 @@
 {
   \frametitle{Code-to-data}
 	\begin{itemize}[<+->]
-		\item Instead, state intensions in a high-level generalization language
-		\item Transform statement into a program that the database can execute
-		\item ``Code-to-data'' instead of ``data-to-code-and-back''
+		\item Instead, what if we stated intensions in a high-level generalization language
+		\item Transformed the high-level statement into a database executable program
+		\item And moved ``code-to-data'' instead of ``data-to-code''
+
 	\end{itemize}
 	\begin{center}
 	\begin{figure}
@@ -127,6 +127,58 @@
 }
 
 
+\frame[t]
+{
+  \frametitle{Code-to-data}
+	\begin{itemize}
+		\item Approach exploits capabilities of spatial databases
+	\end{itemize}
+	\begin{center}
+	\begin{figure}
+    		\includegraphics[scale=0.4]{figs/cvl-code-to-data-exploit.pdf}
+	\end{figure}       
+	\end{center}                     
+}
 
+\frame[t]
+{
+  \frametitle{The language}
+	\begin{itemize}[<+->]
+		\item What does the high-level language look like?
+	\begin{center}
+	\begin{figure}
+    		\includegraphics[scale=0.4]{figs/cvl-intensions-only.pdf}
+	\end{figure}
+	\end{center}                     
+	\item Has a \texttt{GENERALIZE} statement and a \texttt{CREATE CONSTRAINT} statement
+	\end{itemize}
+}
+
+% Introduce syntax
+\begin{frame}[fragile,t]
+  \frametitle{GENERALIZE statement}
+  \begin{description}[<+->]
+  \item
+  \begin{lstlisting}
+GENERALIZE restaurants 
+\end{lstlisting}
+  \item
+\begin{lstlisting}
+TO restaurants2
+\end{lstlisting}
+  \item
+\begin{lstlisting}
+AT 20 ZOOM LEVELS
+\end{lstlisting}
+  \item
+\begin{lstlisting}
+WEIGH BY star_rating
+\end{lstlisting}
+  \item
+\begin{lstlisting}    
+SUBJECT TO proximity 10 AND density 64
+\end{lstlisting}    
+  \end{description}
+\end{frame}
 
 \end{document}

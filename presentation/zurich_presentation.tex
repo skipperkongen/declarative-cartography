@@ -131,7 +131,7 @@ AND <constr> <parameters>
 AND ...
 \end{lstlisting}    
 \begin{itemize}
-\item Makes \emph{explicit} the \underline{constraints} and \underline{record ranking} of the generalization problem
+\item Makes \emph{explicit} the \underline{record weights} and \underline{constraints}
 \item Makes \emph{implicit} the \underline{algorithm} for computing a solution
 \item Language is \emph{limited by design}, i.e. \underline{easy to use}
 \item Allows transformation to an \underline{optimization problem} and reuse of \underline{existing algorithms}
@@ -141,9 +141,9 @@ AND ...
 % Explain problem
 \frame
 {
-  \frametitle{Solution}
+  \frametitle{What is a valid solution?}
   \begin{itemize}
-  \item The solution is an output table with a \texttt{min\_zoom} column added to every record in input table
+  \item The solution is an output table with a \texttt{min\_zoom} column added to every record in input table, simple as that!
   \item A record is visible in a map if its \texttt{min\_zoom} is less than or equal to current zoom
   \item \textbf{Feasible solution}: Visible records satisfy all constraints (e.g. proximity) on all zoom-levels
   \item \textbf{Optimal solution} The combined weight of \emph{non}-visible records on all zoom levels is minimized
@@ -157,10 +157,10 @@ AND ...
 % Explain constraints
 \frame
 {
-  \frametitle{What are spatial constraints?}
+  \frametitle{What are constraints?}
   \begin{itemize}
   \item \textbf{Proximity constraint}: Any pair of objects must be separated by minimum distance measured in pixels on screen
-  \item \textbf{Density\footnote{Called \emph{visibility constraint} in our paper because it references prior work~\cite{fusiontables})} constraint}: At most $K$ distinct objects may be visible within a tile of $256 \times 256$ pixels
+  \item \textbf{Density constraint}: At most $K$ distinct objects may be visible within a tile of $256 \times 256$ pixels
   \item Users can define these constraints using special syntax (introduced next)
   \end{itemize}
   \begin{center}
@@ -185,36 +185,19 @@ RESOLVE cid IF DELETE (
 \end{lstlisting}
 
 \begin{itemize}
-\item This syntax is used to create new constraints
-\item The \texttt{AS NOT EXISTS} clause contains SQL to find all conflicting records and group them together
-\item \texttt{RESOLVE IF DELETE} clause is used to indicate how many records in a conflict set must be filtered out to resolve a conflict
+\item This syntax is used to create new constraints (experts only)
+\item The \texttt{AS NOT EXISTS} clause contains SQL to find all conflicting records and group them together by \emph{conflict ID}
+\item \texttt{RESOLVE IF DELETE} clause is used to indicate how many records in a conflict group must be filtered out to resolve the conflict with the given ID
 \end{itemize}
 \end{frame}
-
-% Abstract view of constraints
-\frame
-{
-  \frametitle{Constraints generate conflicts that must be resolved}
-  \begin{itemize}
-  \item \textbf{Constraint}: Condition (usually spatial) that must hold for subsets of records in the database on all zoom levels
-  \item \textbf{Conflict}: Subset of records in database that violate a constraint, e.g. two records that are too close together
-  \item \textbf{Resolving conflicts}: Make some records non-visible by setting \texttt{min\_zoom} to previous lower zoom level
-  \end{itemize}
-  \begin{center}
-  \begin{figure}
-  	\fbox{\includegraphics[scale=0.20]{figs/cvl-proximity-conflicts-2.pdf}} \fbox{\includegraphics[scale=.38]{figs/gladiators.jpg}} \fbox{\includegraphics[scale=.288]{figs/the-godfather-1.jpg}}
-  	\caption{Resolving conflicts: Not always the survival of the most ``important'' record}
-  \end{figure}
-  \end{center}
-}
-
 
 \begin{frame}[fragile]
 \frametitle{Example: Proximity constraint}
 \begin{lstlisting}
 CREATE CONSTRAINT Proximity
 AS NOT EXISTS (
-  SELECT l.id || r.id AS cid, Unnest(array[l.id, r.id]) AS rid
+  SELECT l.id || r.id AS cid, 
+    Unnest(array[l.id, r.id]) AS rid
   FROM
     {level_view} l JOIN {level_view} r
   ON
@@ -234,18 +217,69 @@ RESOLVE cid IF DELETE (
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Finding conflicts: Distance join}
-(Simplified proximity constraint)
+\frametitle{Example: Proximity constraint}
+\begin{center}
+\fbox{Using spatial joins to evaluate proximity constraint}
+\end{center}
 \begin{lstlisting}
-SELECT
-   left.id || right.id AS cid, 
-   Unnest(array[left.id, right.id]) AS rid
-FROM 
-   {level_view} left JOIN {level_view} right
-ON 
-   ST_Distance(left.geom, right.geom) < CVL_Resolution({z}, 256) * {parameter_1}
+...
+(
+  SELECT
+     left.id || right.id AS cid, 
+     Unnest(array[left.id, right.id]) AS rid
+  FROM 
+     {level_view} left JOIN {level_view} right
+  ON 
+    ...
+    ST_Distance(left.geom, right.geom) < CVL_Resolution({z}, 256) * {parameter_1}
+)
+...
 \end{lstlisting}
 \end{frame}
+
+\begin{frame}[fragile,t]
+  \frametitle{How to run CVL programs?}
+  \begin{columns}[t]
+	\begin{column}[l]{5.5cm}
+		\begin{itemize}[<+->]
+  			\item Only parts of CVL can be executed in existing runtime (the parts that are SQL) 
+  			\item How do we execute the rest of CVL?
+  		\end{itemize}
+	\end{column}
+	\begin{column}[r]{5.5cm}
+\begin{lstlisting}[escapechar=@]
+GENERALIZE @$\lbrace SQL \rbrace$@ 
+...
+WEIGH BY @$\lbrace SQL \rbrace$@
+...
+AS NOT EXISTS
+@$\lbrace SQL \rbrace$@
+RESOLVE cid IF DELETE 
+@$\lbrace SQL \rbrace$@
+\end{lstlisting}
+	\end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile,t]
+  \frametitle{How to run CVL programs?}
+  \begin{columns}[t]
+	\begin{column}[l]{5.5cm}
+		\begin{itemize}
+  			\item Only parts of CVL can be executed in existing runtime (the parts that are SQL) 
+  			\item How do we execute the rest of CVL?
+			\item We compile CVL $\rightarrow$ SQL and Stored Procedures and send to database for evaluation!
+  		\end{itemize}
+	\end{column}
+	\begin{column}[r]{5.5cm}
+	\end{column}
+  \end{columns}
+    \begin{center}
+  \includegraphics[scale=0.3]{figs/indatabase-execution.pdf}
+  \end{center}
+
+\end{frame}
+
 
 % Last slide
 
@@ -267,17 +301,10 @@ ON
   \item \textbf{Compiler}: Optimize SQL code generation
   \item \textbf{Algorithms}: Try other algorithms
   \end{itemize}
-  
   \begin{center}
   \fbox{Thank you :-) }
   \end{center}
-
 }
-
-
-
-
-
 
 
 % OLD STUFF BELOW
@@ -370,7 +397,6 @@ SUBJECT TO
   \end{center}
 }
 
-
 %\frame
 %{
 %  \frametitle{Relation to Reverse Data Management}
@@ -396,11 +422,6 @@ SUBJECT TO
 }
 
 
-
-
-
-
-
 \frame
 {
   \frametitle{Conflict sets}
@@ -418,9 +439,7 @@ SUBJECT TO
 \frame
 {
   \frametitle{Single-scale filtering problem $\Leftrightarrow$ Set multicover problem}
-
   For each zoom-level we seek an optimal solution:
-
   \begin{itemize}
   \item \textbf{Set cover problem}: Given a universe $U$ of elements and a set $S$ of subsets of $U$, a \emph{cover} is a set $Q \subseteq S$ such that the union of $Q$ equals $U$.
   \item \textbf{Set multicover problem}: Each element in $e \in U$ has to be covered multiple times by $Q$.
@@ -431,7 +450,6 @@ SUBJECT TO
 
 \begin{frame}[fragile]
 \frametitle{Declarative Language for Generalization (CVL)}
-
 \begin{itemize}
 \item Language has two statements: \emph{Generalize} and \emph{Create Constraint}
 \item A \emph{Generalize} statement can reference constraints defined in a \emph{Create Constraint} statement
@@ -452,20 +470,13 @@ SUBJECT TO
    proximity 10 AND
    visibility 64
 \end{lstlisting}
-
 \begin{itemize}
 \item \texttt{restaurants} is an existing database table
 \item \texttt{restaurants\_generalized} will be computed  
 \item \texttt{star\_rating} used as object weight (any valid SQL expression)
 \item \texttt{proximity} and \texttt{visibility} references constraints
 \end{itemize}
-
 \end{frame}
-
-
-
-
-
 
 
 \frame
@@ -524,6 +535,22 @@ SUBJECT TO
   \end{itemize}
 }
 
+% Abstract view of constraints
+\frame
+{
+  \frametitle{Constraints generate conflicts that must be resolved}
+  \begin{itemize}
+  \item \textbf{Constraint}: Condition (usually spatial) that must hold for subsets of records in the database on all zoom levels
+  \item \textbf{Conflict}: Subset of records in database that violate a constraint, e.g. two records that are too close together
+  \item \textbf{Resolving conflicts}: Make some records non-visible by setting \texttt{min\_zoom} to previous lower zoom level
+  \end{itemize}
+  \begin{center}
+  \begin{figure}
+  	\fbox{\includegraphics[scale=0.20]{figs/cvl-proximity-conflicts-2.pdf}} \fbox{\includegraphics[scale=.38]{figs/gladiators.jpg}} \fbox{\includegraphics[scale=.288]{figs/the-godfather-1.jpg}}
+  	\caption{Resolving conflicts: Not always the survival of the most ``important'' record}
+  \end{figure}
+  \end{center}
+}
 
 
 

@@ -147,8 +147,8 @@
 	\begin{itemize}[<+->]
 		\item High-level language has a \texttt{GENERALIZE} statement and a \texttt{CREATE CONSTRAINT} statement
 		\item The \texttt{GENERALIZE} statement produces a generalized database table from a table of base data
+		\item Generalized table has a \texttt{min\_zoom} column
 		\item The \texttt{CREATE CONSTRAINT} statement is used to define new spatial constraints, e.g. proximity
-		\item The table produced by \texttt{GENERALIZE} has a \texttt{min\_zoom} column added to all records
 	\end{itemize}
 	\begin{center}
   		\fbox{\includegraphics[scale=0.30]{figs/cvl-problem.pdf}}
@@ -157,7 +157,7 @@
 
 % Introduce syntax
 \begin{frame}[fragile,t]
-  \frametitle{Language example}
+  \frametitle{Example usage}
   \begin{description}[<+->]
   \item
   \begin{lstlisting}
@@ -178,31 +178,59 @@ WEIGH BY star_rating
   \item
 \begin{lstlisting}    
 SUBJECT TO proximity 10 AND density 64
-\end{lstlisting}    
+\end{lstlisting}
+  \item
+    \begin{center}
+  	\includegraphics[scale=0.15]{figs/zoom16.pdf}
+  \end{center}
   \end{description}
 \end{frame}
 
-% Introduce syntax
-\begin{frame}[fragile,t]
-  \frametitle{Language example}
-  \begin{itemize}
-  \item Result of generalization viewed at zoom-level 16
-  \end{itemize}
-  \begin{center}
-  	\includegraphics[scale=0.30]{figs/zoom16.pdf}
-  \end{center}
-
+\begin{frame}[fragile]
+\frametitle{CREATE CONSTRAINT statement}
+\begin{lstlisting}
+CREATE CONSTRAINT {name}
+AS NOT EXISTS
+  {SQL select statement}
+  
+RESOLVE cid IF DELETE (
+  {integer expression}
+)
+\end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Example usage}
+\begin{lstlisting}
+CREATE CONSTRAINT Proximity
+AS NOT EXISTS (
+  SELECT l.id || r.id AS cid, 
+    Unnest(array[l.id, r.id]) AS rid
+  FROM
+    {level_view} l JOIN {level_view} r
+  ON
+    l.id < r.id
+  AND
+    l.geom && ST_Expand(r.geom, 
+      CVL_Resolution({z}, 256) * {parameter_1})
+  AND
+    ST_Distance(l.geom, r.geom) < 
+      CVL_Resolution({z}, 256) * {parameter_1}
+)
+
+RESOLVE cid IF DELETE (
+  1
+)
+\end{lstlisting}
+\end{frame}
 
 \frame[t]
 {
   \frametitle{Computing solutions}
 	\begin{itemize}[<+->]
 	\item Combination of record weights and spatial constraints (proximity, density) present a natural optimization problem
-	\item Represent generalization problem as instances of set multicover problem (SMP)
+	\item Mapping to set multicover problem (SMP)
 	\item Reuse existing algorithms for SMP (database implementations)
-	\item Solution to SMP $\rightarrow$ records that should be filtered out at given zoom level
 	\end{itemize}
 	\begin{center}
   		\includegraphics[scale=0.70]{figs/cvl-spatial-to-nonspatial.pdf}
@@ -213,8 +241,8 @@ SUBJECT TO proximity 10 AND density 64
 {
   \frametitle{Computing solutions}
 	\begin{itemize}[<+->]
-	\item Use auto-generated SQL queries to find records that violate constraints (conflict sets)
-	\item For each conflict set filter out some number of records to resolve conflict
+	\item Use auto-generated SQL queries to find records that violate constraints, i.e. find conflict sets
+	\item Resolve conflicts by filtering out some records
 	\item Minimize combined weight of records that are filtered out over all zoom levels
 	\end{itemize}
 	

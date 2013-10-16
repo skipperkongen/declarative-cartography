@@ -58,15 +58,19 @@
 			\item Records should appear \emph{gradually} when zooming in, i.e. \emph{constant information~density}
 			\item ``Important'' records should get priority
 			\item Visible records should \emph{remain visible} when zooming in
-			\item There should be some way of imposing \emph{constraints}
+			\item There should be some way of imposing \emph{constraints}, e.g. ``records not too close''
 		\end{itemize}
 	\end{column}
 	\begin{column}[l]{6cm}
     \begin{figure}
-    	\includegraphics<1>[scale=0.18]{figs/zoom12.pdf}
-        \includegraphics<2>[scale=0.18]{figs/zoom13.pdf}
-        \includegraphics<3>[scale=0.18]{figs/zoom14.pdf}
-        \includegraphics<4>[scale=0.18]{figs/zoom15.pdf}
+    	\vspace{-1.5em}
+	After generalization: \\
+    	\includegraphics<1>[scale=0.17]{figs/zoom12.pdf}
+        \includegraphics<2>[scale=0.17]{figs/zoom13.pdf}
+        \includegraphics<3>[scale=0.17]{figs/zoom14.pdf}
+        \includegraphics<4>[scale=0.17]{figs/zoom15.pdf}\\
+        Before generalization:\\
+        \includegraphics[scale=0.13]{figs/zurich-unfiltered.pdf}\\
     \end{figure}                            
 \end{column}
 \end{columns}
@@ -95,50 +99,44 @@
 {
   \frametitle{Situation}
 	\begin{itemize}[<+->]
-		\item Normally data is \emph{pulled out} of the database for processing tasks like generalization
-		\item Generalization algorithms are usually implemented in external software
-		\item After the processing is done the data is put back into the database
-		\item \emph{Several drawbacks}: re-inventing the wheel, memory and bandwidth limits, development and deployment costs, 
+		\item Generalization algorithms are usually implemented in \emph{external software}
+		\item After processing the data is put back into the database
+		\item Treats the database as ``dumb'' storage
+		\item But remember, databases are really quite powerful
 	\end{itemize}
 	\begin{center}
 	\begin{figure}
     		\includegraphics<1>[scale=0.3]{figs/cvl-external-software-out.pdf}
-    		\includegraphics<2>[scale=0.3]{figs/cvl-external-software-proc.pdf}
-		\includegraphics<3>[scale=0.3]{figs/cvl-external-software-in.pdf}
-		\includegraphics<4>[scale=0.3]{figs/cvl-external-software-rest.pdf}
+		\includegraphics<2>[scale=0.3]{figs/cvl-external-software-in.pdf}
+		\includegraphics<3>[scale=0.3]{figs/cvl-external-software-rest.pdf}
+		\includegraphics<4>[scale=0.3]{figs/cvl-powerful-database-2.pdf}
 	\end{figure}       
 	\end{center}                     
 }
+
+\frame{
+	\frametitle{Recycle technology}
+	\begin{center}
+	\includegraphics[scale=0.88]{figs/wall-e.jpg}
+	\end{center}
+}
+
 
 \frame[t]
 {
   \frametitle{Why not use the database itself?}
 	\begin{itemize}[<+->]
-		\item Instead, we will state generalization in terms of a high-level programming language
-		\item High-level programs are translated (compiled) to low-level database programs
-		\item We move code-to-data instead of moving data-to-code
+		\item Why not state goals for generalization in a ``high-level'' language?
+		\item Translate high-level program to low-level database program
+		\item Moving \textbf{code-to-data} instead of data-to-code
+		\item Use the database as runtime for generalization
 
 	\end{itemize}
 	\begin{center}
 	\begin{figure}
     		\includegraphics<1>[scale=0.3]{figs/cvl-state-intension.pdf}
     		\includegraphics<2>[scale=0.3]{figs/cvl-compile-statement.pdf}
-		\includegraphics<3>[scale=0.3]{figs/cvl-code-to-data.pdf}
-	\end{figure}       
-	\end{center}                     
-}
-
-
-\frame[t]
-{
-  \frametitle{In-database processing}
-	\begin{itemize}[<+->]
-		\item The low-level program can of course exploit capabilities of spatial databases, such as indexing and spatial functions
-		\item What exactly do we mean by generalization?
-	\end{itemize}
-	\begin{center}
-	\begin{figure}
-    		\includegraphics[scale=0.4]{figs/cvl-code-to-data-exploit.pdf}
+		\includegraphics<3,4>[scale=0.3]{figs/cvl-code-to-data.pdf}
 	\end{figure}       
 	\end{center}                     
 }
@@ -148,9 +146,9 @@
   \frametitle{What we mean by generalization}
 	\begin{itemize}[<+->]
 		\item \textbf{Input}: table with \texttt{ID}, \texttt{Geometry} and additional columns
-		\item \textbf{Output}: input table extended with \texttt{MinZoom} column
+		\item \textbf{Output (generalized)} : input table extended with \texttt{MinZoom} column
 		\item Value of \texttt{MinZoom} is the zoom level $z \in \lbrack 1, \mathcal{Z} \rbrack$ when a record becomes visible in the map
-		\item Any assignment of \texttt{MinZoom} corresponds to a particular generalization of the data
+		\item Assignment of values to \texttt{MinZoom} corresponds to a particular generalization of the data
 		\item $O(\mathcal{Z}^n)$ many ways to assign a value to \texttt{MinZoom} for $n$ records
 	\end{itemize}
 	\vspace{1em}
@@ -170,101 +168,254 @@
   	\end{columns}
 }
 
-\frame[t]
-{
-  \frametitle{Guiding the generalization}
-  \begin{itemize}[<+->]
-  \item All records in table are assigned a \emph{weight} representing their ``importance''
-  \item Visible records must satisfy \emph{spatial constraints}
-  \item Objective is to \emph{minimize} the combined weight of non-visible records (records filtered out to satisfy constraint)
-  \vspace{1em}
-  \end{itemize}
-  	\begin{columns}[t]
-		\begin{column}[l]{4cm}
-  		\includegraphics[scale=0.27]{figs/cvl-weight.pdf}
-		\end{column}
-		\begin{column}[r]{4cm}
-		\includegraphics<3>[scale=0.30]{figs/cvl-proximity.pdf}
-		\end{column} 
-  	\end{columns}
-
-}
-
-\frame{
-	\frametitle{Expressing generalization in a programming language}
-	\begin{itemize}[<+->]
-	\item How to formulate the task of generalizing data in the high and low-level languages?
-	\end{itemize}
-}
 
 % Introduce syntax
 \begin{frame}[fragile,t]
-  \frametitle{High-level language example}
+  \frametitle{High-level language: \texttt{GENERALIZE} statement}
+  \begin{center}
+  \fbox{Generalize statement}
+  \end{center}
   \begin{description}[<+->]
-  \item
+  \item[Input and output]:
   \begin{lstlisting}
 GENERALIZE restaurants 
-\end{lstlisting}
-  \item
-\begin{lstlisting}
 TO restaurants2
 \end{lstlisting}
-  \item
+  \item[How many zoom levels?]:
 \begin{lstlisting}
 AT 20 ZOOM LEVELS
 \end{lstlisting}
-  \item
+  \item[How should records be prioritized?]:
 \begin{lstlisting}
 WEIGH BY star_rating
 \end{lstlisting}
-  \item
+  \item[What spatial constraints should be enforced?]:
 \begin{lstlisting}    
 SUBJECT TO proximity 10 AND density 64
 \end{lstlisting}
-  \item
-    \begin{center}
-  	\includegraphics[scale=0.15]{figs/zoom16.pdf}
-  \end{center}
-  \end{description}
+\end{description}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{CREATE CONSTRAINT statement}
-\begin{lstlisting}
-CREATE CONSTRAINT {name}
-AS NOT EXISTS
-  {SQL select statement}
-  
-RESOLVE cid IF DELETE (
-  {integer expression}
-)
-\end{lstlisting}
-\end{frame}
+% Introduce syntax
+%\begin{frame}[fragile]
+%  \frametitle{Embedded SQL}
+%  \begin{center}
+%  \fbox{Generalize statement}
+%  \end{center}
+%  We reuse SQL as an embedded language to gain expressibility
+%  \vspace{1.5em}
+%  \begin{lstlisting}[escapechar=@]
+%GENERALIZE {@SQL FROM clause@} 
+%...
+%...
+%WEIGH BY {@float-valued SQL expression@}
+%...
+%\end{lstlisting}
+%\end{frame}
+
+
+%\begin{frame}[fragile]
+%\frametitle{High-level language: \texttt{CREATE CONSTRAINT}}
+%
+%  \begin{center}
+%  \fbox{Create constraint statement}
+%  \end{center}
+%
+%\begin{description}[<+->]
+%\item[Give the constraint a name]:
+%\begin{lstlisting}[escapechar=@]
+%CREATE CONSTRAINT {@name as string@}
+%\end{lstlisting}
+%\item[How is the constraint condition defined?]:
+%\begin{lstlisting}[escapechar=@]
+%AS NOT EXISTS
+%  {@SQL SELECT statement@}
+%\end{lstlisting}
+%\item[How to resolve with constraint violations?]:
+%\begin{lstlisting}[escapechar=@]
+%RESOLVE cid IF DELETE (
+%  {@SQL integer expression@}
+%)
+%\end{lstlisting}
+%\end{description}
+%\end{frame}
+
+\frame{
+	\frametitle{Constraints explained}
+	
+	\textbf{Example}: Proximity constraint
+	\vspace{0.5em}
+	\begin{itemize}[<+->]
+	\item Constraints defined by defining ``conflicts''
+	\item In this example, a conflict is a pair of records that are ``too close''
+	\item Resolve a conflict by ``deleting'' one or the other record
+	\vspace{0.5em}
+	\end{itemize}
+	\begin{center}
+  		\includegraphics[scale=0.35]{figs/cvl-proximity-conflicts-2.pdf}
+  	\end{center}
+
+}
+
+%\frame{
+%	\frametitle{Division of labour}
+%	\begin{itemize}[<+->]
+%	\item High-level program states just the desired outcome, similar to saying ``I'd like a cold beer and an umbrella''
+%	\item Low-level program has to make it happen, i.e. execute an appropriate algorithm, i.e. do the heavy lifting
+%	\end{itemize}
+%	\vspace{1em}
+%  	\begin{center}
+%  		\includegraphics<2>[scale=0.3]{figs/divisionoflabour2.jpg} \includegraphics<1,2>[scale=0.30]{figs/divisionoflabour1.jpg}
+%  	\end{center}
+%}
+
+
+%%%% THE END %%%%%%
+
+
+
+
+%\frame[t]
+%{
+%  \frametitle{In-database processing}
+%	\begin{itemize}[<+->]
+%		\item The low-level program can of course exploit capabilities of spatial databases, such as indexing and spatial functions
+%	\end{itemize}
+%	\begin{center}
+%	\begin{figure}
+%    		\includegraphics[scale=0.4]{figs/cvl-code-to-data-exploit.pdf}
+%	\end{figure}       
+%	\end{center}                     
+%}
+
+
+%\frame[t]
+%{
+%  \frametitle{The problem in a nutshell}
+%  \begin{itemize}[<+->]
+%  \item User assigns a \emph{weight} to records using an SQL expression
+%  \item User-defined \emph{spatial constraints} that apply are listed with parameters
+%  \item \emph{Minimize} combined weight of non-visible records
+%  \vspace{1em}
+%  \end{itemize}
+%  	\begin{columns}[t]
+%		\begin{column}[l]{5cm}
+%  		\includegraphics<1,2>[scale=0.385]{figs/cvl-weight.pdf}
+%		\end{column}
+%		\begin{column}[r]{4cm}
+%		\includegraphics<2>[scale=0.25]{figs/cvl-rules-rules.pdf}
+%		\end{column} 
+%  	\end{columns}
+%}
+
+
+
+
+%\frame{
+%	\frametitle{Expressing constraints in our programming language}
+%	\begin{itemize}[<+->]
+%	\item How to express constraints in the high-level language?
+%	\end{itemize}
+%	\begin{center}
+%	\includegraphics[scale=0.3]{figs/divisionoflabour2.jpg}
+%	\end{center}
+%}
+
+
+%\frame{
+%	\frametitle{Conflict sets}
+%	\begin{itemize}[<+->]
+%	\item Group violating records by  ``conflict set''
+%	\item Conflict set is subset of records that can not all be visible on same zoom level
+%	\item Some of these records must be filtered out
+%	\item Which ones is decided by an algorithm
+%	\end{itemize}
+%	\begin{center}
+%	\begin{figure}
+%    		\includegraphics[scale=0.3]{figs/cvl-proximity-conflicts-2.pdf}
+%	\end{figure}       
+%	\end{center}
+%}
 
 \begin{frame}[fragile]
-\frametitle{Example usage}
-\begin{lstlisting}
-CREATE CONSTRAINT Proximity
-AS NOT EXISTS (
-  SELECT l.id || r.id AS cid, 
-    Unnest(array[l.id, r.id]) AS rid
+\frametitle{High-level language: \texttt{CREATE CONSTRAINT} statement}
+\begin{lstlisting}[escapechar=@]
+CREATE CONSTRAINT Proximity @\pause@
+
+AS NOT EXISTS ( -- @reuse SQL to finds conflicts@ @\pause@
+  SELECT  
+    l.id || r.id AS conflictID, 
+    Unnest(array[l.id, r.id]) AS recordID @\pause@
   FROM
-    {level_view} l JOIN {level_view} r
+    {level_view} l JOIN {level_view} r @\pause@
   ON
-    l.id < r.id
+    l.id < r.id @\pause@
   AND
     l.geom && ST_Expand(r.geom, 
-      CVL_Resolution({z}, 256) * {parameter_1})
+      CVL_Resolution({z}, 256) * {parameter_1}) @\pause@
   AND
     ST_Distance(l.geom, r.geom) < 
-      CVL_Resolution({z}, 256) * {parameter_1}
-)
-
-RESOLVE cid IF DELETE (
-  1
-)
+      CVL_Resolution({z}, 256) * {parameter_1} 
+) @\pause@
+RESOLVE IF DELETE (1)
 \end{lstlisting}
 \end{frame}
+
+\frame[t]
+{
+	\frametitle{Correspondence to bi-partite graphs}
+	\begin{itemize}[<+->]
+	\item A record can be in several conflicts
+	\item A conflict involves several records
+	\item Corresponds to bi-partite graph:
+	\vspace{1em}
+	\begin{center}
+	\begin{figure}
+  		\includegraphics[scale=0.8]{figs/cvl-bipartite-graph.pdf}
+	\caption{Correspondence between conflicts and bi-partite graphs}
+	\end{figure}
+  	\end{center}
+	\end{itemize}
+}
+
+\frame[t]
+{
+	\frametitle{Compute solution on bi-partite graphs}
+	\begin{itemize}[<+->]
+	\item Records have weights (e.g. restaurant star-rating)
+	\item Conflicts are resolved by ``deleting'' records ($1$ for proximity constraint)
+	\item \textbf{Problem}: Pick records with minimum total weight on left \\s.t. conflicts on right resolved
+	\end{itemize}
+	\vspace{1em}
+	\begin{center}
+	\begin{figure}
+  		\includegraphics<1>[scale=0.8]{figs/cvl-bipartite-graph-weighted.pdf}
+		\includegraphics<2,3>[scale=0.8]{figs/cvl-bipartite-graph-weighted-b.pdf}
+		\includegraphics<4>[scale=0.8]{figs/cvl-bipartite-graph-weighted-2.pdf}
+	\caption{Bi-partite graph for proximity constraint}
+	\end{figure}
+  	\end{center}
+	
+
+}
+
+
+\frame[t]
+{
+  \frametitle{Computing solutions}
+	\begin{itemize}[<+->]
+	\item Use SQL from first part of constraint definition to find sets of violating records
+	\item Use SQL from second part of constraint definition to find out how many records should be filtered out
+	\item Use an algorithm to select the records
+	\end{itemize}
+	
+	\begin{center}
+	\begin{figure}
+  		\fbox{\includegraphics[scale=0.25]{figs/cvl-proximity-conflicts.pdf}}
+	\caption{Four conflict sets generated by a proximity constraint}
+	\end{figure}
+  	\end{center}
+}
 
 \frame[t]
 {
@@ -278,24 +429,6 @@ RESOLVE cid IF DELETE (
   		\includegraphics[scale=0.70]{figs/cvl-spatial-to-nonspatial.pdf}
   	\end{center}
 }
-
-\frame[t]
-{
-  \frametitle{Computing solutions}
-	\begin{itemize}[<+->]
-	\item Use auto-generated SQL queries to find records that violate constraints, i.e. find conflict sets
-	\item Resolve conflicts by filtering out some records
-	\item Minimize combined weight of records that are filtered out over all zoom levels
-	\end{itemize}
-	
-	\begin{center}
-	\begin{figure}
-  		\fbox{\includegraphics[scale=0.25]{figs/cvl-proximity-conflicts.pdf}}
-	\caption{Four conflict sets generated by a proximity constraint}
-	\end{figure}
-  	\end{center}
-}
-
 
 \frame[t]
 {

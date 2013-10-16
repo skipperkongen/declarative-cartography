@@ -363,24 +363,27 @@ RESOLVE IF DELETE (1)
 
 \frame[t]
 {
-	\frametitle{Correspondence to bi-partite graphs}
+	\frametitle{Compute solution using bi-partite graphs}
 	\begin{itemize}[<+->]
 	\item A record can be in several conflicts
 	\item A conflict involves several records
 	\item Corresponds to bi-partite graph:
+	\end{itemize}
 	\vspace{1em}
 	\begin{center}
 	\begin{figure}
-  		\includegraphics[scale=0.8]{figs/cvl-bipartite-graph.pdf}
+		\includegraphics<1,2>[scale=0.30]{figs/cvl-proximity-conflicts-1.pdf}
+  		\includegraphics<3>[scale=0.8]{figs/cvl-bipartite-graph.pdf}
 	\caption{Correspondence between conflicts and bi-partite graphs}
 	\end{figure}
   	\end{center}
-	\end{itemize}
+
+	
 }
 
 \frame[t]
 {
-	\frametitle{Compute solution on bi-partite graphs}
+	\frametitle{Compute solution using bi-partite graphs}
 	\begin{itemize}[<+->]
 	\item Records have weights (e.g. restaurant star-rating)
 	\item Conflicts are resolved by ``deleting'' records ($1$ for proximity constraint)

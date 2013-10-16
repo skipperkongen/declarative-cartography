@@ -40,7 +40,7 @@
 {
   \frametitle{Motivation}
   \begin{itemize}
-  \item \textbf{Imagine}: you're a \emph{journalist} and want to tell a story about restaurants in Z\"{u}rich \emph{using a map}.
+  \item \textbf{Imagine}: you're a \emph{data journalist} and want to tell a story about restaurants in Z\"{u}rich \emph{using a map}.
   \item \textbf{Database}: You have a \emph{database} of restaurants (unique ID, location, star rating, name etc.)
   \item Simply showing all the records creates a mess (see picture)
   \item Generalization of thematic data is an important problem, with increasing use cases in \emph{social networks}, \emph{data journalism} etc
@@ -58,7 +58,7 @@
 			\item Records should appear \emph{gradually} when zooming in, i.e. \emph{constant information~density}
 			\item ``Important'' records should get priority
 			\item Visible records should \emph{remain visible} when zooming in
-			\item There should be some way of controlling \emph{layout}
+			\item There should be some way of imposing \emph{constraints}
 		\end{itemize}
 	\end{column}
 	\begin{column}[l]{6cm}
@@ -72,13 +72,14 @@
 \end{columns}
 }
 
+
 % Setting stage
 \frame[t]
 {
   \frametitle{Spatial databases}
 	\begin{itemize}[<+->]
 		\item Spatial data is often stored in a \emph{spatial database}
-		\item They have powerful capabilities
+		\item Databases have powerful capabilities
 		\item \emph{joins}, \emph{sorting}, \emph{spatial indexing} and \emph{spatial functions}
 	\end{itemize}
 	\begin{center}
@@ -94,7 +95,7 @@
 {
   \frametitle{Situation}
 	\begin{itemize}[<+->]
-		\item Normally data is pulled out of the \emph{database} for processing tasks like generalization
+		\item Normally data is \emph{pulled out} of the database for processing tasks like generalization
 		\item Generalization algorithms are usually implemented in external software
 		\item After the processing is done the data is put back into the database
 		\item \emph{Several drawbacks}: re-inventing the wheel, memory and bandwidth limits, development and deployment costs, 
@@ -113,8 +114,8 @@
 {
   \frametitle{Why not use the database itself?}
 	\begin{itemize}[<+->]
-		\item Instead, we state generalization in terms of a high-level language
-		\item The language is translated to a low-level database program
+		\item Instead, we will state generalization in terms of a high-level programming language
+		\item High-level programs are translated (compiled) to low-level database programs
 		\item We move code-to-data instead of moving data-to-code
 
 	\end{itemize}
@@ -131,8 +132,9 @@
 \frame[t]
 {
   \frametitle{In-database processing}
-	\begin{itemize}
+	\begin{itemize}[<+->]
 		\item The low-level program can of course exploit capabilities of spatial databases, such as indexing and spatial functions
+		\item What exactly do we mean by generalization?
 	\end{itemize}
 	\begin{center}
 	\begin{figure}
@@ -143,21 +145,61 @@
 
 \frame[t]
 {
-  \frametitle{The language}
+  \frametitle{What we mean by generalization}
 	\begin{itemize}[<+->]
-		\item High-level language has a \texttt{GENERALIZE} statement and a \texttt{CREATE CONSTRAINT} statement
-		\item The \texttt{GENERALIZE} statement produces a generalized database table from a table of base data
-		\item Generalized table has a \texttt{min\_zoom} column
-		\item The \texttt{CREATE CONSTRAINT} statement is used to define new spatial constraints, e.g. proximity
+		\item \textbf{Input}: table with \texttt{ID}, \texttt{Geometry} and additional columns
+		\item \textbf{Output}: input table extended with \texttt{MinZoom} column
+		\item Value of \texttt{MinZoom} is the zoom level $z \in \lbrack 1, \mathcal{Z} \rbrack$ when a record becomes visible in the map
+		\item Any assignment of \texttt{MinZoom} corresponds to a particular generalization of the data
+		\item $O(\mathcal{Z}^n)$ many ways to assign a value to \texttt{MinZoom} for $n$ records
 	\end{itemize}
-	\begin{center}
-  		\fbox{\includegraphics[scale=0.30]{figs/cvl-problem.pdf}}
-  	\end{center}
+	\vspace{1em}
+	\begin{columns}[t]
+		\begin{column}[l]{4cm}
+  		\includegraphics<1>[scale=0.35]{figs/cvl-table-before-after.pdf}
+		\includegraphics<2>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\includegraphics<3>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\includegraphics<4>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\includegraphics<5>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\end{column}
+		\begin{column}[r]{4cm}
+		\includegraphics<3>[scale=0.30]{figs/cvl-problem.pdf}
+		\includegraphics<4>[scale=0.30]{figs/cvl-problem.pdf}
+		\includegraphics<5>[scale=0.30]{figs/cvl-problem.pdf}
+		\end{column} 
+  	\end{columns}
+}
+
+\frame[t]
+{
+  \frametitle{Guiding the generalization}
+  \begin{itemize}[<+->]
+  \item All records in table are assigned a \emph{weight} representing their ``importance''
+  \item Visible records must satisfy \emph{spatial constraints}
+  \item Objective is to \emph{minimize} the combined weight of non-visible records (records filtered out to satisfy constraint)
+  \vspace{1em}
+  \end{itemize}
+  	\begin{columns}[t]
+		\begin{column}[l]{4cm}
+  		\includegraphics[scale=0.27]{figs/cvl-weight.pdf}
+		\end{column}
+		\begin{column}[r]{4cm}
+		\includegraphics<3>[scale=0.30]{figs/cvl-proximity.pdf}
+		\end{column} 
+  	\end{columns}
+
+}
+
+\frame{
+	\frametitle{Expressing generalization in a programming language}
+	\begin{itemize}[<+->]
+	\item How to formulate the task of generalizing data in the high and low-level languages?
+	\end{itemize}
 }
 
 % Introduce syntax
 \begin{frame}[fragile,t]
-  \frametitle{Example usage}
+  \frametitle{High-level language example}
   \begin{description}[<+->]
   \item
   \begin{lstlisting}

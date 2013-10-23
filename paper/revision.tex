@@ -1,0 +1,58 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+
+\title{Working document for revision of ICDE '14 paper}
+\author{Kostas, Martin, Marcos}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section{About}
+In this document we write down the arguments we will use to address the desiderata agreed upon by Kostas and Marcos during a Skype meeting October 16 2013 (recorded in chat). Each section below describes a task or states question that we will provide an answer for in the paper. The answers are recorded in this document in a subsection below each question
+
+\section{Question: Why map conflict resolution to an NP-hard problem?}
+Here we assume that using conflict sets is a good idea. The question whether that is true is a separate question, that we will also answer.
+\begin{itemize}
+\item Definition of conflict resolution: Given a set of conflict sets $C$, and a number $\lambda_c < \left\vert c \right\vert$ for each set $c \in C$, choose $\lambda_c$ elements from each set $c$ that will be ``deleted'' 
+\item Global optimization version: choose $\lambda_c$ elements of minimum total weight from each set $c$ that will be ``deleted'' 
+\item This optimization problem equals set multicover problem, plain and simple. I don't see that we are even ``mapping'' to this problem. It is the same problem?
+\item Is there another optimization problem (not minimizing total weight of elements deleted) that involves conflict sets and generates useful solutions to generalization?
+\item The SGA algorithm is an exact algorithm for another optimization problem (minimize for each set); but is that really the ``right'' problem to solve and why not?
+\end{itemize}
+
+\subsection{Our answer}
+
+\begin{itemize}
+\item Actually, for most instances the bulk of the time is spent finding conflicts, not solving the set multicover problem, because in the end we don't solve SMCP
+\item We apply approximation algorithms and heuristics which are exact solutions to various other problems that somehow relate to SMCP
+\end{itemize}
+
+\section{Question: Why use conflict sets to model problem?}
+
+\begin{itemize}
+\item Is there a "conflict free" formulation that would be just as ``good'' and not lead to solving an NP-hard problem?
+\item Conflict sets allow a generic way to express many natural user-defined constraints (proximity, visibility)
+\item Using conflict sets is a natural way to think about generalization
+\item Maybe there is another model that could express proximity and visibility constraints, and which is a natural way to think about generalization, and which leads to an optimization problem that has a polynomial time algorithm?
+\end{itemize}
+
+\subsection{Our answer}
+
+\begin{enumerate}
+\item We chose conflict sets because it is a natural way to think about generalization and because it allows users to formulate several natural spatial constraints (proximity, visibility etc)
+\item We can not think of another model with these properties and which also leads to an optimization problem that has an efficient solution
+\item Asking us to prove that such a model does not exist is a tall order...
+\end{enumerate}
+
+\section{Questions: Various questions answered in author feedback}
+
+Use this section to capture some compact formulations that can be plugged into paper
+
+\end{document}  

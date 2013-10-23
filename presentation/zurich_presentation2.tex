@@ -76,6 +76,33 @@
 \end{columns}
 }
 
+% What we will achieve
+\frame[t]
+{
+  \frametitle{What we mean by generalization}
+	\begin{itemize}[<+->]
+		\item \textbf{Input}: table with \texttt{ID}, \texttt{Geometry} and additional columns
+		\item \textbf{Output} : input table extended with \texttt{MinZoom} column
+		\item Value of \texttt{MinZoom} is the zoom level $z \in \lbrack 1, \mathcal{Z} \rbrack$ when a record should become visible in the map
+		\item Assignment of values to \texttt{MinZoom} corresponds to a particular generalization of the data
+		\item $O(\mathcal{Z}^n)$ many ways to assign a value to \texttt{MinZoom} for $n$ records
+	\end{itemize}
+	\vspace{1em}
+	\begin{columns}[t]
+		\begin{column}[l]{4cm}
+  		\includegraphics<1>[scale=0.35]{figs/cvl-table-before-after.pdf}
+		\includegraphics<2>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\includegraphics<3>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\includegraphics<4>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\includegraphics<5>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
+		\end{column}
+		\begin{column}[r]{4cm}
+		\includegraphics<3>[scale=0.30]{figs/cvl-problem.pdf}
+		\includegraphics<4>[scale=0.30]{figs/cvl-problem.pdf}
+		\includegraphics<5>[scale=0.30]{figs/cvl-problem.pdf}
+		\end{column} 
+  	\end{columns}
+}
 
 % Setting stage
 \frame[t]
@@ -100,8 +127,8 @@
   \frametitle{Situation}
 	\begin{itemize}[<+->]
 		\item Generalization algorithms are usually implemented in \emph{external software}
-		\item After processing the data is put back into the database
-		\item Treats the database as ``dumb'' storage
+		\item After processing the data we put back into the database
+		\item Treats the database as ``dumb'' storage until query time
 		\item But remember, databases are really quite powerful
 	\end{itemize}
 	\begin{center}
@@ -124,12 +151,12 @@
 
 \frame[t]
 {
-  \frametitle{Why not use the database itself?}
+  \frametitle{Why not use the database to generalize data?}
 	\begin{itemize}[<+->]
-		\item Why not state goals for generalization in a ``high-level'' language?
-		\item Translate high-level program to low-level database program
+		\item We could formulate \emph{goal} of generalization in a ``high-level'' language
+		\item Translate high-level program to low-level database program that generalizes data
 		\item Moving \textbf{code-to-data} instead of data-to-code
-		\item Use the database as runtime for generalization
+		\item This is what we did :-)
 
 	\end{itemize}
 	\begin{center}
@@ -141,39 +168,11 @@
 	\end{center}                     
 }
 
-\frame[t]
-{
-  \frametitle{What we mean by generalization}
-	\begin{itemize}[<+->]
-		\item \textbf{Input}: table with \texttt{ID}, \texttt{Geometry} and additional columns
-		\item \textbf{Output (generalized)} : input table extended with \texttt{MinZoom} column
-		\item Value of \texttt{MinZoom} is the zoom level $z \in \lbrack 1, \mathcal{Z} \rbrack$ when a record becomes visible in the map
-		\item Assignment of values to \texttt{MinZoom} corresponds to a particular generalization of the data
-		\item $O(\mathcal{Z}^n)$ many ways to assign a value to \texttt{MinZoom} for $n$ records
-	\end{itemize}
-	\vspace{1em}
-	\begin{columns}[t]
-		\begin{column}[l]{4cm}
-  		\includegraphics<1>[scale=0.35]{figs/cvl-table-before-after.pdf}
-		\includegraphics<2>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
-		\includegraphics<3>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
-		\includegraphics<4>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
-		\includegraphics<5>[scale=0.35]{figs/cvl-table-before-after-2.pdf}
-		\end{column}
-		\begin{column}[r]{4cm}
-		\includegraphics<3>[scale=0.30]{figs/cvl-problem.pdf}
-		\includegraphics<4>[scale=0.30]{figs/cvl-problem.pdf}
-		\includegraphics<5>[scale=0.30]{figs/cvl-problem.pdf}
-		\end{column} 
-  	\end{columns}
-}
-
-
 % Introduce syntax
 \begin{frame}[fragile,t]
   \frametitle{High-level language: \texttt{GENERALIZE} statement}
   \begin{center}
-  \fbox{Generalize statement}
+  \fbox{What users write}
   \end{center}
   \begin{description}[<+->]
   \item[Input and output]:
@@ -192,6 +191,33 @@ WEIGH BY star_rating
   \item[What spatial constraints should be enforced?]:
 \begin{lstlisting}    
 SUBJECT TO proximity 10 AND density 64
+\end{lstlisting}
+\end{description}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{High-level language: \texttt{CREATE CONSTRAINT}}
+
+  \begin{center}
+  \fbox{What expert users write}
+  \end{center}
+
+\begin{description}[<+->]
+\item[Give the constraint a name]:
+\begin{lstlisting}[escapechar=@]
+CREATE CONSTRAINT {@name as string@}
+\end{lstlisting}
+\item[How is the constraint condition defined?]:
+\begin{lstlisting}[escapechar=@]
+AS NOT EXISTS (
+  {@SQL@}
+)
+\end{lstlisting}
+\item[How to resolve with constraint violations?]:
+\begin{lstlisting}[escapechar=@]
+RESOLVE cid IF DELETE (
+  {@SQL@}
+)
 \end{lstlisting}
 \end{description}
 \end{frame}
@@ -246,13 +272,14 @@ SUBJECT TO proximity 10 AND density 64
 	\textbf{Example}: Proximity constraint
 	\vspace{0.5em}
 	\begin{itemize}[<+->]
-	\item Constraints defined by defining ``conflicts''
-	\item In this example, a conflict is a pair of records that are ``too close''
-	\item Resolve a conflict by ``deleting'' one or the other record
+	\item Constraints defined by defining what a ``conflict'' means
+	\item Set of records that don't \emph{fit} on the same zoom-level
+	\item Proximity constraint: resolve a conflict by ``deleting'' one or the other record
 	\vspace{0.5em}
 	\end{itemize}
 	\begin{center}
-  		\includegraphics[scale=0.35]{figs/cvl-proximity-conflicts-2.pdf}
+  		\includegraphics<1,2>[scale=0.35]{figs/cvl-proximity-conflicts-1.pdf}
+		\includegraphics<3>[scale=0.35]{figs/cvl-proximity-conflicts-2.pdf}
   	\end{center}
 
 }
@@ -361,9 +388,26 @@ RESOLVE IF DELETE (1)
 \end{lstlisting}
 \end{frame}
 
+
 \frame[t]
 {
-	\frametitle{Compute solution using bi-partite graphs}
+	\frametitle{Crash course on bi-partite graphs}
+	\begin{itemize}[<+->]
+	\item Graph = $nodes$ and $edges$
+	\item ``Bi-partite'' graph is a \emph{restricted} graph
+	\item nodes on $left$ and nodes on $right$ (e.g. organizing a dance)
+	\end{itemize}
+	\vspace{1em}
+	\begin{center}
+  		\includegraphics<1>[scale=1]{figs/cvl-general-graph.pdf}
+		\includegraphics<3>[scale=1]{figs/cvl-bipartite-graph-0.pdf}
+  	\end{center}
+}
+
+
+\frame[t]
+{
+	\frametitle{Constraints and bi-partite graphs}
 	\begin{itemize}[<+->]
 	\item A record can be in several conflicts
 	\item A conflict involves several records
@@ -374,11 +418,9 @@ RESOLVE IF DELETE (1)
 	\begin{figure}
 		\includegraphics<1,2>[scale=0.30]{figs/cvl-proximity-conflicts-1.pdf}
   		\includegraphics<3>[scale=0.8]{figs/cvl-bipartite-graph.pdf}
-	\caption{Bi-partite graph for proximity constraint}
+	%\caption{Bi-partite graph for proximity constraint}
 	\end{figure}
   	\end{center}
-
-	
 }
 
 \frame[t]
@@ -387,7 +429,7 @@ RESOLVE IF DELETE (1)
 	\begin{itemize}[<+->]
 	\item Records have weights (e.g. restaurant star-rating)
 	\item Conflicts are resolved by ``deleting'' records ($1$ for proximity constraint)
-	\item \textbf{Problem}: Pick minimum weight set of records on left \\to cover all conflicts on right
+	\item \textbf{Problem}: Pick minimum weight set of records on left \\that resolves all conflicts on right
 	\item Optimal solution has cost $6$
 	\end{itemize}
 	\vspace{1em}
@@ -420,7 +462,7 @@ RESOLVE IF DELETE (1)
 	\end{itemize}
 	\vspace{1em}
 	\begin{center}
-  		\includegraphics[scale=0.8]{figs/cvl-bipartite-graph-weighted-b.pdf}
+  		\includegraphics[scale=0.8]{figs/cvl-set-multicover-graph.pdf}
   	\end{center}
 }
 
@@ -441,9 +483,45 @@ RESOLVE IF DELETE (1)
 
 \frame
 {
-	\frametitle{TODO: experiments...}
+	\frametitle{Experiments}
+	\begin{itemize}[<+->]
+	\item We conducted experiments on Amazon EC2
+	\item PostgreSQL 9.2.4 with PostGIS 2.0, GDAL 1.9.2, Python 2.6.8
+	\item Data: Openflights, OpenStreetMap and Danish Geodata Agency
+	\item Tested with both point, line and polygon datasets
+	\item POI (500K points), Rivers (2M points), Zones (9M points)
+	\end{itemize}
 }
 
+\frame
+{
+	\frametitle{Results for point and polygon data}
+\begin{table}[htdp]
+\vspace{-2ex}
+\begin{center}
+\begin{tabular}{|c|c|c|r|r|}
+\hline
+\textbf{Dataset} & \textbf{Constraint} & \textbf{Solver} & \textbf{Time} & \textbf{Qual.}\\ 
+\hline
+Points (7K)  & Visibility & SGA & 7s & 1.0 \\
+Points (500K) & Visibility & SGA & 6m 9s & 1.0 \\
+Points (7K)  & Proximity  & SGA & 3s & 1.18 \\
+Points (500K) & Proximity & SGA & 7m 17s & 1.21 \\
+\hline
+Lines (2M) & Visibility & SGA & 1h 32m & 1.36 \\
+Polygons (9M) & Visibility & SGA & 13m 38s & 1.20 \\
+Lines (2M)  & Proximity  & SGA& 1h 11m s & 1.46 \\
+Polygon (9M) & Proximity & SGA & 4h 28m & 1.72 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Decent quality + running time in seconds, minutes or hours}
+\label{tab:complex:overview}
+\vspace{-6ex}
+\end{table}%
+
+
+}
 
 %\frame[t]
 %{
@@ -482,7 +560,6 @@ RESOLVE IF DELETE (1)
 	\item Designed a high-level language for generalization called CVL
 	\item Compiled to low-level database program and moved code-to-data
 	\item Exploited correspondence to well-known optimization problem
-	\item Also, method works with both points, lines and polygons
 	\end{itemize}
 }
 
@@ -493,11 +570,10 @@ RESOLVE IF DELETE (1)
   	\fbox{We need your help :-)}
 	\end{center}
 	\begin{itemize}
-	\item Implement aggregation
+	\item Implement aggregation as generalization operator
 	\item Validate method in user tests
-	\item Identify areas of improvement
 	\item More ``pure'' SQL implemention
-	\item Optimize code generation
+	\item Improve running time, move towards real-time
 	\end{itemize}
 	\begin{center}
 	\begin{figure}

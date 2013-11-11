@@ -2,7 +2,10 @@
 
 ## Important reviewer comments
 
-* Section II: it seems you do not handle "regional labels" that might reappear at more general zoom levels. (Eg, "Europe" reappears when the camera pulls out far enough.) That should be made explicit in the text. Kostas: This could be done by 1) using star-approach instead of ladder-approach and 2) using a zoom-level dependent weighing function. Kostas: Use term ladder-approach, instead of bottom-up approach, and add a citation to (find paper in my survey).
+* Section II: it seems you do not handle "regional labels" that might reappear at more general zoom levels. (Eg, "Europe" reappears when the camera pulls out far enough.) That should be made explicit in the text. 
+	* Kostas: This could be done by 1) using star-approach instead of ladder-approach and 2) using a zoom-level dependent weighing function. 
+	* Kostas: Use term ladder-approach, instead of bottom-up approach, and add a citation to (find paper in my survey).
+	* Ask Weibel if he knows source of ladder/star distinction
 
 
 

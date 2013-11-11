@@ -1,5 +1,13 @@
 # Plan for revision
 
+## Important reviewer comments
+
+* Section II: it seems you do not handle "regional labels" that might reappear at more general zoom levels. (Eg, "Europe" reappears when the camera pulls out far enough.) That should be made explicit in the text. Kostas: This could be done by 1) using star-approach instead of ladder-approach and 2) using a zoom-level dependent weighing function. Kostas: Use term ladder-approach, instead of bottom-up approach, and add a citation to (find paper in my survey).
+
+
+
+## Points from Skype
+
 [10/16/13 2:14:32 PM] pimin konstantin kefaloukos: high-level plan: follow through on promises (what we will fix)
 [10/16/13 2:14:57 PM] pimin konstantin kefaloukos: - summary discussion of aggregation
 [10/16/13 2:15:06 PM] pimin konstantin kefaloukos: - justification of algorithms

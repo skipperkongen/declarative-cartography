@@ -17,6 +17,40 @@
 \section{About}
 In this document we write down the arguments we will use to address the desiderata agreed upon by Kostas and Marcos during a Skype meeting October 16 2013 (recorded in chat). Each section below describes a task or states question that we will provide an answer for in the paper. The answers are recorded in this document in a subsection below each question
 
+\section{Formulations for paper}
+
+\subsection{Why map conflict resolution to an NP-hard problem?}
+
+If we model the problem using conflict sets, the problem is
+definitely NP-hard for all interesting cases.
+
+Here is why: Consider the vertex cover problem. Given a graph G=(V,E),
+find a minimum size subset of the vertices S such that every edge in E
+has an endpoint in S. Think of the vertices as records and the edges
+as conflict sets. This problem would then model the filtering problem
+for the special case where all conflict sets had exactly two records
+(and all records had identical weights).
+
+The vertex cover problem is NP-hard, even for very constrained cases.
+For example, even if G is a planar graph and every vertex has degree
+at most 3, the problem remains NP-hard. In other words, even if the
+conflict sets only have two records each, and each record is involved
+in at most 3 conflict sets, the problem remains NP-hard. It is hard to
+imagine that any interesting application is more restrictive.
+
+Note that the cubic vertex cover problem is APX-hard - which
+means that it cannot be approximated arbitrarily close unless P=NP. So
+even this restricted version is "really" hard.
+%\cite{Some APX-completeness results for cubic graphs, The Rectilinear Steiner Tree Problem is NP-Complete*}
+
+
+
+
+\subsection{Why use conflict sets to model problem?}
+
+We have conflict sets because we want to satisfy constraints. We want to satisfy constraints because it is a common way to reason about feasible solutions to generalization... thinning and "The constraint method for solving spatial conflicts in cartographic generalization"
+
+
 \section{Question: Why map conflict resolution to an NP-hard problem?}
 Here we assume that using conflict sets is a good idea. The question whether that is true is a separate question, that we will also answer.
 \begin{itemize}

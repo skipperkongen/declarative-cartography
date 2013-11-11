@@ -1,0 +1,487 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head><title>
+	Reviews For Paper
+</title>
+<style>
+body
+{
+	font-family:verdana,arial,helvetica;
+}
+#header
+{
+    width: 100%;
+    font-size: small;
+    background-color:#F7F7F7;
+}
+.headerSeparator
+{
+    background-color: #105586;
+}
+.printThemeText
+{
+    font-size:small;
+}
+.printThemeTable td
+{
+    vertical-align:top;
+}
+.printThemeGrid th
+{
+    color:white;
+    background:#5D7B9D;
+    font-weight:bold;
+}
+.printThemeGrid
+{
+    border-collapse:collapse;
+}
+.printThemeGrid td, .printThemeGrid th
+{
+    border:solid 1px #D6D3CE;
+    padding:4px 4px 4px 4px;
+}
+.printThemeGrid .row
+{ 
+    background-color:#F7F6F3;
+    color:#333333;
+    vertical-align:top;
+}
+.printThemeGrid .altrow
+{ 
+    background-color:White;
+    color:#284775;
+    vertical-align:top;
+}
+.cellprompt
+{
+	font-weight:bold;
+	white-space:nowrap;
+    width:100px;	
+}
+.paperHeader
+{
+    background-color:#dee3e7;
+    margin:5px 5px 15px 0px;
+    width:99%;
+    font-family:Verdana;
+    font-size:medium;
+    font-weight:bold;
+}
+.sectionHeader
+{
+    background-color:#dee3e7;
+    padding:5px 5px 5px 0px;
+    width:99%;
+    text-decoration:underline;
+    font-family:Verdana;
+    font-size:small;
+    font-weight:bold;
+}
+.underlineheader
+{
+    text-decoration:underline;
+    font-weight:bold;
+    padding:5px 0px;
+}
+.response
+{
+    padding:5px 0px;
+}
+.reviewerlabel
+{
+    padding-right:20px;
+}
+.pageTitle
+{
+    background-color:#dee3e7;
+    padding:5px 5px 5px 5px;
+    margin-top:10px;
+    width:99%;
+    font-family:Verdana;
+    font-size:medium;
+    font-weight:bold;
+}
+.submissionDetailsView
+{
+}
+.submissionDetailsView tr
+{
+    vertical-align:top;
+}
+.submissionDetailsView td.prompt
+{
+    font-weight:bold;
+}
+.submissionDetailsView tr.sectionSeparator
+{
+
+}
+.submissionDetailsView tr.sectionSeparator td
+{
+    background-color:#dee3e7;
+    padding:5px 5px 5px 5px;
+    font-family:Verdana;
+    font-size:small;
+    font-weight:bold;
+    color:Navy;
+}
+/*CSS Grid View General Definitions*/
+.CssGridView
+{
+    font-size:small; 
+}
+
+.CssGridView td, .CssGridView th
+{
+    padding:4px 4px 4px 4px;
+}
+
+/*CSS Compact Grid View General Definitions*/
+.CssGridViewCompact img
+{
+    border-style:none;
+    border-width:0px;
+}
+
+.CssGridViewCompact
+{
+    font-size:1em;
+    border-style:solid;
+    border-color:#D6D3CE;
+    border-width:1px;
+}
+
+.CssGridViewCompact .hrow a
+{
+    font-size:1em;
+}
+
+.CssGridViewCompact .row a, .CssGridViewCompact .altrow a
+{
+    font-size:0.8em;
+}
+
+.CssGridViewCompact .row .normal a, .CssGridViewCompact .row .normal, .CssGridViewCompact .altrow .normal a, .CssGridViewCompact .altrow .normal
+{
+    font-size:1em;
+}
+
+/*CSS Grid View Header Styles*/
+.CssGridView .hrow, .CssGridViewCompact .hrow
+{ 
+    background-color:#5D7B9D;
+    font-weight:bold;
+    color:White;
+}
+
+
+.CssGridViewCompact .hrow td
+{ 
+    border-bottom-width:0px;
+}
+
+.CssGridViewCompact .hrow th
+{ 
+    border-top-width:0px;
+    font-size:0.8em;
+    vertical-align:top;
+    border-left-width:0px;
+    border-right-width:0px;
+}
+
+.CssGridViewCompact .smaller
+{
+    font-size:0.8em;
+}
+
+/*CSS Grid View Row Styles*/
+.CssGridViewCompact .row, .CssGridViewCompact .altrow
+{
+    border-top-style:solid;
+    border-top-color:#D6D3CE;
+    border-top-width:1px;
+    border-bottom-style:solid;
+    border-bottom-color:#D6D3CE;
+    border-bottom-width:1px;
+}
+
+/*CSS Grid View Header Styles*/
+.CssGridViewCompact .hrow .leftborder, .CssGridViewCompact .row .leftborder, .CssGridViewCompact .altrow .leftborder
+{
+    border-left-width:1px;
+    border-left-color:#D6D3CE;
+    border-left-style:solid;
+}
+
+.CssGridViewCompact .hrow .rightborder, .CssGridViewCompact .row .rightborder, .CssGridViewCompact .altrow .rightborder
+{
+    border-right-width:1px;
+    border-right-color:#D6D3CE;
+    border-right-style:solid;
+}
+
+.CssGridView .hrow a, .CssGridViewCompact .hrow a
+{ 
+    color:White;
+}
+ 
+.CssGridView .row, .CssGridViewCompact .row
+{ 
+    background-color:#F7F6F3;
+    color:#333333;
+    vertical-align:top;
+}
+
+.CssGridView .altrow, .CssGridViewCompact .altrow
+{ 
+    vertical-align:top;
+}
+
+.CssGridViewCompact .row td
+{ 
+    border-left-width:0px;
+    border-right-width:0px;
+}
+ 
+.CssGridViewCompact .altrow
+{ 
+    background-color:White;
+    color:#284775;
+    vertical-align:top;
+}
+
+.CssGridView .altrow tr, .CssGridViewCompact .altrow tr, .CssGridView .row tr, .CssGridViewCompact .row tr
+{ 
+    vertical-align:top;
+}
+</style>
+</head>
+<body>
+<form name="aspnetForm" method="post" action="ViewReviewsForPaper.aspx?paperId=296" id="aspnetForm">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTAxNDM4ODU3Ng9kFgJmD2QWAgIDD2QWAmYPZBYCAgUPDxYCHgdWaXNpYmxlZ2QWBgIBD2QWAmYPZBYGAgEPFgIfAGcWAgIBD2QWAmYPDxYCHgRUZXh0BS5TcGF0aWFsLCBUZW1wb3JhbCwgTW9iaWxlLCBhbmQgTXVsdGltZWRpYSBEYXRhZGQCAw8PFgIfAQUDMjk2ZGQCBQ8PFgIfAQVSRGVjbGFyYXRpdmUgQ2FydG9ncmFwaHkmIzU4OyBJbi1EYXRhYmFzZSBNYXAgR2VuZXJhbGl6YXRpb24gb2YgR2Vvc3BhdGlhbCBEYXRhc2V0c2RkAgMPDxYCHwBoZGQCBQ8WAh4LXyFJdGVtQ291bnQCAxYGZg9kFgYCAw9kFgJmDxUBE0Fzc2lnbmVkX1Jldmlld2VyXzFkAgcPPCsADQEADxYEHgtfIURhdGFCb3VuZGcfAgIIZBYCZg9kFhICAQ9kFgRmDw8WAh8BBQ5PdmVyYWxsIFJhdGluZ2RkAgEPZBYCZg8VAQZBY2NlcHRkAgIPZBYEZg8PFgIfAQUTUmV2aWV3ZXIgQ29uZmlkZW5jZWRkAgEPZBYCZg8VAQZNZWRpYW5kAgMPZBYEZg8PFgIfAQUHTm92ZWx0eWRkAgEPZBYCZg8VAQZNZWRpYW5kAgQPZBYEZg8PFgIfAQUPVGVjaG5pY2FsIERlcHRoZGQCAQ9kFgJmDxUBBk1lZGlhbmQCBQ9kFgRmDw8WAh8BBRRQcmVzZW50YXRpb24gUXVhbGl0eWRkAgEPZBYCZg8VAQRIaWdoZAIGD2QWBGYPDxYCHwEFFUxpc3Qgb2YgU3Ryb25nIFBvaW50c2RkAgEPZBYCZg8VAb8FVGhlIHBhcGVyIHByb3ZpZGVzIGEgc29sdXRpb24gb2YgbWFwIGdlbmVyYWxpemF0aW9uLCBpLmUuIHdoaWNoIG9iamVjdHMgb2YgYSBzZXQgb2Ygb2JqZWN0cyBzaG91bGQgYmUgZGlzcGxheWVkIGF0IGEgY2VydGFpbiB6b29tIGxldmVsLiA8YnIgLz5JdCBpbnRyb2R1Y2VzIGEgZGVzY3JpcHRpdmUgbGFuZ3VhZ2UgKENWTCkgYWxsb3dpbmcgdGhlIHVzZXIgdG8gZGVmaW5lIGNvbnN0cmFpbnRzIGFuZCB0byBjcmVhdGUgYSBzdWJzZXQgb2Ygb2JqZWN0cyB0byBkaXNwbGF5IGF0IGEgY2VydGFpbiB6b29tIGxldmVsLiBUaGVzZSBjb25zdHJhaW50cyBhcmUgdXNlZCBmb3IgYXV0b21hdGljIGZpbHRlcmluZyB0aGUgc291cmNlIG9iamVjdCBzZXQuPGJyIC8+VGhlIHByb2JsZW0gbWVudGlvbmVkIGFib3ZlIGlzIG1hcHBlZCB0byBhbiBvcHRpbWl6YXRpb24gcHJvYmxlbS4gVHdvIGhldXJpc3RpY3MgYXJlIHByZXNlbnRlZCBmb3IgY3JlYXRpbmcgZ29vZCByZXN1bHRzLiBCb3RoLCBDVkwgYW5kIHRoZSBoZXVyaXN0aWNzIGFyZSBpbXBsZW1lbnRlZCBvbiB0b3Agb2YgYSByZWxhdGlvbmFsIGRhdGFiYXNlIHN5c3RlbSB3aXRoIHNwYXRpYWwgZXh0ZW5zaW9uLiBFeHBlcmltZW50cyBzaG93IHRoYXQgYm90aCBoZXVyaXN0aWNzIHByb3ZpZGUgcmVhc29uYWJsZSByZXN1bHRzIGZvciByZWFsIGFuZCBzeW50aGV0aWMgZGF0YSBzZXRzLmQCBw9kFgRmDw8WAh8BBRNMaXN0IG9mIFdlYWsgUG9pbnRzZGQCAQ9kFgJmDxUBmwFUaGUgcnVudGltZSBvZiB0aGUgbGluZWFyIHByb2dyYW1taW5nIGJhc2VkIGhldXJpc3RpYyBpcyB2ZXJ5IGhpZ2ggZm9yIHNvbWUgY29uc3RyYWludHMuPGJyIC8+QSBjZW50cmFsIGV4YW1wbGUgKGluY2x1ZGluZyB0aGUgcmVsYXRpb24gc2NoZW1lKSBpcyBtaXNzaW5nLmQCCA9kFgRmDw8WAh8BBRFEZXRhaWxlZCBDb21tZW50c2RkAgEPZBYCZg8VAccTV2hlbiBkaXNwbGF5aW5nIGEgc2V0IG9mIGdlb2dyYXBoaWMgb2JqZWN0cyBpbiBhIG1hcCBhdCBhIGNlcnRhaW4gem9vbSBsZXZlbCwgdHdvIHByb2JsZW1zIDxiciAvPmhhdmUgdG8gYmUgc29sdmVkLCB3aGljaCBvYmplY3RzIHNob3VsZCBiZSBkaXNwbGF5ZWQgYW5kIGhvdyB0aGVzZSBvYmplY3RzIHNob3VsZCBiZSBkaXNwbGF5ZWQuPGJyIC8+VGhlIHBhcGVyIGRlc2NyaWJlcyBhIG1ldGhvZCB0byBzb2x2ZSB0aGUgZmlyc3QgcHJvYmxlbS4gT2JqZWN0cyBhcmUgc3RvcmVkIGluIGEgcmVsYXRpb25hbCA8YnIgLz5kYXRhYmFzZSB3aXRoIGEgc3BhdGlhbCBleHRlbnNpb24uIDxiciAvPlRoZSBnb2FsIGlzIHRvIGFzc2lnbiBlYWNoIG9iamVjdCBhIHJhbmdlIG9mIHpvb20gbGV2ZWxzIGluIHdoaWNoIHRoZSBvYmplY3Qgc2hvdWxkIGJlIHBhcnQgb2YgdGhlIG1hcC48YnIgLz5Gb3IgYSBsYXJnZSBzZXQgb2Ygb2JqZWN0cyBpdCdzIHVuZmVhc2libGUgdG8gZG8gdGhpcyBtYW51YWxseS4gVGhlIGF1dGhvcnMgcHJlc2VudCBhIGRlc2NyaXB0aXZlIDxiciAvPmxhbmd1YWdlIChDVkwpIGFsbG93aW5nIHRvIGRlZmluZSBvZiBjb25zdHJhaW50cyBhbmQgdG8gY3JlYXRlIGEgc3Vic2V0IG9mIG9iamVjdHMgdG8gZGlzcGxheSBhdCA8YnIgLz5hIGNlcnRhaW4gem9vbSBsZXZlbC4gU29tZSBleHRlbnNpb25zIG9mIHRoaXMgbGFuZ3VhZ2UgYXJlIHByZXNlbnRlZCB0byBtYWtlIHRoZSB1c2Ugb2YgQ1ZMIGVhc2llci48YnIgLz5Gb3IgZmlsdGVyaW5nIG91dCBvYmplY3RzIGZyb20gdGhlIHNvdXJjZSBzZXQsIGEgd2VpZ2h0IGlzIGFzc2lnbmVkIHRvIGVhY2ggb2JqZWN0IGRlc2NyaWJpbmcgaXRzIGltcG9ydGFuY2UuPGJyIC8+VGhlbiwgYXV0b21hdGljYWxseSBmaW5kaW5nIGEgZmlsdGVyIGlzIG1hcHBlZCB0byBhbiBvcHRpbWl6YXRpb24gcHJvYmxlbS4gVGhlIGF1dGhvcnMgc3RhdGU8YnIgLz50aGF0IHRoaXMgb3B0aW1pemF0aW9uIHByb2JsZW0gaXMgdG9vIGhhcmQgdG8gc29sdmUgYW5kIHByZXNlbnQgdHdvIGhldXJpc3RpY3MuIEJvdGggb2YgdGhlbTxiciAvPnRyYW5zZmVyIHRoZSBjb21wbGV0ZSBvcHRpbWl6YXRpb24gcHJvYmxlbSBpbnRvIGEgc2VyaWVzIG9mIHNtYWxsZXIgb3B0aW1pemF0aW9uIHByb2JsZW1zICAob25lIGZvciBlYWNoIHpvb20gbGV2ZWwpIDxiciAvPmFuZCBhcmUgbW9zdGx5IGNvbXB1dGFibGUgaW4gcmVhc29uYWJsZSB0aW1lLiA8YnIgLz5UaGUgInN0YXRpYyBncmVlZHkgYWxnb3JpdGhtIiAoU0dBKSByZW1vdmVzIHRoZSBvYmplY3RzIGhhdmluZyB0aGUgc21hbGxlc3Qgd2VpZ2h0IGZyb20gdGhlIGNvbmZsaWN0aW5nIHNldHMuPGJyIC8+SXQgaXMgcmVsYXRpdmVseSBmYXN0IGFuZCBwcm92aWRlcyBnb29kIHJlc3VsdHMgYXQgbGVhc3QgZm9yIHBvaW50IGRhdGEuPGJyIC8+VGhlIHNlY29uZCBhbGdvcml0aG0gKExQR0EpIHVzZXMgbGluZWFyIHByb2dyYW1taW5nIHRvIHJlYWNoIGJldHRlciByZXN1bHRzIHRoYW4gU0dBIGJ1dCB0YWtlcyBtb3JlIHRpbWUuPGJyIC8+Qm90aCBhbGdvcml0aG1zIGFuZCBhIENWTCBjb21waWxlciBhcmUgaW1wbGVtZW50ZWQgb24gdG9wIG9mIGEgUG9zdEdJUyBkYXRhYmFzZSBzeXN0ZW0uIDxiciAvPlNldmVyYWwgZGF0YXNldHMgYXJlIHVzZWQgdG8gZXZhbHVhdGUgdGhlIGFwcHJvYWNoLiBUaGUgZXhwZXJpbWVudHMgc2hvdyB0aGF0IHRoZSBydW50aW1lIHN0cm9uZ2x5IGRlcGVuZHMgPGJyIC8+b24gdGhlIGRhdGEgdHlwZSAocG9pbnQgb3Igb3RoZXIgZ2VvbWV0cmllcykgYW5kIHRoZSB1c2VkIGNvbnN0cmFpbnRzICh2aXNpYmlsaXR5LCBwcm94aW1pdHkpLiA8YnIgLz48YnIgLz5BdXRvbWF0aWMgc2VsZWN0aW9uIG9mIG9iamVjdHMgZm9yIGEgbWFwIHJlcHJlc2VudGF0aW9uIGlzIGFuIGltcG9ydGFudCBpc3N1ZS4gVGhlIHBhcGVyIGlzIHdlbGwgd3JpdHRlbiBhbmQ8YnIgLz5jb21wcmVoZW5zaXZlLiBUaGUgZXhwZXJpbWVudHMgc2hvdywgdGhhdCB0aGUgcHJvcG9zZWQgdGVjaG5pcXVlIGNyZWF0ZXMgZ29vZCByZXN1bHRzIGJ1dCB0aGUgcnVudGltZSBpczxiciAvPnRvbyBoaWdoIGluIHNvbWUgY2FzZXMuIEkgc3VnZ2VzdCB0byBhY2NlcHQgdGhlIHBhcGVyLjxiciAvPjxiciAvPkNvbW1lbnRzOjxiciAvPjxiciAvPnBhZ2UgNCwgRGVzY3JpcHRpb24gb2YgRmlnLiA0PGJyIC8+VGhlIGFpcnBvcnRzIGFyZSB3ZWlnaHRpbmcgLi4uIC0+IFRoZSBhaXJwb3J0cyBhcmUgd2VpZ2h0ZWQ8YnIgLz48YnIgLz5wYWdlIDgsIERhdGFzZXRzPGJyIC8+Ii4uLiB0aGUgYmlnZ2VzdCBvbmUgY29udGFpbmluZyAyMyBtaWxsaW9uIHBvaW50cyAuLi4iPGJyIC8+aW4gVGFibGUgMSwgdGhlIGJpZ2dlc3Qgbm9uLXN5bnRoZXRpYyBkYXRhc2V0IGhhcyAib25seSIgOSBtaWxsaW9uIHBvaW50cy48YnIgLz48YnIgLz5SZWZlcmVuY2UgWzMwXTxiciAvPlNvbWUgYXV0aG9ycyBhcmUgbGlzdGVkIHR3aWNlLjxiciAvPmQCCQ8PFgIfAGhkZAIIDxUBAGQCAQ9kFgYCAw9kFgJmDxUBE0Fzc2lnbmVkX1Jldmlld2VyXzJkAgcPPCsADQEADxYEHwNnHwICCGQWAmYPZBYSAgEPZBYEZg8PFgIfAQUOT3ZlcmFsbCBSYXRpbmdkZAIBD2QWAmYPFQEGUmVqZWN0ZAICD2QWBGYPDxYCHwEFE1Jldmlld2VyIENvbmZpZGVuY2VkZAIBD2QWAmYPFQEGTWVkaWFuZAIDD2QWBGYPDxYCHwEFB05vdmVsdHlkZAIBD2QWAmYPFQEESGlnaGQCBA9kFgRmDw8WAh8BBQ9UZWNobmljYWwgRGVwdGhkZAIBD2QWAmYPFQEGTWVkaWFuZAIFD2QWBGYPDxYCHwEFFFByZXNlbnRhdGlvbiBRdWFsaXR5ZGQCAQ9kFgJmDxUBBk1lZGlhbmQCBg9kFgRmDw8WAh8BBRVMaXN0IG9mIFN0cm9uZyBQb2ludHNkZAIBD2QWAmYPFQHHA1RoaXMgcGFwZXIgaGFzIGEgZ3JlYXQgY2VudHJhbCBpZGVhOiB0byBleHByZXNzIG1hcCByZW5kZXJpbmcgY29uc3RyYWludHMgaW4gYSBkZWNsYXJhdGl2ZSB3YXksIGFuZCB0byB1c2UgYSBTUUwgZGF0YWJhc2UgdG8gZXhlY3V0ZSB0aG9zZSBjb25zdHJhaW50cy4gIFRoaXMgaXMgYW4gdW5kZXJleGFtaW5lZCBhcmVhIGFuZCB0aGlzIGlzLCBhdCBhIGhpZ2gtbGV2ZWwsIGV4YWN0bHkgdGhlIHJpZ2h0IGFwcHJvYWNoLjxiciAvPjxiciAvPkl0J3MgYWxzbyByaWdodCB0byBtYXAgdGhpcyBwcm9ibGVtIHRvIHNvbWUgZm9ybSBvZiBvcHRpbWl6YXRpb24gdGFzay48YnIgLz48YnIgLz5GaW5hbGx5LCB0aGUgc2V0IG9mIGV4cGVyaW1lbnRhbCBkYXRhc2V0cyBhbmQgdGFza3Mgc2VlbXMgcmlnaHQuICBJIGxpa2VkIHRoZSBleHB0cyBhYm91dCBzY2FsYWJpbGl0eSBhbmQgdmFyeWluZyBzaGFwZXMuZAIHD2QWBGYPDxYCHwEFE0xpc3Qgb2YgV2VhayBQb2ludHNkZAIBD2QWAmYPFQH3CVRoaXMgcGFwZXIgbWFrZXMgYWxsIHRoZSByaWdodCBkZWNpc2lvbnMgYXQgYSBoaWdoIGxldmVsLCBidXQgaGFzIGEgbnVtYmVyIG9mIHByb2JsZW1zIGF0IGEgbG93ZXIgbGV2ZWwuPGJyIC8+PGJyIC8+LS0gVGhlIGRlY2lzaW9uIHRvIHVzZSBjb25mbGljdCBzZXRzIGlzIHVuZGVyZXhhbWluZWQuICBIb3cgbWFueSBjb25mbGljdCBzZXRzIGNhbiB0aGVyZSBiZT8gIEhvdyBsYXJnZSBjYW4gZWFjaCBvbmUgYmU/ICBDYW4gdGhleSBjaGFyYWN0ZXJpemUgZXZlcnkgcG9zc2libGUgZGVzaXJhYmxlIHZpb2xhdGlvbj8gIFRoZXNlIGFyZSBhbGwgY3JpdGljYWwgcXVlc3Rpb25zIHRoYXQgdGhlIHBhcGVyIGRvZXMgbm90IGV4YW1pbmUuICAoQXQgb25lIHBvaW50IHRoZSBwYXBlciBzYXlzIHRoYXQgYSBjb25mbGljdCBzZXQgY2FuIGJlIHF1aXRlIGxhcmdlLCBidXQgdGhlcmUgaXMgbm8gY29tcGxleGl0eSBhbmFseXNpcywgYW5kIHRoZSBvdGhlciBxdWVzdGlvbnMgZG8gbm90IGFwcGVhciB0byBiZSBleGFtaW5lZCk8YnIgLz48YnIgLz4tLSBJcyBhIHRpbGUtYmFzZWQgdmlzaWJpbGl0eSBjb25zdHJhaW50IHN1ZmZpY2llbnQ/ICBJc24ndCBpdCBwb3NzaWJsZSB0byBoYXZlIHR3byBhZGphY2VudCB0aWxlcyB0aGF0IGluZGVwZW5kZW50bHkgZG8gbm90IHZpb2xhdGUgYSBkZXNpcmVkIGNvbnN0cmFpbnQsIGJ1dCB3aGljaCB0b2dldGhlciBkbyB2aW9sYXRlIGl0PyAgKEVnLCBpZiB0aGUgbGVmdCBzaWRlIG9mIG9uZSB0aWxlIGlzIGZpbGxlZCB3aXRoIG9iamVjdHMsIGFuZCB0aGUgcmlnaHQgc2lkZSBvZiBhIG5laWdoYm9yaW5nIHRpbGUgaXMgYWxzbyBmaWxsZWQuKSAgVGhlcmUgaXMgbm8gYXJndW1lbnQgdGhhdCB0aWxlcyBhcmUgc3VmZmljaWVudCB0byBjYXB0dXJlIHRoaXMgZ29hbDxiciAvPjxiciAvPi0tIFRoZSBtYXBwaW5nIG9mIGNvbmZsaWN0IHNldHMgdG8gc2V0IGNvdmVyIGlzIG5vdCBkb25lIGNvbnZpbmNpbmdseS4gIFRoaXMgbWFwcGluZyBzaG91bGQgYmUgbXVjaCBtb3JlIGNhcmVmdWxseSB3cml0dGVuLCB3aXRoIGV4YW1wbGVzIHByb3ZpZGVkLjxiciAvPjxiciAvPi0tIEV2ZW4gaWYgdGhlIG1hcHBpbmcgaXMgcG9zc2libGUsIGl0J3Mgbm90IGNsZWFyIHRoYXQgaXQncyAqbmVjZXNzYXJ5Ki4gIElzbid0IHRoZXJlIHBvc3NpYmx5IGEgYmV0dGVyIHdheSB0byBzb2x2ZSB0aGUgbWFwLXNwZWNpZmljIGNvbmZsaWN0cz8gIE5vIGRpc2N1c3Npb24gaXMgaGVyZSByaWdodCBub3cuPGJyIC8+PGJyIC8+ZAIID2QWBGYPDxYCHwEFEURldGFpbGVkIENvbW1lbnRzZGQCAQ9kFgJmDxUBoA9VbmNsZWFyOiAiVW5mb3J0dW5hdGVseSwgd2l0aCBjdXJyZW50IHRvb2xzLCAuLi4iICBUaGUgbm90aW9uIG9mIGEgem9vbSBsZXZlbCBpc24ndCBvYnZpb3VzIHlldC48YnIgLz48YnIgLz5SZXdvcmQgInN5bWJvbGl6YXRpb24iPGJyIC8+PGJyIC8+U2VjdGlvbiBJSTogaXQgc2VlbXMgeW91IGRvIG5vdCBoYW5kbGUgInJlZ2lvbmFsIGxhYmVscyIgdGhhdCBtaWdodCByZWFwcGVhciBhdCBtb3JlIGdlbmVyYWwgem9vbSBsZXZlbHMuICAoRWcsICJFdXJvcGUiIHJlYXBwZWFycyB3aGVuIHRoZSBjYW1lcmEgcHVsbHMgb3V0IGZhciBlbm91Z2guKSAgVGhhdCBzaG91bGQgYmUgbWFkZSBleHBsaWNpdCBpbiB0aGUgdGV4dC48YnIgLz48YnIgLz5BcyBtZW50aW9uZWQgYWJvdmUsIGNvbmZsaWN0IHNldHMgaGF2ZSB0byBiZSBtdWNoIG1vcmUgdGhvcm91Z2hseSBleGFtaW5lZC4gIFRoZXkgYXJlIGNvcmUgdG8gdGhlIHBhcGVyIGJ1dCBhcmUgdHJlYXRlZCBxdWl0ZSBjYXN1YWxseS48YnIgLz48YnIgLz5Ob3Qgc3VyZSB3aGF0IHlvdSBtZWFuIGhlcmU6ICJ3aGlsZSBhbHNvIHNwZWNpZnlpbmcgaG93IHJlY29yZHMgYXJlIHJlbmRlcmVkIjxiciAvPjxiciAvPiJUaGUgY3JlYXRlIGNvbnN0cmFpbnQuLi4gYW5kIHRoZSBnZW5lcmFsaXplIHN0YXRlbWVudCBpcyB1c2VkIGZvciBldmVyeXRoaW5nIGVsc2UuIiAgV2hhdCBpcyAnZXZlcnl0aGluZyBlbHNlJz88YnIgLz48YnIgLz5TZWN0aW9uIDNBOiB0aGUgbm90aW9uIG9mICJ3ZWlnaHQiIGlzIGNhc3VhbGx5IGludHJvZHVjZWQuICBJcyBpdCBnb29kIG9yIGJhZCB0byBoYXZlIGhlYXZ5IHdlaWdodD8gIEkgZXZlbnR1YWxseSBmaWd1cmVkIGl0IG91dCwgYnV0IGJlIGNsZWFyIGhlcmUuPGJyIC8+PGJyIC8+Tm90IHN1cmUgd2h5IHRoZSAiQVQgWCBaT09NIExFVkVMUyIgY2xhdXNlIGlzIHVzZWZ1bC4gIENhbiB5b3UgcHJvdmlkZSBhIG1vdGl2YXRpbmcgZXhhbXBsZT8gIEN1cnJlbnQgZXhhbXBsZXMgZG9uJ3QgbWFrZSB0aGUgY2FzZS4gIEUuZy4sIHdoeSAiMTgiIGluIEZpZ3VyZSA0PzxiciAvPjxiciAvPlRoZSBwYXJhZ3JhcGgsICJUaGUgcmVzdWx0aW5nIG1hcCBpcyBzaG93biBpbiBGaWd1cmUgMy4uLiIgIHRoaXMgaXMgZXhhY3RseSB0aGUgb3Bwb3NpdGUgb2Ygd2hhdCBJIHRob3VnaHQgd291bGQgaGFwcGVuLiAgSWYgdGhlIHpvb20gbGV2ZWwgaXMgdmVyeSBnZW5lcmFsLCB3b24ndCBpdCBiZSBtYWRlIHVwIG9mIG1hbnkgdGlsZXMgdGhhdCBhcmUgZml4ZWQgaW4gdGhlaXIgbnVtYmVyIG9mIHBpeGVscz8gIFdvdWxkbid0IGVhY2ggc3VjaCB0aWxlIGhhdmUgMTYgYWlycG9ydHMsIGluc3RlYWQgb2YgMTYgZm9yIHRoZSB3aG9sZSB3b3JsZD88YnIgLz48YnIgLz5UaGUgc3ludGF4IGZvciBDVkwgaXNuJ3QgcHJldHR5LiAgRXZlbiBhIHNpbXBsZSBleGFtcGxlIGluIEZpZyA2IHRha2VzIGEgbG90IG9mIGNsYXVzZXMuICBJcyB0aGlzIHJlYWxseSB0aGUgYmVzdCB3YXkgdG8gZG8gaXQ/ICBGaWd1cmUgNyBpcyB3b3JzZSwgd2l0aCBhIHN0cmFuZ2UgJ2J1c3RlZCB0YWJsZScgaW52b2x2ZWQuICBXaHkgaXMgYnVzdGVkIHRhYmxlIG5lZWRlZCBpbiB0aGlzIGV4YW1wbGUsIGJ1dCBub3QgRmlnIDY/ICBJcyBpdCBiZWNhdXNlIGl0J3Mgem9vbS1sZXZlbC1pbmRlcGVuZGVudD88YnIgLz48YnIgLz5UaGUgbWFwcGluZyBvZiBjb250ZXh0IHNldHMgdG8gc2V0IGNvdmVyIGlzIHJlYWxseSBjcml0aWNhbCBhbmQgaXMgbm90IGNsZWFyLiAgV2h5IGNhbiBhIGNvbmZsaWN0IHNldCBiZSBjaG9zZW4gb25seSBvbmNlPzxiciAvPjxiciAvPkRvIHRoZSAiZXh0ZW5zaW9ucyIgYWRkIGFueXRoaW5nIHRvIHRoZSBkaWZmaWN1bHR5IG9yIHRpbWUgY29tcGxleGl0eT8gIFRoZXJlJ3Mgbm8gZGlzY3Vzc2lvbiBvZiB3aGV0aGVyIHRoaXMgY291bGQgaGFwcGVuLjxiciAvPjxiciAvPmQCCQ8PFgIfAGhkZAIIDxUBAGQCAg9kFgYCAw9kFgJmDxUBE0Fzc2lnbmVkX1Jldmlld2VyXzNkAgcPPCsADQEADxYEHwNnHwICCGQWAmYPZBYSAgEPZBYEZg8PFgIfAQUOT3ZlcmFsbCBSYXRpbmdkZAIBD2QWAmYPFQEGQWNjZXB0ZAICD2QWBGYPDxYCHwEFE1Jldmlld2VyIENvbmZpZGVuY2VkZAIBD2QWAmYPFQEGTWVkaWFuZAIDD2QWBGYPDxYCHwEFB05vdmVsdHlkZAIBD2QWAmYPFQEGTWVkaWFuZAIED2QWBGYPDxYCHwEFD1RlY2huaWNhbCBEZXB0aGRkAgEPZBYCZg8VAQRIaWdoZAIFD2QWBGYPDxYCHwEFFFByZXNlbnRhdGlvbiBRdWFsaXR5ZGQCAQ9kFgJmDxUBBEhpZ2hkAgYPZBYEZg8PFgIfAQUVTGlzdCBvZiBTdHJvbmcgUG9pbnRzZGQCAQ9kFgJmDxUBnQIxKSBhIHZlcnkgZGV0YWlsZWQsIGNsZWFyIGFuZCBlbGVnYW50IHByZXNlbnRhdGlvbi4gQWxsIHRoZSB0ZWNobmljYWwgZGV0YWlscyBhcmUgZXhwbGFpbmVkIGluIGEgdmVyeSBjb21wcmVoZW5zaWJsZSB0ZXh0LjxiciAvPgkyKSBUaGUgcHJvcG9zZWQgY29uc3RyYWludCBzb2x2ZXIgaXMgc291bmQgYW5kIHdlbGwgbW90aXZhdGVkPGJyIC8+CTMpIHRoZSBsYW5ndWFnZSBwcm9wb3NlZCB0byBkcml2ZSB0aGUgc29sdmVyIHNlZW1zIGVhc3kgdG8gYmUgYWRvcHRlZCBldmVuIGZvciBuZXcgdXNlcnNkAgcPZBYEZg8PFgIfAQUTTGlzdCBvZiBXZWFrIFBvaW50c2RkAgEPZBYCZg8VAdADMSkgU29tZSBnZW5lcmFsaXphdGlvbiBzb2x1dGlvbnMgdXNlIGEgY2hhbmdlIG9mIGdlb21ldHJ5IHdoZW4gY2hhbmdpbmcgem9vbSBsZXZlbC4gRm9yIGV4YW1wbGUsIHJvYWRzIGFyZSByZXByZXNlbnRlZCBhcyBsaW5lcyBhdCBsb3cgem9vbSBsZXZlbHMsIGFuZCB3aXRoIHBvbHlnb25zIG9uIGhpZ2ggem9vbSBsZXZlbHMuIFRoZSBhdXRob3JzIG1heSBkaXNjdXNzIGhvdyB0aGlzIGFzcGVjdCBtYXkgYmUgaW5jbHVkZWQgYXMgYSBuZXcgZmVhdHVyZSBpbiB0aGVpciBzeXN0ZW0uPGJyIC8+CTIpIGl0IGlzIG5vdCBjbGVhciBpZiB0aGUgZnJhbWV3b3JrIGlzIGF2YWlsYWJsZSBmb3IgdGhlIGNvbW11bml0eSBhcyBEQk1TIHBsdWdpbi4gRnJvbSB0aGUgdGV4dCBpdCBzcGVjaWZpZWQgdGhhdCBhbiBpbnN0YW5jZSBvZiB0aGUgc3lzdGVtIGlzIGF2YWlsYWJsZSBhcyBhIHZpcnR1YWwgbWFjaGluZSBpbWFnZS5kAggPZBYEZg8PFgIfAQURRGV0YWlsZWQgQ29tbWVudHNkZAIBD2QWAmYPFQHIBFRoZSBhdXRob3JzIHByZXNlbnQgYSBmcmFtZXdvcmsgdG8gZ2VuZXJhbGl6ZSBnZW9tZXRyaWVzIGZvciBsYXJnZSBtYXBzIHZpc3VhbGl6YXRpb24uIFRoZSBwcm9wb3NlZCBmcmFtZXdvcmsgcHJlc2VudCBhIGxhbmd1YWdlIGFzIGFuIGV4dGVuc2lvbiBvZiBTUUwgdG8gbGV0IHRoZSBhbmFseXN0IHRvIHNwZWNpZnkgZGlmZmVyZW50IGZhbWlsaWVzIG9mIGNvbnRyYWludHMuIFRoZSBzdGF0ZW1lbnRzIGFyZSBpbnRlcnByZXRlZCBieSBhIGNvbXBpbGVyIGFuZCBwYXNzZWQgdG8gYSBjb25zdHJhaW50IHNvbHZlciB0aGF0IHJlbW92ZXMgY29uZmxpY3RpbmcgZW50aXRpZXMuPGJyIC8+CVRoZSBwcm9ibGVtIHNlZW1zIHZlcnkgaW50ZXJlc3RpbmcgYW5kIHRoZSBwcm9wb3NlZCBzb2x1dGlvbiBpcyB2ZXJ5IGVsZWdhbnQuIFRoZSBmb3JtYWwgcHJlc2VudGF0aW9uIG9mIHRoZSBwcm9ibGVtIGlzIGNsZWFyIGFuZCB3ZWxsIGRvY3VtZW50ZWQuIDxiciAvPgk8YnIgLz4JSSdtIG5vdCBhbiBleHBlcnQgb2YgdGhlIGZpZWxkIGFuZCB0aHVzIEkgY2FuIG5vdCBldmFsdWF0ZSB0aGUgbm92ZWx0eSBvZiB0aGUgYXBwcm9hY2guZAIJDw8WAh8AaGRkAggPFQEAZBgDBR9jdGwwMCRjcGgkZ3ZSZXZpZXdzJGN0bDAyJGN0bDAwDzwrAAoBCAIBZAUfY3RsMDAkY3BoJGd2UmV2aWV3cyRjdGwwMSRjdGwwMA88KwAKAQgCAWQFH2N0bDAwJGNwaCRndlJldmlld3MkY3RsMDAkY3RsMDAPPCsACgEIAgFkgHfxdRAk0NQe8IOP3kWdGU6YOZU=" />
+</div>
+
+<table id="header">
+<tr>
+<td width="100%"><a href='http&#58;&#47;&#47;ieee-icde2014.eecs.northwestern.edu&#47;' target='_blank'>ICDE 2014</a><br /><b>2014 IEEE International Conference on Data Engineering</b><br />March 31 - Apr 4, 2014 , Chicago, IL, USA</td>
+</tr>
+<tr class='headerSeparator'>
+    <td style='height:5px'></td>
+</tr>
+</table>
+<table id="content"><tr><td class='contentBorder'>&nbsp;</td><td class="contentContainer">
+<span id="ctl00_cph_Label4" style="font-size:Small;font-weight:bold;">Reviews For Paper</span>
+<span id="ctl00_cph_lblErrorMessage" class="error" style="font-size:Small;"></span>
+<div id="ctl00_cph_pnlReviews">
+	
+    <span style="font-size:Small;">
+<table class="nicetable2" style="text-align:left; width: 100%;">
+    <tr id="ctl00_cph_infoSubmission_trTrack">
+		<td><b>Track</b></td>
+		<td><span id="ctl00_cph_infoSubmission_lblTrack" style="font-size:Small;">Spatial, Temporal, Mobile, and Multimedia Data</span></td>
+	</tr>
+	
+    <tr>
+        <td width="100px"><b>Paper ID</b></td>
+        <td><span id="ctl00_cph_infoSubmission_lblPaperId" style="font-size:Small;">296</span></td>
+    </tr>
+    <tr>
+        <td><b>Title</b></td>
+        <td><span id="ctl00_cph_infoSubmission_lblPaperTitle" style="font-size:Small;">Declarative Cartography&#58; In-Database Map Generalization of Geospatial Datasets</span></td>
+    </tr>
+    
+    
+    
+    
+    
+</table></span>
+    
+    
+            <hr />
+            <table>
+                <tr>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl00_Label2" style="font-size:Small;font-weight:bold;">Masked Reviewer ID:</span>
+                    </td>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl00_Label1" style="font-size:Small;">Assigned_Reviewer_1</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl00_Label3" style="font-size:Small;font-weight:bold;">Review:</span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <div>
+		<table cellspacing="0" cellpadding="4" rules="all" border="1" style="color:#333333;border-width:1px;border-style:None;font-family:Verdana;font-size:Small;border-collapse:collapse;">
+			<tr style="color:White;background-color:#5D7B9D;font-weight:bold;">
+				<th scope="col">Question</th><th scope="col">&nbsp;</th>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Overall Rating</td><td style="width:80%;">
+                            Accept
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Reviewer Confidence</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Novelty</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Technical Depth</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Presentation Quality</td><td style="width:80%;">
+                            High
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">List of Strong Points</td><td style="width:80%;">
+                            The paper provides a solution of map generalization, i.e. which objects of a set of objects should be displayed at a certain zoom level. <br />It introduces a descriptive language (CVL) allowing the user to define constraints and to create a subset of objects to display at a certain zoom level. These constraints are used for automatic filtering the source object set.<br />The problem mentioned above is mapped to an optimization problem. Two heuristics are presented for creating good results. Both, CVL and the heuristics are implemented on top of a relational database system with spatial extension. Experiments show that both heuristics provide reasonable results for real and synthetic data sets.
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">List of Weak Points</td><td style="width:80%;">
+                            The runtime of the linear programming based heuristic is very high for some constraints.<br />A central example (including the relation scheme) is missing.
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Detailed Comments</td><td style="width:80%;">
+                            When displaying a set of geographic objects in a map at a certain zoom level, two problems <br />have to be solved, which objects should be displayed and how these objects should be displayed.<br />The paper describes a method to solve the first problem. Objects are stored in a relational <br />database with a spatial extension. <br />The goal is to assign each object a range of zoom levels in which the object should be part of the map.<br />For a large set of objects it's unfeasible to do this manually. The authors present a descriptive <br />language (CVL) allowing to define of constraints and to create a subset of objects to display at <br />a certain zoom level. Some extensions of this language are presented to make the use of CVL easier.<br />For filtering out objects from the source set, a weight is assigned to each object describing its importance.<br />Then, automatically finding a filter is mapped to an optimization problem. The authors state<br />that this optimization problem is too hard to solve and present two heuristics. Both of them<br />transfer the complete optimization problem into a series of smaller optimization problems  (one for each zoom level) <br />and are mostly computable in reasonable time. <br />The "static greedy algorithm" (SGA) removes the objects having the smallest weight from the conflicting sets.<br />It is relatively fast and provides good results at least for point data.<br />The second algorithm (LPGA) uses linear programming to reach better results than SGA but takes more time.<br />Both algorithms and a CVL compiler are implemented on top of a PostGIS database system. <br />Several datasets are used to evaluate the approach. The experiments show that the runtime strongly depends <br />on the data type (point or other geometries) and the used constraints (visibility, proximity). <br /><br />Automatic selection of objects for a map representation is an important issue. The paper is well written and<br />comprehensive. The experiments show, that the proposed technique creates good results but the runtime is<br />too high in some cases. I suggest to accept the paper.<br /><br />Comments:<br /><br />page 4, Description of Fig. 4<br />The airports are weighting ... -> The airports are weighted<br /><br />page 8, Datasets<br />"... the biggest one containing 23 million points ..."<br />in Table 1, the biggest non-synthetic dataset has "only" 9 million points.<br /><br />Reference [30]<br />Some authors are listed twice.<br />
+                        </td>
+			</tr>
+		</table>
+	</div>
+            
+        
+            <hr />
+            <table>
+                <tr>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl01_Label2" style="font-size:Small;font-weight:bold;">Masked Reviewer ID:</span>
+                    </td>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl01_Label1" style="font-size:Small;">Assigned_Reviewer_2</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl01_Label3" style="font-size:Small;font-weight:bold;">Review:</span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <div>
+		<table cellspacing="0" cellpadding="4" rules="all" border="1" style="color:#333333;border-width:1px;border-style:None;font-family:Verdana;font-size:Small;border-collapse:collapse;">
+			<tr style="color:White;background-color:#5D7B9D;font-weight:bold;">
+				<th scope="col">Question</th><th scope="col">&nbsp;</th>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Overall Rating</td><td style="width:80%;">
+                            Reject
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Reviewer Confidence</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Novelty</td><td style="width:80%;">
+                            High
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Technical Depth</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Presentation Quality</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">List of Strong Points</td><td style="width:80%;">
+                            This paper has a great central idea: to express map rendering constraints in a declarative way, and to use a SQL database to execute those constraints.  This is an underexamined area and this is, at a high-level, exactly the right approach.<br /><br />It's also right to map this problem to some form of optimization task.<br /><br />Finally, the set of experimental datasets and tasks seems right.  I liked the expts about scalability and varying shapes.
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">List of Weak Points</td><td style="width:80%;">
+                            This paper makes all the right decisions at a high level, but has a number of problems at a lower level.<br /><br />-- The decision to use conflict sets is underexamined.  How many conflict sets can there be?  How large can each one be?  Can they characterize every possible desirable violation?  These are all critical questions that the paper does not examine.  (At one point the paper says that a conflict set can be quite large, but there is no complexity analysis, and the other questions do not appear to be examined)<br /><br />-- Is a tile-based visibility constraint sufficient?  Isn't it possible to have two adjacent tiles that independently do not violate a desired constraint, but which together do violate it?  (Eg, if the left side of one tile is filled with objects, and the right side of a neighboring tile is also filled.)  There is no argument that tiles are sufficient to capture this goal<br /><br />-- The mapping of conflict sets to set cover is not done convincingly.  This mapping should be much more carefully written, with examples provided.<br /><br />-- Even if the mapping is possible, it's not clear that it's *necessary*.  Isn't there possibly a better way to solve the map-specific conflicts?  No discussion is here right now.<br /><br />
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Detailed Comments</td><td style="width:80%;">
+                            Unclear: "Unfortunately, with current tools, ..."  The notion of a zoom level isn't obvious yet.<br /><br />Reword "symbolization"<br /><br />Section II: it seems you do not handle "regional labels" that might reappear at more general zoom levels.  (Eg, "Europe" reappears when the camera pulls out far enough.)  That should be made explicit in the text.<br /><br />As mentioned above, conflict sets have to be much more thoroughly examined.  They are core to the paper but are treated quite casually.<br /><br />Not sure what you mean here: "while also specifying how records are rendered"<br /><br />"The create constraint... and the generalize statement is used for everything else."  What is 'everything else'?<br /><br />Section 3A: the notion of "weight" is casually introduced.  Is it good or bad to have heavy weight?  I eventually figured it out, but be clear here.<br /><br />Not sure why the "AT X ZOOM LEVELS" clause is useful.  Can you provide a motivating example?  Current examples don't make the case.  E.g., why "18" in Figure 4?<br /><br />The paragraph, "The resulting map is shown in Figure 3..."  this is exactly the opposite of what I thought would happen.  If the zoom level is very general, won't it be made up of many tiles that are fixed in their number of pixels?  Wouldn't each such tile have 16 airports, instead of 16 for the whole world?<br /><br />The syntax for CVL isn't pretty.  Even a simple example in Fig 6 takes a lot of clauses.  Is this really the best way to do it?  Figure 7 is worse, with a strange 'busted table' involved.  Why is busted table needed in this example, but not Fig 6?  Is it because it's zoom-level-independent?<br /><br />The mapping of context sets to set cover is really critical and is not clear.  Why can a conflict set be chosen only once?<br /><br />Do the "extensions" add anything to the difficulty or time complexity?  There's no discussion of whether this could happen.<br /><br />
+                        </td>
+			</tr>
+		</table>
+	</div>
+            
+        
+            <hr />
+            <table>
+                <tr>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl02_Label2" style="font-size:Small;font-weight:bold;">Masked Reviewer ID:</span>
+                    </td>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl02_Label1" style="font-size:Small;">Assigned_Reviewer_3</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span id="ctl00_cph_gvReviews_ctl02_Label3" style="font-size:Small;font-weight:bold;">Review:</span>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+            <div>
+		<table cellspacing="0" cellpadding="4" rules="all" border="1" style="color:#333333;border-width:1px;border-style:None;font-family:Verdana;font-size:Small;border-collapse:collapse;">
+			<tr style="color:White;background-color:#5D7B9D;font-weight:bold;">
+				<th scope="col">Question</th><th scope="col">&nbsp;</th>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Overall Rating</td><td style="width:80%;">
+                            Accept
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Reviewer Confidence</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Novelty</td><td style="width:80%;">
+                            Median
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Technical Depth</td><td style="width:80%;">
+                            High
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">Presentation Quality</td><td style="width:80%;">
+                            High
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">List of Strong Points</td><td style="width:80%;">
+                            1) a very detailed, clear and elegant presentation. All the technical details are explained in a very comprehensible text.<br />	2) The proposed constraint solver is sound and well motivated<br />	3) the language proposed to drive the solver seems easy to be adopted even for new users
+                        </td>
+			</tr><tr style="color:#333333;background-color:#F7F6F3;">
+				<td style="width:20%;">List of Weak Points</td><td style="width:80%;">
+                            1) Some generalization solutions use a change of geometry when changing zoom level. For example, roads are represented as lines at low zoom levels, and with polygons on high zoom levels. The authors may discuss how this aspect may be included as a new feature in their system.<br />	2) it is not clear if the framework is available for the community as DBMS plugin. From the text it specified that an instance of the system is available as a virtual machine image.
+                        </td>
+			</tr><tr style="color:#284775;background-color:White;">
+				<td style="width:20%;">Detailed Comments</td><td style="width:80%;">
+                            The authors present a framework to generalize geometries for large maps visualization. The proposed framework present a language as an extension of SQL to let the analyst to specify different families of contraints. The statements are interpreted by a compiler and passed to a constraint solver that removes conflicting entities.<br />	The problem seems very interesting and the proposed solution is very elegant. The formal presentation of the problem is clear and well documented. <br />	<br />	I'm not an expert of the field and thus I can not evaluate the novelty of the approach.
+                        </td>
+			</tr>
+		</table>
+	</div>
+            
+        
+    <br />
+    <br />
+
+</div>
+</td><td class='contentBorder'>&nbsp;</td></tr></table>
+</form>
+</body>
+</html>

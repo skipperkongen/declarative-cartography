@@ -44,3 +44,7 @@
 [11/4/13 1:28:29 PM] pimin konstantin kefaloukos: @point 2: we have conflict sets because we want constraints. we want constraints because it is the usual way to reason about generalization... cite
 [11/4/13 1:31:18 PM] pimin konstantin kefaloukos: ref: thinning and "The constraint method for solving spatial conflicts in cartographic generalization"
 [11/4/13 1:32:59 PM] pimin konstantin kefaloukos: remember to check if page limit has increased for camera ready
+
+# Ideas
+
+* Add image of bi-partite graph as explanation of mapping from conflict sets to set cover. This has worked well in presentations. See zurich2 presentation for example.

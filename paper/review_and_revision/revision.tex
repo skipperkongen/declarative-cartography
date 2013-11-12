@@ -17,23 +17,14 @@
 \section{About}
 Notes and overall plan recorded in Kostas/Marcos Skype chat October 16 2013. Citations for ladder/star approach in Kostas/Pia chat November 12 2013. Citations for NP-hardness in Kostas/Martin email.
 
-\section{Formulations for paper}
+\section{Why map conflict resolution to an NP-hard problem?}
 
-\subsection{Refinements based on knowledge gained in Z\"{u}rich}
 
 \begin{description}
-\item[Typology of constraints (tags: method, related work, discussion)] Various typologies of constraints have been discussed in the literature~\cite{beard1991constraints,harrie2007modelling}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, we consider only \emph{legibility constraints},  e.g. proximity and density constraints, while not handling \emph{appearance constraints}. Appearance constraints serve the purpose of maintaining representation of the input data. Instead, we use an objective function to balance the legibility constraints, minimizing the combined weight of objects that are removed. 
-
-The spatial distribution of objects is not well maintained by our genealization method. Including appearance constraints~\cite{harrie2007modelling} in the model would be an interesting direction for future work. (Note: Stephan Schmid wrote a nice master's thesis that includes a thorough discussion of constraints~\cite{schmid2008automated}).
-\item[Ladder/star approach (tags: method, related work)] When generalizing a dataset for several scales, an important distinction is whether to follow the \emph{ladder} or \emph{star} approach~\cite{foerster2010challenges}. We have only implemented the ladder approach, where lower scales are recursively derived from higher scales. An advantage of using the ladder approach is that the zoom-consistency constraint is automatically satisfied. The star approach is well fitted for use cases where enforcing the zoom-consistency constraint is not appropriate, e.g. when generalizing regional labels were labels appear on intermediate zoom levels; disappearing at lower and/or higher zoom levels.
-\end{description}
-
-\subsection{Why map conflict resolution to an NP-hard problem?}
-
-If we model the problem using conflict sets, the problem is
+\item[Hardness proof (tags: algorithm section)] If we model the problem using conflict sets, the problem is
 definitely NP-hard for all interesting cases.
 
-Here is why: Consider the vertex cover problem. Given a graph G=(V,E),
+For an informal proof, consider the vertex cover problem. Given a graph G=(V,E),
 find a minimum size subset of the vertices S such that every edge in E
 has an endpoint in S. Think of the vertices as records and the edges
 as conflict sets. This problem would then model the filtering problem
@@ -48,14 +39,37 @@ in at most 3 conflict sets, the problem remains NP-hard. It is hard to
 imagine that any interesting application is more restrictive.
 
 Note that the cubic vertex cover problem is APX-hard - which
-means that it cannot be approximated arbitrarily close unless P=NP. So
-even this restricted version is "really" hard.
+means that it cannot be approximated arbitrarily close unless P=NP~\cite{alimonti2000some}. So even this restricted version is ``really'' hard.
 %\cite{Some APX-completeness results for cubic graphs, The Rectilinear Steiner Tree Problem is NP-Complete*}
+\end{description}
 
 
 
+\section{Why use conflict sets to model problem?}
 
-\subsection{Why use conflict sets to model problem?}
+TODO
+
+\section{Refinements based on knowledge gained in Z\"{u}rich}
+
+\begin{description}
+\item[Typology of constraints (tags: method, related work, discussion)] Various typologies of constraints have been discussed in the literature~\cite{beard1991constraints,harrie2007modelling}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, we consider only \emph{legibility constraints},  e.g. proximity and density constraints, while not handling \emph{appearance constraints}. Appearance constraints serve the purpose of maintaining representation of the input data. Instead, we use an objective function to balance the legibility constraints, minimizing the combined weight of objects that are removed. 
+
+The spatial distribution of objects is not well maintained by our genealization method. Including appearance constraints~\cite{harrie2007modelling} in the model would be an interesting direction for future work. (Note: Stephan Schmid wrote a nice master's thesis that includes a thorough discussion of constraints~\cite{schmid2008automated}).
+\item[Ladder/star approach (tags: method, related work)] When generalizing a dataset for several scales, an important distinction is whether to follow the \emph{ladder} or \emph{star} approach~\cite{foerster2010challenges}. We have only implemented the ladder approach, where lower scales are recursively derived from higher scales. An advantage of using the ladder approach is that the zoom-consistency constraint is automatically satisfied. The star approach is well fitted for use cases where enforcing the zoom-consistency constraint is not appropriate, e.g. when generalizing regional labels. Often regional labels appear on intermediate scales, but not at lower or higher scales.
+\end{description}
+
+\section{What we promised the reviewers}
+
+\begin{description}
+\item[Changing geometry (tags: discussion)] (copied from author-feedback) The question regarding changing the geometry type is very relevant and we have discussed it extensively while developing our framework. Let us first consider the semantics of changing geometry type. We can have a set-based semantics, in which a set of objects with given geometries are changed into a different set of objects (e.g., multiple objects are aggregated into one). Alternatively, we can consider a per-object semantics, in which individual objects remain identifiable throughout the generalization process, but their geometries change either by simplification (reducing the fidelity) or collapse (converting, e.g., a polygon to a point). Set-based semantics would imply changing dynamically the very formulation of the multi-scale filtering optimization problem. Given this complexity, we favor the per-object semantics, assuming that geometry changes are not significant enough to affect the solution. Under this assumption, a per-object semantics would be easy to incorporate in CVL through an extension to the generalize statement specifying a geometry modification function.
+
+From an implementation point of view, such an extension can be supported in our algorithmic framework either as a post-processing step to the geometries before finalization, or as a geometry transformation step per zoom level. The latter alternative offers the more interesting opportunity of having multiple object representations on different zoom-levels, necessitating object versioning during generalization. Under the assumption above that geometry changes do not affect the optimization problem, this extension could actually provide us with potential performance gains, since it is faster to compute predicates over simple objects than complex ones. We plan to include in our paper a summarized discussion of this important issue of multiple object representations.
+
+\item[Running time (tags: discussion)] (Copied from auther-feedback) It is an important observation, with which we agree, that the running time of the LP-based greedy algorithm is high. We implemented this algorithm as an alternative to the SQL-based SGA-algorithm mainly because it provides a bound on the solution quality. It should be noted that we have investigated other algorithms which could potentially have much better performance, albeit providing looser bounds on quality (ref [34] in the paper). These algorithms allow for different trade-offs between quality and performance, as well as careful reasoning about SQL-based implementations, to be explored. This is an interesting avenue for future work. We plan to add a discussion on this possibility to the paper, as well as address the other comments on your review.
+\end{description}
+
+
+\section{TAIL}
 
 We have conflict sets because we want to satisfy constraints. We want to satisfy constraints because it is a common way to reason about feasible solutions to generalization... thinning and "The constraint method for solving spatial conflicts in cartographic generalization"
 
@@ -93,10 +107,6 @@ Here we assume that using conflict sets is a good idea. The question whether tha
 \item We can not think of another model with these properties and which also leads to an optimization problem that has an efficient solution
 \item Asking us to prove that such a model does not exist is a tall order...
 \end{enumerate}
-
-\section{Questions: Various questions answered in author feedback}
-
-Use this section to capture some compact formulations that can be plugged into paper
 
 \bibliographystyle{abbrv}
 \bibliography{revision}  % gvl.bib is the name of the Bibliography in this case

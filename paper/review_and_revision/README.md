@@ -6,8 +6,11 @@
 	* Kostas: This could be done by 1) using star-approach instead of ladder-approach and 2) using a zoom-level dependent weighing function. 
 	* Kostas: Use term ladder-approach, instead of bottom-up approach, and add a citation to (find paper in my survey).
 	* Ask Weibel if he knows source of ladder/star distinction
-
-
+* Citations to support constraint-based approach:
+	* Das Sarma, A., Lee, H., Gonzalez, H., Madhavan, J. and Halevy, A., 2012. Efficient Spatial Sampling of Large Geographical Tables. In SIGMOD. pp. 193–204.
+	* Harrie, L.E., 1999. The constraint method for solving spatial conflicts in cartographic generalization. Cartography and Geographic Information Science, 26(1), pp.55–69.
+* Consider citing for database approach:
+	* Nutanong, S., Adelfio, M.D. and Samet, H., 2012. Multiresolution select-distinct queries on large geographic point sets. In Proceedings of the 20th International Conference on Advances in Geographic Information Systems. pp. 159–168.
 
 ## Points from Skype
 
@@ -47,8 +50,6 @@
 [10/16/13 2:47:48 PM] pimin konstantin kefaloukos: @step 4.5: add README to github saying: this is not a release version etc... not before camera-ready, but definitely before conference
 [10/16/13 2:48:11 PM] pimin konstantin kefaloukos: @step 4.5: add stuff we took out back into code, before conference
 [10/16/13 2:50:04 PM] pimin konstantin kefaloukos: @step 4.5: put url in paper
-
-
 
 
 [11/4/13 1:26:17 PM] pimin konstantin kefaloukos: Notes from meeting with Martin, Marcos and Kostas:

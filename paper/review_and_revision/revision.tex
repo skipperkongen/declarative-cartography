@@ -17,8 +17,14 @@
 \section{About}
 Notes and overall plan recorded in Kostas/Marcos Skype chat October 16 2013. Citations for ladder/star approach in Kostas/Pia chat November 12 2013. Citations for NP-hardness in Kostas/Martin email.
 
-\section{Why map conflict resolution to an NP-hard problem?}
+\section{Renamings to be consistent with literature}
 
+\begin{itemize}
+\item Rename ``filtering problem'' to ``thinning problem'' or ``selection problem''; consistent with the \emph{selection operator} in generalization literature, or \emph{thinning} in the fusion tables paper.
+\item Rename ``bottom-up'' to ``ladder'' approach; consistent with name for this approach in the generalization literature~\cite{foerster2010challenges}
+\end{itemize}
+
+\section{Why map conflict resolution to an NP-hard problem?}
 
 \begin{description}
 \item[Hardness proof (tags: algorithm section)] If we model the problem using conflict sets, the problem is
@@ -33,29 +39,51 @@ for the special case where all conflict sets had exactly two records
 
 The vertex cover problem is NP-hard, even for very constrained cases.
 For example, even if G is a planar graph and every vertex has degree
-at most 3, the problem remains NP-hard. In other words, even if the
+at most 3, the problem remains NP-hard~\cite{garey1977rectilinear}. In other words, even if the
 conflict sets only have two records each, and each record is involved
 in at most 3 conflict sets, the problem remains NP-hard. It is hard to
 imagine that any interesting application is more restrictive.
 
 Note that the cubic vertex cover problem is APX-hard - which
 means that it cannot be approximated arbitrarily close unless P=NP~\cite{alimonti2000some}. So even this restricted version is ``really'' hard.
-%\cite{Some APX-completeness results for cubic graphs, The Rectilinear Steiner Tree Problem is NP-Complete*}
 \end{description}
 
 
 
 \section{Why use conflict sets to model problem?}
 
-TODO
 
 \section{Refinements based on knowledge gained in Z\"{u}rich}
 
 \begin{description}
-\item[Typology of constraints (tags: method, related work, discussion)] Various typologies of constraints have been discussed in the literature~\cite{beard1991constraints,harrie2007modelling}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, we consider only \emph{legibility constraints},  e.g. proximity and density constraints, while not handling \emph{appearance constraints}. Appearance constraints serve the purpose of maintaining representation of the input data. Instead, we use an objective function to balance the legibility constraints, minimizing the combined weight of objects that are removed. 
+\item[Requirements of a generalized map] There are two main requirements that a generalized map must satisfy. Firstly, it must be a correct, though abstracted, representation of the physical reality. Secondly, the map must be readable by the user. If both these two requirements are not taken into account the map will not be of high quality. The final generalized map will eventually be a compromise between good readability and good representation~\cite{harrie2007modelling}.
 
-The spatial distribution of objects is not well maintained by our genealization method. Including appearance constraints~\cite{harrie2007modelling} in the model would be an interesting direction for future work. (Note: Stephan Schmid wrote a nice master's thesis that includes a thorough discussion of constraints~\cite{schmid2008automated}).
-\item[Ladder/star approach (tags: method, related work)] When generalizing a dataset for several scales, an important distinction is whether to follow the \emph{ladder} or \emph{star} approach~\cite{foerster2010challenges}. We have only implemented the ladder approach, where lower scales are recursively derived from higher scales. An advantage of using the ladder approach is that the zoom-consistency constraint is automatically satisfied. The star approach is well fitted for use cases where enforcing the zoom-consistency constraint is not appropriate, e.g. when generalizing regional labels. Often regional labels appear on intermediate scales, but not at lower or higher scales.
+\item[Modeling the generalization process (tags: method, related work)]  (From ``Modelling the overall process of generalisation''~\cite{harrie2007modelling} by Harrie and Weibel) 
+
+A generalized map should satisfy several \emph{conditions}. The main idea behind \emph{constraint based modeling} is to let these conditions act as \emph{constraints} in the generalization process. The advantage of using constraints instead is that they are not bound to a certain action~\cite{beard1991constraints}. Using constraint based modeling thus leaves flexibility in defining the method by which a satisfaction of the constraints is sought.
+
+To use constraints in map generalization they must have a \emph{measure}. In order for the generalized map to satisfy all constraints all the measures must have satisfying values, e.g. the distance between objects must be greater than some minimum threshold. 
+
+Most often, however, there exists no generalization solution that completely satisfies the constraints and the solution must be a compromise. To find the best compromise there must be a \emph{cost} connected to the violations of the constraints (computed by the measure). The optimal generalized map is then the solution with the lowest total cost. Several methods for finding the optimal solution have been described in the literature, including \emph{agent modelling}, \emph{combinatorial optimization} and \emph{continuous optimization}~\cite{harrie2007modelling}.
+
+
+
+Note that one should be careful with the use of the word \emph{optimal} here. That a generalized map is an optimal solution, in a constraint based modeling sense, does not mean anything more than that the constraints used are violated as little as possible. This implies that a solution will never be better than the constraints used. To compute a perfect generalized map would in addition require that we have a complete set of constraints for the generalized map. 
+
+Currently, the constraints used for generalization are limited in the sense that they cannot describe all aspects of a generalized map; hence, the generalized map using constraint based modeling is not optimal in a more \emph{general} sense.
+
+\item[Expressibility of constraints (tags: limitations, related work)] Various typologies of constraints have been discussed in the literature~\cite{beard1991constraints,harrie2007modelling}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, we consider only \emph{legibility constraints} such as proximity and density constraints, leaving aside \emph{appearance constraints} that serve the purpose of maintaining faithful representation of the input data. 
+
+Future work should allow appearance constraints~\cite{harrie2007modelling} to be formulated, such as maintaining the \emph{spatial distribution} of a dataset and maintaining \emph{topological relationships} such as \emph{adjacency}, \emph{connectivity}, \emph{accessibility} and \emph{containment}.
+
+Our current approach is to use an \emph{objective function} to balance the legibility constraints, such that the combined weight of objects that are removed is minimized. 
+
+(Note: Stephan Schmid wrote a nice master's thesis that includes a thorough discussion of constraints~\cite{schmid2008automated}).
+
+\item[Ladder/star approach (tags: method, limitations, related work)] When generalizing a dataset for several scales, an important distinction is whether to follow the \emph{ladder} or \emph{star} approach~\cite{foerster2010challenges}. We have only implemented the ladder approach, where lower scales are recursively derived from higher scales. An advantage of using the ladder approach is that the zoom-consistency constraint is automatically satisfied. The star approach is well fitted for use cases where enforcing the zoom-consistency constraint is not appropriate, e.g. when generalizing regional labels. Often regional labels appear on intermediate scales, but not at lower or higher scales.
+
+\item[Topology (tags: limitations)] Our method does not yet support topological constraints to be formulated. The aim of topological constraints is to maintain correct topological relationships such as . Allowing topological constraints to be expressed is an important direction for future work.
+
 \end{description}
 
 \section{What we promised the reviewers}

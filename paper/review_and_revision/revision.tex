@@ -78,7 +78,7 @@ Future work should allow appearance constraints~\cite{harrie2007modelling} to be
 
 Our current approach is to use an \emph{objective function} to balance the legibility constraints, such that the combined weight of objects that are removed is minimized. 
 
-(Note: Stephan Schmid wrote a nice master's thesis that includes a thorough discussion of constraints~\cite{schmid2008automated}).
+(Note: Stephan Schmid wrote a nice master's thesis that includes a thorough discussion of constraints~\cite{schmid2008automated}. Ask Weibel about what grade it got).
 
 \item[Ladder/star approach (tags: method, limitations, related work)] When generalizing a dataset for several scales, an important distinction is whether to follow the \emph{ladder} or \emph{star} approach~\cite{foerster2010challenges}. We have only implemented the ladder approach, where lower scales are recursively derived from higher scales. An advantage of using the ladder approach is that the zoom-consistency constraint is automatically satisfied. The star approach is well fitted for use cases where enforcing the zoom-consistency constraint is not appropriate, e.g. when generalizing regional labels. Often regional labels appear on intermediate scales, but not at lower or higher scales.
 
@@ -95,6 +95,13 @@ From an implementation point of view, such an extension can be supported in our 
 
 \item[Running time (tags: discussion)] (Copied from auther-feedback) It is an important observation, with which we agree, that the running time of the LP-based greedy algorithm is high. We implemented this algorithm as an alternative to the SQL-based SGA-algorithm mainly because it provides a bound on the solution quality. It should be noted that we have investigated other algorithms which could potentially have much better performance, albeit providing looser bounds on quality (ref [34] in the paper). These algorithms allow for different trade-offs between quality and performance, as well as careful reasoning about SQL-based implementations, to be explored. This is an interesting avenue for future work. We plan to add a discussion on this possibility to the paper, as well as address the other comments on your review.
 \end{description}
+
+\section{Addressing selected comments in review}
+
+\begin{itemize}
+\item R3 says:  Section II: it seems you do not handle "regional labels" that might reappear at more general zoom levels. (Eg, ``Europe'' reappears when the camera pulls out far enough.) That should be made explicit in the text.
+\item R3 says: Not sure why the ``AT X ZOOM LEVELS'' clause is useful. Can you provide a motivating example? Current examples don't make the case. E.g., why ``18'' in Figure 4?
+\end{itemize}
 
 
 \section{TAIL}

@@ -48,17 +48,100 @@ Note that the cubic vertex cover problem is APX-hard - which
 means that it cannot be approximated arbitrarily close unless P=NP~\cite{alimonti2000some}. So even this restricted version is ``really'' hard.
 \end{description}
 
+\section{What we do and why}
 
+\begin{description}
+
+\item[Justify selection] At a low level, the generalization process operates on a dataset by deleting, modifying and combining records. Usually, generalization is stated in terms of higher level generalization operators. In this work we support a single operator, the \emph{selection} operator~\cite{weibel1999generalising}. This operator works purely by deleting records. Confining ourselves to this operator has several advantages. 
+
+From a technical point of view, the advantage of the selection operator is, that the search space of solutions is comparatively small. This is because every record has only two possible states; deleted and not deleted. For other operators, such as \emph{displacement} of records, the combinatorial explosion is much more severe, because there is an order of magnitude more states to explore, per record~\cite{harrie2007modelling}.
+
+From a non-technical point of view, the selection operator is arguably the most appropriate operator for generalizing high density point datasets, which have become abundantly available on the web with the rise of latitude/longitude coded data, such as geocoded images and messages from social media. When dataset have millions or billions of records, there is not much choice but to omit some of the records, and have a good strategy for what to leave in.
+
+Supporting only a single generalization operator marks a starting point, rather than being a definitive solution to declarative cartography, but in view of the kinds of datasets that abound today, it is arguably the best starting point to explore this area.
+
+\item[Justify constraint based approach] Orthogonal to the choice of generalization operators, there are many approaches to the overall generalization process. One approach is \emph{constraint based modeling}~\cite{harrie1999constraint}, which is conceptually close to declarative cartography. Users should state what they want, not how it is should be computed. In the constraint based modeling, the definition of acceptable solutions is decoupled from the algorithms that compute solutions~\cite{beard1991constraints}, which is exactly what we want. 
+
+\item[Justify choice of constraints] 
+In the context of generalization, constraints can be divided into \emph{legibility constraints} and \emph{representation constraints}~\cite{harrie2007modelling}. Legibility constraints serve the purpose of ensuring that a map is \emph{readable}. The purpose of representation constraints is to ensure that various complex properties of the input data are retained. Any constraint must have a measure in order to be operational, but the measures needed to express representation constraints are typically very complex. Examples of complex measures include spatial distribution and topological relationships in the data. In contrast to this, legibility constraints can usually be expressed in terms of scalar measures such as distance and counts. This makes them easier to understand and parameterize for users and easier to implement. For this reason, we have postponed support for representation constraints in our implementation, and focused entirely on legibility constraints.
+
+\item[Justify objective function] Leaving out the representation constraints, means that it is trivial to satisfy the legibility constraints. Deleting all the records produces an empty dataset, which does not violate any expressible legibility constraint. To counter this, we formulate an objective function, which serves the purpose of retaining as many records in the dataset subject to the legibility constraints. Instead of treating all records equally, we allow users to assign a weight to the records, that intuitively indicates the importance of individual records. The assignment of weights is done statically. To counter the effect of the legibility constraints, the objective is to minimize the combined weight of records that are removed from the dataset. This can potentially lead to the situation were a record with high weight is removed to make room for two records of lesser weight. To ensure that this does not happen, is the responsibility of the algorithm used to compute a solution. In fact, many greedy algorithms will ensure that it does not happen, while compromising global optimality.
+
+\item[Justify combinatorial optimization]
+Constraints serve the purpose of defining feasible solutions in the search space, and must be complemented by an effective method for finding good solutions among the exponentially many potential candidates. To compute solutions we use \emph{combinatorial optimization}, which is a particularly good fit because records only have two possible states.
+
+Be exploiting regularity in the legibility constraints, we are able to map the generalization problem to a well-known optimization problem, the set multicover problem. The advantage of mapping to a well-known problem is that we can reuse existing algorithms. While the set multicover problem is NP-hard, our mapping doesn't change the hardness of optimization problem, which is also NP-hard.
+
+\item[Multi-scale generalization] The use-case we address is generalizing a dataset for multiple scales, which is a requirement for zoomable online maps with discrete zoom-levels. To generalize datasets for multiple scales there exists two overall approaches, the ladder approach and the star approach. In the ladder approach a zoom-consistency constraint is automatically enforced, which is the reason we picked this approach in our work. Enforces the zoom-constraint is appropriate for most, but not all, types of datasets. Specifically, for generalization of regional labels for multiple scales, the star approach is arguably a better fit, because it allows labels to appear only on intermediate zoom-levels. Supporting the star approach to multi-scale generalization is a low hanging fruit for future work.  
+\end{description}
 
 \section{Why use conflict sets to model problem?}
+% What we do: generalization with one operator: selection (WHY? starting point, not complete, leaves room for future work). 
+% Constraint based approach, +legibility constraints, -representation constraints (WHY? Good fit for declarative) => search space always has feasible solutions => no need to assign cost to constraint violation. Instead we use objective function to prioritize records, minimize the records that are deleted (WHY?). Need method for finding good/optimal solution in search space. We use combinatorial optimization (WHY?) We generalized for several scales at once (WHY?). To overall approaches exists for this; star and ladder approach; we chose the ladder approach (WHY?).
+
+
+
+In this work we take a declarative approach to the generalization of spatial datasets. In this approach, the user should state only what is desired of an ideal result, without stating the means of producing the result. A good fit for this requirement is \emph{constraint based modeling}~\cite{beard1991constraints,harrie1999constraint}. An advantage of this approach is that the definition of acceptable solutions is decoupled from the algorithms that compute solutions. This is an ideal starting point for a declarative approach to generalization.
+
+HERE!!! remember to include equal shares of what and why.
+
+
+Constraints implicitly define a search space of acc
+
+Various typologies of constraints have been discussed in the literature~\cite{beard1991constraints,harrie2007modelling}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, there are two main categories of constraints; \emph{legibility constraints} and \emph{representation constraints}. Of these two, we only consider \emph{legibility constraints} such as proximity and density constraints, that require a map to be readably. We do not handle \emph{appearance constraints} that serve the purpose of maintaining faithful representation of the input data, such as maintaining the \emph{spatial distribution} and \emph{topological relationships} in a dataset. Handling representation constraints is important, and should be the focus of future work.
+
+Legibility constraints and representation constraints are inherently at odds, which can be exploited to find a well balanced solution.
+
+. Deleting all the records produces a very legible but also non-informative result. Not modifying 
+
+
+
+Regardless of which particular algorithm is used to generalize the data, one can define a subset of operations that can be performed on the data, such as deleting records, combining records and modifying records. In this work we only consider
+
+Several methods have been proposed for finding good or optimal solutions in this search space, including agent based modeling, combinatorial optimization and continuous optimization~\cite{harrie2007modelling}. In this work we use combinatorial optimization. 
+
+
+
+ The core idea is to let the conditions that should be fullfilled by the generalized dataset act as constraints .
+
+
+, were conditions can be grouped into legibility and representation~\cite{harrie2007modelling}.
+
+
+
+
+A good generalization of a dataset should satisfy several \emph{conditions}.  We use a \emph{constraint based modeling} approach for generalizing a spatial dataset~\cite{harrie1999constraint}. Using constraints acceptable solutions creates a search space of acceptable solutions
+
+without being explicit about the actions needed to produce solutions, leaves flexibility in choosing the best algorithms for the job~\cite{beard1991constraints}.
+
+A good generalization of a dataset should satisfy several \emph{conditions}. The main idea behind \emph{constraint based modeling} is to let these conditions act as constraints in the generalization process.
+
+
+ A big advantage of using a constraints is that they are not bound to a certain action~\cite{beard1991constraints}, but instead define a search space of feasible solutions. The basic idea is to combine constraints with an approach for finding a good solution in the space of feasible solutions~\cite{harrie2007modelling}. One such approach is combinatorial optimization, which is the approach 
+
+
+
+
+We approach the generalization of a dataset as a \emph{constraint satisfaction problem}, which is a well known approach in the literature on generalization~\cite{beard1991constraints,harrie1999constraint}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, we consider only \emph{legibility constraints} such as proximity and density constraints, that serve to purpose of making a map readable. We do not yet handle \emph{appearance constraints} that serve the purpose of maintaining faithful representation of the input data, such as maintaining the \emph{spatial distribution} and \emph{topological relationships} of a dataset. Handling appearance constraints is future work.
+
+The advantage of using a constraint based modeling approach, instead of e.g. a \emph{condition-action} approach~\cite{harrie2007modelling}, is that it leaves flexibility in defining the method by which a satisfaction of the constraints is sought~\cite{beard1991constraints}. Being agnostic of the algorithms used to satisfy constraints is particularly good fit for designing a declarative language such as cvl. A constraint based approach also offers the opportunity to change the implementation as new algorithms for generalization are developed.
 
 
 \section{Refinements based on knowledge gained in Z\"{u}rich}
 
 \begin{description}
+
+\item[Why we use constraint based approach]
+
+The advantage of using a constraint based modeling approach, instead of e.g. a \emph{condition-action} approach~\cite{harrie2007modelling}, is that it leaves flexibility in defining the method by which a satisfaction of the constraints is sought~\cite{beard1991constraints}. Being agnostic of the algorithms used to satisfy constraints is particularly good fit for designing a declarative language such as cvl. A constraint based approach also offers the opportunity to change the implementation as new algorithms for generalization are developed.
+
+\item[Why we use combinatorial optimization] In this work we resolve conflicts by deleting a subset of the records in the dataset, known as \emph{selection} in the generalization literature~\cite{weibel1999generalising}. Combinatorial optimization is a particularly good fit for this type of generalization, because for each object there are only two possible states; deleted or not deleted. This means that the discrete search space is small when compared to the search space for e.g. generalization by discretized displacement.
+
+
+
 \item[Requirements of a generalized map] There are two main requirements that a generalized map must satisfy. Firstly, it must be a correct, though abstracted, representation of the physical reality. Secondly, the map must be readable by the user. If both these two requirements are not taken into account the map will not be of high quality. The final generalized map will eventually be a compromise between good readability and good representation~\cite{harrie2007modelling}.
 
-\item[Modeling the generalization process (tags: method, related work)]  (From ``Modelling the overall process of generalisation''~\cite{harrie2007modelling} by Harrie and Weibel) 
+\item[Constraint based modelling (tags: method, related work)]  (From ``Modelling the overall process of generalisation''~\cite{harrie2007modelling} by Harrie and Weibel) 
 
 A generalized map should satisfy several \emph{conditions}. The main idea behind \emph{constraint based modeling} is to let these conditions act as \emph{constraints} in the generalization process. The advantage of using constraints instead is that they are not bound to a certain action~\cite{beard1991constraints}. Using constraint based modeling thus leaves flexibility in defining the method by which a satisfaction of the constraints is sought.
 
@@ -66,23 +149,21 @@ To use constraints in map generalization they must have a \emph{measure}. In ord
 
 Most often, however, there exists no generalization solution that completely satisfies the constraints and the solution must be a compromise. To find the best compromise there must be a \emph{cost} connected to the violations of the constraints (computed by the measure). The optimal generalized map is then the solution with the lowest total cost. Several methods for finding the optimal solution have been described in the literature, including \emph{agent modelling}, \emph{combinatorial optimization} and \emph{continuous optimization}~\cite{harrie2007modelling}.
 
-
-
 Note that one should be careful with the use of the word \emph{optimal} here. That a generalized map is an optimal solution, in a constraint based modeling sense, does not mean anything more than that the constraints used are violated as little as possible. This implies that a solution will never be better than the constraints used. To compute a perfect generalized map would in addition require that we have a complete set of constraints for the generalized map. 
 
 Currently, the constraints used for generalization are limited in the sense that they cannot describe all aspects of a generalized map; hence, the generalized map using constraint based modeling is not optimal in a more \emph{general} sense.
 
-\item[Expressibility of constraints (tags: limitations, related work)] Various typologies of constraints have been discussed in the literature~\cite{beard1991constraints,harrie2007modelling}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, we consider only \emph{legibility constraints} such as proximity and density constraints, leaving aside \emph{appearance constraints} that serve the purpose of maintaining faithful representation of the input data. 
-
-Future work should allow appearance constraints~\cite{harrie2007modelling} to be formulated, such as maintaining the \emph{spatial distribution} of a dataset and maintaining \emph{topological relationships} such as \emph{adjacency}, \emph{connectivity}, \emph{accessibility} and \emph{containment}.
+\item[Typology of constraints (tags: limitations, related work)] Various typologies of constraints have been discussed in the literature~\cite{beard1991constraints,harrie2007modelling}. In the typology of Harrie and Weibel~\cite{harrie2007modelling}, we consider only \emph{legibility constraints} such as proximity and density constraints, that require a map to be readably. We do not handle \emph{appearance constraints} that serve the purpose of maintaining faithful representation of the input data, such as maintaining the \emph{spatial distribution} and \emph{topological relationships} of a dataset.
 
 Our current approach is to use an \emph{objective function} to balance the legibility constraints, such that the combined weight of objects that are removed is minimized. 
 
 (Note: Stephan Schmid wrote a nice master's thesis that includes a thorough discussion of constraints~\cite{schmid2008automated}. Ask Weibel about what grade it got).
 
-\item[Ladder/star approach (tags: method, limitations, related work)] When generalizing a dataset for several scales, an important distinction is whether to follow the \emph{ladder} or \emph{star} approach~\cite{foerster2010challenges}. We have only implemented the ladder approach, where lower scales are recursively derived from higher scales. An advantage of using the ladder approach is that the zoom-consistency constraint is automatically satisfied. The star approach is well fitted for use cases where enforcing the zoom-consistency constraint is not appropriate, e.g. when generalizing regional labels. Often regional labels appear on intermediate scales, but not at lower or higher scales.
+\item[Future work on constraints in general] The main limitation of the constraint based techniques today are the limitations of the constraints themselves. Important cartographic constraints still remain to be defined, others are poorly defined. More work is, for instance, required in formulating constraints, and associated measures, for groups of objects. Work on pattern recognition and on constraints for preserving cartographic patterns will be particularly important in this context~\cite{harrie2007modelling}.
 
-\item[Topology (tags: limitations)] Our method does not yet support topological constraints to be formulated. The aim of topological constraints is to maintain correct topological relationships such as . Allowing topological constraints to be expressed is an important direction for future work.
+\item[Ladder/star approach (tags: method, limitations, related work)] When generalizing a dataset for several scales, an important distinction is whether to follow the \emph{ladder} or \emph{star} approach~\cite{foerster2010challenges}. We have only implemented the ladder approach, where lower scales are recursively derived from higher scales. An advantage of using the ladder approach is that the zoom-consistency constraint is automatically satisfied. 
+
+While enforcing the zoom-constraint is generally appropriate, there are exceptions to the rule. An example is generalizing regional labels at multiple scales. For this type of generalization the star approach~\cite{foerster2010challenges} is a better fit. In this approach all scales are generalized from the same base dataset, which enables records to be selected only at intermediate zoom levels.
 
 \end{description}
 
@@ -99,10 +180,10 @@ From an implementation point of view, such an extension can be supported in our 
 \section{Addressing selected comments in review}
 
 \begin{itemize}
-\item R3 says:  Section II: it seems you do not handle "regional labels" that might reappear at more general zoom levels. (Eg, ``Europe'' reappears when the camera pulls out far enough.) That should be made explicit in the text. (also asked by KMS people)
-\item R3 says: Not sure why the ``AT X ZOOM LEVELS'' clause is useful. Can you provide a motivating example? Current examples don't make the case. E.g., why ``18'' in Figure 4?
+\item R2 says:  Section II: it seems you do not handle "regional labels" that might reappear at more general zoom levels. (Eg, ``Europe'' reappears when the camera pulls out far enough.) That should be made explicit in the text. (also asked by KMS people)
+\item R2 says: Not sure why the ``AT X ZOOM LEVELS'' clause is useful. Can you provide a motivating example? Current examples don't make the case. E.g., why ``18'' in Figure 4?
+\item R2 says: The mapping of conflict sets to set cover is not done convincingly. This mapping should be much more carefully written, with examples provided. Kostas: We can put a bi-partite graph. Marcos: could put bi-partitite graph as in-paragraph figure, as it is space efficient.
 \end{itemize}
-
 
 \section{TAIL}
 

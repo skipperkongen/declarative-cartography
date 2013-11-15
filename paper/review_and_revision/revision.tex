@@ -20,14 +20,14 @@ Notes and overall plan recorded in Kostas/Marcos Skype chat October 16 2013. Cit
 \section{Renamings to be consistent with literature}
 
 \begin{itemize}
-\item Rename ``filtering problem'' to ``thinning problem'' or ``selection problem''; consistent with the \emph{selection operator} in generalization literature, or \emph{thinning} in the fusion tables paper.
-\item Rename ``bottom-up'' to ``ladder'' approach; consistent with name for this approach in the generalization literature~\cite{foerster2010challenges}
+\item Perhaps rename ``filtering problem'' to ``thinning problem'' or ``selection problem''; consistent with the \emph{selection operator} in generalization literature, or \emph{thinning} in the fusion tables paper. Selection problem is most consistent with the literature.
+\item Rename ``bottom-up'' to ``ladder'' approach because it is more consistent with the literature~\cite{foerster2010challenges}
 \end{itemize}
 
 \section{Why map conflict resolution to an NP-hard problem?}
 
 \begin{description}
-\item[Hardness proof (tags: algorithm section)] If we model the problem using conflict sets, the problem is
+\item[Constraint based modeling is NP-hard (tags: algorithm section)] If we model the problem using conflict sets, the problem is
 definitely NP-hard for all interesting cases.
 
 For an informal proof, consider the vertex cover problem. Given a graph G=(V,E),
@@ -55,15 +55,29 @@ means that it cannot be approximated arbitrarily close unless P=NP~\cite{alimont
 
 \item[What is generalization] bla bla bla
 
-\item[Justify selection] The generalization process is usually stated in terms of high-level \emph{generalization operators}, such as \emph{selection}, \emph{displacement} and \emph{amalgamation}~\cite{weibel1999generalising}, which at the low level change the state of a dataset by \emph{deleting}, \emph{modifying} and \emph{combining} records. In this work we support a single operator, the selection operator. This operator modifies a dataset purely by deleting records. Confining ourselves to this particular operator has several advantages. 
+\item[Why constraints?] One approach to modeling the generalization process is \emph{constraint based modeling}~\cite{harrie1999constraint}. In this approach, constraints are used to discriminate between good and bad solutions. The formulation of algorithms for computing solutions is considered a secondary issue. 
 
-From a technical point of view, the search space of solutions is comparatively small,  because every record has only two possible states; deleted and not deleted~\cite{harrie2007modelling}.
+It is usually described as the process of finding a compromise between conflicting constraints of legibility and representation, with a cost associated with violating constraints. In this formulation the solution space is typically infeasible, and the objective is to find the infeasible solution with the smallest associated cost~\cite{harrie2007modelling}.
 
-From a non-technical point of view, the selection operator is highly appropriate for generalizing high density, high volume point datasets. Such datasets have become prolific with the rise of geocoded data online, such as geocoded images and geocoded social media messages. When dataset have millions or billions of records, there is not much choice but to omit some of the records, and the selection operator is a good fit.
 
-We consider the support of a single operator, and the choice of the selection operator in particular, a good starting point for declarative cartography. We do not consider it to be the definitive solution to declarative cartography.
+instead of methods for computing solutions~\cite{beard1991constraints}. This is essentially a declarative way to generalize spatial data, so it is a good starting point for ``declarative cartography''.
 
-\item[Justify constraint based approach] Orthogonal to the choice of generalization operators, there are many approaches to the overall generalization process. One approach is \emph{constraint based modeling}~\cite{harrie1999constraint}, which is conceptually close to declarative cartography. Users should state what they want, not how it is should be computed. In the constraint based modeling, the definition of acceptable solutions is decoupled from the algorithms that compute solutions~\cite{beard1991constraints}, which is exactly what we want. 
+\item[Why implicit objective function?] Defining the search space of acceptable solutions is not enough. There should also be a way to discriminate between good and bad solutions. In the literature, constraint based modeling 
+
+(bum bum)
+
+There are other ways to formulate the problem. If the constraints used are non-conflicting, e.g. there are only legibility constraints, then one way to measure solutions is to use an objective function. This is the approach we take. In our approach, users do not formulate objective functions directly. Instead, users decide the record weights that make up the core of an implicit objective function. We argue that this is easier to understand for non-technical users, instead of having to declare a complex objective function explicitely.
+
+\item[Why combinatorial optimization?] In this work we resolve conflicts by deleting a subset of the records in the dataset, known as \emph{selection} in the generalization literature~\cite{weibel1999generalising}. Combinatorial optimization is a particularly good fit for this type of generalization, because for each object there are only two possible states; deleted or not deleted. This means that the discrete search space is small when compared to the search space of e.g. the displacement operator~\cite{harrie2007modelling}.
+
+\item[Why only selection?] 
+%The generalization process is usually stated in terms of high-level \emph{generalization operators}, such as \emph{selection}, \emph{displacement} and \emph{amalgamation}~\cite{weibel1999generalising}, which at the low level change the state of a dataset by \emph{deleting}, \emph{modifying} and \emph{combining} records. In this work we support a single operator, the selection operator. This operator modifies a dataset purely by deleting records. Confining ourselves to this particular operator has several advantages. 
+
+%From a technical point of view, the search space of solutions is comparatively small,  because every record has only two possible states; deleted and not deleted~\cite{harrie2007modelling}.
+
+There are many other operators, besides selection, for generalizing spatial data. However, the selection operator is arguably most appropriate for high volume point datasets, such as geocoded images and social media messages. When dataset have millions or billions of records, there is not much choice but to omit some of the records, and the selection operator is a good fit. Alternatively, aggregation is a possibility, but aggregating photos and messages is not immediately meaningful.
+
+%We consider the support of a single operator, and the choice of the selection operator in particular, a good starting point for declarative cartography. We do not consider it to be the definitive solution to declarative cartography.
 
 \item[Justify choice of constraints] 
 In the context of generalization, constraints can be divided into \emph{legibility constraints} and \emph{representation constraints}~\cite{harrie2007modelling}. Legibility constraints serve the purpose of ensuring that a map is \emph{readable}. The purpose of representation constraints is to ensure that various complex properties of the input data are retained. Any constraint must have a measure in order to be operational, but the measures needed to express representation constraints are typically very complex. Examples of complex measures include spatial distribution and topological relationships in the data. In contrast to this, legibility constraints can usually be expressed in terms of scalar measures such as distance and counts. This makes them easier to understand and parameterize for users and easier to implement. For this reason, we have postponed support for representation constraints in our implementation, and focused entirely on legibility constraints.
@@ -138,7 +152,7 @@ The advantage of using a constraint based modeling approach, instead of e.g. a \
 
 The advantage of using a constraint based modeling approach, instead of e.g. a \emph{condition-action} approach~\cite{harrie2007modelling}, is that it leaves flexibility in defining the method by which a satisfaction of the constraints is sought~\cite{beard1991constraints}. Being agnostic of the algorithms used to satisfy constraints is particularly good fit for designing a declarative language such as cvl. A constraint based approach also offers the opportunity to change the implementation as new algorithms for generalization are developed.
 
-\item[Why we use combinatorial optimization] In this work we resolve conflicts by deleting a subset of the records in the dataset, known as \emph{selection} in the generalization literature~\cite{weibel1999generalising}. Combinatorial optimization is a particularly good fit for this type of generalization, because for each object there are only two possible states; deleted or not deleted. This means that the discrete search space is small when compared to the search space for e.g. generalization by discretized displacement.
+\item[Why we use combinatorial optimization] In this work we resolve conflicts by deleting a subset of the records in the dataset, known as \emph{selection} in the generalization literature~\cite{weibel1999generalising}. Combinatorial optimization is a particularly good fit for this type of generalization, because for each object there are only two possible states; deleted or not deleted. This means that the discrete search space is small when compared to the search space of e.g. the displacement operator~\cite{harrie2007modelling}.
 
 
 
@@ -146,7 +160,7 @@ The advantage of using a constraint based modeling approach, instead of e.g. a \
 
 \item[Constraint based modelling (tags: method, related work)]  (From ``Modelling the overall process of generalisation''~\cite{harrie2007modelling} by Harrie and Weibel) 
 
-A generalized map should satisfy several \emph{conditions}. The main idea behind \emph{constraint based modeling} is to let these conditions act as \emph{constraints} in the generalization process. The advantage of using constraints instead is that they are not bound to a certain action~\cite{beard1991constraints}. Using constraint based modeling thus leaves flexibility in defining the method by which a satisfaction of the constraints is sought.
+A generalized map should satisfy several \emph{conditions}. The main idea behind \emph{constraint based modeling} is to let these conditions act as \emph{constraints} in the generalization process. The advantage of using constraints is that they are not bound to a certain action~\cite{beard1991constraints}. In other words, the definition of constraints is decoupled from the methods that resolve conflicts.
 
 To use constraints in map generalization they must have a \emph{measure}. In order for the generalized map to satisfy all constraints all the measures must have satisfying values, e.g. the distance between objects must be greater than some minimum threshold. 
 

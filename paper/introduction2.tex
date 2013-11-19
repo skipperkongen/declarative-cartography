@@ -1,5 +1,5 @@
 % !TEX root = ./cvl.tex
-\section{\hl{Introduction}}
+\section{Introduction}
 A problem in data management is generalizing spatial datasets for visualization on zoomable maps. A good map should satisfy two main requirements: it should be visually legible and should be a good representation of the dataset that is visualized. These two conflicting goals should be balanced with respect to the scale and purpose of a given map. In a zoomable map, at dataset is visualized at many different scales, implying that the dataset must be generalized for each of these scales. 
 
 Generalization is inherently a process of reduction. The goal is to reduce visual ``clutter'' which is usually achieved by some kind of reduction of the data. When datasets contain millions or even billions of records, and there is no obvious way to aggregate them~\cite{haunert2006landcover}, the best option seems to be to filter out a subset of the records~\cite{sarma2012fusiontables}. This should ideally be combined with some means to prioritize which records will remain. Generalization by omitting records is known in the generalization literature as \emph{selection}~\cite{weibel1999generalising}.
@@ -16,7 +16,7 @@ To address the programmability issue, we have designed a declarative language, C
 
 To address the scalability issue, we make use of existing algorithms and existing database technology. On the algorithmic side, the program is mapped to a well-known optimization problem, for which good algorithms exist~\cite{rajagopalan1998primal}. Because spatial data is often stored in a database with powerful spatial extensions installed, it is a natural idea to use the database as a runtime for executing the selection process. On the evaluation side, we compile programs written in CVL into database programs expressed largely in SQL. This allows CVL programs to be executed on highly scalable databases, which could theoretically include parallel databases. 
 
-The benefits of moving \emph{code-to-data} instead of vice-versa include better utilization of network bandwidth and making use of existing indexing and partitioning of the spatial data~\cite{Guttman1984:RTree,Hellerstein1995:GiST}. In summary, we call our approach \emph{Declarative Cartography}.
+The benefits of moving \emph{code-to-data} instead of vice-versa include better utilization of network bandwidth and making use of existing indexing and partitioning of the spatial data~\cite{Guttman1984:RTree,Hellerstein1995:GiST}. We call our approach \emph{Declarative Cartography}.
 
 \vspace{5em}
 
@@ -30,7 +30,5 @@ We make the following four contributions in this paper:
 
 \item We present experimental results for a variety of real datasets. The results show that the proposed approach has good performance and is able to produce useful map generalizations.
 \end{enumerate}
-
-\hl{Kostas: I will rewrite the following. I intend to skip the multi-scale problem (which we don't solve) and focus only on the single scale problem (which we solve). I will combine this with a discussion of methods for deriving multi-scale dataset from single-scale generalizations, i.e. ladder and star approach.}\\
 
 In Section~\ref{sec:background}, we define the selection problem in map generalization as a multi-scale filtering problem. In Section~\ref{sec:cvl:language}, we introduce the CVL language. In Section~\ref{sec:optimizationmodel}, we formalize the multi-scale filtering problem which is based on a mapping to the set multicover problem, and we revisit algorithms for this problem in Section~\ref{sec:algorithms}. In Section~\ref{sec:implementation}, we discuss the compilation procedure that enables us to run CVL on a relational database backend. Experimental results are presented in Section~\ref{sec:experimental}, and finally related work is summarized in Section~\ref{sec:related}.

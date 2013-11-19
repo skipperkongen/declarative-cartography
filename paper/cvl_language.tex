@@ -1,11 +1,11 @@
 % !TEX root = ./cvl.tex
 \section{CVL Language}
 \label{sec:cvl:language}
-The Cartographic Visualization Language (CVL) is a declarative language that can be used to specify an instance of the \hl{multi-scale selection problem}. CVL is a rule-based language with a similar goal as other rule-based languages for selection over spatial datasets~\cite{sld,mapnik}, i.e. to control the density of information at each zoom-level. The CVL approach is however markedly different. In the related languages the user must explicitly control the selection of records at each zoom-level, while also specifying how records are to be \hl{visualized}. First of all, CVL is not concerned with \hl{the actual visualization, only the selection of data}. Furthermore, CVL controls \hl{selection} in a novel constraint-based way. Instead of having the user explicitly control the \hl{selection} of records at each zoom-level, CVL lets the user choose \emph{map constraints} that are instead enforced at all zoom-levels. By making the constraints explicit and the control implicit a very concise formulation is obtained. See Figure~\ref{fig:cvl:example:airports} for an example of this.
+The Cartographic Visualization Language (CVL) is a declarative language that can be used to specify an instance of the \hl{multi-scale selection problem}. CVL is a rule-based language with a similar goal as other rule-based languages for selection over spatial datasets~\cite{sld,mapnik}, i.e. to control the density of information at each zoom-level. The CVL approach is however markedly different. In the related languages the user must explicitly control the selection of records at each zoom-level, while also specifying how records are to be \hl{visualized}. First of all, CVL is not concerned with \hl{the actual visualization, only the selection of data to be visualized}. Furthermore, CVL controls \hl{selection} in a novel constraint-based way. Instead of having the user explicitly control the \hl{selection} of records at each zoom-level, CVL lets the user choose \emph{map constraints} that are instead enforced at all zoom-levels. By making the constraints explicit and the control implicit a very concise formulation is obtained. See Figure~\ref{fig:cvl:example:airports} for an example of this.
 
 CVL is one of the first languages and frameworks to implement the idea of reverse data management~\cite{meliou2011reverse}. In reverse data management, the core idea is that a user states a set of constraints and an objective. These are given together with an input database to an optimization algorithm which computes an output database that is feasible and optimal with regard to the constraints and objective (if a feasible solution exists). This is exactly how CVL works. Furthermore, a feasible solution is guaranteed to exist, as filtering out all records is always a feasible solution.
 
-The CVL language has two statements, the \emph{generalize} statement (see Section~\ref{sec:generalize:statement}) and the \emph{create-constraint} statement (see Section~\ref{sec:create:constraint:statement}). The create constraint statement is used to formulate new map constraints and the generalize statement is used for everything else. 
+The CVL language has two statements, the \emph{generalize} statement (see Section~\ref{sec:generalize:statement}) and the \emph{create-constraint} statement (see Section~\ref{sec:create:constraint:statement}). The create constraint statement is used to formulate new map constraints and the generalize statement is used to \hl{specify an instance of the multi-scale selection problem.} 
 
 The CVL language builds on top of SQL and reuses SQL as a language for formulating constraints and record weighting schemes.
 
@@ -66,7 +66,7 @@ WEIGH BY
 SUBJECT TO 
    visibility 16 
 \end{lstlisting}
-\caption{Generalization of an airports dataset. The airports are weighting by number of departures. See Figure~\ref{fig:graphical:output:airport} for a vizualization of the result.}
+\caption{Generalization of an airports dataset. The airports are \hl{weighted} by number of departures. See Figure~\ref{fig:graphical:output:airport} for a vizualization of the result.}
 \label{fig:cvl:example:airports}
 \end{center}
 \end{figure}

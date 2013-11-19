@@ -16,18 +16,18 @@ In this section, we present experimental results with our implementation of CVL.
 
 \end{itemize}
 
-We start by presenting our experimental setup (Section~\ref{sec:exp:setup}), and then show results for both point data (Section~\ref{sec:exp:points}) and complex shapes (Section~\ref{sec:exp:complex:shapes}). Each result section discusses performance, quality, and scalability. 
+We start by presenting our experimental setup (Section~\ref{sec:exp:setup}), and then show results for both point data (Section~\ref{sec:exp:points}) and complex shapes (Section~\ref{sec:exp:complex:shapes}). Each result section discusses performance, quality, and scalability.
 
 
 \subsection{Experimental Setup}
 \label{sec:exp:setup}
 
 \minisec{Datasets}
-We have tested CVL using four real-world datasets with the biggest one containing 23 million points and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. 
+We have tested CVL using four real-world datasets with the \hl{biggest one containing 9 million points} and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. 
 
 We have used three point datasets. The airports dataset is from Openflights~\footnote{\texttt{http://openflights.org/data.html}} and contains 7411 airports (points). The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database~\footnote{\texttt{http://www.openstreetmap.org/}}. The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. We use this dataset for scalability experiments.
 
-We have used two line segment datasets. The US rivers/streams dataset contains roughly 4 thousand rivers and roughly 27 thousand streams in the United States derived from the OpenStreetMap database. Records with identical name attributes have been merged into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a filtering situation (we wish to either show the waterway completely or not at all). 
+We have used two line segment datasets. The US rivers/streams dataset contains roughly 4 thousand rivers and roughly 27 thousand streams in the United States derived from the OpenStreetMap database. Records with identical name attributes have been merged into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a selection situation (we wish to either select the waterway completely or not at all). 
 
 We have used a single polygon dataset, the area information dataset~\footnote{\texttt{http://internet.miljoeportal.dk/}} from The Danish Natural Environment Portal, published by the Danish government. This dataset contains 30 thousand high-fidelity administrative protection zone polygons, ranging from small polygons the size of buildings to large polygons the size of entire regions. The biggest polygon is described by more than 36 thousand points.
 
@@ -67,11 +67,8 @@ We ran each test three times on this installation, taking averages. We observed 
 
 PostgreSQL always uses a single core to compute a transaction. Because the generalization process in CVL runs as a single long transaction, each job in CVL runs on a single core. A future direction would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a MapReduce environment.
 
-
 \minisec{Average optimality ratio}
-In our approach we solve the multi-scale filtering problem as a series of single-scale filtering problems. Ideally we would like to compare the objective value of our multi-scale solution to a lower bound or an optimal solution to the multi-scale filtering problem. However, due to the scale of the multi-scale problem, we have not developed a method for computing a lower bound or an optimal solution.
-
-In order to get an indication of solution quality, we have instead compared the solutions to the single-scale filtering problems to the lower bounds coming from solving the LP-relaxation of the integer program for the single-scale filtering problem. The numbers we present in Table~\ref{tab:points:overview} and Table~\ref{tab:complex:overview} are obtained by computing the average ratio between our solution value and the corresponding lower bound for each zoom level. 
+In our approach we solve the \hl{multi-scale selection problem as a series of selection optimization problems. To get an indication of the solution quality, we compute for every selection optimization problem a lower bound using an LP-relaxation of the integer program}. The numbers we present in Table~\ref{tab:points:overview} and Table~\ref{tab:complex:overview} \hl{include the average ratio between our solution value and the corresponding lower bound for each zoom level.}
 
 \subsection{Point Data}
 \label{sec:exp:points}
@@ -234,9 +231,16 @@ In Figure~\ref{fig:performance:complex} we show three performance breakdowns for
 %For the proximity constraint, the complexity is proportional to the product of point counts for the two geometries compared in the distance test. For the visibility constraint, the complexity depends on the number of tiles occupied by each geometry, which depends on either the length or the area of the geometry. The solving time does not directly depend on the geometric properties, only on the number and structure of conflicts.
 Part (a) shows the breakdown of a solution with an average optimality ratio of $1.0$. We see that for complex shape datasets, the running time is mostly dominated by the time spent finding conflicts. Since finding conflicts operates over the geometric properties of the data, it requires time proportional at least to the number of points that make up each complex shape. When solving conflicts, the running time is independent of geometric complexity. This causes the running time to be dominated by finding conflicts for complex shape datasets. The LPGA solver is the exception when many conflicts are reported. A similar effect was seen for points, indicating that the LPGA solver does not scale well with the number of conflicts. %, which is confirmed in our scalability experiments.
 
-
-
 \minisec{Scalability}
 In Figure~\ref{fig:scalability} we show scalability results for complex shape data. Here the scalability depends more on the choice of constraint than the choice of solver. The proximity constraint scales much worse than the visibility constraint. This is because the running time of the distance test used in the proximity constraint is proportional to the product of point counts in the two geometric shapes used in each comparison. Evaluating the visibility depends on the number of tiles that each shape intersects, which depends more on the length or area of each shape. 
 
 While constraints matter more to scalability for complex shapes, the SGA solver scales better than LPGA with number of objects, which was also the case for our point data.
+
+\subsection{\hl{Observations on algorithms}}
+
+\hl{We observe that the running time of the LP-based greedy algorithm (LPGA) is generally high. We implemented this algorithm as an alternative to the SQL-based SGA-algorithm mainly because it provides a theoretical bound on the solution quality. We implemented these two algorithms to allow for different trade-offs between quality and performance, as well as careful reasoning about SQL-based implementations, to be explored. We have investigated other algorithms for the selection optimization problem which could potentially have much better performance, albeit providing looser bounds on quality}~\cite{rajagopalan1998primal}. 
+
+\hl{From a performance perspective, we conclude that an algorithm implemented entirely in SQL seems the better choice for in-database execution of generalization. An interesting future direction is to design SQL based algorithms that achieve better solution qualities.}
+
+
+

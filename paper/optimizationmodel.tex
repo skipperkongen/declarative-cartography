@@ -1,12 +1,12 @@
 % !TEX root = ./cvl.tex
-\section{Selection optimization problem}
+\section{\hl{Selection optimization problem}}
 \label{sec:optimizationmodel}
 
-In this section, we formally define the selection problem as an optimization problem. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record. 
+In this section, we formally define the \hl{selection} problem as an optimization problem. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record. 
 
 There are a number of constraints (formulated as conflict sets) that are modeled using CVL. Let $C$ be the collection of conflict sets. A conflict set $c \in C$ is a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be deleted. 
 
-The selection problem can now be modeled as a 0-1 integer program. Let $x_r$ be a 0-1 decision for each record $r \in \bar{R}$ that is 1 if record $r$ is \emph{deleted}, and 0 otherwise. Then the single-scale problem can be stated as follows:
+\hl{The selection problem can now be modeled as a 0-1 integer program.} Let $x_r$ be a 0-1 decision for each record $r \in \bar{R}$ that is 1 if record $r$ is \emph{deleted}, and 0 otherwise. Then the single-scale problem can be stated as follows:
 
 \begin{align}
   \label{eq:objective}
@@ -18,4 +18,10 @@ The selection problem can now be modeled as a 0-1 integer program. Let $x_r$ be 
 
 The goal (\ref{eq:objective}) is to minimize the total weight of the records that are deleted. Constraints~(\ref{eq:general-constraints}) model the conflict sets $c \in C$. This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element/conflict set $c \in C$ needs to be covered $\lambda_c \geq 1$ times by the sets/records $r \in R$; each set/record can be chosen at most once~\cite{rajagopalan1998primal}.
 
-In the next section we discuss algorithmic approaches for solving the single-scale problem. Note that although we solve the multi-scale problem as a series of single-scale problems, in the experimental evaluation of our approach also includes a discussion on the objective value (\ref{eq:objective}) of the \emph{multi-scale} problem. 
+\hl{While the set multicover problem is NP-hard, the selection optimization problem with conflicts is also NP-hard for all interesting cases. For an informal proof, consider the vertex cover problem. Given a graph $G=(V,E)$, find a minimum size subset of the vertices $S$ such that every edge in $E$ has an endpoint in $S$. Think of the vertices as records and the edges as conflict sets. This problem would then model the selection problem for the special case where all conflict sets had exactly two records (and all records had identical weights).
+
+The vertex cover problem is NP-hard, even for very constrained cases. For example, even if $G$ is a planar graph and every vertex has degree at most 3, the problem remains NP-hard}~\cite{garey1977rectilinear}. \hl{In other words, even if the conflict sets only have two records each, and each record is involved in at most 3 conflict sets, the problem remains NP-hard. It is hard to imagine that any interesting application is more restrictive.
+
+Note that the cubic vertex cover problem is APX-hard - which means that it cannot be approximated arbitrarily close unless $P=NP$}~\cite{alimonti2000some}. \hl{So even this restricted version is ``really'' hard.}
+
+\hl{In the next section we discuss algorithmic approaches for solving the selection optimization problem. In the experimental evaluation of our approach we include a discussion on the objective value} (\ref{eq:objective}) \hl{of the selection optimization problem}.

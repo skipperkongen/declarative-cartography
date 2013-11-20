@@ -2,6 +2,7 @@
 
 ## TODO:
 
+- PKK: Make introduction holy again
 - R3, WP: not possible to change geometry
 - R3, WP: not clear how the framework is available to the community
 
@@ -11,7 +12,7 @@
 - R2, DT: Not sure why the "AT X ZOOM LEVELS" clause is useful. Can you provide a motivating example? Current examples don't make the case. E.g., why "18" in Figure 4?
 - R2, DT: The paragraph, "The resulting map is shown in Figure 3..." this is exactly the opposite of what I thought would happen. If the zoom level is very general, won't it be made up of many tiles that are fixed in their number of pixels? Wouldn't each such tile have 16 airports, instead of 16 for the whole world?
 - R2, DT: The syntax for CVL isn't pretty. Even a simple example in Fig 6 takes a lot of clauses. Is this really the best way to do it? Figure 7 is worse, with a strange 'busted table' involved. Why is busted table needed in this example, but not Fig 6? Is it because it's zoom-level-independent?
-- R2, DT: The mapping of context sets to set cover is really critical and is not clear. Why can a conflict set be chosen only once?
+- R2, DT: The mapping of context sets to set cover is really critical and is not clear. Why can a conflict set be chosen only once? Add "for each record"
 - R2, DT: Do the "extensions" add anything to the difficulty or time complexity? There's no discussion of whether this could happen.
 
 ## Addressed

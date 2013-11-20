@@ -1,8 +1,8 @@
 % !TEX root = ./cvl.tex
-\section{Algorithms for single-scale filtering}
+\section{\hl{Algorithms for selection}}
 \label{sec:algorithms}
 
-The algorithmic framework for the multi-scale filtering problem is illustrated in Figure~\ref{fig:algorithmic-framework}. After an initialization step, we solve $\mathcal{Z}$ single-scale filtering problems --- followed by a finalizing step.
+As mentioned in Section~\ref{sec:multi:scale:selection}, we solve the multi-scale selection problem using the ladder approach. For each of the $\mathcal{Z}$ zoom levels, we generate and solve a separate instance of the selection optimization problem (Section~\ref{sec:optimizationmodel}). The remaining records are (conceptually) copied to zoom level $i-1$, unless we have reached the last zoom level ($i=1$). This approach is illustrated schematically in Figure~\ref{fig:algorithmic-framework}.
 
 %\marcos{The algorithmic framework is not for multi-scale filtering, but for iterated single-scale filtering? Seems to me that these two are not the same thing.}
 %\martin{Well, we do indeed solve (approximately) the multi-scale problem by iterated single-scale filtering, so I would say that this is okay. However, we don't have any good lower bound for the multi-scale problem, only for each of the single-scale problems.}
@@ -10,12 +10,12 @@ The algorithmic framework for the multi-scale filtering problem is illustrated i
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[scale=.6]{figs/cvl_stages.pdf}
-\caption{The algorithmic framework: At stage $i$ the single-scale filtering problem is solved for the $i$'th zoom level.}
+\caption{Algorithmic framework: At each zoom level $i \in \lbrack 1, \mathcal{Z} \rbrack$ we solve a selection optimization problem. In the ladder approach the problem is solved for the ``highest'' zoom level first}
 \label{fig:algorithmic-framework}
 \end{center}
 \end{figure}
 
-Below we describe two different heuristic algorithms for solving the single-scale optimization problem. Let $n=|\bar{C}|$ be the number of conflict sets (or elements in the set multicover problem), and let $m=|\bar{R}|$ be the number of records (or sets in the set multicover problem). Recall that $\bar{R}_c \subseteq \bar{R}$ is the set of records in conflict set $c \in \bar{C}$. The largest number of records in any conflict set is $f = \max_{c \in \bar{C}} |\bar{R}_c|$, and is called the \emph{maximum frequency}.
+Below we describe two different heuristic algorithms for solving the selection optimization problem. Let $n=|\bar{C}|$ be the number of conflict sets (or elements in the set multicover problem), and let $m=|\bar{R}|$ be the number of records (or sets in the set multicover problem). Recall that $\bar{R}_c \subseteq \bar{R}$ is the set of records in conflict set $c \in \bar{C}$. The largest number of records in any conflict set is $f = \max_{c \in \bar{C}} |\bar{R}_c|$, and is called the \emph{maximum frequency}.
 
 \subsection{Static greedy algorithm (SGA)}
 \label{sec:algorithms:sga}

@@ -52,7 +52,7 @@ Constraints must be complemented by an effective method for finding a good solut
 The optimization problem is to select a subset of the dataset, such that all conflicts are resolved, and such that the aggregate weight of records that are not selected is minimized. In Section~\ref{sec:optimizationmodel} we present a mathematical formulation of this optimization problem.
 
 \subsection{\hl{Selection for multiple scales}}
-
+\label{sec:multi:scale:selection}
 Besides finding a solution to the selection problem for a single scale, we are also interested in finding a series of solutions to the selection problem for a discrete set of scales or \emph{zoom levels}, i.e. solving a \emph{multi-scale selection problem}. This allows us to generalize a dataset for use in zoomable maps with discrete zoom levels.
 
 To compute a solution to the multi-scale selection problem we use the so-called \emph{ladder} approach to multi-scale generalization~\cite{foerster2010challenges}. In this approach, the result of selecting records for a larger scale is used as input for selection at the next smaller scale. We use this approach because it has two advantages.

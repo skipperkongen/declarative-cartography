@@ -68,7 +68,7 @@ We ran each test three times on this installation, taking averages. We observed 
 PostgreSQL always uses a single core to compute a transaction. Because the generalization process in CVL runs as a single long transaction, each job in CVL runs on a single core. A future direction would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a MapReduce environment.
 
 \minisec{Average optimality ratio}
-In our approach we solve the \hl{multi-scale selection problem as a series of selection optimization problems. To get an indication of the solution quality, we compute for every selection optimization problem a lower bound using an LP-relaxation of the integer program}. The numbers we present in Table~\ref{tab:points:overview} and Table~\ref{tab:complex:overview} \hl{include the average ratio between our solution value and the corresponding lower bound for each zoom level.}
+In our approach we solve the \hl{multi-scale selection problem as a series of selection optimization problems. To get an indication of the solution quality, we compute for every selection optimization problem a lower bound using an LP-relaxation of the integer program}. The numbers we present in Table~\ref{tab:points:overview} and Table~\ref{tab:complex:overview} \hl{include the average ratio between our solution value and the corresponding lower bound.}
 
 \subsection{Point Data}
 \label{sec:exp:points}

@@ -5,14 +5,14 @@ The Cartographic Visualization Language (CVL) is a declarative language that can
 
 CVL is one of the first languages and frameworks to implement the idea of reverse data management~\cite{meliou2011reverse}. In reverse data management, the core idea is that a user states a set of constraints and an objective. These are given together with an input database to an optimization algorithm which computes an output database that is feasible and optimal with regard to the constraints and objective (if a feasible solution exists). This is exactly how CVL works. Furthermore, a feasible solution is guaranteed to exist, as \hl{deleting} all records is always a feasible solution.
 
-The CVL language has two statements, the \emph{generalize} statement (see Section~\ref{sec:generalize:statement}) and the \emph{create-constraint} statement (see Section~\ref{sec:create:constraint:statement}). The create constraint statement is used to formulate new map constraints and the generalize statement is used to \hl{specify an instance of the multi-scale selection problem using those constraints.} 
+The CVL language has two statements, the \emph{generalize} statement (see Section~\ref{sec:generalize:statement}) and the \emph{create-constraint} statement (see Section~\ref{sec:create:constraint:statement}). The create constraint statement is used to formulate new map constraints and the generalize statement is used to \hl{specify a solution to the multi-scale selection problem subject to those constraints.} 
 
 The CVL language builds on top of SQL and reuses SQL as a language for formulating constraints and record weighting schemes.
 
 \subsection{Generalize statement}
 \label{sec:generalize:statement}
 
-The generalize statement is the main statement in CVL. This statement creates a new multi-scale dataset from an input table of geospatial records, subject to user defined constraints. The syntax is shown in Figure~\ref{fig:generalize:syntax}. The statement has several clauses, beginning with the specification of input and output tables. Instead of giving the name of an input table, the user can optionally write a dynamic select statement in SQL of the form \texttt{(SELECT ...) t}. The next clause is the \emph{zoom-levels} clause where the user writes a positive integer, which is the zoom-level  at which the filtering process will begin. The \emph{weigh-by} clause is used to give an arbitrary floating point expression that is evaluated for each row in the input and used as weight for that record. The \emph{subject-to} clause lists the map constraints along with any parameters (as a comma-separated list). The \texttt{AND} keyword is used to separate constraints in the case more than one is used.
+The generalize statement is the main statement in CVL. This statement creates a new multi-scale dataset from an input table of geospatial records, subject to user defined constraints. The syntax is shown in Figure~\ref{fig:generalize:syntax}. The statement has several clauses, beginning with the specification of input and output tables. Instead of giving the name of an input table, the user can optionally write a dynamic select statement in SQL of the form \texttt{(SELECT ...) t}. \hl{The next clause is the }\emph{id}\hl{ clause, which is used to uniquely identify records. If records have an id column, this could be the name of that column}. \hl{The }\emph{geometry}\hl{ clause is used to indicate the geometry property of records, e.g. the name of an available geometry column}. The next clause is the \emph{zoom-levels} clause where the user writes a positive integer, which is the \hl{highest zoom level} at which the \hl{selection} process will begin. The \emph{weigh-by} clause is used to give an arbitrary floating point expression that is evaluated for each row in the input and used as weight for that record. The \emph{subject-to} clause lists the map constraints along with any parameters (as a comma-separated list). The \texttt{AND} keyword is used to separate constraints in the case more than one is used.
 
 For clarity the syntax is shown without two clauses, the \emph{with-id} clause and the \emph{with-geometry} clause, which are used simply to specify the names of the ID and geometry columns in the input table.
 
@@ -21,6 +21,8 @@ For clarity the syntax is shown without two clauses, the \emph{with-id} clause a
 \begin{lstlisting}
 GENERALIZE 
    {input} TO {output}
+WITH ID {expression}
+WITH GEOMETRY {expression}
 AT {integer} ZOOM LEVELS
 WEIGH BY
   {float expression}
@@ -60,6 +62,8 @@ An example of generalizing a dataset using the generalize statement is shown in 
 \begin{lstlisting}
 GENERALIZE 
    airports TO airports2
+WITH ID airport_id
+WITH GEOMETRY location
 AT 18 ZOOM LEVELS
 WEIGH BY
   num_departures
@@ -71,16 +75,15 @@ SUBJECT TO
 \end{center}
 \end{figure}
 
-The resulting map is shown in Figure~\ref{fig:graphical:output:airport} and has at most $16$ airports on each tile. For the top zoom-level these are the 16 biggest airports in the world. The CVL framework automatically gives priority to the airports with the highest weight. How this is done is explained in sections~\ref{sec:optimizationmodel} and~\ref{sec:algorithms}.
+The resulting map is shown in Figure~\ref{fig:graphical:output:airport} and has at most $16$ airports on each tile. For the single tile on the top zoom-level, these are the \hl{world's sixteen busiest} airports. The CVL framework automatically gives priority to the airports with the highest weight. How this is done is explained in sections~\ref{sec:optimizationmodel} and~\ref{sec:algorithms}.
 
 \subsection{Create constraint statement}
 \label{sec:create:constraint:statement}
 
 % change text
-Map constraints are defined using the create-constraint statement.  The basic syntax of the statement is shown in Figure~\ref{fig:create:constraint:syntax}. The body of the statement is a SQL select statement that selects tuples $\langle cid, rid\rangle$ representing conflicts that are found at a given zoom-level in the map. See Section~\ref{sec:conflicts} for the semantics of the tuples.
+Map constraints are defined using the create-constraint statement.  The basic syntax of the statement is shown in Figure~\ref{fig:create:constraint:syntax}. The body of the statement is \hl{an} SQL select statement that computes tuples that represent conflicts that are found at a given \hl{zoom level} in the map. \hl{A tuple }$\langle cid, rid\rangle$ denotes that record $rid$ is a member of conflict $cid$. See Section~\ref{sec:conflicts} for the \hl{exact semantics of conflicts}.
 
-The \emph{resolve-if-delete} clause is used to compute the integer number of records that must be deleted in order to resolve the conflict with a given $cid$. 
-%For the proximity constraints this number is always 1, but for other constraints this may vary.
+The \emph{resolve-if-delete} clause is used to compute the integer number of records that must be deleted in order to resolve the conflict with a given $cid$. \hl{For the proximity constraints this number is always 1, but for other constraints this may vary}.
 
 \begin{figure}[htbp]
 \begin{center}

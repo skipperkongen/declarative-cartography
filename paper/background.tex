@@ -23,7 +23,7 @@ In addition to these constraints that must hold separately for each zoom level, 
 
 Apart from the zoom-consistency constraint which must hold for any map, the visibility and proximity constraints are optional. The user chooses the set of constraints that must hold for a given map, and can even define new constraints using the CVL language, see Section~\ref{sec:cvl:language}.
 
-\hl{We support constraints that are based on }\emph{simple measures}\hl{ and which are }\emph{addressable by selection}.\hl{ A simple measure is a function that maps a set of records to a scalar value. A constraint is violated if the measure exceeds a threshold. A constraint is addressable by selection if we can }\emph{always}\hl{ satisfy it by simply deleting an appropriate subset of the records}.
+\hl{We support constraints that are based on }\emph{simple measures}\hl{ and which are }\emph{satisfiable by selection}.\hl{ A simple measure is a function that maps a set of records to a scalar value. A constraint is violated if the measure exceeds a threshold. A constraint is satisfiable by selection if we can }\emph{always}\hl{ satisfy it by simply deleting an appropriate subset of the records}.
 
 \hl{This implies that we cannot model constraints that have complex measures or cannot be satisfied by using selection alone, such as }\emph{topology}\hl{ and }\emph{spatial distribution}\hl{ constraints.}
 

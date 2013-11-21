@@ -2,10 +2,12 @@
 \section{\hl{Algorithms for selection problem}}
 \label{sec:algorithms}
 
-As mentioned in Section~\ref{sec:multi:scale:selection}, we solve the multi-scale selection problem using the ladder approach. For each of the $\mathcal{Z}$ zoom levels, we generate and solve a separate instance of the selection optimization problem (Section~\ref{sec:optimizationmodel}). The solution is the records that should be deleted from zoom-level $i$. The remaining records are (conceptually) copied to zoom level $i-1$, unless we have reached the last zoom level ($i=1$). This approach is illustrated schematically in Figure~\ref{fig:algorithmic-framework}.
+\hl{As mentioned in Section}~\ref{sec:filtering}\hl{, we solve the multi-scale selection problem using the ladder approach. For each of the }$\mathcal{Z}$\hl{ zoom levels, we generate and solve a separate instance of the selection optimization problem }(Section~\ref{sec:optimizationmodel}). \hl{The solution is the records that should be deleted from zoom-level $i$. The remaining records are (conceptually) copied to zoom level $i-1$, unless we have reached the last zoom level ($i=1$). This approach is illustrated schematically in Figure}~\ref{fig:algorithmic-framework}.
 
 %\marcos{The algorithmic framework is not for multi-scale filtering, but for iterated single-scale filtering? Seems to me that these two are not the same thing.}
 %\martin{Well, we do indeed solve (approximately) the multi-scale problem by iterated single-scale filtering, so I would say that this is okay. However, we don't have any good lower bound for the multi-scale problem, only for each of the single-scale problems.}
+
+\kostas{I've changed the symbols used to describe algorithms by removing ``bars'', e.g. $\bar{C} \rightarrow C$. This extra notation cruft is not needed for our purely single level problem definition.}
 
 \begin{figure}[htbp]
 \begin{center}

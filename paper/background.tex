@@ -1,39 +1,38 @@
 % !TEX root = ./cvl.tex
-\section{\hl{Selection Problem}}
+\section{\hl{Selection of spatial data}}
 \label{sec:background}
 
-In the selection problem we select the subset of a dataset that should be displayed at a given scale of a generalized map. Below we define the basic components of the problem, and informally define the associated optimization problem.
+\hl{In the }\emph{\hl{selection problem}}\hl{ we want to select the subset of a dataset to be visualized on a map at a given scale}. Below we define the basic components of the problem, and informally define the associated optimization problem.
 
 \subsection{Geospatial records and weights}
 \label{sec:records}
 
 The dataset is assumed to consist of a set of \emph{geospatial records} drawn from a database table. The schema of a spatial record consists of a \emph{geometry} field (e.g. a point, line or polygon), a \emph{unique ID} field and any number of additional textual and numeric fields, such as ``city name'' and ``population''.
 
-Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref{sec:cvl:language}). The weight of a record models its importance, where a high weight corresponds to great importance. Any subset of records --- or all records for that matter --- may have the same weight. Therefore, the weights induce a partial order of the records.
+Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref{sec:cvl:language}). \hl{The weight models the importance of a record, with high weight corresponding to great importance}. Any subset of records --- or all records for that matter --- may have the same weight. Therefore, the weights induce a partial order of the records.
 
-\subsection{Map constraints}
+\subsection{Zoom levels and map constraints}
 \label{sec:constraints}
+\hl{We want to select different subsets of the data to display at different scales or }\emph{zoom levels}\hl{ of a zoomable map, as specified by the user. The subsets do not need to be disjoint and usually are not}. Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). On a given zoom level, the map is rendered at a certain pixel resolution. Thus, for a given zoom level, we know the distance in pixels between geospatial locations. This gives rise to two particularly important map constraints \hl{when selecting data for a given zoom level}.
 
-\hl{In this work we take a declarative approach to the generalization of spatial datasets. In this approach, the user should state only what is desired of an ideal result, without stating the means of producing the result. A good fit for this requirement is }\emph{\hl{constraint-based modeling}}~\cite{harrie2007modelling}. \hl{An advantage of this approach is that the definition of acceptable solutions is decoupled from the algorithms that compute solutions.}
+Firstly, the principle of constant information density~\cite{topfer1966principles} implies that the number of records that can be displayed \hl{within a unit area of $n \times m$ pixels should be bounded}. Assume that we divide the complete map into cells (or tiles) of, say, 256 x 256 pixels. The \emph{visibility} constraint~\cite{sarma2012fusiontables} states that each cell can contain at most $K$ \hl{selected} records, where $K$ is a user defined parameter.
 
-At a given scale, a digital map will be rendered at a certain pixel resolution. Thus, for a given scale, we know the distance in pixels between geospatial locations. This gives rise to two particularly important \emph{legibility constraints}~\cite{harrie2007modelling} when generalizing a dataset for a given scale.
+Secondly, records cannot be too close to each other in the map --- otherwise the user will not be able to \hl{clearly distinguish between them}. The \emph{proximity} constraint states that every pair of visible records must be separated by at least $d$ pixels, where $d$ is a user defined parameter.
 
-Firstly, the principle of constant information density~\cite{topfer1966principles} implies that the number of records that can be displayed in an area of a certain pixel size should be bounded. Assume that we divide the complete map into cells (or tiles) of, say, 256 x 256 pixels. The \emph{visibility} constraint~\cite{sarma2012fusiontables} states that each cell can contain at most $K$ visible records, where $K$ is a user defined parameter.
+In addition to these constraints that must hold separately for each zoom level, the filtering of the records must be consistent across zoom levels. The \emph{zoom-consistency} constraint~\cite{sarma2012fusiontables} states that when a record is filtered out at a given scale, it should also be filtered out at all \emph{lower} scales. When a user zooms out on a map, records can only disappear --- not reappear.
 
-Secondly, records cannot be too close to each other in the map --- otherwise the user will not be able to interactively manipulate records in the map or clearly distinguish between them. The \emph{proximity} constraint states that every pair of visible records must be separated by at least $d$ pixels, where $d$ is a user defined parameter.
+Apart from the zoom-consistency constraint which must hold for any map, the visibility and proximity constraints are optional. The user chooses the set of constraints that must hold for a given map, and can even define new constraints using the CVL language, see Section~\ref{sec:cvl:language}.
 
-\hl{We can model any constraint that is based on a \emph{simple measure} and which is \emph{addressable by selection}. A simple measure is a function that maps a set of records to a scalar value. A constraint is violated if the measure exceeds a threshold. A constraint is ``addressable by selection'' if it can by satisfied by simply deleting an appropriate subset of the records.
+\hl{We support constraints that are based on }\emph{simple measures}\hl{ and which are }\emph{addressable by selection}.\hl{ A simple measure is a function that maps a set of records to a scalar value. A constraint is violated if the measure exceeds a threshold. A constraint is addressable by selection if we can }\emph{always}\hl{ satisfy it by simply deleting an appropriate subset of the records}.
 
-Certain constraints we cannot model. These constraints either have complex measures or cannot be satisfied by using selection alone. Examples include \emph{topology} constraints and \emph{spatial distribution} constraints.}
+\hl{This implies that we cannot model constraints that have complex measures or cannot be satisfied by using selection alone, such as }\emph{topology}\hl{ and }\emph{spatial distribution}\hl{ constraints.}
 
-Using the CVL language, introduced in Section~\ref{sec:cvl:language}, the user chooses the set of constraints that must hold for a given map, and can even define new constraints using the language.
-
-\subsection{Conflict sets}
+\subsection{\hl{Conflicts}}
 \label{sec:conflicts}
 
-We model constraints such as visibility or proximity using the notion of \emph{conflict sets}. A conflict set is a set of records that cannot all be selected, because doing so would violate a constraint.
+\hl{We model constraints such as visibility or proximity using the notion of }\emph{conflicts}. \hl{A conflict is a set of records that cannot all be selected, because a constraint will be violated}.
 
-For the visibility constraint, one conflict set is generated for each cell that contains more than $K$ records. For the proximity constraint, one conflict set is generated for each pair of records that is less than $d$ pixels apart, see Figure~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example shown in the figure.
+\hl{For the visibility constraint, there is a conflict generated for every cell that contains more than $K$ records. For the proximity constraint, there is a conflict generated for each pair of records that is less than $d$ pixels apart, see Figure}~\ref{fig:proximity:conflict}. A record can be in several conflict sets, which is the case for point $p$ in the example shown in the figure. \hl{A solution to the selection problem is }\emph{feasible}\hl{ if there are no conflicts}.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -43,25 +42,15 @@ For the visibility constraint, one conflict set is generated for each cell that 
 \end{center}
 \end{figure}
 
-Consider a conflict set containing $k_1$ records, where at most $k_2$ of these records can be selected (where $k_1 > k_2$). Then it is equivalent to state that at least $\lambda = k_1 - k_2$ of these records must be \emph{deleted}. In the mathematical formulation of the problem in Section~\ref{sec:optimizationmodel} we will use this alternative way to formulate conflict sets.
+Consider a \hl{conflict involving} $k_1$ records, where at most $k_2$ of these records can be selected (where $k_1 > k_2$). Then it is equivalent to state that at least $\lambda = k_1 - k_2$ of these records must be \emph{deleted}. In the mathematical formulation of the problem in Section~\ref{sec:optimizationmodel} we will use this alternative way to formulate \hl{conflicts}.
 
-\subsection{\hl{Selection as a combinatorial optimization problem}}
+\subsection{\hl{Selection as an optimization problem}}
 \label{sec:filtering}
-Constraints must be complemented by an effective method for finding a good solution in the feasible solution space. Because of the nature of selection, records can have only two states; deleted and not deleted. This makes combinatorial optimization particularly appropriate.
+\hl{The notion of conflicts is used to define the feasibility of solutions to the selection problem. This should be accompanied by a way to discriminate between solutions. Having assigned an importance measure to each record, i.e. the record weights, intuitively allows us to measure the ``loss of importance'' due to records that are deleted.} 
 
-The optimization problem is to select a subset of the dataset, such that all conflicts are resolved, and such that the aggregate weight of records that are not selected is minimized. In Section~\ref{sec:optimizationmodel} we present a mathematical formulation of this optimization problem.
+\hl{In the optimization version of the problem we seek the feasible solution that minimizes the aggregate weight of records that are deleted. In Section}~\ref{sec:optimizationmodel}\hl{ we present a mathematical formulation of the selection optimization problem}.
 
-\subsection{\hl{Selection for multiple scales}}
-\label{sec:multi:scale:selection}
-Besides finding a solution to the selection problem for a single scale, we are also interested in finding a series of solutions to the selection problem for a discrete set of scales or \emph{zoom levels}, i.e. solving a \emph{multi-scale selection problem}. This allows us to generalize a dataset for use in zoomable maps with discrete zoom levels.
-
-To compute a solution to the multi-scale selection problem we use the so-called \emph{ladder} approach to multi-scale generalization~\cite{foerster2010challenges}. In this approach, the result of selecting records for a larger scale is used as input for selection at the next smaller scale. We use this approach because it has two advantages.
-
-Firstly, by using the ladder approach, a constraint known as the \emph{zoom-consistency} constraint~\cite{sarma2012fusiontables} is automatically enforced. This constraint states that when zooming in on a map, records may only appear -- never disappear. This is arguably appropriate for most datasets. 
-
-Secondly, the conflict sets get restricted after computing selection for the largest scale. For the proximity constraint applied to point datasets, each point can be in at most six different conflict sets. For the density constraint in the typical situation where a cell on zoom level $i$ covers an area corresponding to four cells on zoom level $i+1$, a conflict set will contain at most $4K$ records. This is easy to see.
-
-In the case that enforcing zoom-consistency is inappropriate, e.g. when selecting regional labels were records both appear and disappear when zooming in, it would be better to use the \emph{star} approach~\cite{foerster2010challenges}. We have not implemented support for the star approach, but this is a low hanging fruit for future work.
+\hl{For a zoomable map with }$\mathcal{Z}$\hl{ zoom levels, we are interested in finding $\mathcal{Z}$ solutions to the selection problem, one for each zoom level }$i \in \lbrack 1, \mathcal{Z} \rbrack$. \hl{To control the way in which we compute these solutions, we use an algorithmic framework known as the }\emph{ladder} approach~\cite{foerster2010challenges}. \hl{This is a recursive approach, where the output of selection at large scale is used as input to selection at a smaller scale. This means that the zoom-consistency constraints }(Section~\ref{sec:constraints})\hl{ is automatically satisfied. The ladder approach is not appropriate for all use cases. For regional labels, were a record (e.g. the label ``Europe'') should be visible mostly on the intermediate zoom levels, the }\emph{star} approach~\cite{foerster2010challenges}\hl{ would be better. This is a limitation of the work presented in this paper.}
 
 
 

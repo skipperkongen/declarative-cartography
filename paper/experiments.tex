@@ -25,11 +25,11 @@ We start by presenting our experimental setup (Section~\ref{sec:exp:setup}), and
 \minisec{Datasets}
 We have tested CVL using four real-world datasets with the \hl{biggest one containing 9 million points} and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. 
 
-We have used three point datasets. The airports dataset is from Openflights~\footnote{\texttt{http://openflights.org/data.html}} and contains 7411 \hl{airports}. The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database~\footnote{\url{http://www.openstreetmap.org/}}. The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. We use this dataset for scalability experiments.
+We have used three point datasets. The airports dataset is from Openflights and contains 7411 \hl{airports}.\footnote{\url{http://openflights.org/data.html}} The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database.\footnote{\url{http://www.openstreetmap.org/}} The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. We use this dataset for scalability experiments.
 
 We have used two \hl{line} datasets. The US rivers/streams dataset contains roughly 4 thousand rivers and roughly 27 thousand streams in the United States \hl{from} the OpenStreetMap database. Records with identical name attributes have been merged into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a selection situation (we wish to either select the waterway completely or not at all). 
 
-We have used a single polygon dataset, the area information dataset~\footnote{\texttt{http://internet.miljoeportal.dk/}} from The Danish Natural Environment Portal, published by the Danish government. This dataset contains 30 thousand high-fidelity administrative protection zone polygons, ranging from small polygons the size of buildings to large polygons the size of entire regions. The biggest polygon \hl{has} more than 36 thousand \hl{vertices}.
+We have used a single polygon dataset, the area information dataset from The Danish Natural Environment Portal, published by the Danish government.\footnote{\url{http://internet.miljoeportal.dk/}} This dataset contains 30 thousand high-fidelity administrative protection zone polygons, ranging from small polygons the size of buildings to large polygons the size of entire regions. The biggest polygon \hl{has} more than 36 thousand \hl{vertices}.
 
 %\minisec{Varying dataset size}
 We have tested the scalability of CVL using both point and \hl{line} datasets. \hl{We used a east-west unrolling approach for gradually increasing the size of a dataset. First, we ordered records by x-coordinate, and then used increasingly large prefixes of this order to derive bigger datasets.} The advantage of this approach over random sampling is that the spatial density of records is better preserved.
@@ -59,9 +59,9 @@ Real & Proctection zones & Polygons & $30K$ & $9M$ \\
 
 
 \minisec{Hardware, Software, and Methods}
-The machine used for testing was an Amazon EC2 instance with 17GB RAM, 2 x Intel(R) Xeon(R) CPU E5-2665 0 @ 2.40GHz and 20MB Cache, running Amazon Linux 3.4.48-45.46.amzn1.x86\_64\footnote{An image of the instance we used for testing is available through Amazon EC2 as an AMI. The image contains the exact database used for testing, with all tables preloaded}.
+The machine used for testing was an Amazon EC2 instance with 17GB RAM, 2 x Intel(R) Xeon(R) CPU E5-2665 0 @ 2.40GHz and 20MB Cache, running Amazon Linux 3.4.48-45.46.amzn1.x86\_64\footnote{An image of the instance we used for testing is available through Amazon EC2 as an AMI. More information is available on the website for the project}.
 
-The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built against the following libraries: GDAL 1.9.2 and GEOS 3.3.8. For the LP solver we integrated the database with the convex optimization library CVXOPT \hl{version 1.1.6}~\footnote{\url{http://cvxopt.org/}}. We installed Python language bindings in the database against Python 2.6.8.
+The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built against the following libraries: GDAL 1.9.2 and GEOS 3.3.8. For the LP solver we integrated the database with the convex optimization library CVXOPT \hl{version 1.1.6}.\footnote{\url{http://cvxopt.org/}} We installed Python language bindings in the database against Python 2.6.8.
 
 We ran each test three times on this installation, taking averages. We observed that measurements were very stable, with negligible difference in compute time between runs.
 
@@ -235,13 +235,4 @@ Part (a) shows the breakdown of a solution with an average optimality ratio of $
 In Figure~\ref{fig:scalability} we show scalability results for complex shape data. Here the scalability depends more on the choice of constraint than the choice of solver. The proximity constraint scales much worse than the visibility constraint. This is because the running time of the distance test used in the proximity constraint is proportional to the product of point counts in the two geometric shapes used in each comparison. Evaluating the visibility depends on the number of tiles that each shape intersects, which depends more on the length or area of each shape. 
 
 While constraints matter more to scalability for complex shapes, the SGA solver scales better than LPGA with number of objects, which was also the case for our point data.
-
-\subsection{\hl{Observations on algorithms}}
-
-\hl{We observe that the running time of the LP-based greedy algorithm (LPGA) is generally high. We implemented this algorithm as an alternative to the SQL-based SGA-algorithm mainly because it provides a theoretical bound on the solution quality. We implemented these two algorithms to allow for different trade-offs between quality and performance, as well as careful reasoning about SQL-based implementations, to be explored. We have investigated other algorithms for the selection optimization problem which could potentially have much better performance, albeit providing looser bounds on quality}~\cite{rajagopalan1998primal}. 
-
-\hl{From a performance perspective, we conclude that an algorithm implemented entirely in SQL seems the better choice for in-database execution of generalization. An interesting future direction is to design SQL based algorithms that achieve better solution qualities.}
-
-\marcos{Where do we address our author feedback promise with regards to comments on aggregation?}
-
 

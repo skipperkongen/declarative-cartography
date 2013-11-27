@@ -1,29 +1,23 @@
 % !TEX root = ./cvl.tex
-\section{\hl{Selection optimization problem}}
+\section{Selection optimization problem}
 \label{sec:optimizationmodel}
 
 In this section, we formally define the selection problem as an optimization problem. Let $R$ be the set of records in the dataset. Each record $r \in R$ has an associated weight $w_r > 0$ which models the importance of the record. 
 
-Evaluating a CVL query generates a number of conflicts, i.e., all sets of records that violate a constraint. The conflicts are used to formulate constraints in the selection optimization problem. Let $C$ be the set of conflicts. A conflict $c \in C$ is a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be deleted. This is formulated as a set of inequalities (\ref{eq:general-constraints}) in the optimization problem.
-
-The selection problem can now be modeled as a 0-1 integer program. Let $x_r$ be a 0-1 decision for each record $r \in R$ that is 1 if record $r$ is \emph{deleted}, and 0 otherwise. Then \hl{at a single-scale, the} problem can be stated as follows:
+Evaluating a CVL query generates a number of conflicts, i.e., all sets of records that violate a constraint. Let $C$ be the set of conflicts. A conflict $c \in C$ is a set of records $R_c \subseteq R$, where at least $\lambda_c \geq 1$ records must be deleted. The selection problem can now be modeled as a 0-1 integer program. Let $x_r$ be a 0-1 decision variable for each record $r \in R$ that is 1 if record $r$ is \emph{deleted}, and 0 otherwise. Then at a single-scale, the problem can be stated as follows:
 
 \begin{align}
   \label{eq:objective}
   \min ~\sum_{r \in R} &w_r x_r \\
   \label{eq:general-constraints}
-  \sum_{r \in R_c} x_r &\geq \lambda_c, ~~~~ c \in C \\
-  x_r & \in \{0, 1\}, ~~ r \in R, ~c \in C
+  \sum_{r \in R_c} x_r &\geq \lambda_c, ~~~~~~ c \in C \\
+  x_r & \in \{0, 1\}, ~~ r \in R
 \end{align}
 
-The goal (\ref{eq:objective}) is to minimize the total weight of the records that are deleted. This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element needs to be covered multiple times instead of just once~\cite{rajagopalan1998primal}. 
+The goal (\ref{eq:objective}) is to minimize the total weight of the records that are deleted. The inequalities (\ref{eq:general-constraints}) model the constraints in the selection optimization problem. This is the \emph{set multicover problem} --- a generalization of the well-known set cover problem where each element needs to be covered multiple times instead of just once~\cite{rajagopalan1998primal}. In our formulation, conflicts correspond to \textit{elements} in the set multicover problem, while records correspond to \textit{sets}. Each conflict must be ``covered'' $\lambda_c \geq 1$ times by choosing a subset of records that are deleted (i.e., for which $x_r=1$). Because the selection of records is modeled using a 0-1 decision variable, each record can be chosen at most once.
 
-\hl{In our formulation, conflicts correspond to }\textit{elements}\hl{ in the set multicover problem, while records correspond to }\textit{sets}.\hl{ Each conflict must be ``covered'' $\lambda_c \geq 1$ times by choosing a subset of records that are deleted ($x_r=1$). Because the selection of records is modeled using a 0-1 variable, each record can be chosen at most once.}
+The selection optimization problem is clearly equivalent to the set multicover problem. Since the set multicover problem is NP-hard, so is the general selection optimization problem. The selection optimization problem is even NP-hard for very restricted cases. Consider the vertex cover problem: Given a graph $G=(V,E)$, find a minimum size subset of the vertices $S$ such that every edge in $E$ has an endpoint in $S$. The vertex cover problem is equivalent to the restricted case of the selection optimization problem where all records have unit weight, and all constraints contain exactly two records. (The records are the vertices and the conflicts are the edges in the vertex cover problem.)
 
-\hl{This maps the selection problem at a single scale to an NP-hard optimization problem, namely set multicover. However, it can be shown that the selection optimization problem as presented in Section}~\ref{sec:filtering}\hl{ is also NP-hard for all interesting cases. For an informal proof, consider the vertex cover problem. Given a graph $G=(V,E)$, find a minimum size subset of the vertices $S$ such that every edge in $E$ has an endpoint in $S$. Think of the vertices as records and the edges as conflict sets. This problem would then model the selection problem for the special case where all conflict sets had exactly two records (and all records had identical weights).}
+The vertex cover problem is NP-hard, even for very restricted cases. For example, if $G$ is a planar graph and every vertex has degree at most 3, the problem remains NP-hard~\cite{alimonti2000some, garey1977rectilinear}. This corresponds to a selection optimization problem where the conflicts contain two records each, and each record is involved in at most 3 conflict sets. It is hard to imagine that any interesting application is more restrictive. 
 
-\marcos{Should we not map the other way around in the informal proof above?}
-
-\hl{The vertex cover problem is NP-hard, even for very constrained cases. For example, even if $G$ is a planar graph and every vertex has degree at most 3, the problem remains NP-hard}~\cite{garey1977rectilinear}. \hl{In other words, even if the conflict sets only have two records each, and each record is involved in at most 3 conflict sets, the problem remains NP-hard. It is hard to imagine that any interesting application be more restrictive. Note additionally that the cubic vertex cover problem is APX-hard -- which means that it cannot be approximated arbitrarily close unless $P=NP$}~\cite{alimonti2000some}. %So even this restricted version is ``really'' hard.
-
-In the next section, we discuss algorithmic approaches for solving the selection optimization problem. \hl{We include a further discussion on the objective value} (\ref{eq:objective})\hl{ in the experimental evaluation of our approach.}
+In the next section, we discuss algorithmic approaches for solving the selection optimization problem. We include a further discussion on the objective value (\ref{eq:objective}) in the experimental evaluation of our approach.

@@ -8,7 +8,7 @@ In this section, we present experimental results with our implementation of CVL.
 
 \begin{itemize}
 
-\item Evaluate the performance and solution quality of CVL generalizations with a variety of real-world datasets, including point data as well as complex shapes such as polygons and line \hl{data}. 
+\item Evaluate the performance and solution quality of CVL generalizations with a variety of real-world datasets, including point data as well as complex shapes such as polygon and line \hl{data}. 
 
 \item Analyze the performance and solution quality of CVL generalizations produced under the proximity and visibility constraints presented in Section~\ref{sec:cvl:language} by both the SGA as well as the LPGA solvers of Section~\ref{sec:algorithms}.
 
@@ -23,21 +23,21 @@ We start by presenting our experimental setup (Section~\ref{sec:exp:setup}), and
 \label{sec:exp:setup}
 
 \minisec{Datasets}
-We have tested CVL using four real-world datasets with the \hl{biggest one containing 9 million points} and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. 
+We have tested CVL using four real-world datasets, the \hl{largest of which containing 9 million points}, and one synthetic dataset containing 30 million points. We list all datasets in Table~\ref{tab:datasets}. 
 
 We have used three point datasets. The airports dataset is from Openflights and contains 7411 \hl{airports}.\footnote{\url{http://openflights.org/data.html}} The tourism dataset contains 500 thousand points representing tourist attractions worldwide from the OpenStreetMap database.\footnote{\url{http://www.openstreetmap.org/}} The fractal dataset (synthetic) was created by iteratively copying and displacing points from the tourism dataset within a 10km radius until 30 million records were reached. We use this dataset for scalability experiments.
 
 We have used two \hl{line} datasets. The US rivers/streams dataset contains roughly 4 thousand rivers and roughly 27 thousand streams in the United States \hl{from} the OpenStreetMap database. Records with identical name attributes have been merged into one. In the original dataset, most rivers are represented by multiple records, which is unfortunate in a selection situation (we wish to either select the waterway completely or not at all). 
 
-We have used a single polygon dataset, the area information dataset from The Danish Natural Environment Portal, published by the Danish government.\footnote{\url{http://internet.miljoeportal.dk/}} This dataset contains 30 thousand high-fidelity administrative protection zone polygons, ranging from small polygons the size of buildings to large polygons the size of entire regions. The biggest polygon \hl{has} more than 36 thousand \hl{vertices}.
+We have used a single polygon dataset, the area information dataset from The Danish Natural Environment Portal, published by the Danish government.\footnote{\url{http://internet.miljoeportal.dk/}} This dataset contains 30 thousand high-fidelity administrative protection zone polygons, ranging from small polygons the size of buildings to large polygons the size of entire regions. The largest polygon \hl{has} more than 36 thousand \hl{vertices}.
 
 %\minisec{Varying dataset size}
-We have tested the scalability of CVL using both point and \hl{line} datasets. \hl{We used a east-west unrolling approach for gradually increasing the size of a dataset. First, we ordered records by x-coordinate, and then used increasingly large prefixes of this order to derive bigger datasets.} The advantage of this approach over random sampling is that the spatial density of records is better preserved.
+We have tested the scalability of CVL using both point and \hl{line} datasets. \hl{A east-west unrolling approach is employed for gradually increasing the size of a dataset. First, we order records by x-coordinate, and then select increasingly larger prefixes of this order to derive larger datasets.} The advantage of this approach over random sampling is that the spatial density of records is better preserved.
 
 \begin{table}[htdp]
-\vspace{-2ex}
+%\vspace{-2ex}
 \caption{Datasets used in experiments}
-\vspace{-2ex}
+%\vspace{-2ex}
 \label{tab:datasets}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
@@ -54,26 +54,22 @@ Real & Proctection zones & Polygons & $30K$ & $9M$ \\
 \end{tabular}
 \end{center}
 \label{default}
-\vspace{-2ex}
+%\vspace{-2ex}
 \end{table}%
 
 
 \minisec{Hardware, Software, and Methods}
-The machine used for testing was an Amazon EC2 instance with 17GB RAM, 2 x Intel(R) Xeon(R) CPU E5-2665 0 @ 2.40GHz and 20MB Cache, running Amazon Linux 3.4.48-45.46.amzn1.x86\_64\footnote{An image of the instance we used for testing is available through Amazon EC2 as an AMI. More information is available on the website for the project}.
+The machine used for testing was an Amazon EC2 instance with 17GB RAM, 2 x Intel(R) Xeon(R) CPU E5-2665 0 @ 2.40GHz and 20MB cache, running Amazon Linux 3.4.48-45.46.amzn1.x86\_64.\footnote{An image of the instance we used for testing is available through Amazon EC2 as an AMI. More information is available on the website for the project.}
 
-The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built against the following libraries: GDAL 1.9.2 and GEOS 3.3.8. For the LP solver we integrated the database with the convex optimization library CVXOPT \hl{version 1.1.6}.\footnote{\url{http://cvxopt.org/}} We installed Python language bindings in the database against Python 2.6.8.
+The database used for testing was PostgreSQL 9.2.4 with PostGIS  2.0 built against the libraries GDAL 1.9.2 and GEOS 3.3.8. For the LP solver, we integrated the database with the convex optimization library CVXOPT \hl{version 1.1.6}.\footnote{\url{http://cvxopt.org/}} We installed Python language bindings in the database against Python 2.6.8.
 
 We ran each test three times on this installation, taking averages. We observed that measurements were very stable, with negligible difference in compute time between runs.
 
 PostgreSQL always uses a single core to compute a transaction. Because the generalization process in CVL runs as a single long transaction, each job in CVL runs on a single core. A future direction would be to investigate parallel execution of CVL queries using a different language runtime such as a parallel database or a MapReduce environment.
 
 \minisec{Average optimality ratio}
-In our approach we solve the \hl{multi-scale selection problem as a series of selection optimization problems. To get an indication of the solution quality, we compute for every selection optimization problem a lower bound using an LP-relaxation of the integer program}. The numbers we present in Table~\ref{tab:points:overview} and Table~\ref{tab:complex:overview} \hl{include the average ratio between our solution value and the corresponding lower bound.}
+In our approach, we solve the \hl{multi-scale selection problem as a series of selection optimization problems. To get an indication of the solution quality, we compute for every selection optimization problem a lower bound using an LP-relaxation of the integer program}. The numbers we present in Table~\ref{tab:points:overview} and Table~\ref{tab:complex:overview} \hl{include the average ratio between our solution value and the corresponding lower bound.}
 
-\subsection{Point Data}
-\label{sec:exp:points}
-
-In this section, we present experimental results with point datasets, namely the Openflight airports and Tourist attractions datasets. We first discuss performance and quality for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (visibility / proximity / combined), we show only representative results for brevity. Results for the combined visibility and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below.
 
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}
@@ -88,10 +84,17 @@ In this section, we present experimental results with point datasets, namely the
     \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_7k_airports_lp_B.png}}
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
-  \vspace{-1ex}
+%  \vspace{-1ex}
   \caption{Performance breakdown by zoom level, Airport dataset (7K points). The black line indicates number of conflicts} \label{fig:performance:airport}
-  \vspace{-2ex}
+%  \vspace{-2ex}
 \end{figure*}
+
+\subsection{Point Data}
+\label{sec:exp:points}
+
+In this section, we present experimental results with point datasets, namely the Openflight airports and the tourism datasets. We first discuss performance and quality for CVL and then proceed to analyze CVL's scalability behavior. Even though we experimented with all combinations of solvers (SGA / LPGA) and constraints (visibility / proximity / combined), we show only representative results for brevity. Results for the combined visibility and proximity constraints exhibited the same performance trends as of the most expensive of the two constraints. All other results followed similar trends as the ones explored below.
+
+
 
 \begin{figure*}[tb]
   \begin{minipage}{0.329\linewidth}
@@ -106,20 +109,20 @@ In this section, we present experimental results with point datasets, namely the
     \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_pnt_500k_tourism_lp_B.png}}
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
-  \vspace{-1ex}
+%  \vspace{-1ex}
   \caption{Performance breakdown by zoom level, Tourism dataset (500K points). The black line indicates number of conflicts} \label{fig:performance:tourism}
-  \vspace{-2ex}
+%  \vspace{-2ex}
 \end{figure*}
 
 \minisec{Overall Performance and Quality}
-An overview of running times and solution qualities for the point datasets are shown in Table~\ref{tab:points:overview}. In Section~\ref{sec:algorithms:sga} we wrote that SGA is optimal for disjoint conflict sets. This is confirmed by the entries for visibility + SGA in the table. For the point datasets we used for testing, the LPGA algorithm is also optimal or within $3\%$ of the optimum when combined with the visibility constraint, likely caused by the conflict sets being disjoint. Recall that the approximation guarantee of LPGA is $f$, see Section~\ref{sec:algorithms:lpga}.
+An overview of running times and solution qualities for the point datasets are shown in Table~\ref{tab:points:overview}. In Section~\ref{sec:algorithms:sga}, we remarked that SGA is optimal for disjoint conflict sets. This is confirmed by the entries for visibility + SGA in the table. For the point datasets we used for testing, the LPGA algorithm is also optimal or within $3\%$ of the optimum when combined with the visibility constraint, likely caused by the conflict sets being disjoint. Recall that the approximation guarantee of LPGA is $f$ (see Section~\ref{sec:algorithms:lpga}).
 
 In terms of quality, the difference between SGA and LPGA is not stark for either constraint. The difference depends more on the constraint than on the solver, with visibility generally yielding the best solutions. However, the running time of SGA can be substantially shorter than that of LPGA. We analyze this effect in the following.
 
 \begin{table}[htdp]
-\vspace{-1ex}
+%\vspace{1ex}
 \caption{Results for CVL on point datasets grouped by constraint}
-\vspace{-2ex}
+%\vspace{-2ex}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -138,8 +141,22 @@ Tourism (500K) & Proximity & LPGA & 2h 18m & 1.24 \\
 \end{tabular}
 \end{center}
 \label{tab:points:overview}
-\vspace{-2ex}
+%\vspace{-2ex}
 \end{table}%
+
+\begin{figure*}[tb]
+  \begin{minipage}{0.49\linewidth}
+    \centerline{\includegraphics[width=0.75\linewidth]{./figs/scal_pnt_30m_synthetic.png}}
+    \centerline{(a) Scalability for point data}
+  \end{minipage} \hfill
+  \begin{minipage}{0.49\linewidth}
+    \centerline{\includegraphics[width=0.75\linewidth]{./figs/scal_lin_30k_uswaterway.png}}
+    \centerline{(b) Scalability for complex shape data}
+  \end{minipage} \hfill
+%  \vspace{-0ex}
+  \caption{Scalability of CVL for point datasets and complex shape datasets. Constraints are marked as \emph{Visibility}: A, \emph{Proximity}: B} \label{fig:scalability}
+%  \vspace{-1ex}
+\end{figure*}
 
 \minisec{Performance Breakdown}
 Figure~\ref{fig:performance:airport} shows the performance breakdown per zoom level of executing CVL with the Openflight airports dataset. Note the different y-scales in the graphs. We have overlayed the number of conflicts per zoom-levels as a black line. In Parts~(a)-(c), we observe that the time needed to find conflicts is roughly stable until eight zoom levels, then slightly increases, and finally drops sharply for lower zoom levels. The constraints used generate few conflicts at higher zoom levels, given the relatively low density of the airport distribution in space. Nevertheless, even though almost no conflicts are generated, the dataset is still processed, resulting in roughly equal time for finding conflicts and negligible time for solving conflicts per zoom level. 
@@ -159,23 +176,10 @@ In summary, and as discussed in Section~\ref{sec:algorithms:sga}, SGA performs s
 \minisec{Scalability}
 We tested the scalability of CVL by varying the size of the synthetic dataset of 30 million points, starting with one thousand records, and tested by iteratively doubling up until we reached roughly four million records. We scaled the dataset with the sweep-line approach introduced in Section~\ref{sec:exp:setup}. We plot the running time of each solver/constraint combination for different dataset sizes in Figure~\ref{fig:scalability}.
 
-In general, we found that SGA scales far better than LPGA with the number of objects, which confirms the observations from the performance breakdown above. After reaching four million points the running time became prohibitively large (more than 3 hours) even for SGA. Up to this point, the algorithm scales roughly linearly. The running time of the solvers depends on the number of conflicts, as well as on the structure of the conflicts. It is easy to see that after the first zoom-level, the number of conflicts is bounded by a constant that is proportional either to the number of records (for the proximity constraint) or the number of cells (for the visibility constraint). For the proximity constraint, the number of conflicts is bounded due to circle packing. For the visibility constraint, each cell can contain at most $64$ records for $K=16$, after the first zoom-level is processed. This is because each cell contains only records from four cells on the previous (higher) zoom-level, each of which contains only 16 records.
+In general, SGA scales far better than LPGA with the number of objects, confirming the observations from the performance breakdown above. After reaching four million points the running time became prohibitively large (more than 3 hours) even for SGA. Up to this point, the algorithm scales roughly linearly. The running time of the solvers depends on the number of conflicts, as well as on the structure of the conflicts. It is easy to see that after the first zoom-level, the number of conflicts is bounded by a constant that is proportional either to the number of records (for the proximity constraint) or the number of cells (for the visibility constraint). For the proximity constraint, the number of conflicts is bounded due to circle packing. For the visibility constraint, each cell can contain at most $64$ records for $K=16$, after the first zoom-level is processed. This is because each cell contains only records from four cells on the previous (higher) zoom-level, each of which contains only 16~records.
 
 %There is a curious fall in running time for SGA with the proximity constraint. We did not gather sufficient data during the scalability experiment to explain this phenomenon.
 
-\begin{figure*}[tb]
-  \begin{minipage}{0.49\linewidth}
-    \centerline{\includegraphics[width=0.75\linewidth]{./figs/scal_pnt_30m_synthetic.png}}
-    \centerline{(a) Scalability for point data}
-  \end{minipage} \hfill
-  \begin{minipage}{0.49\linewidth}
-    \centerline{\includegraphics[width=0.75\linewidth]{./figs/scal_lin_30k_uswaterway.png}}
-    \centerline{(b) Scalability for complex shape data}
-  \end{minipage} \hfill
-  \vspace{-0ex}
-  \caption{Scalability of CVL for point datasets and complex shape datasets. Constraints are marked as \emph{Visibility}: A, \emph{Proximity}: B} \label{fig:scalability}
-  \vspace{-1ex}
-\end{figure*}
 
 \subsection{Complex Shape Data}
 \label{sec:exp:complex:shapes}
@@ -185,7 +189,7 @@ In Table~\ref{tab:complex:overview} we summarize running times and average optim
 
 \begin{table}[htdp]
 \caption{Results for CVL on complex datasets grouped by constraint}
-\vspace{-2ex}
+%\vspace{-2ex}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -204,7 +208,7 @@ Zones (30K) & Proximity & LPGA & --- & --- \\
 \end{tabular}
 \end{center}
 \label{tab:complex:overview}
-\vspace{-6ex}
+%\vspace{-6ex}
 \end{table}%
 
 \begin{figure*}[tb]
@@ -220,19 +224,21 @@ Zones (30K) & Proximity & LPGA & --- & --- \\
     \centerline{\includegraphics[width=0.9\linewidth]{./figs/prelim_lin_30k_uswaterway_lp_B.png}}
     \centerline{(c) LPGA + Proximity}
   \end{minipage}
-  \vspace{-1ex}
+%  \vspace{-1ex}
   \caption{Performance breakdown by zoom level, Rivers dataset (4K records). The black line indicates number of conflicts} \label{fig:performance:complex}
-  \vspace{-2ex}
+%  \vspace{-2ex}
 \end{figure*}
 
 
 \minisec{Performance Breakdown}
-In Figure~\ref{fig:performance:complex} we show three performance breakdowns for the Rivers dataset. We make two observations. First, the running time is now completely dominated by finding conflicts. This is because finding conflicts has complexity that depends on the fidelity of the geometries that are compared. 
+In Figure~\ref{fig:performance:complex}, we show three performance breakdowns for the Rivers dataset. We make two observations. First, the running time is now completely dominated by finding conflicts. This is because finding conflicts has complexity that depends on the fidelity of the geometries that are compared. 
 %For the proximity constraint, the complexity is proportional to the product of point counts for the two geometries compared in the distance test. For the visibility constraint, the complexity depends on the number of tiles occupied by each geometry, which depends on either the length or the area of the geometry. The solving time does not directly depend on the geometric properties, only on the number and structure of conflicts.
-Part (a) shows the breakdown of a solution with an average optimality ratio of $1.0$. We see that for complex shape datasets, the running time is mostly dominated by the time spent finding conflicts. Since finding conflicts operates over the geometric properties of the data, it requires time proportional at least to the number of points that make up each complex shape. When solving conflicts, the running time is independent of geometric complexity. This causes the running time to be dominated by finding conflicts for complex shape datasets. The LPGA solver is the exception when many conflicts are reported. A similar effect was seen for points, indicating that the LPGA solver does not scale well with the number of conflicts. %, which is confirmed in our scalability experiments.
+\hl{Parts (a)-(c) illustrate the effect in more detail, with Part (a) in particular showing the breakdown of a solution with an average optimality ratio of $1.0$. We see that for complex shape datasets, the running time is mostly dominated by the time spent finding conflicts. Since finding conflicts operates over the geometric properties of the data, it requires time proportional at least to the number of points that make up each complex shape. When solving conflicts, the running time is independent of geometric complexity. Interestingly, the time necessary to find conflicts is so high that it shadows the negative effect that a larger number of conflicts has on the conflict resolution time of LPGA (compare with Section}~\ref{sec:exp:points}\hl{).}
+
+%This causes the running time to be dominated by finding conflicts for complex shape datasets. The LPGA solver is the exception when many conflicts are reported. A similar effect was seen for points, indicating that the LPGA solver does not scale well with the number of conflicts. %, which is confirmed in our scalability experiments.
 
 \minisec{Scalability}
-In Figure~\ref{fig:scalability} we show scalability results for complex shape data. Here the scalability depends more on the choice of constraint than the choice of solver. The proximity constraint scales much worse than the visibility constraint. This is because the running time of the distance test used in the proximity constraint is proportional to the product of point counts in the two geometric shapes used in each comparison. Evaluating the visibility depends on the number of tiles that each shape intersects, which depends more on the length or area of each shape. 
+In Figure~\ref{fig:scalability}(b), we show scalability results for complex shape data. Here scalability depends more on the choice of constraint than on the choice of solver. The proximity constraint scales much worse than the visibility constraint \hl{with the number of objects}. This is because the running time of the distance test used in the proximity constraint is proportional to the product of point counts in the two geometric shapes used in each comparison. \hl{In contrast,} evaluating the visibility \hl{constraint} depends on the number of tiles that each shape intersects, which depends more on the length or area of each shape. 
 
-While constraints matter more to scalability for complex shapes, the SGA solver scales better than LPGA with number of objects, which was also the case for our point data.
+While constraints matter more to scalability for complex shapes \hl{than for point data}, the SGA solver scales better than LPGA with number of objects, which was also the case for \hl{the point datasets examined in Section}~\ref{sec:exp:points}.
 

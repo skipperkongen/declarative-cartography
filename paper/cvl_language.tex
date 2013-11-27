@@ -62,7 +62,7 @@ An example of generalizing a dataset using the generalize statement is shown in 
 
 
 \begin{figure}[h]
-\vspace*{-2ex}
+%\vspace*{-2ex}
 \begin{center}
 \begin{lstlisting}
 GENERALIZE 
@@ -75,11 +75,11 @@ WEIGH BY
 SUBJECT TO 
    visibility 16 
 \end{lstlisting}
-\vspace*{-1ex}
+%\vspace*{-1ex}
 \caption{Generalization of an airports dataset. The airports are \hl{weighted} by number of departures. See Figure~\ref{fig:graphical:output:airport} for a vizualization of the result.}
 \label{fig:cvl:example:airports}
 \end{center}
-\vspace*{-2ex}
+\vspace*{-1ex}
 \end{figure}
 
 
@@ -103,11 +103,11 @@ RESOLVE cid IF DELETE (
   {integer expression}
 )
 \end{lstlisting}
-\vspace*{-1.5ex}
+%\vspace*{-1.5ex}
 \caption{Syntax of create constraint statement}
 \label{fig:create:constraint:syntax}
 \end{center}
-\vspace*{-2ex}
+\vspace*{-1ex}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -137,11 +137,11 @@ RESOLVE cid IF DELETE (
   1
 )
 \end{lstlisting}
-\vspace*{-2ex}
+%\vspace*{-2ex}
 \caption{Definition of the proximity constraint.}
 \label{fig:proximity:definition}
 \end{center}
-\vspace*{-4ex}
+\vspace*{-1ex}
 \end{figure}
 
 The \emph{resolve-if-delete} clause is used to compute the integer number of records that must be deleted in order to resolve the conflict with a given $cid$. 
@@ -150,12 +150,6 @@ The \emph{resolve-if-delete} clause is used to compute the integer number of rec
 Using this syntax, the definition of the proximity constraint is given in Figure~\ref{fig:proximity:definition}. The body of the constraint is a distance self join using a distance function \texttt{ST\_Distance} provided by a spatial extension to SQL. This join finds all pairs of records that are too close, e.g.\ less than $10$ pixels apart. For each conflict, the select statement outputs two tuples and exactly once for each conflict. The resolve-if-delete clause is simply the constant $1$, because that is how many records must be deleted to resolve a proximity conflict.
 
 In Figure~\ref{fig:proximity:definition}, some names are enclosed in curly braces, such as \texttt{\{rid\}}. These are variables which are bound at runtime by the CVL framework and are intended for making the definition of constraints simpler. The variables \texttt{\{rid\}} and \texttt{\{geom\}} are bound to the column names containing the ID and geometry of the records. The \texttt{\{level\_view\}} is bound to a view that contains all records that are visible at the current level, i.e., the records that have not been filtered out at a higher zoom-level. The function \texttt{CVL\_Resolution(\{z\}, 256)} is one of the utility functions defined by the CVL runtime, also with the purpose of making the definition of constraints simpler. This function returns the resolution (meter/pixel) at zoom-level \texttt{\{z\}}, where \texttt{\{z\}} is a variable bound to the currently evaluated zoom-level. The variable \texttt{\{parameter\_1\}} is the constraint parameter, e.g. $10$ pixels.
-
-Figure~\ref{fig:visibility:definition} shows how the visibility constraint may be defined using CVL. The CVL definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses. 
-%which will be covered again in Section~\ref{sec:implementation:extensions}. 
-The purpose of these clauses is to enable arbitrary SQL statements to be run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table, using the \texttt{tile\_id} column as the conflict ID.
-
-
 
 \begin{figure}[htbp]
 \begin{center}
@@ -198,12 +192,20 @@ WITH TEARDOWN (
   DROP TABLE busted_tiles;
 )
 \end{lstlisting}
-\vspace*{-1.5ex}
+%\vspace*{-1.5ex}
 \caption{Definition of the visibility constraint.}
 \label{fig:visibility:definition}
 \end{center}
-\vspace*{-3ex}
+%\vspace*{-3ex}
 \end{figure}
+
+
+
+Figure~\ref{fig:visibility:definition} shows how the visibility constraint may be defined using CVL. The CVL definition uses an extension of the basic create-constraint syntax, namely the \emph{setup} and \emph{tear down} clauses. 
+%which will be covered again in Section~\ref{sec:implementation:extensions}. 
+The purpose of these clauses is to enable arbitrary SQL statements to be run before and after the constraint body is evaluated at each zoom-level. During the setup phase we create an auxiliary table called \texttt{busted\_tiles} which contains tuples $\langle tile\_id, rid \rangle$ identifying tiles that are intersected by more than $K$ records, and the ID of those records. The body of the constraint simply iterates over the auxiliary table, using the \texttt{tile\_id} column as the conflict ID.
+
+
 
 
 The user does not need to know how the conflicts are handled, because all conflicts are automatically resolved by the CVL framework using one of the algorithms presented in Section~\ref{sec:algorithms}.

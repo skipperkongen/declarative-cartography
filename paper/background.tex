@@ -1,4 +1,4 @@
-% !TEX root = ./cvl.tex
+% !TEX root = ./ICDE14_conf_full_296.tex
 \section{\hl{Selection of Geospatial Data}}
 \label{sec:background}
 
@@ -13,7 +13,7 @@ Each record is assigned a \emph{user defined weight} using CVL (see Section~\ref
 
 \subsection{Zoom levels and map constraints}
 \label{sec:constraints}
-\hl{For zoomable maps, different subsets of the data should be selected for display at different scales or }\emph{zoom levels}. Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). On a given zoom level, the map is rendered at a certain pixel resolution. Thus, for a given zoom level, we know the distance in pixels between geospatial locations. This gives rise to two particularly important map constraints \hl{when selecting data for a given zoom level}.
+\hl{For zoomable maps, different subsets of the data should be selected for display at different scales or }\emph{zoom levels}. Let the zoom-levels run from 1 (lowest scale) to $\mathcal{Z}$ (largest scale). On a given zoom level, the map is rendered at a certain pixel resolution. Thus, for a given zoom level, we know the distance in pixels between geospatial locations. This gives rise to two particularly important map constraints~\cite{harrie2007modelling} \hl{when selecting data for a given zoom level}.
 
 Firstly, the \emph{principle of constant information density} implies that the number of records that can be displayed \hl{within an area or a certain pixel size should be bounded}~\cite{topfer1966principles}. Assume that we divide the complete map into cells (or tiles) of, say, 256 x 256 pixels. The \emph{visibility} constraint states that each cell can contain at most $K$ \hl{selected} records, where $K$ is a user-defined parameter~\cite{sarma2012fusiontables}.
 

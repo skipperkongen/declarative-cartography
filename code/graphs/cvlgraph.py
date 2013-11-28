@@ -45,17 +45,17 @@ class Scalability(object):
 			sizes = sizes.union([size for size in sorted(serie)])
 			x = [size for size in sorted(serie)]
 			y = [serie[size].total_seconds() for size in sorted(serie)]
-			plt.loglog(x, y, colors[j]+symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key))
-			#plt.loglog(x, y, symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key))
+			#plt.loglog(x, y, colors[j]+symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key))
+			plt.loglog(x, y, symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key))
 			i = (i + 1) % len(symbols)
 			j = (j + 1) % len(colors)
 		leg = plt.legend(loc='best',fancybox=True)
 		leg.get_frame().set_alpha(0.6)
 		plt.xlabel('Data size')
 		plt.ylabel('Runtime (seconds)')
-		filename = os.path.join(output_dir, "scal_{0:s}.png".format(self.ds_name))
+		filename = os.path.join(output_dir, "scal_{0:s}.pdf".format(self.ds_name))
 		plt.tight_layout()
-		plt.savefig(filename)
+		plt.savefig(filename, format='pdf')
 		plt.clf()
 		print "Writing figure to {0:s}".format(filename)
 		#plt.show()
@@ -128,7 +128,7 @@ class Stack(object):
 		leg.get_frame().set_alpha(0.6)
 		#plt.gca().yaxis.set_major_formatter(FuncFormatter(billions))
 
-		filename = os.path.join(output_dir, "prelim_{0:s}_{1:s}_{2:s}.png".format(
+		filename = os.path.join(output_dir, "prelim_{0:s}_{1:s}_{2:s}.pdf".format(
 			#re.sub(r'[\[\]]', '', trace.name)))
 			self.trace.input_table,
 			self.trace.solver,
@@ -136,7 +136,7 @@ class Stack(object):
 		print "Writing figure to {0:s}".format(filename)
 		#plt.subplots_adjust(left=-2.4)
 		plt.tight_layout()
-		plt.savefig(filename)
+		plt.savefig(filename, format='pdf')
 		plt.clf()
 
 

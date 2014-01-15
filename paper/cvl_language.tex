@@ -68,7 +68,7 @@ An example of generalizing a dataset using the generalize statement is shown in 
 GENERALIZE 
    airports TO airports2
 WITH ID airport_id
-WITH GEOMETRY location
+WITH GEOMETRY wkb_geometry
 AT 18 ZOOM LEVELS
 WEIGH BY
   num_departures

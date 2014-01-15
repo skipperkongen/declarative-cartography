@@ -19,6 +19,7 @@ from datetime import timedelta
 __author__ = 'kostas'
 
 colors = ['c', 'r', 'g', 'b', 'm', 'y']
+cmcolors = [cm.hsv(150), cm.hsv(30), cm.hsv(250), 'g'] #cm.hsv(105)]
 symbols = ['o', 's', '^', 'd']
 
 class Scalability(object):
@@ -46,9 +47,12 @@ class Scalability(object):
 			x = [size for size in sorted(serie)]
 			y = [serie[size].total_seconds() for size in sorted(serie)]
 			#plt.loglog(x, y, colors[j]+symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key))
-			plt.loglog(x, y, symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key))
+			#plt.loglog(x, y, symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key))
+			plt.loglog(x, y, symbols[i]+'-', linewidth=2, markersize=10,label=to_label(key), color=cmcolors[j])
+			
 			i = (i + 1) % len(symbols)
-			j = (j + 1) % len(colors)
+			#j = (j + 1) % len(colors)
+			j = (j + 1) % len(cmcolors)
 		leg = plt.legend(loc='best',fancybox=True)
 		leg.get_frame().set_alpha(0.6)
 		plt.xlabel('Data size')
@@ -74,30 +78,35 @@ class Stack(object):
 		zoom_levels = list(reversed(range(len(trace.levels))))
 		dtype = [('tasks', 'S16')] + [('', np.float32)]*len(zoom_levels)
 
-		initialize = ['Initialize']
+		#initialize = ['Initialize']
 		find_c = ['Find conflicts']
 		resolve_c = ['Solve']
-		finalize = ['Finalize']
+		#finalize = ['Finalize']
 		for level in self.trace.levels:
-			initialize.append(level['timing']['initialized_level'].total_seconds())
+			#initialize.append(level['timing']['initialized_level'].total_seconds())
 			find_c.append(level['timing']['found_conflicts'].total_seconds())
 			resolve_c.append(level['timing']['resolved_conflicts'].total_seconds())
-			finalize.append(level['timing']['finalized_level'].total_seconds())
+			#finalize.append(level['timing']['finalized_level'].total_seconds())
 
 		y = np.array([
-			tuple(initialize),
+			#tuple(initialize),
 			tuple(find_c),
 			tuple(resolve_c),
-			tuple(finalize)
+			#tuple(finalize)
 			],dtype=dtype)
 		y = y.view(np.dtype([('tasks','S16'), ('data', np.float32, len(zoom_levels))]))
 		data = y['data']
 		tasks = y['tasks']
 		bottom = np.zeros(len(zoom_levels))
+		colors = [cm.hsv(150), cm.hsv(30)]
 		for i in range(len(data)):
-			bt = ax1.bar(range(len(data[i])), data[i], width=width,
-						 color=cm.hsv(24*i), label=tasks[i],
-						 bottom=bottom)
+			bt = ax1.bar(range(
+				len(data[i])), 
+				data[i], 
+				width=width,
+				color= colors[i],  #cm.hsv(00+70*i), 
+				label=tasks[i],
+				bottom=bottom)
 			bottom += data[i]
 		plt.xticks(np.arange(len(zoom_levels)) + (width/2),
 				   [int(zoom) for zoom in zoom_levels])

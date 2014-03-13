@@ -199,24 +199,24 @@ SUBJECT TO proximity 10 AND density 64
 \frametitle{High-level language: \texttt{CREATE CONSTRAINT}}
 
   \begin{center}
-  \fbox{What expert users write}
+  \fbox{Constraints expressed using SQL}
   \end{center}
 
 \begin{description}[<+->]
 \item[Give the constraint a name]:
 \begin{lstlisting}[escapechar=@]
-CREATE CONSTRAINT {@name as string@}
+CREATE CONSTRAINT {@name@}
 \end{lstlisting}
-\item[How is the constraint condition defined?]:
+\item[Select records ``in conflict''; record $rid$ $\in$ conflict $cid$]:
 \begin{lstlisting}[escapechar=@]
 AS NOT EXISTS (
-  {@SQL@}
+  {@SELECT rid, cid...@}
 )
 \end{lstlisting}
-\item[How to resolve with constraint violations?]:
+\item[Conflict $cid$ is resolved by deleting records]:
 \begin{lstlisting}[escapechar=@]
 RESOLVE cid IF DELETE (
-  {@SQL@}
+  {@SELECT \#records to delete@}
 )
 \end{lstlisting}
 \end{description}
@@ -267,14 +267,12 @@ RESOLVE cid IF DELETE (
 %\end{frame}
 
 \frame{
-	\frametitle{Constraints explained}
+	\frametitle{Example: proximity constraint}
 	
-	\textbf{Example}: Proximity constraint
-	\vspace{0.5em}
 	\begin{itemize}[<+->]
-	\item Constraints defined by defining what a ``conflict'' means
-	\item Set of records that don't \emph{fit} on the same zoom-level
-	\item Proximity constraint: resolve a conflict by ``deleting'' one or the other record
+	\item Constraints defined by the notion of a ``conflict''
+	\item Conflict: Set of records that don't \emph{fit} on the same zoom-level
+	\item Example (proximity constraint): no pairs of records in close proximity (keep the more \emph{salient} record)
 	\vspace{0.5em}
 	\end{itemize}
 	\begin{center}
@@ -365,7 +363,7 @@ RESOLVE cid IF DELETE (
 %}
 
 \begin{frame}[fragile]
-\frametitle{High-level language: \texttt{CREATE CONSTRAINT} statement}
+\frametitle{Example: proximity constraint}
 \begin{lstlisting}[escapechar=@]
 CREATE CONSTRAINT Proximity @\pause@
 
@@ -410,7 +408,7 @@ RESOLVE IF DELETE (1)
 	\frametitle{Constraints and bi-partite graphs}
 	\begin{itemize}[<+->]
 	\item A record can be in several conflicts
-	\item A conflict involves several records
+	\item A conflict (by definition) involves several records
 	\item Corresponds to ``bi-partite graph'':
 	\end{itemize}
 	\vspace{1em}
